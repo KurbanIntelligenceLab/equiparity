@@ -45,21 +45,51 @@ The available zoo is: DimeNet++, EquiformerV2, FAENet, GotenNet, ICTP, MACE, Neq
 - One config generator: YAML template → {architecture × parity mode × dataset × seed} configs.
 - Log everything to W&B (or equivalent): configs, parameter counts, training curves, final metrics.
 
-### 0.2 The Two Parity Modes
+### 0.2 The Two Parity Modes — CORRECTED (Checkpoint-1 decision)
 
-| Mode | NequIP | Allegro | MACE | Equiformer v1 |
-|---|---|---|---|---|
-| **O(3) (default)** | `parity: true` | `parity: true` | default `--hidden_irreps='128x0e + 128x1o + 128x2e'` | type-(L,p) irreps in config, e.g. `128x0e + 128x1o + 128x2e` |
-| **SO(3)** | `parity: false` | `parity: false` | `--hidden_irreps='128x0e + 128x1e + 128x2e'` (all-even, manual string) | type-L irreps without parity labels (SE(3) mode, all-even equivalent) |
+**The original `parity: true/false` boolean toggle is wrong for the e3nn cores** and has been
+replaced. See `docs/reports/checkpoint1_offcycle_parity_toggle.md`. The boolean `parity=False`
+in NequIP/Allegro keeps *honest natural-parity* irreps (`0e,1o,2e`) and the model stays fully
+O(3)-equivariant (reflection error ~1e-16) — it is NOT an SO(3) model. e3nn tensor products
+always conserve parity; to remove parity you must relabel the **edge spherical harmonics** (and
+hidden irreps) as **all-even**, which is what genuinely breaks reflection equivariance.
 
-### 0.3 Parity Toggle Verification — do this before any training run
+Both arms are built as a **matched pair** through the raw-irreps route, identical in every
+hyperparameter (multiplicity, `l_max`, layers); the ONLY difference is the parity labeling of
+the edge SH and hidden irreps.
 
-On 5–10 toy structures:
-1. Reflect all coordinates (x → −x). O(3)-mode scalar outputs must be identical; SO(3)-mode outputs may differ. Confirm both behaviors.
-2. Inspect internal feature irreps and confirm they match the intended mode.
-3. Record parameter counts per mode at identical channel counts — this documents the parameter confound exactly.
+| Mode | NequIP | Allegro | MACE |
+|---|---|---|---|
+| **O(3)** | `FullNequIPGNNModel`, natural SH `0e+1o+2e`, hidden `Nx0e+Nx1o+Nx2e` | `FullAllegroModel`, same | `use_so3=False`, hidden `Nx0e+Nx1o+Nx2e` |
+| **SO(3)** | `FullNequIPGNNModel`, all-even SH `0e+1e+2e`, hidden `Nx0e+Nx1e+Nx2e` | `FullAllegroModel`, same | `use_so3=True` (evens SH, `p=1`), hidden `Nx0e+Nx1e+Nx2e` |
 
-**Gate: no experiment starts until all four architectures pass all three checks in both modes.** NequIP and Allegro share the flag, so their verification is nearly free. MACE and especially Equiformer v1 (no boolean flag, irreps-string toggle) are where bugs will hide.
+Only three toggleable cores remain. **Equiformer v1 is demoted to optional extensions** (its
+2022 stack — Python 3.8 / torch 1.10 / CUDA 11.3 — cannot run on current hardware or coexist with
+the environment; being e3nn-based it adds no new mechanism, per the gate's own fallback clause).
+The three cores span three architecture families: convolutional MPNN (NequIP), local descriptors
+(Allegro), body-ordered MPNN (MACE).
+
+### 0.3 Parity Verification Gate — quantitative, runs before any training
+
+The gate lives in `src/equiparity/verification/` and runs in CI (`tests/verification/`). For each
+core it builds both matched arms, then on a toy structure applies a random proper rotation and a
+random improper reflection and measures how far the model's internal equivariant features deviate
+from the parity-aware prediction `features @ D(g).T`:
+
+- **Rotation error** must be below threshold in BOTH arms (every model must be rotation-equivariant).
+- **Reflection error** classifies the arm: small => O(3); large => genuine SO(3).
+
+Thresholds (float64): O(3) reflection `< 1e-12`, SO(3) reflection `> 1e-4`; anything between, or a
+failed rotation check, is a FAIL. MACE runs at ~1e-7 precision (its symmetric-contraction tensors
+stay float32), so it uses the float32 thresholds (`< 1e-5` / `> 1e-2`). Parameter counts per arm are
+recorded; the SO(3) arm is slightly larger (all-even opens more tensor-product paths).
+
+**Gate: no experiment starts until all three cores pass in both arms.** Verified results are in
+`docs/reports/checkpoint1_parity_gate.md`.
+
+The end-to-end analogue — checking that a trained model's predicted *odd-parity tensor* transforms
+with the correct sign under reflection (and is exactly zero for centrosymmetric inputs in O(3)) — is
+deferred to the tensor head (Task 2.2/2.3), where it also serves as the EquiformerV2 positive control.
 
 ### 0.4 Prevalence Mini-Audit (no compute)
 

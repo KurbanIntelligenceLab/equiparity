@@ -10,10 +10,6 @@ the ONLY difference is the parity labeling:
 
 - ``O3``  -> natural-parity SH ``0e+1o+2e``, hidden ``Nx0e+Nx1o+Nx2e``.
 - ``SO3`` -> all-even SH ``0e+1e+2e``,      hidden ``Nx0e+Nx1e+Nx2e`` (same values, mislabeled).
-
-Use :func:`build_nequip_matched` for the study. :func:`build_nequip` (preset ``parity`` flag)
-is retained only for the shallow-net capacity demonstration and must NOT be used as the SO(3)
-arm. The preset toggle is also a no-op below 3 layers.
 """
 
 from __future__ import annotations
@@ -49,18 +45,6 @@ class NequIPConfig:
     model_dtype: str = "float32"
     do_derivatives: bool = False
 
-    def __post_init__(self) -> None:
-        if self.num_layers < 3:
-            # Not an error: shallow nets are valid models, but the parity toggle is a
-            # no-op below 3 layers, which silently breaks the verification gate.
-            import warnings
-
-            warnings.warn(
-                f"num_layers={self.num_layers} < 3: the O(3)/SO(3) parity toggle does not "
-                "affect features or parameter counts in shallow NequIP networks.",
-                stacklevel=2,
-            )
-
 
 # e3nn stores Wigner constants via torch.load; torch 2.6+ needs `slice` allow-listed,
 # and nequip requires its global state initialized before building a model.
@@ -72,43 +56,6 @@ def _ensure_global_state() -> None:
     from nequip.utils.global_state import set_global_state
 
     set_global_state(allow_tf32=False)
-
-
-def build_nequip(config: NequIPConfig, mode: ParityMode):  # noqa: ANN201 (nequip GraphModel is untyped)
-    """Build a NequIP model in the requested parity mode.
-
-    Args:
-        config: Shared NequIP hyperparameters.
-        mode: O(3) or SO(3); selects the ``parity`` boolean.
-
-    Returns:
-        A nequip ``GraphModel`` ready for a forward pass.
-    """
-    _ensure_global_state()
-    from nequip.model import NequIPGNNModel
-
-    type_embed = (
-        config.type_embed_num_features
-        if config.type_embed_num_features is not None
-        else config.num_features
-    )
-    return NequIPGNNModel(
-        r_max=config.r_max,
-        type_names=list(config.type_names),
-        num_layers=config.num_layers,
-        l_max=config.l_max,
-        parity=mode.has_parity,
-        num_features=config.num_features,
-        type_embed_num_features=type_embed,
-        radial_mlp_depth=config.radial_mlp_depth,
-        radial_mlp_width=config.radial_mlp_width,
-        num_bessels=config.num_bessels,
-        polynomial_cutoff_p=config.polynomial_cutoff_p,
-        avg_num_neighbors=config.avg_num_neighbors,
-        seed=config.seed,
-        model_dtype=config.model_dtype,
-        do_derivatives=config.do_derivatives,
-    )
 
 
 def build_nequip_matched(config: NequIPConfig, mode: ParityMode):  # noqa: ANN201
@@ -205,20 +152,3 @@ def nequip_featurizer(  # noqa: ANN201 (returns a Featurizer closure over untype
         return store["feat"], store["irreps"]
 
     return featurize
-
-
-def realized_hidden_irreps(model) -> dict[str, str]:  # noqa: ANN001
-    """Return the realized ``node_features`` irreps of each convolution layer.
-
-    These are the irreps the network can actually populate (after unreachable parity
-    channels are pruned), keyed by module name. This is what the parity verification gate
-    inspects to confirm a model is in the intended mode.
-    """
-    layers: dict[str, str] = {}
-    for name, module in model.named_modules():
-        irreps_out = getattr(module, "irreps_out", None)
-        if name.endswith("_convnet") and isinstance(irreps_out, dict):
-            features = irreps_out.get("node_features")
-            if features is not None:
-                layers[name] = str(features)
-    return layers
