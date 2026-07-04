@@ -41,7 +41,7 @@ The available zoo is: DimeNet++, EquiformerV2, FAENet, GotenNet, ICTP, MACE, Neq
 
 ### 0.1 Environment
 
-- Single repository. Pin: `nequip` v0.6.x, `allegro` v0.3.x, `mace-torch` v0.3.x, `e3nn` v0.5.x. Clone Equiformer v1 (`github.com/atomicarchitects/equiformer`) at a fixed commit. Record exact versions and commit hashes.
+- Single repository. Pin the current NequIP/Allegro framework generation: `nequip` v0.18.x (the post-2025 rewrite with the `NequIPGNNModel` API — **not** the legacy v0.6.x this plan originally specified), `nequip-allegro` v0.4.x+ matching the installed `nequip` (the package is now published as `nequip-allegro`, superseding the old `allegro` v0.3.x), `mace-torch` v0.3.x, and `e3nn` at the version the installed `nequip` requires (the plan's `e3nn` v0.5.x pin is superseded). Clone Equiformer v1 (`github.com/atomicarchitects/equiformer`) at a fixed commit. Record exact resolved versions and commit hashes. The `parity` flag survives into the new NequIP API, so the O(3)/SO(3) toggle is unchanged; verify it empirically in Task 0.3 against the actually-installed build.
 - One config generator: YAML template → {architecture × parity mode × dataset × seed} configs.
 - Log everything to W&B (or equivalent): configs, parameter counts, training curves, final metrics.
 
