@@ -3,8 +3,8 @@ dataset: mp_piezoelectric
 method: random
 seed: 42
 counts:
-  train: 2652
+  train: 2649
   val: 331
-  test: 333
+  test: 332
 group_keys: []
 target_distribution: {}

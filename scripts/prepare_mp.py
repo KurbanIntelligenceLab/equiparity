@@ -28,6 +28,16 @@ SPLIT_DIR = Path("data/splits")
 SPLIT_SEED = 42
 OOD_MAX = 2000
 OOD_SYMPREC = 1e-3
+# Domain sanity bounds (CODING_RULES F.2): MP holds some failed-DFT tensors with
+# physically impossible magnitudes. Exclude and report them; never silently keep them.
+MAX_ELASTIC_ABS_GPA = 2000.0  # hardest materials (diamond) reach ~1000 GPa
+MAX_PIEZO_ABS = 50.0  # strong piezoelectrics (PZT) reach ~25 C/m^2
+
+
+def _filter_by_magnitude(samples: list, target_key: str, bound: float) -> tuple[list, int]:
+    """Drop samples whose target exceeds ``bound`` in absolute value; return (kept, n_dropped)."""
+    kept = [s for s in samples if float(np.abs(s.targets[target_key]).max()) <= bound]
+    return kept, len(samples) - len(kept)
 
 
 def _load_token() -> str:
@@ -103,17 +113,30 @@ def _write_manifest(
     print(f"  wrote {MANIFEST_DIR / f'{name}.yaml'}")
 
 
+def _fetch_structures(mpr, ids: list[str], chunk: int = 2000) -> dict:
+    """Fetch structures for many material ids, chunked (MP rejects overly long id filters)."""
+    out: dict = {}
+    for start in range(0, len(ids), chunk):
+        batch = ids[start : start + chunk]
+        for s in mpr.materials.summary.search(
+            material_ids=batch, fields=["material_id", "structure"]
+        ):
+            out[str(s.material_id)] = s.structure
+        print(f"  fetched structures {min(start + chunk, len(ids))}/{len(ids)}")
+    return out
+
+
 def prepare_piezo(mpr) -> None:
     print("fetching piezoelectric...")
     docs = mpr.materials.piezoelectric.search(fields=["material_id", "total"])
     tensors = {str(d.material_id): np.asarray(d.total, dtype=np.float64) for d in docs}
-    structs = mpr.materials.summary.search(
-        material_ids=list(tensors), fields=["material_id", "structure"]
-    )
+    structures = _fetch_structures(mpr, list(tensors))
     samples = [
-        tensor_sample(s.structure, tensors[str(s.material_id)], "piezoelectric", str(s.material_id))
-        for s in structs
+        tensor_sample(struct, tensors[mid], "piezoelectric", mid)
+        for mid, struct in structures.items()
     ]
+    samples, dropped = _filter_by_magnitude(samples, "piezoelectric", MAX_PIEZO_ABS)
+    print(f"  excluded {dropped} with |e| > {MAX_PIEZO_ABS} C/m^2")
     n = _save_crystal_dataset(
         "mp_piezoelectric", samples, "piezoelectric", [s.targets["piezoelectric"] for s in samples]
     )
@@ -125,7 +148,7 @@ def prepare_piezo(mpr) -> None:
             "positions": "angstrom",
         },
         n,
-        "All non-centrosymmetric by construction.",
+        f"Non-centrosymmetric; excluded {dropped} with |e| > {MAX_PIEZO_ABS} C/m^2.",
     )
     _write_split("mp_piezoelectric", "mp_piezoelectric", [s.identifier for s in samples])
 
@@ -138,14 +161,12 @@ def prepare_elastic(mpr) -> None:
         for d in docs
         if d.elastic_tensor is not None
     }
-    structs = mpr.materials.summary.search(
-        material_ids=list(tensors), fields=["material_id", "structure"]
-    )
+    structures = _fetch_structures(mpr, list(tensors))
     samples = [
-        tensor_sample(s.structure, tensors[str(s.material_id)], "elastic", str(s.material_id))
-        for s in structs
-        if str(s.material_id) in tensors
+        tensor_sample(struct, tensors[mid], "elastic", mid) for mid, struct in structures.items()
     ]
+    samples, dropped = _filter_by_magnitude(samples, "elastic", MAX_ELASTIC_ABS_GPA)
+    print(f"  excluded {dropped} with |C| > {MAX_ELASTIC_ABS_GPA} GPa (failed-DFT tensors)")
     n = _save_crystal_dataset(
         "mp_elastic", samples, "elastic", [s.targets["elastic"] for s in samples]
     )
@@ -157,6 +178,7 @@ def prepare_elastic(mpr) -> None:
             "positions": "angstrom",
         },
         n,
+        f"Excluded {dropped} with |C| > {MAX_ELASTIC_ABS_GPA} GPa (unphysical failed-DFT tensors).",
     )
     _write_split("mp_elastic", "mp_elastic", [s.identifier for s in samples])
 

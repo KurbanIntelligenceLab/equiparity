@@ -1,0 +1,10 @@
+split_id: mp_elastic_random_seed42
+dataset: mp_elastic
+method: random
+seed: 42
+counts:
+  train: 10464
+  val: 1308
+  test: 1308
+group_keys: []
+target_distribution: {}
