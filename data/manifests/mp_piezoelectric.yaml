@@ -1,0 +1,12 @@
+name: mp_piezoelectric
+source: Materials Project materials.piezoelectric
+version: Materials Project API; fetched 2026-07-04
+license: CC-BY-4.0 (Materials Project)
+file_hashes: {}
+schema:
+  piezoelectric: DFPT piezoelectric tensor, 3x6 flattened to 18 (parity-odd)
+  positions: angstrom
+structure_format: pymatgen Structure (periodic)
+query: scripts/prepare_mp.py
+cleaning: 3316 entries retained. All non-centrosymmetric by construction.
+limitations: MP DFPT tensors; provenance is the MP material_id + API fetch date.
