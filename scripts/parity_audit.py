@@ -84,8 +84,42 @@ def audit_allegro() -> list[EquivarianceReport]:
     return reports
 
 
+def audit_mace() -> list[EquivarianceReport]:
+    from equiparity.models.mace import (
+        MACE_GATE_DTYPE,
+        MACEConfig,
+        build_mace_matched,
+        mace_featurizer,
+    )
+
+    atom_numbers, element_table = (1, 1, 6, 8), (1, 6, 8)
+    config = MACEConfig(
+        r_max=4.0, atomic_numbers=element_table, num_features=16, model_dtype="float64"
+    )
+    reports = []
+    for mode in (ParityMode.O3, ParityMode.SO3):
+        model = build_mace_matched(config, mode).eval()
+        featurize = mace_featurizer(model, atom_numbers, element_table, r_max=4.0, dtype="float64")
+        reports.append(
+            check_equivariance(
+                featurize,
+                POSITIONS,
+                label=f"MACE {mode.label}",
+                n_params=count_parameters(model),
+                dtype=MACE_GATE_DTYPE,
+            )
+        )
+    return reports
+
+
 def main() -> None:
-    reports = audit_nequip() + audit_allegro()
+    # Run whichever cores the active profile provides (nequip xor mace).
+    reports: list[EquivarianceReport] = []
+    for audit in (audit_nequip, audit_allegro, audit_mace):
+        try:
+            reports += audit()
+        except ImportError:
+            continue
     header = (
         f"{'core / arm':<16} {'irreps':<26} {'rot.err':>9} {'refl.err':>9} {'params':>8}  verdict"
     )
