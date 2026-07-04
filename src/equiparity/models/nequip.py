@@ -1,21 +1,26 @@
-"""NequIP core: build the O(3)/SO(3)-toggleable NequIP model from a typed config.
+"""NequIP core: build the O(3)/SO(3) matched pair from a typed config.
 
-Wraps nequip 0.18's preset ``NequIPGNNModel`` builder. The parity toggle maps
-:class:`~equiparity.domain.parity.ParityMode` to the ``parity`` boolean:
+The correct O(3)/SO(3) toggle (Checkpoint-1 decision, see
+docs/reports/checkpoint1_offcycle_parity_toggle.md) is NOT the preset ``parity`` boolean:
+``parity=False`` keeps honest natural-parity irreps and stays fully O(3)-equivariant. The
+genuine SO(3) arm relabels the edge spherical harmonics (and hidden irreps) as all-even,
+which removes parity as an e3nn selection rule. Both arms are built through the raw-irreps
+route (``FullNequIPGNNModel``) with identical multiplicities, ``l_max``, and layer count so
+the ONLY difference is the parity labeling:
 
-- ``O3`` -> ``parity=True``: hidden features declare both mirror parities per degree.
-- ``SO3`` -> ``parity=False``: hidden features carry only natural spherical-harmonic
-  parity ``(-1)**l`` (``0e, 1o, 2e, ...``).
+- ``O3``  -> natural-parity SH ``0e+1o+2e``, hidden ``Nx0e+Nx1o+Nx2e``.
+- ``SO3`` -> all-even SH ``0e+1e+2e``,      hidden ``Nx0e+Nx1e+Nx2e`` (same values, mislabeled).
 
-Verified gotcha (see docs/parity_work_plan.md Task 0.3): the two modes realize *identical*
-features and parameter counts in shallow networks. The extra O(3) channels only become
-reachable from the second convolution layer onward, so any parity check must use
-``num_layers >= 3`` or it will silently show no difference.
+Use :func:`build_nequip_matched` for the study. :func:`build_nequip` (preset ``parity`` flag)
+is retained only for the shallow-net capacity demonstration and must NOT be used as the SO(3)
+arm. The preset toggle is also a no-op below 3 layers.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+
+import torch
 
 from equiparity.domain.parity import ParityMode
 
@@ -103,6 +108,117 @@ def build_nequip(config: NequIPConfig, mode: ParityMode):  # noqa: ANN201 (nequi
         model_dtype=config.model_dtype,
         do_derivatives=config.do_derivatives,
     )
+
+
+def _degree_irreps(l_max: int, mult: int, mode: ParityMode) -> str:
+    """Build an irreps string over degrees ``0..l_max`` for a parity mode.
+
+    O(3) uses natural spherical-harmonic parity ``(-1)**l`` (``0e,1o,2e,...``); SO(3) labels
+    every degree even (``0e,1e,2e,...``), which is the same geometric content with parity
+    stripped out.
+    """
+    terms = []
+    for degree in range(l_max + 1):
+        even = mode.has_parity is False or degree % 2 == 0
+        parity = "e" if even else "o"
+        terms.append(f"{mult}x{degree}{parity}")
+    return " + ".join(terms)
+
+
+def build_nequip_matched(config: NequIPConfig, mode: ParityMode):  # noqa: ANN201
+    """Build one arm of the O(3)/SO(3) matched pair via the raw-irreps route.
+
+    Both arms share every hyperparameter; the arms differ ONLY in the parity labeling of the
+    edge spherical harmonics and hidden irreps (O(3) natural parity vs SO(3) all-even). This
+    is the study's toggle; see the module docstring.
+
+    Args:
+        config: Shared NequIP hyperparameters.
+        mode: O(3) or SO(3).
+
+    Returns:
+        A nequip ``GraphModel``.
+    """
+    _ensure_global_state()
+    from nequip.model import FullNequIPGNNModel
+
+    type_embed = (
+        config.type_embed_num_features
+        if config.type_embed_num_features is not None
+        else config.num_features
+    )
+    edge_sh = _degree_irreps(config.l_max, mult=1, mode=mode)
+    hidden = _degree_irreps(config.l_max, mult=config.num_features, mode=mode)
+    scalar_out = f"{config.num_features}x0e"
+    hidden_per_layer = [hidden] * (config.num_layers - 1) + [scalar_out]
+    return FullNequIPGNNModel(
+        r_max=config.r_max,
+        type_names=list(config.type_names),
+        radial_mlp_depth=[config.radial_mlp_depth] * config.num_layers,
+        radial_mlp_width=[config.radial_mlp_width] * config.num_layers,
+        feature_irreps_hidden=hidden_per_layer,
+        irreps_edge_sh=edge_sh,
+        type_embed_num_features=type_embed,
+        num_bessels=config.num_bessels,
+        polynomial_cutoff_p=config.polynomial_cutoff_p,
+        avg_num_neighbors=config.avg_num_neighbors,
+        seed=config.seed,
+        model_dtype=config.model_dtype,
+        do_derivatives=config.do_derivatives,
+    )
+
+
+def nequip_featurizer(  # noqa: ANN201 (returns a Featurizer closure over untyped nequip objects)
+    model,  # noqa: ANN001
+    symbols: str,
+    type_names: tuple[str, ...],
+    *,
+    r_max: float,
+    probe_layer: str = "layer1_convnet",
+    dtype: str = "float64",
+):
+    """Return a ``Featurizer`` closure for the equivariance gate.
+
+    The closure maps positions to the model's node features at ``probe_layer`` and their
+    irreps, by running a forward pass with a hook. Atom species come from ``symbols`` (an ASE
+    formula) mapped to model type indices via ``type_names``.
+    """
+    import numpy as np
+    from ase import Atoms
+    from nequip.data import AtomicDataDict, compute_neighborlist_, from_ase
+
+    torch_dtype = torch.float64 if dtype == "float64" else torch.float32
+    symbol_to_type = {name: idx for idx, name in enumerate(type_names)}
+
+    def featurize(positions: np.ndarray):  # noqa: ANN202
+        atoms = Atoms(symbols, positions=positions)
+        data = compute_neighborlist_(from_ase(atoms), r_max=r_max)
+        data[AtomicDataDict.ATOM_TYPE_KEY] = torch.tensor(
+            [[symbol_to_type[s]] for s in atoms.get_chemical_symbols()], dtype=torch.long
+        )
+        for key, value in data.items():
+            if torch.is_tensor(value) and value.is_floating_point():
+                data[key] = value.to(torch_dtype)
+
+        store: dict[str, object] = {}
+
+        def hook(module, _inputs, output):  # noqa: ANN001, ANN202
+            if isinstance(output, dict) and AtomicDataDict.NODE_FEATURES_KEY in output:
+                store["feat"] = output[AtomicDataDict.NODE_FEATURES_KEY].detach().clone()
+                store["irreps"] = module.irreps_out[AtomicDataDict.NODE_FEATURES_KEY]
+
+        handle = None
+        for name, module in model.named_modules():
+            if name.endswith(probe_layer):
+                handle = module.register_forward_hook(hook)
+                break
+        with torch.no_grad():
+            model(data)
+        if handle is not None:
+            handle.remove()
+        return store["feat"], store["irreps"]
+
+    return featurize
 
 
 def count_parameters(model) -> int:  # noqa: ANN001 (nequip GraphModel is untyped)

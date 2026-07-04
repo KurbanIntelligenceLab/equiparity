@@ -98,9 +98,11 @@ module = [
   "equiparity.features.*",
   "equiparity.plotting.*",
   "equiparity.models.*",
+  "equiparity.verification.*",
 ]
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
+disallow_untyped_calls = false
 warn_return_any = false
 
 # Third-party ML/materials libraries: absent from the type-check env or shipping
