@@ -76,6 +76,10 @@ line-length = 100
 select = ["E", "F", "I", "N", "UP", "B", "ANN", "RUF", "SIM", "PTH", "RET"]
 # ANN101/ANN102 (from CODING_RULES.md §M) were removed in ruff and are omitted.
 
+[tool.ruff.lint.per-file-ignores]
+# Diagnostic/orchestration scripts wrap untyped third-party models; don't force annotations.
+"scripts/*" = ["ANN"]
+
 [tool.ruff.format]
 docstring-code-format = true
 quote-style = "double"
