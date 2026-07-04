@@ -75,6 +75,11 @@ class EquivarianceReport:
         return classify(self.rotation_error, self.reflection_error, THRESHOLDS[self.dtype])
 
 
+def count_parameters(model: torch.nn.Module) -> int:
+    """Return the total number of parameters in a torch model."""
+    return sum(int(p.numel()) for p in model.parameters())
+
+
 def _random_orthogonal(seed: int, *, improper: bool) -> np.ndarray:
     """Deterministic random orthogonal 3x3 matrix; ``improper`` gives det = -1."""
     rng = np.random.default_rng(seed)

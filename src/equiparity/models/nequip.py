@@ -23,6 +23,7 @@ from dataclasses import dataclass
 import torch
 
 from equiparity.domain.parity import ParityMode
+from equiparity.models.irreps import degree_irreps
 
 
 @dataclass(frozen=True, slots=True)
@@ -110,21 +111,6 @@ def build_nequip(config: NequIPConfig, mode: ParityMode):  # noqa: ANN201 (nequi
     )
 
 
-def _degree_irreps(l_max: int, mult: int, mode: ParityMode) -> str:
-    """Build an irreps string over degrees ``0..l_max`` for a parity mode.
-
-    O(3) uses natural spherical-harmonic parity ``(-1)**l`` (``0e,1o,2e,...``); SO(3) labels
-    every degree even (``0e,1e,2e,...``), which is the same geometric content with parity
-    stripped out.
-    """
-    terms = []
-    for degree in range(l_max + 1):
-        even = mode.has_parity is False or degree % 2 == 0
-        parity = "e" if even else "o"
-        terms.append(f"{mult}x{degree}{parity}")
-    return " + ".join(terms)
-
-
 def build_nequip_matched(config: NequIPConfig, mode: ParityMode):  # noqa: ANN201
     """Build one arm of the O(3)/SO(3) matched pair via the raw-irreps route.
 
@@ -147,8 +133,8 @@ def build_nequip_matched(config: NequIPConfig, mode: ParityMode):  # noqa: ANN20
         if config.type_embed_num_features is not None
         else config.num_features
     )
-    edge_sh = _degree_irreps(config.l_max, mult=1, mode=mode)
-    hidden = _degree_irreps(config.l_max, mult=config.num_features, mode=mode)
+    edge_sh = degree_irreps(config.l_max, mult=1, mode=mode)
+    hidden = degree_irreps(config.l_max, mult=config.num_features, mode=mode)
     scalar_out = f"{config.num_features}x0e"
     hidden_per_layer = [hidden] * (config.num_layers - 1) + [scalar_out]
     return FullNequIPGNNModel(
@@ -219,11 +205,6 @@ def nequip_featurizer(  # noqa: ANN201 (returns a Featurizer closure over untype
         return store["feat"], store["irreps"]
 
     return featurize
-
-
-def count_parameters(model) -> int:  # noqa: ANN001 (nequip GraphModel is untyped)
-    """Return the total number of parameters in a model."""
-    return sum(p.numel() for p in model.parameters())
 
 
 def realized_hidden_irreps(model) -> dict[str, str]:  # noqa: ANN001

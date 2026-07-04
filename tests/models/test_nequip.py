@@ -14,9 +14,9 @@ from equiparity.domain.parity import ParityMode
 from equiparity.models.nequip import (
     NequIPConfig,
     build_nequip,
-    count_parameters,
     realized_hidden_irreps,
 )
+from equiparity.verification.equivariance import count_parameters
 
 pytestmark = pytest.mark.integration
 

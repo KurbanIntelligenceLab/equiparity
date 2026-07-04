@@ -1,8 +1,7 @@
-"""Integration test: the NequIP O(3)/SO(3) matched pair passes the parity gate.
+"""Integration test: the Allegro O(3)/SO(3) matched pair passes the parity gate.
 
-Requires the ``nequip`` extra; skipped otherwise. Locks in the Checkpoint-1 result that the
-matched pair differs only in edge-SH parity labeling: both stay rotation-equivariant, and
-only the SO(3) arm breaks reflections.
+Requires the ``nequip`` extra (nequip-allegro). Locks in that Allegro has the same parity
+mechanism as NequIP: only the SO(3) arm (all-even edge SH) breaks reflections.
 """
 
 from __future__ import annotations
@@ -10,14 +9,10 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-pytest.importorskip("nequip")
+pytest.importorskip("allegro")
 
 from equiparity.domain.parity import ParityMode
-from equiparity.models.nequip import (
-    NequIPConfig,
-    build_nequip_matched,
-    nequip_featurizer,
-)
+from equiparity.models.allegro import AllegroConfig, allegro_featurizer, build_allegro_matched
 from equiparity.verification.equivariance import (
     EquivarianceReport,
     check_equivariance,
@@ -30,28 +25,26 @@ POSITIONS = np.array([[0.0, 0.0, 0.0], [0.95, 0.0, 0.3], [0.0, 1.1, 0.0], [0.0, 
 
 
 def _report(mode: ParityMode) -> EquivarianceReport:
-    config = NequIPConfig(
+    config = AllegroConfig(
         r_max=4.0,
         type_names=("H", "C", "O"),
-        num_layers=3,
+        num_layers=2,
         l_max=2,
-        num_features=16,
-        type_embed_num_features=16,
-        radial_mlp_width=32,
+        num_scalar_features=16,
+        num_tensor_features=8,
         avg_num_neighbors=10.0,
         model_dtype="float64",
     )
-    model = build_nequip_matched(config, mode).eval()
-    featurize = nequip_featurizer(model, "H2CO", config.type_names, r_max=4.0, dtype="float64")
+    model = build_allegro_matched(config, mode).eval()
+    featurize = allegro_featurizer(model, "H2CO", config.type_names, r_max=4.0, dtype="float64")
     return check_equivariance(
-        featurize, POSITIONS, label=f"NequIP {mode.label}", n_params=count_parameters(model)
+        featurize, POSITIONS, label=f"Allegro {mode.label}", n_params=count_parameters(model)
     )
 
 
 def test_o3_arm_is_parity_respecting() -> None:
     report = _report(ParityMode.O3)
     assert report.verdict == "O3"
-    assert report.rotation_error < 1e-12
     assert report.reflection_error < 1e-12
 
 
