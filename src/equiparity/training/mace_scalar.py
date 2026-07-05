@@ -29,7 +29,7 @@ def _to_mace_data(structure, z_table, r_max):  # noqa: ANN001, ANN202
     return data.AtomicData.from_config(config, z_table=z_table, cutoff=r_max)
 
 
-def _batches(atomic_data_list, batch_size):  # noqa: ANN001, ANN202
+def _batches(atomic_data_list, batch_size, dtype):  # noqa: ANN001, ANN202
     from mace.tools import torch_geometric
 
     loader = torch_geometric.dataloader.DataLoader(
@@ -39,7 +39,7 @@ def _batches(atomic_data_list, batch_size):  # noqa: ANN001, ANN202
         d = batch.to_dict()
         for key, value in d.items():
             if torch.is_tensor(value) and value.is_floating_point():
-                d[key] = value.double()
+                d[key] = value.to(dtype)
         yield d
 
 
@@ -52,6 +52,8 @@ def train_mace_scalar(config: ExperimentConfig) -> RunResult:
     from mace import tools
 
     device = torch.device(config.training.device if torch.cuda.is_available() else "cpu")
+    # MACE is natively float32; float32 is its fast default. float64 kept for verification runs.
+    dtype = torch.float32 if config.training.precision == "float32" else torch.float64
     data = load_qm9(config.processed_npz)
     elements = sorted(int(z) for z in np.unique(data.z))
     z_table = tools.AtomicNumberTable(elements)
@@ -75,7 +77,7 @@ def train_mace_scalar(config: ExperimentConfig) -> RunResult:
     test_graphs, test_targets = prepare(subset("test", config.training.max_eval_samples))
 
     mean, std = float(train_targets.mean()), float(train_targets.std() or 1.0)
-    norm_targets = torch.tensor((train_targets - mean) / std, dtype=torch.float64, device=device)
+    norm_targets = torch.tensor((train_targets - mean) / std, dtype=dtype, device=device)
 
     mace_cfg = MACEConfig(
         r_max=r_max,
@@ -84,7 +86,7 @@ def train_mace_scalar(config: ExperimentConfig) -> RunResult:
         l_max=config.model.l_max,
         num_features=config.model.num_features,
         seed=config.seed,
-        model_dtype="float64",
+        model_dtype=config.training.precision,
     )
     model = build_mace_matched(mace_cfg, config.parity).to(device)
     n_params = sum(int(p.numel()) for p in model.parameters())
@@ -97,7 +99,7 @@ def train_mace_scalar(config: ExperimentConfig) -> RunResult:
     for _ in range(config.training.epochs):
         model.train()
         offset = 0
-        for batch in _batches(train_graphs, batch_size):
+        for batch in _batches(train_graphs, batch_size, dtype):
             batch = {k: (v.to(device) if torch.is_tensor(v) else v) for k, v in batch.items()}
             n = int(batch["ptr"].shape[0]) - 1
             pred = _energy(model, batch).view(-1)
@@ -111,7 +113,7 @@ def train_mace_scalar(config: ExperimentConfig) -> RunResult:
         model.eval()
         preds = []
         with torch.no_grad():
-            for batch in _batches(graphs, batch_size):
+            for batch in _batches(graphs, batch_size, dtype):
                 batch = {k: (v.to(device) if torch.is_tensor(v) else v) for k, v in batch.items()}
                 preds.append(_energy(model, batch).view(-1).cpu().numpy() * std + mean)
         return regression_metrics(np.concatenate(preds).reshape(-1, 1), targets.reshape(-1, 1))

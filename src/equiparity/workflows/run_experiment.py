@@ -54,6 +54,7 @@ def _config_snapshot(config: ExperimentConfig) -> dict[str, object]:
             "epochs": config.training.epochs,
             "lr": config.training.lr,
             "weight_decay": config.training.weight_decay,
+            "precision": config.training.precision,
             "max_train_samples": config.training.max_train_samples,
             "max_eval_samples": config.training.max_eval_samples,
         },

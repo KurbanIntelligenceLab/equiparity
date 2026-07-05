@@ -177,6 +177,10 @@ class NequIPTensorModel(torch.nn.Module):
         self._probe_module = self._find_probe(self._probe_name)
         in_irreps = str(self._probe_module.irreps_out["node_features"])
         self.readout = o3.Linear(o3.Irreps(in_irreps), self.output_irreps)
+        # o3.Linear is created under nequip's float64 default; match the backbone precision so the
+        # readout consumes the (possibly float32) node features without a dtype clash.
+        readout_dtype = torch.float32 if config.model_dtype == "float32" else torch.float64
+        self.readout = self.readout.to(readout_dtype)
 
     def _find_probe(self, name: str):  # noqa: ANN202
         for module_name, module in self.backbone.named_modules():

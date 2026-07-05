@@ -39,8 +39,16 @@ class TrainingParams:
     lr: float = 1e-3
     weight_decay: float = 0.0
     device: str = "cuda"
+    # Model/output precision. "float32" trains in nequip mixed precision (fp32 weights, fp64
+    # geometry) — ~6.8x faster than float64 on consumer GPUs at production size. "float64" is
+    # kept for high-precision verification runs.
+    precision: str = "float32"
     max_train_samples: int | None = None  # cap for smoke runs; None uses the full split
     max_eval_samples: int | None = None
+
+    def __post_init__(self) -> None:
+        if self.precision not in ("float32", "float64"):
+            raise ValueError(f"precision must be float32 or float64, got {self.precision!r}")
 
 
 @dataclass(frozen=True, slots=True)

@@ -18,5 +18,7 @@ training:
   epochs: 8
   lr: 0.005
   device: cuda
+  precision: float32   # mixed precision (fp32 weights, fp64 geometry) — ~6.8x faster on 5090s.
+  #                    # use float64 only for high-precision verification runs.
   max_train_samples: 400
   max_eval_samples: 150

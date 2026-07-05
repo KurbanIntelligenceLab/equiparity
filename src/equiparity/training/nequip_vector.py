@@ -57,7 +57,8 @@ def train_dipole(config: ExperimentConfig) -> RunResult:
     torch.serialization.add_safe_globals([slice])
     set_global_state(allow_tf32=False)
     device = torch.device(config.training.device if torch.cuda.is_available() else "cpu")
-    dtype = torch.float64
+    dtype = torch.float64  # geometry stays float64 (nequip mixed precision)
+    target_dtype = torch.float32 if config.training.precision == "float32" else torch.float64
 
     data = load_qm9(config.processed_npz)
     type_names, symbol_to_type = element_type_map(data.z)
@@ -91,7 +92,7 @@ def train_dipole(config: ExperimentConfig) -> RunResult:
 
     # Scale-only normalization keeps the target an equivariant vector (no mean shift).
     scale = float(train_targets.std()) or 1.0
-    norm_targets = torch.tensor(train_targets / scale, dtype=dtype, device=device)
+    norm_targets = torch.tensor(train_targets / scale, dtype=target_dtype, device=device)
 
     model_cfg = NequIPConfig(
         r_max=r_max,
@@ -102,7 +103,7 @@ def train_dipole(config: ExperimentConfig) -> RunResult:
         type_embed_num_features=config.model.num_features,
         avg_num_neighbors=avg_num_neighbors(train_graphs),
         seed=config.seed,
-        model_dtype="float64",
+        model_dtype=config.training.precision,
     )
     model = NequIPDipoleModel(model_cfg, config.parity).to(device)
     n_params = sum(int(p.numel()) for p in model.parameters())
@@ -120,7 +121,7 @@ def train_dipole(config: ExperimentConfig) -> RunResult:
             batch = move_batch(
                 AtomicDataDict.batched_from_list([train_graphs[i] for i in idx]), device, dtype
             )
-            pred = model(batch)
+            pred = model(batch).to(target_dtype)
             loss = loss_fn(pred, norm_targets[idx])
             optimizer.zero_grad()
             loss.backward()

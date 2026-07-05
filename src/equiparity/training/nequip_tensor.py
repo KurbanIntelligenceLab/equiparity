@@ -121,7 +121,8 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
     torch.serialization.add_safe_globals([slice])
     set_global_state(allow_tf32=False)
     device = torch.device(config.training.device if torch.cuda.is_available() else "cpu")
-    dtype = torch.float64
+    dtype = torch.float64  # geometry stays float64 (nequip mixed precision)
+    target_dtype = torch.float32 if config.training.precision == "float32" else torch.float64
     kind = config.target
     r_max = config.model.r_max
     type_names, z_map = periodic_type_map()
@@ -145,7 +146,7 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
     train_graphs = graphs_of(train_ds)
     train_targets = _irreps_targets(train_ds, config.target, kind)
     scale = float(train_targets.std()) or 1.0
-    norm_targets = torch.tensor(train_targets / scale, dtype=dtype, device=device)
+    norm_targets = torch.tensor(train_targets / scale, dtype=target_dtype, device=device)
 
     model_cfg = NequIPConfig(
         r_max=r_max,
@@ -156,7 +157,7 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
         type_embed_num_features=config.model.num_features,
         avg_num_neighbors=avg_num_neighbors(train_graphs),
         seed=config.seed,
-        model_dtype="float64",
+        model_dtype=config.training.precision,
     )
     model = NequIPTensorModel(model_cfg, config.parity, TARGETS[config.target].irreps).to(device)
     n_params = sum(int(p.numel()) for p in model.parameters())
@@ -174,7 +175,7 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
             batch = move_batch(
                 AtomicDataDict.batched_from_list([train_graphs[i] for i in idx]), device, dtype
             )
-            loss = loss_fn(model(batch), norm_targets[idx])
+            loss = loss_fn(model(batch).to(target_dtype), norm_targets[idx])
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
