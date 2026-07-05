@@ -5,15 +5,14 @@ description = "When Parity Matters: can SO(3)-equivariant models predict physica
 requires-python = "==3.12.*"
 readme = "README.md"
 license = { file = "LICENSE" }
-# Shared base: e3nn-agnostic. The e3nn version is pinned by the model extras below,
-# because MACE (e3nn==0.4.4) and NequIP/Allegro (e3nn>=0.6) cannot co-exist.
+# Shared base: only what training + data-loading need (numpy, torch, ase). The e3nn version
+# is pinned by the model extras below (MACE e3nn==0.4.4 vs NequIP/Allegro e3nn>=0.6 conflict).
+# Data-prep libraries (pymatgen/mp-api/spglib) live in the `data` extra so the training/cloud
+# image stays lean — data loading at train time reads only committed npz via numpy.
 dependencies = [
   "numpy>=2.0",
   "torch>=2.11.0",
   "ase>=3.23",
-  "spglib>=2.5",
-  "pymatgen>=2025.1.1",
-  "mp-api>=0.45",
 ]
 
 [project.optional-dependencies]
@@ -25,6 +24,12 @@ nequip = [
 # MACE family (e3nn 0.4.4). Install with: uv sync --extra mace
 mace = [
   "mace-torch>=0.3.16",
+]
+# Data preparation only (fetching/building datasets); not needed for training or the cloud image.
+data = [
+  "spglib>=2.5",
+  "pymatgen>=2025.1.1",
+  "mp-api>=0.45",
 ]
 # JARVIS-DFT fallback source for the piezoelectric dataset.
 jarvis = [

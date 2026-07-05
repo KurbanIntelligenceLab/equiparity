@@ -1,0 +1,32 @@
+# Keep the build context tiny: the image installs from uv.lock and fetches data at runtime.
+# Everything the image needs is COPYed explicitly in the Dockerfile; exclude the rest so the
+# 7 GB .venv and the ~670 MB raw datasets are never sent to the Docker daemon.
+
+# Environments and caches
+.venv/
+**/__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Datasets: raw archives and processed npz are fetched at runtime from S3, never baked in.
+# (data/manifests/ and data/splits/ are small and committed; the Dockerfile COPYs them.)
+data/raw/
+outputs/
+
+# Git history and CI (not needed in the image; the sha is passed at build/run time)
+.git/
+.github/
+
+# Dev-only and editor cruft
+tests/
+docs/
+.claude/
+scratchpad/
+.vscode/
+.idea/
+.env
+*.log
+.DS_Store
