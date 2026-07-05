@@ -15,10 +15,13 @@ import yaml
 from equiparity.domain.experiment import ExperimentConfig
 from equiparity.reproducibility import collect_provenance, seed_everything, write_manifest
 from equiparity.training.nequip_scalar import RunResult, train_scalar
+from equiparity.training.nequip_tensor import train_tensor
 from equiparity.training.nequip_vector import train_dipole
 
-# Scalar targets use the energy readout; vector targets use the L=1 dipole head.
+# Scalar targets use the energy readout; vector -> L=1 head; tensor -> tensor head.
 _VECTOR_TARGETS = frozenset({"dipole"})
+_TENSOR_TARGETS = frozenset({"elastic", "piezoelectric"})
+_OOD_NPZ = "data/raw/mp/mp_ood_centrosymmetric_processed.npz"
 
 _MANIFEST_DIRS = {
     "qm9": ("data/manifests/qm9.yaml", "data/splits/qm9.yaml"),
@@ -71,8 +74,13 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
         raise NotImplementedError(f"only the nequip core is wired so far, got {config.core!r}")
 
     seed_everything(config.seed)
-    trainer = train_dipole if config.target in _VECTOR_TARGETS else train_scalar
-    result: RunResult = trainer(config)
+    if config.target in _TENSOR_TARGETS:
+        ood = _OOD_NPZ if config.target == "piezoelectric" else None
+        result: RunResult = train_tensor(config, ood_npz=ood)
+    elif config.target in _VECTOR_TARGETS:
+        result = train_dipole(config)
+    else:
+        result = train_scalar(config)
 
     snapshot = _config_snapshot(config)
     config_text = yaml.safe_dump(snapshot, sort_keys=True)
@@ -96,5 +104,10 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
         "val": result.val.to_dict(),
         "test": result.test.to_dict(),
     }
+    # Tensor runs carry the OOD violation stats (piezoelectric headline).
+    for field in ("ood_violation_median", "ood_violation_max", "ood_false_flag_fraction"):
+        value = getattr(result, field, None)
+        if value is not None:
+            metrics[field] = value
     (run_dir / "metrics.json").write_text(json.dumps(metrics, indent=2, sort_keys=True) + "\n")
     return run_dir

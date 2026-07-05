@@ -8,11 +8,32 @@ spurious nonzero tensor. The violation magnitude is ``||predicted tensor||`` per
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import numpy as np
 import torch
+from ase.data import chemical_symbols
 
-from equiparity.io.mp_dataset import CrystalDataset
-from equiparity.training.nequip_data import element_type_map, move_batch, to_atomic_data
+from equiparity.domain.experiment import ExperimentConfig
+from equiparity.domain.target import TARGETS
+from equiparity.evaluation.metrics import MetricSummary, regression_metrics
+from equiparity.features.tensor_irreps import voigt_to_irreps
+from equiparity.io.mp_dataset import CrystalDataset, load_crystal_dataset, load_split
+from equiparity.models.nequip import NequIPConfig, NequIPTensorModel
+from equiparity.training.nequip_data import (
+    avg_num_neighbors,
+    element_type_map,
+    move_batch,
+    to_atomic_data,
+)
+
+_VOIGT_SHAPE = {"piezoelectric": (3, 6), "elastic": (6, 6)}
+
+
+def periodic_type_map(max_z: int = 100) -> tuple[tuple[str, ...], dict[int, int]]:
+    """Fixed type map over the first ``max_z`` elements (covers train and OOD elements alike)."""
+    type_names = tuple(chemical_symbols[z] for z in range(1, max_z + 1))
+    return type_names, {z: z - 1 for z in range(1, max_z + 1)}
 
 
 def predict_tensors(
@@ -63,3 +84,135 @@ def dataset_type_map(dataset: CrystalDataset) -> tuple[tuple[str, ...], dict[int
     """Build (type_names, z->index) covering every element in a crystal dataset."""
     z_values = np.concatenate([dataset[i].structure.atomic_numbers for i in range(len(dataset))])
     return element_type_map(z_values)
+
+
+@dataclass(frozen=True, slots=True)
+class TensorRunResult:
+    """Outcome of a tensor training run, plus optional OOD violation stats (piezoelectric)."""
+
+    val: MetricSummary
+    test: MetricSummary
+    n_params: int
+    epochs_run: int
+    ood_violation_median: float | None = None
+    ood_violation_max: float | None = None
+    ood_false_flag_fraction: float | None = None
+
+
+def _irreps_targets(dataset: CrystalDataset, target: str, kind: str) -> np.ndarray:
+    shape = _VOIGT_SHAPE[kind]
+    return np.stack(
+        [
+            voigt_to_irreps(dataset[i].targets[target].reshape(shape), kind)
+            for i in range(len(dataset))
+        ]
+    ).astype(np.float64)
+
+
+def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> TensorRunResult:
+    """Train a NequIP tensor head (elastic or piezoelectric) and evaluate it.
+
+    For the piezoelectric headline, pass ``ood_npz`` to also evaluate the violation magnitude on
+    the centrosymmetric OOD set (exactly zero for O(3), spurious nonzero for SO(3)).
+    """
+    from nequip.data import AtomicDataDict
+    from nequip.utils.global_state import set_global_state
+
+    torch.serialization.add_safe_globals([slice])
+    set_global_state(allow_tf32=False)
+    device = torch.device(config.training.device if torch.cuda.is_available() else "cpu")
+    dtype = torch.float64
+    kind = config.target
+    r_max = config.model.r_max
+    type_names, z_map = periodic_type_map()
+
+    data = load_crystal_dataset(config.processed_npz, (config.target,))
+
+    def subset(part: str, cap: int | None) -> CrystalDataset:
+        ds = CrystalDataset(data, load_split(config.split_npz, part))
+        if cap is not None:
+            ids = np.array([ds[i].identifier for i in range(min(cap, len(ds)))])
+            ds = CrystalDataset(data, ids)
+        return ds
+
+    train_ds = subset("train", config.training.max_train_samples)
+    val_ds = subset("val", config.training.max_eval_samples)
+    test_ds = subset("test", config.training.max_eval_samples)
+
+    def graphs_of(ds: CrystalDataset) -> list:
+        return [to_atomic_data(ds[i].structure, z_map, r_max, dtype) for i in range(len(ds))]
+
+    train_graphs = graphs_of(train_ds)
+    train_targets = _irreps_targets(train_ds, config.target, kind)
+    scale = float(train_targets.std()) or 1.0
+    norm_targets = torch.tensor(train_targets / scale, dtype=dtype, device=device)
+
+    model_cfg = NequIPConfig(
+        r_max=r_max,
+        type_names=type_names,
+        num_layers=config.model.num_layers,
+        l_max=config.model.l_max,
+        num_features=config.model.num_features,
+        type_embed_num_features=config.model.num_features,
+        avg_num_neighbors=avg_num_neighbors(train_graphs),
+        seed=config.seed,
+        model_dtype="float64",
+    )
+    model = NequIPTensorModel(model_cfg, config.parity, TARGETS[config.target].irreps).to(device)
+    n_params = sum(int(p.numel()) for p in model.parameters())
+    optimizer = torch.optim.Adam(
+        model.parameters(), lr=config.training.lr, weight_decay=config.training.weight_decay
+    )
+    loss_fn = torch.nn.MSELoss()
+    batch_size = config.training.batch_size
+
+    for _ in range(config.training.epochs):
+        model.train()
+        order = np.random.permutation(len(train_graphs))
+        for start in range(0, len(order), batch_size):
+            idx = order[start : start + batch_size]
+            batch = move_batch(
+                AtomicDataDict.batched_from_list([train_graphs[i] for i in idx]), device, dtype
+            )
+            loss = loss_fn(model(batch), norm_targets[idx])
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+    def evaluate(ds: CrystalDataset) -> MetricSummary:
+        preds = predict_tensors(
+            model, ds, z_map, r_max=r_max, device=device, dtype=dtype, batch_size=batch_size
+        )
+        preds = preds * scale
+        targets = _irreps_targets(ds, config.target, kind)
+        return regression_metrics(preds, targets)
+
+    val, test = evaluate(val_ds), evaluate(test_ds)
+
+    ood_median = ood_max = ood_ff = None
+    if ood_npz is not None and kind == "piezoelectric":
+        ood = CrystalDataset(load_crystal_dataset(ood_npz))
+        if config.training.max_eval_samples is not None:
+            ids = np.array(
+                [ood[i].identifier for i in range(min(config.training.max_eval_samples, len(ood)))]
+            )
+            ood = CrystalDataset(load_crystal_dataset(ood_npz), ids)
+        ood_preds = (
+            predict_tensors(
+                model, ood, z_map, r_max=r_max, device=device, dtype=dtype, batch_size=batch_size
+            )
+            * scale
+        )
+        v = violation_magnitudes(ood_preds)
+        ood_median, ood_max = float(np.median(v)), float(v.max())
+        ood_ff = false_flag_fraction(v, threshold=0.01)
+
+    return TensorRunResult(
+        val=val,
+        test=test,
+        n_params=n_params,
+        epochs_run=config.training.epochs,
+        ood_violation_median=ood_median,
+        ood_violation_max=ood_max,
+        ood_false_flag_fraction=ood_ff,
+    )
