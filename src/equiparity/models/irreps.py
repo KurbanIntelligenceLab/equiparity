@@ -25,3 +25,16 @@ def degree_irreps(l_max: int, mult: int, mode: ParityMode) -> str:
         parity = "e" if even else "o"
         terms.append(f"{mult}x{degree}{parity}")
     return " + ".join(terms)
+
+
+def output_irreps(o3_irreps: str, mode: ParityMode) -> str:
+    """Return the output-head irreps for a parity mode.
+
+    The O(3) arm uses the target's true irreps (with its physical parity labels). The SO(3) arm
+    relabels every term even (``o`` -> ``e``), which strips parity: the head can then produce a
+    nonzero value for a symmetry-forbidden odd tensor. This is what makes O(3) give exact zeros
+    on centrosymmetric crystals while SO(3) does not.
+    """
+    if mode.has_parity:
+        return o3_irreps
+    return o3_irreps.replace("o", "e")

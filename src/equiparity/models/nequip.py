@@ -19,7 +19,7 @@ from dataclasses import dataclass
 import torch
 
 from equiparity.domain.parity import ParityMode
-from equiparity.models.irreps import degree_irreps
+from equiparity.models.irreps import degree_irreps, output_irreps
 
 
 @dataclass(frozen=True, slots=True)
@@ -154,28 +154,29 @@ def nequip_featurizer(  # noqa: ANN201 (returns a Featurizer closure over untype
     return featurize
 
 
-class NequIPDipoleModel(torch.nn.Module):
-    """A NequIP model with a direct equivariant L=1 dipole head (not charge x position).
+class NequIPTensorModel(torch.nn.Module):
+    """A NequIP model with a direct equivariant tensor head of arbitrary output irreps.
 
-    The dipole is read out from the deepest non-scalar convolution layer (which carries the
-    ``l=1`` features) by a per-atom ``o3.Linear`` and summed over atoms. In the O(3) arm the
-    output irrep is ``1o`` (a proper polar vector); in the SO(3) arm the features are all-even
-    so the honest output is ``1e`` (an even-labelled vector that transforms incorrectly under
-    reflection). This parity mismatch is the study's dipole signal.
+    The target is read out from the deepest non-scalar convolution layer (which carries the
+    ``l>=1`` features) by a per-atom ``o3.Linear`` and summed over atoms. The O(3) arm uses the
+    target's true irreps (e.g. ``2x1o+1x2o+1x3o`` for the piezoelectric tensor); the SO(3) arm
+    relabels them all even, stripping parity. For a centrosymmetric structure the O(3) odd-parity
+    output cancels to exact zero (Neumann's principle, by construction), while the SO(3) output
+    does not — the study's headline signal.
     """
 
-    def __init__(self, config: NequIPConfig, mode: ParityMode) -> None:
+    def __init__(self, config: NequIPConfig, mode: ParityMode, o3_output_irreps: str) -> None:
         super().__init__()
         from e3nn import o3
 
         if config.num_layers < 2:
-            raise ValueError("dipole head needs num_layers >= 2 (a non-scalar layer to read from)")
+            raise ValueError("tensor head needs num_layers >= 2 (a non-scalar layer to read from)")
         self.backbone = build_nequip_matched(config, mode)
+        self.output_irreps = o3.Irreps(output_irreps(o3_output_irreps, mode))
         self._probe_name = f"model.func.layer{config.num_layers - 2}_convnet"
         self._probe_module = self._find_probe(self._probe_name)
         in_irreps = str(self._probe_module.irreps_out["node_features"])
-        out_irrep = "1x1o" if mode.has_parity else "1x1e"
-        self.readout = o3.Linear(o3.Irreps(in_irreps), o3.Irreps(out_irrep))
+        self.readout = o3.Linear(o3.Irreps(in_irreps), self.output_irreps)
 
     def _find_probe(self, name: str):  # noqa: ANN202
         for module_name, module in self.backbone.named_modules():
@@ -196,8 +197,15 @@ class NequIPDipoleModel(torch.nn.Module):
             self.backbone(batch)
         finally:
             handle.remove()
-        per_atom = self.readout(store["feat"])  # (n_atoms, 3)
+        per_atom = self.readout(store["feat"])  # (n_atoms, output_dim)
         batch_index = batch[AtomicDataDict.BATCH_KEY]
         n_graphs = int(batch_index.max().item()) + 1
-        dipole = torch.zeros(n_graphs, 3, dtype=per_atom.dtype, device=per_atom.device)
-        return dipole.index_add_(0, batch_index, per_atom)
+        out = torch.zeros(n_graphs, per_atom.shape[1], dtype=per_atom.dtype, device=per_atom.device)
+        return out.index_add_(0, batch_index, per_atom)
+
+
+class NequIPDipoleModel(NequIPTensorModel):
+    """A NequIP model with a direct L=1 dipole head (``1o`` for O(3), ``1e`` for SO(3))."""
+
+    def __init__(self, config: NequIPConfig, mode: ParityMode) -> None:
+        super().__init__(config, mode, "1x1o")

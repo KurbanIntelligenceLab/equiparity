@@ -18,11 +18,22 @@ def element_type_map(z_values: np.ndarray) -> tuple[tuple[str, ...], dict[int, i
 
 
 def to_atomic_data(structure, symbol_to_type, r_max, dtype):  # noqa: ANN001, ANN201
-    """Convert an AtomicStructure into a NequIP AtomicDataDict with atom types set."""
+    """Convert an AtomicStructure into a NequIP AtomicDataDict with atom types set.
+
+    Handles periodic crystals (cell + PBC) and aperiodic molecules alike.
+    """
     from ase import Atoms
     from nequip.data import AtomicDataDict, compute_neighborlist_, from_ase
 
-    atoms = Atoms(numbers=structure.atomic_numbers, positions=structure.positions)
+    if structure.pbc and structure.cell is not None:
+        atoms = Atoms(
+            numbers=structure.atomic_numbers,
+            positions=structure.positions,
+            cell=structure.cell,
+            pbc=True,
+        )
+    else:
+        atoms = Atoms(numbers=structure.atomic_numbers, positions=structure.positions)
     data = compute_neighborlist_(from_ase(atoms), r_max=r_max)
     data[AtomicDataDict.ATOM_TYPE_KEY] = torch.tensor(
         [[symbol_to_type[int(z)]] for z in structure.atomic_numbers], dtype=torch.long
