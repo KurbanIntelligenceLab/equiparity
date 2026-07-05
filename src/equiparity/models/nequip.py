@@ -152,3 +152,52 @@ def nequip_featurizer(  # noqa: ANN201 (returns a Featurizer closure over untype
         return store["feat"], store["irreps"]
 
     return featurize
+
+
+class NequIPDipoleModel(torch.nn.Module):
+    """A NequIP model with a direct equivariant L=1 dipole head (not charge x position).
+
+    The dipole is read out from the deepest non-scalar convolution layer (which carries the
+    ``l=1`` features) by a per-atom ``o3.Linear`` and summed over atoms. In the O(3) arm the
+    output irrep is ``1o`` (a proper polar vector); in the SO(3) arm the features are all-even
+    so the honest output is ``1e`` (an even-labelled vector that transforms incorrectly under
+    reflection). This parity mismatch is the study's dipole signal.
+    """
+
+    def __init__(self, config: NequIPConfig, mode: ParityMode) -> None:
+        super().__init__()
+        from e3nn import o3
+
+        if config.num_layers < 2:
+            raise ValueError("dipole head needs num_layers >= 2 (a non-scalar layer to read from)")
+        self.backbone = build_nequip_matched(config, mode)
+        self._probe_name = f"model.func.layer{config.num_layers - 2}_convnet"
+        self._probe_module = self._find_probe(self._probe_name)
+        in_irreps = str(self._probe_module.irreps_out["node_features"])
+        out_irrep = "1x1o" if mode.has_parity else "1x1e"
+        self.readout = o3.Linear(o3.Irreps(in_irreps), o3.Irreps(out_irrep))
+
+    def _find_probe(self, name: str):  # noqa: ANN202
+        for module_name, module in self.backbone.named_modules():
+            if module_name == name:
+                return module
+        raise RuntimeError(f"probe layer {name!r} not found in backbone")
+
+    def forward(self, batch):  # noqa: ANN001, ANN201
+        from nequip.data import AtomicDataDict
+
+        store: dict[str, object] = {}
+
+        def hook(module, _inputs, output):  # noqa: ANN001, ANN202
+            store["feat"] = output[AtomicDataDict.NODE_FEATURES_KEY]
+
+        handle = self._probe_module.register_forward_hook(hook)
+        try:
+            self.backbone(batch)
+        finally:
+            handle.remove()
+        per_atom = self.readout(store["feat"])  # (n_atoms, 3)
+        batch_index = batch[AtomicDataDict.BATCH_KEY]
+        n_graphs = int(batch_index.max().item()) + 1
+        dipole = torch.zeros(n_graphs, 3, dtype=per_atom.dtype, device=per_atom.device)
+        return dipole.index_add_(0, batch_index, per_atom)

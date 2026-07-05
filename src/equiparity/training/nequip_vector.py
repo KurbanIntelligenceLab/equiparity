@@ -1,38 +1,27 @@
-"""Train a NequIP model to predict a scalar target (QM9 U0) in one parity mode.
+"""Train a NequIP model with a direct L=1 head to predict the QM9 dipole vector.
 
-This is the Task 2.1 control path: the SO(3) and O(3) arms should reach the same U0 MAE
-(a parity-even scalar has no parity gap). The model's scalar energy readout is the U0 head.
-Targets are z-score normalized over the train split for stability; metrics are reported in the
-original units. Full runs target the A100 cluster; this path also supports small smoke runs.
+This is the first parity signal: the dipole is parity-odd. The O(3) arm reads out a ``1o``
+polar vector; the SO(3) arm reads out a ``1e`` (even-labelled) vector that cannot honour the
+odd-parity structure. Targets are scaled (not mean-shifted) by their component std so the
+normalization stays equivariant. Metric is the component MAE in Debye.
 """
 
 from __future__ import annotations
-
-from dataclasses import dataclass
 
 import numpy as np
 import torch
 
 from equiparity.domain.experiment import ExperimentConfig
-from equiparity.evaluation.metrics import MetricSummary, regression_metrics
+from equiparity.evaluation.metrics import regression_metrics
 from equiparity.io.qm9_dataset import QM9Dataset, load_qm9, load_split
-from equiparity.models.nequip import NequIPConfig, build_nequip_matched
+from equiparity.models.nequip import NequIPConfig, NequIPDipoleModel
 from equiparity.training.nequip_data import (
     avg_num_neighbors,
     element_type_map,
     move_batch,
     to_atomic_data,
 )
-
-
-@dataclass(frozen=True, slots=True)
-class RunResult:
-    """Outcome of a training run: per-split metrics in the target's units."""
-
-    val: MetricSummary
-    test: MetricSummary
-    n_params: int
-    epochs_run: int
+from equiparity.training.nequip_scalar import RunResult
 
 
 def _prepare(dataset, target, symbol_to_type, r_max, dtype):  # noqa: ANN001, ANN202
@@ -40,11 +29,11 @@ def _prepare(dataset, target, symbol_to_type, r_max, dtype):  # noqa: ANN001, AN
         to_atomic_data(dataset[i].structure, symbol_to_type, r_max, dtype)
         for i in range(len(dataset))
     ]
-    targets = np.array([float(dataset[i].targets[target][0]) for i in range(len(dataset))])
+    targets = np.stack([dataset[i].targets[target] for i in range(len(dataset))]).astype(np.float64)
     return graphs, targets
 
 
-def _evaluate(model, graphs, targets, mean, std, device, dtype, batch_size) -> MetricSummary:  # noqa: ANN001
+def _evaluate(model, graphs, targets, scale, device, dtype, batch_size):  # noqa: ANN001, ANN202
     from nequip.data import AtomicDataDict
 
     model.eval()
@@ -54,23 +43,20 @@ def _evaluate(model, graphs, targets, mean, std, device, dtype, batch_size) -> M
             batch = move_batch(
                 AtomicDataDict.batched_from_list(graphs[start : start + batch_size]), device, dtype
             )
-            energy = model(batch)[AtomicDataDict.TOTAL_ENERGY_KEY].view(-1).cpu().numpy()
-            preds.append(energy * std + mean)  # un-normalize to original units
-    predictions = np.concatenate(preds).reshape(-1, 1)
-    return regression_metrics(predictions, targets.reshape(-1, 1))
+            vec = model(batch).cpu().numpy() * scale  # un-normalize to Debye
+            preds.append(vec)
+    predictions = np.concatenate(preds)
+    return regression_metrics(predictions, targets)
 
 
-def train_scalar(config: ExperimentConfig) -> RunResult:
-    """Train and evaluate a NequIP scalar model per ``config``. Returns per-split metrics."""
+def train_dipole(config: ExperimentConfig) -> RunResult:
+    """Train and evaluate a NequIP dipole (L=1) model per ``config``. Returns per-split metrics."""
     from nequip.data import AtomicDataDict
     from nequip.utils.global_state import set_global_state
 
     torch.serialization.add_safe_globals([slice])
     set_global_state(allow_tf32=False)
-
     device = torch.device(config.training.device if torch.cuda.is_available() else "cpu")
-    # nequip's default precision is float64; train in float64 to keep model buffers, inputs,
-    # and targets aligned (avoids float32/float64 clashes in the backward pass).
     dtype = torch.float64
 
     data = load_qm9(config.processed_npz)
@@ -84,30 +70,41 @@ def train_scalar(config: ExperimentConfig) -> RunResult:
             )
         return ds
 
-    train_ds = subset("train", config.training.max_train_samples)
-    val_ds = subset("val", config.training.max_eval_samples)
-    test_ds = subset("test", config.training.max_eval_samples)
-
     r_max = config.model.r_max
-    train_graphs, train_targets = _prepare(train_ds, config.target, symbol_to_type, r_max, dtype)
-    val_graphs, val_targets = _prepare(val_ds, config.target, symbol_to_type, r_max, dtype)
-    test_graphs, test_targets = _prepare(test_ds, config.target, symbol_to_type, r_max, dtype)
+    train_graphs, train_targets = _prepare(
+        subset("train", config.training.max_train_samples),
+        config.target,
+        symbol_to_type,
+        r_max,
+        dtype,
+    )
+    val_graphs, val_targets = _prepare(
+        subset("val", config.training.max_eval_samples), config.target, symbol_to_type, r_max, dtype
+    )
+    test_graphs, test_targets = _prepare(
+        subset("test", config.training.max_eval_samples),
+        config.target,
+        symbol_to_type,
+        r_max,
+        dtype,
+    )
 
-    mean, std = float(train_targets.mean()), float(train_targets.std() or 1.0)
-    norm_targets = torch.tensor((train_targets - mean) / std, dtype=dtype, device=device)
+    # Scale-only normalization keeps the target an equivariant vector (no mean shift).
+    scale = float(train_targets.std()) or 1.0
+    norm_targets = torch.tensor(train_targets / scale, dtype=dtype, device=device)
 
     model_cfg = NequIPConfig(
         r_max=r_max,
         type_names=type_names,
         num_layers=config.model.num_layers,
-        l_max=config.model.l_max,
+        l_max=max(config.model.l_max, 1),
         num_features=config.model.num_features,
         type_embed_num_features=config.model.num_features,
         avg_num_neighbors=avg_num_neighbors(train_graphs),
         seed=config.seed,
         model_dtype="float64",
     )
-    model = build_nequip_matched(model_cfg, config.parity).to(device)
+    model = NequIPDipoleModel(model_cfg, config.parity).to(device)
     n_params = sum(int(p.numel()) for p in model.parameters())
     optimizer = torch.optim.Adam(
         model.parameters(), lr=config.training.lr, weight_decay=config.training.weight_decay
@@ -123,12 +120,12 @@ def train_scalar(config: ExperimentConfig) -> RunResult:
             batch = move_batch(
                 AtomicDataDict.batched_from_list([train_graphs[i] for i in idx]), device, dtype
             )
-            pred = model(batch)[AtomicDataDict.TOTAL_ENERGY_KEY].view(-1)
+            pred = model(batch)
             loss = loss_fn(pred, norm_targets[idx])
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
-    val = _evaluate(model, val_graphs, val_targets, mean, std, device, dtype, batch_size)
-    test = _evaluate(model, test_graphs, test_targets, mean, std, device, dtype, batch_size)
+    val = _evaluate(model, val_graphs, val_targets, scale, device, dtype, batch_size)
+    test = _evaluate(model, test_graphs, test_targets, scale, device, dtype, batch_size)
     return RunResult(val=val, test=test, n_params=n_params, epochs_run=config.training.epochs)

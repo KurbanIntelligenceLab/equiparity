@@ -15,6 +15,10 @@ import yaml
 from equiparity.domain.experiment import ExperimentConfig
 from equiparity.reproducibility import collect_provenance, seed_everything, write_manifest
 from equiparity.training.nequip_scalar import RunResult, train_scalar
+from equiparity.training.nequip_vector import train_dipole
+
+# Scalar targets use the energy readout; vector targets use the L=1 dipole head.
+_VECTOR_TARGETS = frozenset({"dipole"})
 
 _MANIFEST_DIRS = {
     "qm9": ("data/manifests/qm9.yaml", "data/splits/qm9.yaml"),
@@ -67,7 +71,8 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
         raise NotImplementedError(f"only the nequip core is wired so far, got {config.core!r}")
 
     seed_everything(config.seed)
-    result: RunResult = train_scalar(config)
+    trainer = train_dipole if config.target in _VECTOR_TARGETS else train_scalar
+    result: RunResult = trainer(config)
 
     snapshot = _config_snapshot(config)
     config_text = yaml.safe_dump(snapshot, sort_keys=True)
