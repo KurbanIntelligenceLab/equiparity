@@ -16,13 +16,48 @@ import torch
 from equiparity.domain.experiment import ExperimentConfig
 from equiparity.evaluation.metrics import MetricSummary, regression_metrics
 from equiparity.io.qm9_dataset import QM9Dataset, load_qm9, load_split
-from equiparity.models.nequip import NequIPConfig, build_nequip_matched
 from equiparity.training.nequip_data import (
     avg_num_neighbors,
     element_type_map,
     move_batch,
     to_atomic_data,
 )
+
+
+def build_energy_model(config: ExperimentConfig, type_names, avg_neigh, mode):  # noqa: ANN001, ANN201
+    """Build the energy-readout model for a nequip-framework core (nequip or allegro)."""
+    m = config.model
+    if config.core == "nequip":
+        from equiparity.models.nequip import NequIPConfig, build_nequip_matched
+
+        cfg = NequIPConfig(
+            r_max=m.r_max,
+            type_names=type_names,
+            num_layers=m.num_layers,
+            l_max=m.l_max,
+            num_features=m.num_features,
+            type_embed_num_features=m.num_features,
+            avg_num_neighbors=avg_neigh,
+            seed=config.seed,
+            model_dtype="float64",
+        )
+        return build_nequip_matched(cfg, mode)
+    if config.core == "allegro":
+        from equiparity.models.allegro import AllegroConfig, build_allegro_matched
+
+        cfg = AllegroConfig(
+            r_max=m.r_max,
+            type_names=type_names,
+            num_layers=m.num_layers,
+            l_max=m.l_max,
+            num_scalar_features=m.num_features,
+            num_tensor_features=max(m.num_features // 2, 1),
+            avg_num_neighbors=avg_neigh,
+            seed=config.seed,
+            model_dtype="float64",
+        )
+        return build_allegro_matched(cfg, mode)
+    raise NotImplementedError(f"energy model not wired for core {config.core!r}")
 
 
 @dataclass(frozen=True, slots=True)
@@ -96,18 +131,9 @@ def train_scalar(config: ExperimentConfig) -> RunResult:
     mean, std = float(train_targets.mean()), float(train_targets.std() or 1.0)
     norm_targets = torch.tensor((train_targets - mean) / std, dtype=dtype, device=device)
 
-    model_cfg = NequIPConfig(
-        r_max=r_max,
-        type_names=type_names,
-        num_layers=config.model.num_layers,
-        l_max=config.model.l_max,
-        num_features=config.model.num_features,
-        type_embed_num_features=config.model.num_features,
-        avg_num_neighbors=avg_num_neighbors(train_graphs),
-        seed=config.seed,
-        model_dtype="float64",
-    )
-    model = build_nequip_matched(model_cfg, config.parity).to(device)
+    model = build_energy_model(
+        config, type_names, avg_num_neighbors(train_graphs), config.parity
+    ).to(device)
     n_params = sum(int(p.numel()) for p in model.parameters())
     optimizer = torch.optim.Adam(
         model.parameters(), lr=config.training.lr, weight_decay=config.training.weight_decay

@@ -70,17 +70,24 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
     Returns:
         The ``outputs/<experiment_id>/`` directory path.
     """
-    if config.core != "nequip":
-        raise NotImplementedError(f"only the nequip core is wired so far, got {config.core!r}")
-
     seed_everything(config.seed)
-    if config.target in _TENSOR_TARGETS:
+    if config.core == "mace":
+        from equiparity.training.mace_scalar import train_mace_scalar
+
+        if config.target != "U0":
+            raise NotImplementedError("mace core is wired for the U0 scalar target only")
+        result: RunResult = train_mace_scalar(config)
+    elif config.target in _TENSOR_TARGETS:
+        if config.core != "nequip":
+            raise NotImplementedError(f"tensor head wired for nequip only, got {config.core!r}")
         ood = _OOD_NPZ if config.target == "piezoelectric" else None
-        result: RunResult = train_tensor(config, ood_npz=ood)
+        result = train_tensor(config, ood_npz=ood)
     elif config.target in _VECTOR_TARGETS:
+        if config.core != "nequip":
+            raise NotImplementedError(f"dipole head wired for nequip only, got {config.core!r}")
         result = train_dipole(config)
     else:
-        result = train_scalar(config)
+        result = train_scalar(config)  # nequip or allegro energy readout
 
     snapshot = _config_snapshot(config)
     config_text = yaml.safe_dump(snapshot, sort_keys=True)
