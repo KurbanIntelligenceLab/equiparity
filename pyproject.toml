@@ -99,6 +99,7 @@ module = [
   "equiparity.plotting.*",
   "equiparity.models.*",
   "equiparity.verification.*",
+  "equiparity.training.*",
 ]
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
@@ -118,6 +119,7 @@ module = [
   "pymatgen.*",
   "spglib.*",
   "mp_api.*",
+  "yaml",
 ]
 ignore_missing_imports = true
 
