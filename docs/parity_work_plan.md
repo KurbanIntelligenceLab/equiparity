@@ -171,23 +171,23 @@ All experiments: 4 toggleable architectures (NequIP, Allegro, MACE, Equiformer v
 
 ## Deliverables Checklist
 
-- [ ] Repository with pinned environment, config generator, and one-command reproduction per experiment
-- [ ] Parity verification report (Task 0.3 outputs, all four toggleable architectures)
-- [ ] Prevalence audit table (14 models) with commit-hash evidence
-- [ ] OOD evaluation set + construction script (reproducible from MP API)
-- [ ] All 108 training runs logged with final metrics
-- [ ] Master results table + the four figures
-- [ ] Trained checkpoints for the piezoelectric experiment
-- [ ] Draft results section text (numbers filled in)
+- [x] Repository with pinned environment and one-command reproduction (`equiparity run <config>`); config *generator* for the full grid still to add
+- [x] Parity verification report (Task 0.3) — `docs/reports/checkpoint1_parity_gate.md`, **three** cores (Equiformer v1 demoted, see below); gate in CI
+- [ ] Prevalence audit table (14 models) with commit-hash evidence — not started
+- [x] OOD evaluation set + construction script (`scripts/prepare_mp.py`) — 2000 structures, spglib-verified, 0 leaks
+- [ ] All training runs logged with final metrics — **infrastructure built and smoke-verified locally; full-scale A100 runs pending**
+- [ ] Master results table + the four figures — not started
+- [ ] Trained checkpoints for the piezoelectric experiment — pending full training
+- [ ] Draft results section text (numbers filled in) — pending full runs
 
 ## Go/No-Go Gates
 
-| Gate | Condition | If it fails |
-|---|---|---|
-| After Task 0 | All four toggleable architectures pass parity verification | Debug before anything else. For MACE, manual irreps strings in mainline are the fallback. For Equiformer v1, if the irreps toggle cannot be verified after reasonable effort, demote it to optional extensions and proceed with three cores — do not let it block the pipeline. |
-| After Task 1 | MP returns ~3,300 piezo entries; OOD set spglib-verified | Fix the API query; fallback to JARVIS-DFT. |
-| After 2.1 (U₀) | SO(3) ≈ O(3) on U₀ | Comparison is broken — find the confound before training tensors. |
-| After 2.3 | SO(3) nonzero on centrosymmetric OOD, O(3) exact zero | If SO(3) is also ≈ zero: verify with larger violations threshold and per-component analysis; if genuinely null, report as negative result — still publishable with reframing. Escalate before writing. |
+| Gate | Condition | Status | If it fails |
+|---|---|---|---|
+| After Task 0 | All toggleable architectures pass parity verification | **PASSED** for three cores (Equiformer v1 demoted per the fallback clause). | Debug before anything else. For MACE, manual irreps strings in mainline are the fallback. For Equiformer v1, if the irreps toggle cannot be verified after reasonable effort, demote it to optional extensions and proceed with three cores — do not let it block the pipeline. |
+| After Task 1 | MP returns ~3,300 piezo entries; OOD set spglib-verified | **PASSED** (3,322 piezo entries; OOD 0 leaks). | Fix the API query; fallback to JARVIS-DFT. |
+| After 2.1 (U₀) | SO(3) ≈ O(3) on U₀ | **PASSED (smoke)** — 342 vs 352 eV; confirm at full scale. | Comparison is broken — find the confound before training tensors. |
+| After 2.3 | SO(3) nonzero on centrosymmetric OOD, O(3) exact zero | **PASSED (smoke)** — O(3) ~1e-15, SO(3) 70% false-flag; confirm at full scale. | If SO(3) is also ≈ zero: verify with larger violations threshold and per-component analysis; if genuinely null, report as negative result — still publishable with reframing. Escalate before writing. |
 
 ## Progress Reporting Checkpoints
 
@@ -199,6 +199,25 @@ Ten checkpoints, one per completed step. At each checkpoint the student prepares
 3. Deviations from the plan and why
 4. Blockers or risks discovered
 5. Proposed next action
+
+### Checkpoint status (implementation to date)
+
+The experimental *machinery* for every target and core is built, smoke-verified on the local
+RTX 5090, and committed. The remaining work is *scale* — full-size, multi-seed runs on the A100
+cluster to produce final numbers — plus the prevalence audit, param-matched ablation, and figures.
+
+| # | Checkpoint | Status |
+|---|---|---|
+| 1 | Environment + parity verification | **Done, with a correction.** Off-cycle escalation (`docs/reports/checkpoint1_offcycle_parity_toggle.md`) found the `parity` boolean is NOT the SO(3) toggle; adopted all-even-SH matched pairs (advisor-approved). Verified for NequIP, Allegro, MACE (`checkpoint1_parity_gate.md`). Equiformer v1 **demoted** (2022 stack, incompatible with the RTX 5090; e3nn-based so adds no new mechanism). EquiformerV2 deferred to output-level (2.3). Three cores. |
+| 2 | Prevalence audit (Task 0.4) | **Not started.** |
+| 3 | Data pipelines | **Done.** QM9 (130,831), MP elastic (13,080, garbage-filtered), MP piezo (3,312 — matches ~3.3k), OOD (2,000, spglib-airtight, 0 leaks re-verified). Manifests + splits committed. |
+| 4 | QM9 U₀ control | **Infrastructure done + smoke-verified.** O(3)≈SO(3) (342 vs 352 eV on a small run) — the null result holds. Full 3-seed runs pending. |
+| 5 | QM9 dipole | **Infrastructure done + smoke-verified.** O(3) 0.27 vs SO(3) 0.28 D; O(3) reflection-correct (`1o`), SO(3) not (`1e`) — the behavioral signal, in a test. Full runs pending. |
+| 6 | Elastic tensor | **Infrastructure done + smoke-verified.** O(3) 40.4 vs SO(3) 38.2 GPa — no gap (even tensor), as expected. Full runs pending. |
+| 7 | Piezoelectric OOD | **Infrastructure done + smoke-verified — the headline.** Trained: O(3) OOD violation ~1e-15 (exact zero), SO(3) false-flags 70%; both equally competent on the non-centrosymmetric test. EquiformerV2 column and full runs pending. |
+| 8 | Parameter-matched ablation | **Not started** (param gap is small and SO(3)-larger; matched runs still to do). |
+| 9 | Analysis + figures | **Not started.** |
+| 10 | Final package | **Not started.** |
 
 | # | Checkpoint | Trigger | Present to peers | Discussion questions | Possible outcomes |
 |---|---|---|---|---|---|
