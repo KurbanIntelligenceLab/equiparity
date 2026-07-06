@@ -110,23 +110,34 @@ vast_create_start() {
     echo "$id"
 }
 
-# Echo "HOST PORT" for an instance's SSH endpoint (direct, else vast proxy fallback).
+# Echo "HOST PORT" for an instance's SSH endpoint. PREFERS the direct endpoint
+# (public_ipaddr + the host port mapped to container port 22): vast's proxy reverse-tunnel
+# (sshN.vast.ai) frequently fails ("remote port forwarding failed for listen port N"), whereas
+# the direct port mapping is reliable. Tests TCP reachability and falls back to the proxy.
 vast_ssh_hostport() {
-    local id="$1" url
-    url="$(vastai ssh-url "$id" 2>/dev/null || true)"
-    if [[ -n "$url" ]]; then
-        local hp="${url#ssh://}"
-        local host="${hp#*@}"; host="${host%%:*}"
-        local port="${hp##*:}"
-        if [[ -n "$host" && -n "$port" ]] && timeout 4 bash -c "exec 3<>/dev/tcp/${host}/${port}" 2>/dev/null; then
+    local id="$1" raw direct proxy
+    raw="$(vastai show instance "$id" --raw 2>/dev/null)"
+    direct="$(echo "$raw" | python3 -c "
+import json,sys
+try: d=json.load(sys.stdin)
+except Exception: sys.exit()
+ip=d.get('public_ipaddr'); ports=(d.get('ports') or {}).get('22/tcp') or []
+hp=ports[0].get('HostPort') if ports else None
+if ip and hp: print(f'{ip.strip()} {hp}')" 2>/dev/null)"
+    proxy="$(echo "$raw" | python3 -c "
+import json,sys
+try: d=json.load(sys.stdin)
+except Exception: sys.exit()
+h,p=d.get('ssh_host'),d.get('ssh_port')
+if h and p: print(f'{h} {p}')" 2>/dev/null)"
+    local cand host port
+    for cand in "$direct" "$proxy"; do
+        [[ -z "$cand" ]] && continue
+        host="${cand% *}"; port="${cand#* }"
+        if timeout 4 bash -c "exec 3<>/dev/tcp/${host}/${port}" 2>/dev/null; then
             echo "$host $port"; return 0
         fi
-    fi
-    vastai show instances --raw 2>/dev/null | python3 -c "
-import json,sys
-for i in json.load(sys.stdin):
-    if str(i.get('id'))=='$id':
-        h,p=i.get('ssh_host'),i.get('ssh_port')
-        if h and p: print(f'{h} {p}')
-        break" 2>/dev/null
+    done
+    # Nothing reachable yet — return direct (best guess) so the caller can retry over time.
+    [[ -n "$direct" ]] && echo "$direct" || echo "$proxy"
 }
