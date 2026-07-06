@@ -1,0 +1,24 @@
+# PRODUCTION config: MP piezoelectric with CliffordSTF — the fixed O(3) geometric-algebra rep.
+# CliffordSTF is O(3)-correct via graded geometric algebra (NOT e3nn irreps): it predicts EXACT
+# ZERO piezo on centrosymmetric crystals, showing the finding transcends the e3nn framework.
+# REQUIRES float64: its geometric-product/STF chains lose the parity cancellation in float32
+# (float64 OOD violation ~1e-10 vs float32 ~1e-1). parity is intrinsically o3.
+seed: 0
+core: clifford_stf
+parity: o3
+target: piezoelectric
+dataset: mp_piezoelectric
+processed_npz: data/raw/mp/mp_piezoelectric_processed.npz
+split_npz: data/splits/mp_piezoelectric_split.npz
+output_dir: outputs
+model:
+  num_layers: 3
+  l_max: 3
+  num_features: 64
+  r_max: 5.0
+training:
+  batch_size: 8
+  epochs: 150
+  lr: 0.002
+  device: cuda
+  precision: float64   # REQUIRED for CliffordSTF parity cancellation (see above)
