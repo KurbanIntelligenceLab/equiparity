@@ -15,11 +15,15 @@ from equiparity.domain.parity import ParityMode
 from equiparity.domain.target import TARGETS
 from equiparity.evaluation.metrics import MetricSummary, regression_metrics
 from equiparity.io.mp_dataset import CrystalDataset, load_crystal_dataset, load_split
+from equiparity.io.qm9_dataset import QM9Dataset, load_qm9
+from equiparity.io.qm9_dataset import load_split as load_qm9_split
 from equiparity.models.equiformer import (
     EquiformerV2Config,
+    EquiformerV2DipoleModel,
     EquiformerV2TensorModel,
     to_pyg_data,
 )
+from equiparity.training.nequip_scalar import RunResult
 from equiparity.training.nequip_tensor import (
     TensorRunResult,
     _irreps_targets,
@@ -133,4 +137,110 @@ def train_equiformer_tensor(
         ood_violation_median=ood_median,
         ood_violation_max=ood_max,
         ood_false_flag_fraction=ood_ff,
+    )
+
+
+def _qm9_subset(config: ExperimentConfig, part: str, cap: int | None):  # noqa: ANN202
+    data = load_qm9(config.processed_npz)
+    ds = QM9Dataset(data, load_qm9_split(config.split_npz, part))
+    if cap is not None:
+        ds = QM9Dataset(data, np.array([int(ds[i].identifier) for i in range(min(cap, len(ds)))]))
+    return ds
+
+
+def train_equiformer_dipole(config: ExperimentConfig) -> RunResult:
+    """Train an EquiformerV2 L=1 dipole head on QM9 (scale-only normalization)."""
+    device = torch.device(config.training.device if torch.cuda.is_available() else "cpu")
+    r_max = config.model.r_max
+    batch_size = config.training.batch_size
+
+    def prep(part, cap):  # noqa: ANN001, ANN202
+        ds = _qm9_subset(config, part, cap)
+        structs = [ds[i].structure for i in range(len(ds))]
+        targets = np.stack(
+            [
+                np.asarray(ds[i].targets[config.target], dtype=np.float64).reshape(3)
+                for i in range(len(ds))
+            ]
+        )
+        return structs, targets
+
+    train_structs, train_targets = prep("train", config.training.max_train_samples)
+    scale = float(train_targets.std()) or 1.0
+    norm_targets = torch.tensor(train_targets / scale, dtype=torch.float32, device=device)
+
+    model = EquiformerV2DipoleModel(_config(config), ParityMode.SO3).to(device)
+    n_params = sum(int(p.numel()) for p in model.parameters())
+    optimizer = torch.optim.Adam(
+        model.parameters(), lr=config.training.lr, weight_decay=config.training.weight_decay
+    )
+    loss_fn = torch.nn.MSELoss()
+    for _ in range(config.training.epochs):
+        model.train()
+        offset = 0
+        for batch in _batched(train_structs, r_max, batch_size, device):
+            n = int(batch.natoms.shape[0])
+            loss = loss_fn(model(batch).to(torch.float32), norm_targets[offset : offset + n])
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            offset += n
+
+    def evaluate(part):  # noqa: ANN001, ANN202
+        structs, targets = prep(part, config.training.max_eval_samples)
+        preds = _predict(model, structs, r_max, batch_size, device) * scale
+        return regression_metrics(preds, targets)
+
+    return RunResult(
+        val=evaluate("val"),
+        test=evaluate("test"),
+        n_params=n_params,
+        epochs_run=config.training.epochs,
+    )
+
+
+def train_equiformer_scalar(config: ExperimentConfig) -> RunResult:
+    """Train an EquiformerV2 scalar head on QM9 U0 (mean/std normalization)."""
+    device = torch.device(config.training.device if torch.cuda.is_available() else "cpu")
+    r_max = config.model.r_max
+    batch_size = config.training.batch_size
+
+    def prep(part, cap):  # noqa: ANN001, ANN202
+        ds = _qm9_subset(config, part, cap)
+        structs = [ds[i].structure for i in range(len(ds))]
+        targets = np.array([float(ds[i].targets[config.target][0]) for i in range(len(ds))])
+        return structs, targets
+
+    train_structs, train_targets = prep("train", config.training.max_train_samples)
+    mean, std = float(train_targets.mean()), float(train_targets.std() or 1.0)
+    norm_targets = torch.tensor((train_targets - mean) / std, dtype=torch.float32, device=device)
+
+    model = EquiformerV2TensorModel(_config(config), ParityMode.SO3, "1x0e").to(device)
+    n_params = sum(int(p.numel()) for p in model.parameters())
+    optimizer = torch.optim.Adam(
+        model.parameters(), lr=config.training.lr, weight_decay=config.training.weight_decay
+    )
+    loss_fn = torch.nn.MSELoss()
+    for _ in range(config.training.epochs):
+        model.train()
+        offset = 0
+        for batch in _batched(train_structs, r_max, batch_size, device):
+            n = int(batch.natoms.shape[0])
+            pred = model(batch).view(-1).to(torch.float32)
+            loss = loss_fn(pred, norm_targets[offset : offset + n])
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            offset += n
+
+    def evaluate(part):  # noqa: ANN001, ANN202
+        structs, targets = prep(part, config.training.max_eval_samples)
+        preds = _predict(model, structs, r_max, batch_size, device).reshape(-1) * std + mean
+        return regression_metrics(preds.reshape(-1, 1), targets.reshape(-1, 1))
+
+    return RunResult(
+        val=evaluate("val"),
+        test=evaluate("test"),
+        n_params=n_params,
+        epochs_run=config.training.epochs,
     )

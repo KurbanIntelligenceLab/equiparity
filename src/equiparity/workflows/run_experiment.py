@@ -87,6 +87,20 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
             from equiparity.training.mace_scalar import train_mace_scalar
 
             result = train_mace_scalar(config)
+    elif config.core == "equiformer_v2":
+        # EquiformerV2 is a fixed SO(3) representative with a torch_geometric (PBC) pipeline.
+        if config.target in _TENSOR_TARGETS:
+            from equiparity.training.equiformer_tensor import train_equiformer_tensor
+
+            result = train_equiformer_tensor(config, ood_npz=ood)
+        elif config.target in _VECTOR_TARGETS:
+            from equiparity.training.equiformer_tensor import train_equiformer_dipole
+
+            result = train_equiformer_dipole(config)
+        else:
+            from equiparity.training.equiformer_tensor import train_equiformer_scalar
+
+            result = train_equiformer_scalar(config)
     elif config.target in _TENSOR_TARGETS:
         result = train_tensor(config, ood_npz=ood)  # nequip or allegro
     elif config.target in _VECTOR_TARGETS:
