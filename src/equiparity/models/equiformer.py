@@ -35,7 +35,7 @@ class EquiformerV2Config:
     ffn_hidden_channels: int = 64
     num_heads: int = 4
     edge_channels: int = 32
-    max_num_elements: int = 90
+    max_num_elements: int = 100  # atomic-number embedding size; data has Z up to 92 (U)
     seed: int = 42
 
 

@@ -13,7 +13,7 @@ from pathlib import Path
 from equiparity.domain.parity import ParityMode
 from equiparity.domain.target import TARGETS
 
-CORES = ("nequip", "allegro", "mace")
+CORES = ("nequip", "allegro", "mace", "equiformer_v2", "clifford_stf")
 
 
 class ConfigError(ValueError):
