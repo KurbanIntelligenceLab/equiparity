@@ -74,7 +74,9 @@ def _run_git(args: list[str]) -> str:
 
 
 def _git_sha() -> str:
-    return _run_git(["rev-parse", "HEAD"]) or "unknown"
+    # EQUIPARITY_GIT_SHA lets cloud runs record the source commit even when .git is absent
+    # (the docker image ships code without the repo). Falls back to live git, then "unknown".
+    return os.environ.get("EQUIPARITY_GIT_SHA") or _run_git(["rev-parse", "HEAD"]) or "unknown"
 
 
 def _git_dirty() -> bool:
