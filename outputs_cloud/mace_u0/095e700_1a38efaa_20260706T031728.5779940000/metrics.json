@@ -1,0 +1,17 @@
+{
+  "epochs_run": 60,
+  "n_params": 853888,
+  "parity": "so3",
+  "run_label": "mace_so3_U0_seed1",
+  "target": "U0",
+  "test": {
+    "mae": 73.95142869525944,
+    "n_samples": 2000,
+    "rmse": 85.36469428618342
+  },
+  "val": {
+    "mae": 72.90539785849117,
+    "n_samples": 2000,
+    "rmse": 84.84965951674057
+  }
+}

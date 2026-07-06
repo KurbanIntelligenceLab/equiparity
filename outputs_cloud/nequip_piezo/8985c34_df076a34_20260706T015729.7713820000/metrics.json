@@ -1,0 +1,20 @@
+{
+  "epochs_run": 200,
+  "n_params": 17947136,
+  "ood_false_flag_fraction": 0.0,
+  "ood_violation_max": 0.008398202247917652,
+  "ood_violation_median": 2.9193640216362837e-07,
+  "parity": "o3",
+  "run_label": "nequip_o3_piezoelectric_seed2",
+  "target": "piezoelectric",
+  "test": {
+    "mae": 0.2153293680665329,
+    "n_samples": 332,
+    "rmse": 0.9541090449067507
+  },
+  "val": {
+    "mae": 0.1875393306611752,
+    "n_samples": 331,
+    "rmse": 1.0436098256490136
+  }
+}

@@ -1,0 +1,20 @@
+core: nequip
+dataset: mp_piezoelectric
+model:
+  l_max: 3
+  num_features: 128
+  num_layers: 3
+  r_max: 5.0
+parity: so3
+processed_npz: data/raw/mp/mp_piezoelectric_processed.npz
+seed: 2
+split_npz: data/splits/mp_piezoelectric_split.npz
+target: piezoelectric
+training:
+  batch_size: 16
+  epochs: 200
+  lr: 0.002
+  max_eval_samples: null
+  max_train_samples: null
+  precision: float32
+  weight_decay: 0.0
