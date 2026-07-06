@@ -208,6 +208,7 @@ __marimo__/
 
 # equiparity: research artifacts (CODING_RULES.md §A — never commit raw data or outputs)
 /outputs/
+/outputs_cloud/
 /data/raw/
 /data/**/*.lmdb
 /data/**/*.h5
