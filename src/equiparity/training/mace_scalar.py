@@ -20,11 +20,19 @@ from equiparity.training.nequip_scalar import RunResult
 def _to_mace_data(structure, z_table, r_max):  # noqa: ANN001, ANN202
     from mace import data
 
+    # Pass the cell + PBC for periodic crystals so MACE builds a PERIODIC neighborlist. Without
+    # this MACE treats a crystal as a finite molecule, whose cut boundary breaks centrosymmetry
+    # and leaks parity in the O(3) tensor head (nequip/allegro use PBC and cancel exactly).
+    periodic = bool(getattr(structure, "pbc", False)) and structure.cell is not None
+    cell_kwargs = (
+        {"cell": np.asarray(structure.cell), "pbc": (True, True, True)} if periodic else {}
+    )
     config = data.Configuration(
         atomic_numbers=np.asarray(structure.atomic_numbers),
         positions=structure.positions,
         properties={},
         property_weights={},
+        **cell_kwargs,
     )
     return data.AtomicData.from_config(config, z_table=z_table, cutoff=r_max)
 

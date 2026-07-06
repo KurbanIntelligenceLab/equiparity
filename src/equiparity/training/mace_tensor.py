@@ -76,7 +76,12 @@ def train_mace_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -
     train_ds = subset("train", config.training.max_train_samples)
     val_ds = subset("val", config.training.max_eval_samples)
     test_ds = subset("test", config.training.max_eval_samples)
-    elements = _elements_of(train_ds, val_ds, test_ds)
+    element_sets = [train_ds, val_ds, test_ds]
+    # The OOD set may contain elements unseen in training; MACE's z_table must cover them (their
+    # embeddings stay untrained, which is fine — the O(3) violation cancels by symmetry regardless).
+    if ood_npz is not None and kind == "piezoelectric":
+        element_sets.append(CrystalDataset(load_crystal_dataset(ood_npz)))
+    elements = _elements_of(*element_sets)
     z_table = tools.AtomicNumberTable(elements)
 
     def graphs_of(ds: CrystalDataset) -> list:
