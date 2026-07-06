@@ -9,7 +9,7 @@ does NOT cancel on centrosymmetric crystals — the SO(3) failure signal.
 Two integration facts (verified): the backbone runs in float32 (its Wigner buffers are float32),
 and the ``SO3_Embedding`` (l,m) ordering is e3nn-compatible, so the layout map below is
 rotation-equivariant (checked: ||v(Rx) - R v(x)|| ~ 1e-4). Crystals need PBC-correct edge vectors
-(``edge_distance_vec`` with periodic shifts) or centrosymmetry breaks — built by :func:`to_pyg_data`.
+(``edge_distance_vec`` with periodic shifts) or centrosymmetry breaks — see :func:`to_pyg_data`.
 """
 
 from __future__ import annotations
@@ -107,15 +107,15 @@ class EquiformerV2TensorModel(torch.nn.Module):
         # EquiformerV2 is SO(3): features are all-even. The output is relabeled per `mode` (odd
         # targets become all-even -> violate parity). Source irreps are all-even up to lmax.
         self.output_irreps = o3.Irreps(output_irreps(o3_output_irreps, mode))
-        src = o3.Irreps("+".join(f"{self.channels}x{l}e" for l in range(self.lmax + 1)))
+        src = o3.Irreps("+".join(f"{self.channels}x{deg}e" for deg in range(self.lmax + 1)))
         self.readout = o3.Linear(src, self.output_irreps)
 
     def _so3_to_e3nn(self, emb: torch.Tensor) -> torch.Tensor:
-        """(n_atoms, (lmax+1)^2, C) coeff(l,m)-major -> e3nn 'Cx0e+..+CxLe' (mul-major). Verified."""
+        """(n_atoms,(lmax+1)^2,C) coeff(l,m)-major -> e3nn 'Cx0e+..+CxLe' (mul-major). Verified."""
         out = []
         offset = 0
-        for l in range(self.lmax + 1):
-            n = 2 * l + 1
+        for deg in range(self.lmax + 1):
+            n = 2 * deg + 1
             block = emb[:, offset : offset + n, :].transpose(1, 2).reshape(emb.shape[0], -1)
             out.append(block)
             offset += n
