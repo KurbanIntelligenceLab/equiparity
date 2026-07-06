@@ -20,6 +20,7 @@ dependencies = [
 nequip = [
   "nequip>=0.18.0",
   "nequip-allegro>=0.4",
+  "torch-geometric>=2.5",
 ]
 # MACE family (e3nn 0.4.4). Install with: uv sync --extra mace
 mace = [
