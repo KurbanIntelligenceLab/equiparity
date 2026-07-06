@@ -140,3 +140,117 @@ def train_clifford_tensor(
         ood_violation_max=ood_max,
         ood_false_flag_fraction=ood_ff,
     )
+
+
+def _qm9(config: ExperimentConfig, part: str, cap: int | None):  # noqa: ANN202
+    from equiparity.io.qm9_dataset import QM9Dataset, load_qm9
+    from equiparity.io.qm9_dataset import load_split as load_qm9_split
+
+    data = load_qm9(config.processed_npz)
+    ds = QM9Dataset(data, load_qm9_split(config.split_npz, part))
+    if cap is not None:
+        ds = QM9Dataset(data, np.array([int(ds[i].identifier) for i in range(min(cap, len(ds)))]))
+    return [ds[i].structure for i in range(len(ds))], ds
+
+
+def train_clifford_dipole(config: ExperimentConfig):  # noqa: ANN201
+    """Train the CliffordSTF L=1 dipole head on QM9 (float64), OOD-style centrosymmetric cancels."""
+    from equiparity.training.nequip_scalar import RunResult
+
+    device = torch.device(config.training.device if torch.cuda.is_available() else "cpu")
+    dtype = torch.float64 if config.training.precision == "float64" else torch.float32
+    r_max, bs = config.model.r_max, config.training.batch_size
+    cfg = CliffordSTFConfig(
+        r_max=r_max,
+        n_channels=config.model.num_features,
+        n_interactions=config.model.num_layers,
+        seed=config.seed,
+    )
+    model = CliffordSTFTensorModel(cfg, ParityMode.O3, "1x1o").to(device).to(dtype)
+
+    def prep(part, cap):  # noqa: ANN001, ANN202
+        structs, ds = _qm9(config, part, cap)
+        tg = np.stack(
+            [
+                np.asarray(ds[i].targets[config.target], dtype=np.float64).reshape(3)
+                for i in range(len(ds))
+            ]
+        )
+        return structs, tg
+
+    train_structs, train_tg = prep("train", config.training.max_train_samples)
+    scale = float(train_tg.std()) or 1.0
+    norm = torch.tensor(train_tg / scale, dtype=dtype, device=device)
+    opt = torch.optim.Adam(
+        model.parameters(), lr=config.training.lr, weight_decay=config.training.weight_decay
+    )
+    lf = torch.nn.MSELoss()
+    for _ in range(config.training.epochs):
+        model.train()
+        off = 0
+        for batch in _batches(train_structs, r_max, bs, dtype, device):
+            n = int(batch["batch"].max().item()) + 1
+            loss = lf(model(batch).to(dtype), norm[off : off + n])
+            opt.zero_grad()
+            loss.backward()
+            opt.step()
+            off += n
+
+    def ev(part):  # noqa: ANN001, ANN202
+        structs, tg = prep(part, config.training.max_eval_samples)
+        preds = _predict(model, structs, r_max, bs, dtype, device) * scale
+        return regression_metrics(preds, tg)
+
+    n_params = sum(int(p.numel()) for p in model.parameters())
+    return RunResult(
+        val=ev("val"), test=ev("test"), n_params=n_params, epochs_run=config.training.epochs
+    )
+
+
+def train_clifford_scalar(config: ExperimentConfig):  # noqa: ANN201
+    """Train the CliffordSTF scalar head on QM9 U0 (float64, mean/std normalization)."""
+    from equiparity.training.nequip_scalar import RunResult
+
+    device = torch.device(config.training.device if torch.cuda.is_available() else "cpu")
+    dtype = torch.float64 if config.training.precision == "float64" else torch.float32
+    r_max, bs = config.model.r_max, config.training.batch_size
+    cfg = CliffordSTFConfig(
+        r_max=r_max,
+        n_channels=config.model.num_features,
+        n_interactions=config.model.num_layers,
+        seed=config.seed,
+    )
+    model = CliffordSTFTensorModel(cfg, ParityMode.O3, "1x0e").to(device).to(dtype)
+
+    def prep(part, cap):  # noqa: ANN001, ANN202
+        structs, ds = _qm9(config, part, cap)
+        tg = np.array([float(ds[i].targets[config.target][0]) for i in range(len(ds))])
+        return structs, tg
+
+    train_structs, train_tg = prep("train", config.training.max_train_samples)
+    mean, std = float(train_tg.mean()), float(train_tg.std() or 1.0)
+    norm = torch.tensor((train_tg - mean) / std, dtype=dtype, device=device)
+    opt = torch.optim.Adam(
+        model.parameters(), lr=config.training.lr, weight_decay=config.training.weight_decay
+    )
+    lf = torch.nn.MSELoss()
+    for _ in range(config.training.epochs):
+        model.train()
+        off = 0
+        for batch in _batches(train_structs, r_max, bs, dtype, device):
+            n = int(batch["batch"].max().item()) + 1
+            loss = lf(model(batch).view(-1).to(dtype), norm[off : off + n])
+            opt.zero_grad()
+            loss.backward()
+            opt.step()
+            off += n
+
+    def ev(part):  # noqa: ANN001, ANN202
+        structs, tg = prep(part, config.training.max_eval_samples)
+        preds = _predict(model, structs, r_max, bs, dtype, device).reshape(-1) * std + mean
+        return regression_metrics(preds.reshape(-1, 1), tg.reshape(-1, 1))
+
+    n_params = sum(int(p.numel()) for p in model.parameters())
+    return RunResult(
+        val=ev("val"), test=ev("test"), n_params=n_params, epochs_run=config.training.epochs
+    )

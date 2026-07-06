@@ -102,12 +102,19 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
 
             result = train_equiformer_scalar(config)
     elif config.core == "clifford_stf":
-        # CliffordSTF: O(3) geometric-algebra representative, wired for the piezoelectric head.
-        if config.target != "piezoelectric":
-            raise NotImplementedError("clifford_stf is wired for the piezoelectric target only")
-        from equiparity.training.clifford_tensor import train_clifford_tensor
+        # CliffordSTF: O(3) geometric-algebra representative (requires float64) across all targets.
+        if config.target in _TENSOR_TARGETS:
+            from equiparity.training.clifford_tensor import train_clifford_tensor
 
-        result = train_clifford_tensor(config, ood_npz=ood)
+            result = train_clifford_tensor(config, ood_npz=ood)
+        elif config.target in _VECTOR_TARGETS:
+            from equiparity.training.clifford_tensor import train_clifford_dipole
+
+            result = train_clifford_dipole(config)
+        else:
+            from equiparity.training.clifford_tensor import train_clifford_scalar
+
+            result = train_clifford_scalar(config)
     elif config.target in _TENSOR_TARGETS:
         result = train_tensor(config, ood_npz=ood)  # nequip or allegro
     elif config.target in _VECTOR_TARGETS:

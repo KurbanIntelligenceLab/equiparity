@@ -1,0 +1,16 @@
+{
+  "config_hash": "sha256:df28abbcf86f953abfc315ee92ddafdac0865e7bab7e0328fd26c3f64983a5f8",
+  "config_path": "<nequip_o3_piezoelectric_seed0>",
+  "cuda_version": "12.8",
+  "dataset_manifest": "data/manifests/mp_piezoelectric.yaml",
+  "driver_version": "580.82.09",
+  "git_dirty": false,
+  "git_sha": "8985c34",
+  "gpu_model": "NVIDIA GeForce RTX 5090",
+  "hostname": "04c76c7e0b04",
+  "package_version": "0.1.0",
+  "python_version": "3.12.13",
+  "seed": 0,
+  "split_manifest": "data/splits/mp_piezoelectric.yaml",
+  "timestamp_utc": "2026-07-06T01:10:55.457555+00:00"
+}
