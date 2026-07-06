@@ -29,6 +29,23 @@ scripts/vast/fetch_results.sh <id>        # pull outputs/ back
 vastai destroy instance <id>              # stop paying
 ```
 
+## vast reachability (hard-won, from E3-GRAND)
+
+vast sets up SSH **inside** your container, so the image must contain `openssh-client`,
+`openssh-server`, `tmux`, and `rsync` — the Dockerfile installs all four. Without them a
+`python:3.12-slim` base is unreachable (`ssh: command not found`) or every `ssh host cmd`
+returns empty with exit 127 (vast's auto-tmux trap). `onstart.sh` also `touch`es
+`/root/.no_auto_tmux` as a belt-and-suspenders fix. Verify **command execution**, not just boot:
+
+```bash
+source scripts/vast/_common.sh && vast_load_api_key
+read -r H P < <(vast_ssh_hostport <id>)
+ssh -n -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -p "$P" root@"$H" 'echo CMD_WORKS=$(hostname)'
+```
+
+`CMD_WORKS=...` = reachable. Empty = still broken. vast SSH is intermittent — retry the direct
+and proxy (`sshN.vast.ai`) endpoints over ~a minute before concluding anything is wrong.
+
 ## GPU and precision
 
 - **RTX 5090** (primary) — fastest FP32/TF32, cheapest, CUDA 12.8 ready. Training runs in

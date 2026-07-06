@@ -9,6 +9,9 @@ set -uo pipefail
 cd /workspace
 exec > >(tee -a /workspace/onstart.log) 2>&1
 
+# Disable vast's auto-tmux so `ssh host cmd` (non-interactive) returns output instead of exit 127.
+touch /root/.no_auto_tmux
+
 CONFIG="${CONFIG:-configs/mp_piezoelectric_smoke.yaml}"
 SEEDS="${SEEDS:-0}"
 

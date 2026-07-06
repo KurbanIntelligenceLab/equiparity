@@ -29,8 +29,12 @@ FROM --platform=linux/amd64 python:3.12-slim
 ENV DEBIAN_FRONTEND=noninteractive
 # git: reproducibility records the commit sha in each run manifest.
 # curl/aria2/ca-certificates: fast dataset download from S3 in the runtime fetch script.
+# openssh-client/server, tmux, rsync: REQUIRED for vast.ai reachability — vast sets up SSH
+# INSIDE the container and its /.launch invokes ssh; a slim base without these leaves the
+# instance unreachable ("ssh: command not found") or commands silently exit 127 (the tmux
+# auto-exec trap). rsync is needed for pulling results back. (E3-GRAND hard-won gotcha.)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        git curl ca-certificates aria2 \
+        git curl ca-certificates aria2 openssh-client openssh-server tmux rsync \
     && rm -rf /var/lib/apt/lists/*
 
 # Pinned uv binary (matches the host uv that produced uv.lock).
