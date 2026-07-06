@@ -344,10 +344,16 @@ class EquiformerV2_OC20(nn.Module):
             offset_distances = torch.zeros(edge_index.size(1), 3, device=data.pos.device)
 
         else:
-            # Use pre-computed edges from data
+            # Use pre-computed edges from data.
             edge_index = data.edge_index
             row, col = edge_index
-            edge_distance_vec = data.pos[row] - data.pos[col]
+            # PBC: honor a precomputed edge_distance_vec (built with periodic-image shifts by the
+            # caller's neighborlist). Without this a crystal's edges use raw pos[row]-pos[col],
+            # which breaks centrosymmetry (the MACE lesson). Fall back to raw diff for molecules.
+            if getattr(data, "edge_distance_vec", None) is not None:
+                edge_distance_vec = data.edge_distance_vec
+            else:
+                edge_distance_vec = data.pos[row] - data.pos[col]
             edge_distance = torch.norm(edge_distance_vec, dim=-1)
 
             num_atoms = data.pos.size(0)
