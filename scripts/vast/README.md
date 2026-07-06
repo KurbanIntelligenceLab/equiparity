@@ -14,6 +14,8 @@ MP_TOKEN=<key> uv run python scripts/prepare_mp.py
 docker build --build-arg PROFILE=nequip -t <user>/equiparity:nequip .
 docker push <user>/equiparity:nequip          # (docker login first)
 # MACE runs use a separate image: --build-arg PROFILE=mace
+# If apt fails with "Temporary failure resolving deb.debian.org", the build container can't
+# resolve DNS on that host — add --network=host to the build command.
 ```
 
 ## Launch

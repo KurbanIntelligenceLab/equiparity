@@ -8,11 +8,16 @@
 #     image proved this: ~40 GB -> ~9 GB.)
 #   - uv sync --frozen from the committed uv.lock: reproducible, no pip --no-deps hacks.
 #   - --no-dev drops ruff/mypy/pytest; the `data` extra (pymatgen/mp-api/spglib, data-prep
-#     only) is NOT installed here. Training reads committed npz splits via numpy.
-#   - datasets are fetched at runtime from S3 (scripts/docker/fetch_data.sh), never baked in.
+#     only) is NOT installed here. Training reads the baked npz splits via numpy.
+#   - the 62 MB processed npz are baked in (self-contained, no runtime S3 dependency); the raw
+#     668 MB QM9 xyz stays out. scripts/docker/fetch_data.sh remains as an optional override.
 #
 # Result: ~7 GB uncompressed / ~3.5 GB pulled. The CUDA+torch+triton floor (~6.4 GB) is
 # irreducible for GPU training on Blackwell (sm_120 needs CUDA 12.8).
+#
+# PREREQUISITE: the processed npz must exist before building (they are gitignored). On a fresh
+# clone run first:  uv sync --extra nequip --extra data  &&  uv run python scripts/prepare_qm9.py
+#   &&  MP_TOKEN=... uv run python scripts/prepare_mp.py
 #
 # Build one profile at a time (nequip and mace pin incompatible e3nn versions):
 #   docker build --build-arg PROFILE=nequip -t equiparity:nequip .
@@ -45,19 +50,27 @@ WORKDIR /workspace
 # e3nn stack. torch cu128 and its bundled CUDA libs come from the pytorch index declared in
 # pyproject. No dev tools, no data-prep libraries.
 COPY pyproject.toml uv.lock README.md ./
-RUN uv sync --frozen --no-dev --no-install-project --extra ${PROFILE}
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev --no-install-project --extra ${PROFILE}
 
 # --- Project layer ---
+COPY LICENSE ./
 COPY src ./src
 COPY configs ./configs
 COPY scripts ./scripts
 COPY data/manifests ./data/manifests
 COPY data/splits ./data/splits
-RUN uv sync --frozen --no-dev --extra ${PROFILE}
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev --extra ${PROFILE}
+
+# --- Data layer: bake the 62 MB processed npz (self-contained image) ---
+COPY data/raw/qm9/qm9_processed.npz ./data/raw/qm9/
+COPY data/raw/mp/mp_piezoelectric_processed.npz data/raw/mp/mp_elastic_processed.npz \
+     data/raw/mp/mp_ood_centrosymmetric_processed.npz ./data/raw/mp/
 
 # Sanity: the CLI wires up and torch imports. CUDA availability is checked at runtime on the GPU host.
 RUN equiparity --version && python -c "import torch; print('torch', torch.__version__)"
 
-# Datasets are not in the image. Fetch them at runtime, then run an experiment:
-#   bash scripts/docker/fetch_data.sh && equiparity run configs/<name>.yaml
-CMD ["bash", "-lc", "echo 'equiparity image (profile=${PROFILE}). Fetch data: bash scripts/docker/fetch_data.sh ; then: equiparity run configs/<name>.yaml'"]
+# Data is baked in — just run an experiment (set EQUIPARITY_DATA_URL + run fetch_data.sh only to override):
+#   equiparity run configs/<name>.yaml
+CMD ["bash", "-c", "echo 'equiparity image. Data baked in. Run: equiparity run configs/<name>.yaml'"]

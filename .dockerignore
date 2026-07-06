@@ -1,6 +1,5 @@
-# Keep the build context tiny: the image installs from uv.lock and fetches data at runtime.
-# Everything the image needs is COPYed explicitly in the Dockerfile; exclude the rest so the
-# 7 GB .venv and the ~670 MB raw datasets are never sent to the Docker daemon.
+# Keep the build context small: the image installs from uv.lock; the 62 MB processed npz are
+# baked in (COPYed in the Dockerfile), but the 7 GB .venv and the ~670 MB raw QM9 xyz are not.
 
 # Environments and caches
 .venv/
@@ -11,9 +10,11 @@
 .mypy_cache/
 .ruff_cache/
 
-# Datasets: raw archives and processed npz are fetched at runtime from S3, never baked in.
-# (data/manifests/ and data/splits/ are small and committed; the Dockerfile COPYs them.)
-data/raw/
+# Raw datasets are large and only needed for one-time prep — exclude them, but KEEP the small
+# processed npz (the Dockerfile bakes them in). data/manifests + data/splits are committed and COPYed.
+data/raw/qm9/xyz/
+data/raw/qm9/*.tar.bz2
+data/raw/qm9/uncharacterized.txt
 outputs/
 
 # Git history and CI (not needed in the image; the sha is passed at build/run time)
