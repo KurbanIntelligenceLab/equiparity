@@ -1,0 +1,24 @@
+# PRODUCTION config: MP piezoelectric (parity-odd tensor) — the headline experiment.
+# Trains on the full ~3,300 non-centrosymmetric crystals; the runner also evaluates the OOD
+# violation on centrosymmetric insulators (O(3) predicts exact zero by symmetry; SO(3) predicts
+# spurious nonzero). Run in both parity modes (o3 / so3) across seeds to produce the headline.
+# Production model size (128 feat, l_max=3) measured at ~9.8 ms/step float32 on an RTX 5090.
+seed: 0
+core: nequip
+parity: o3
+target: piezoelectric
+dataset: mp_piezoelectric
+processed_npz: data/raw/mp/mp_piezoelectric_processed.npz
+split_npz: data/splits/mp_piezoelectric_split.npz
+output_dir: outputs
+model:
+  num_layers: 3
+  l_max: 3
+  num_features: 128
+  r_max: 5.0
+training:
+  batch_size: 16
+  epochs: 200
+  lr: 0.002
+  device: cuda
+  precision: float32   # 6.8x faster than float64 at this size on the 5090
