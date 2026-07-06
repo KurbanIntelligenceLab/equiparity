@@ -16,7 +16,7 @@ from dataclasses import dataclass
 import torch
 
 from equiparity.domain.parity import ParityMode
-from equiparity.models.irreps import degree_irreps
+from equiparity.models.irreps import degree_irreps, output_irreps
 
 
 @dataclass(frozen=True, slots=True)
@@ -131,3 +131,82 @@ def allegro_featurizer(  # noqa: ANN201 (returns a Featurizer closure over untyp
         return store["feat"], store["irreps"]
 
     return featurize
+
+
+class AllegroTensorModel(torch.nn.Module):
+    """An Allegro model with a direct equivariant tensor head of arbitrary output irreps.
+
+    Allegro is edge-centric: it produces per-edge equivariant tensor features (no per-node
+    message passing). The target is read out from the deepest tensor-product layer by a per-edge
+    ``o3.Linear`` and summed over the structure's edges. Summing same-irrep per-edge features is
+    equivariant (a global rotation rotates every edge feature identically), and for a
+    centrosymmetric structure the O(3) odd-parity output cancels to exact zero (edges come in
+    inversion-related pairs) while the SO(3) output does not — verified: O(3) ||T|| ~1e-14 vs
+    SO(3) ~1e+2. The O(3) arm uses the target's true irreps; the SO(3) arm relabels them all even.
+    """
+
+    def __init__(self, config: AllegroConfig, mode: ParityMode, o3_output_irreps: str) -> None:
+        super().__init__()
+        from e3nn import o3
+
+        self.backbone = build_allegro_matched(config, mode)
+        self.output_irreps = o3.Irreps(output_irreps(o3_output_irreps, mode))
+        # Deepest per-edge tensor-product layer (model.func.allegro.tps.<i>) that still carries
+        # l>0 features. Allegro's FINAL tps collapses to scalars (1x0e) for the energy readout,
+        # so reading it would give exact zero for any l>0 target — pick the deepest non-scalar one.
+        tps = [
+            (int(name.split(".")[-1]), name, module)
+            for name, module in self.backbone.named_modules()
+            if name.startswith("model.func.allegro.tps.") and name.split(".")[-1].isdigit()
+        ]
+        tensor_tps = [(i, name, m) for i, name, m in tps if o3.Irreps(m.irreps_out).lmax > 0]
+        if not tensor_tps:
+            raise RuntimeError(
+                "no allegro tensor-product layer with l>0 features for the tensor head"
+            )
+        _, self._probe_name, self._probe_module = max(tensor_tps, key=lambda t: t[0])
+        self.readout = o3.Linear(self._probe_module.irreps_out, self.output_irreps)
+        readout_dtype = torch.float32 if config.model_dtype == "float32" else torch.float64
+        self.readout = self.readout.to(readout_dtype)
+
+    def _find_probe(self, name: str):  # noqa: ANN202
+        for module_name, module in self.backbone.named_modules():
+            if module_name == name:
+                return module
+        raise RuntimeError(f"probe layer {name!r} not found in backbone")
+
+    def forward(self, batch):  # noqa: ANN001, ANN201
+        from nequip.data import AtomicDataDict
+
+        store: dict[str, object] = {}
+
+        def hook(module, _inputs, output):  # noqa: ANN001, ANN202
+            store["feat"] = output if torch.is_tensor(output) else output[0]
+
+        handle = self._probe_module.register_forward_hook(hook)
+        try:
+            self.backbone(batch)
+        finally:
+            handle.remove()
+        # Allegro tensor features are (n_edges, num_tensor_features, per_channel_irrep_dim). Read
+        # each channel out to the target irreps and sum the channels (equivariant: same irrep).
+        per_edge = self.readout(store["feat"])  # (n_edges, [n_channels,] output_dim)
+        if per_edge.dim() == 3:
+            per_edge = per_edge.sum(dim=1)  # reduce the tensor-feature channels
+        edge_index = batch[AtomicDataDict.EDGE_INDEX_KEY]  # (2, n_edges)
+        n_atoms = int(edge_index.max().item()) + 1
+        batch_index = batch.get(
+            AtomicDataDict.BATCH_KEY,
+            torch.zeros(n_atoms, dtype=torch.long, device=per_edge.device),
+        )
+        edge_struct = batch_index[edge_index[0]]  # (n_edges,) edge -> structure
+        n_graphs = int(batch_index.max().item()) + 1
+        out = torch.zeros(n_graphs, per_edge.shape[1], dtype=per_edge.dtype, device=per_edge.device)
+        return out.index_add_(0, edge_struct, per_edge)
+
+
+class AllegroDipoleModel(AllegroTensorModel):
+    """An Allegro model with a direct L=1 dipole head (``1o`` for O(3), ``1e`` for SO(3))."""
+
+    def __init__(self, config: AllegroConfig, mode: ParityMode) -> None:
+        super().__init__(config, mode, "1x1o")

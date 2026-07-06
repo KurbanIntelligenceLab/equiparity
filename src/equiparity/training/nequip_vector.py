@@ -94,18 +94,35 @@ def train_dipole(config: ExperimentConfig) -> RunResult:
     scale = float(train_targets.std()) or 1.0
     norm_targets = torch.tensor(train_targets / scale, dtype=target_dtype, device=device)
 
-    model_cfg = NequIPConfig(
-        r_max=r_max,
-        type_names=type_names,
-        num_layers=config.model.num_layers,
-        l_max=max(config.model.l_max, 1),
-        num_features=config.model.num_features,
-        type_embed_num_features=config.model.num_features,
-        avg_num_neighbors=avg_num_neighbors(train_graphs),
-        seed=config.seed,
-        model_dtype=config.training.precision,
-    )
-    model = NequIPDipoleModel(model_cfg, config.parity).to(device)
+    avg_neigh = avg_num_neighbors(train_graphs)
+    if config.core == "allegro":
+        from equiparity.models.allegro import AllegroConfig, AllegroDipoleModel
+
+        allegro_cfg = AllegroConfig(
+            r_max=r_max,
+            type_names=tuple(type_names),
+            num_layers=config.model.num_layers,
+            l_max=max(config.model.l_max, 1),
+            num_scalar_features=config.model.num_features,
+            num_tensor_features=max(8, config.model.num_features // 4),
+            avg_num_neighbors=avg_neigh,
+            seed=config.seed,
+            model_dtype=config.training.precision,
+        )
+        model = AllegroDipoleModel(allegro_cfg, config.parity).to(device)
+    else:
+        model_cfg = NequIPConfig(
+            r_max=r_max,
+            type_names=type_names,
+            num_layers=config.model.num_layers,
+            l_max=max(config.model.l_max, 1),
+            num_features=config.model.num_features,
+            type_embed_num_features=config.model.num_features,
+            avg_num_neighbors=avg_neigh,
+            seed=config.seed,
+            model_dtype=config.training.precision,
+        )
+        model = NequIPDipoleModel(model_cfg, config.parity).to(device)
     n_params = sum(int(p.numel()) for p in model.parameters())
     optimizer = torch.optim.Adam(
         model.parameters(), lr=config.training.lr, weight_decay=config.training.weight_decay

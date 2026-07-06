@@ -20,7 +20,7 @@ import numpy as np
 import torch
 
 from equiparity.domain.parity import ParityMode
-from equiparity.models.irreps import degree_irreps
+from equiparity.models.irreps import degree_irreps, output_irreps
 
 # MACE's reduced-precision internals: probe/classify MACE with these thresholds.
 MACE_GATE_DTYPE = "float32"
@@ -139,3 +139,57 @@ def mace_featurizer(  # noqa: ANN201 (returns a Featurizer closure over untyped 
         return store["feat"], store["irreps"]
 
     return featurize
+
+
+class MACETensorModel(torch.nn.Module):
+    """A MACE model with a direct equivariant tensor head of arbitrary output irreps.
+
+    MACE exposes per-node equivariant features after its interaction block
+    (``interactions.0.linear``, the same probe the parity gate uses). The target is read out
+    per-atom by an ``o3.Linear`` and
+    summed over the structure's atoms. The O(3) arm uses the target's true irreps; the SO(3) arm
+    (``use_so3=True``, all-even hidden) relabels them all even. For a centrosymmetric structure the
+    O(3) odd-parity output cancels to exact zero while the SO(3) output does not — the headline.
+    """
+
+    def __init__(self, config: MACEConfig, mode: ParityMode, o3_output_irreps: str) -> None:
+        super().__init__()
+        from e3nn import o3
+
+        self.backbone = build_mace_matched(config, mode)
+        self.output_irreps = o3.Irreps(output_irreps(o3_output_irreps, mode))
+        self._probe_name = MACE_PROBE_LAYER
+        self._probe_module = self._find_probe(self._probe_name)
+        self.readout = o3.Linear(self._probe_module.irreps_out, self.output_irreps)
+        readout_dtype = torch.float32 if config.model_dtype == "float32" else torch.float64
+        self.readout = self.readout.to(readout_dtype)
+
+    def _find_probe(self, name: str):  # noqa: ANN202
+        for module_name, module in self.backbone.named_modules():
+            if module_name.endswith(name):  # match the featurizer's lookup (path may be prefixed)
+                return module
+        raise RuntimeError(f"probe layer {name!r} not found in backbone")
+
+    def forward(self, batch):  # noqa: ANN001, ANN201
+        store: dict[str, object] = {}
+
+        def hook(module, _inputs, output):  # noqa: ANN001, ANN202
+            store["feat"] = output if torch.is_tensor(output) else output[0]
+
+        handle = self._probe_module.register_forward_hook(hook)
+        try:
+            self.backbone(batch, compute_force=False, compute_virials=False, compute_stress=False)
+        finally:
+            handle.remove()
+        per_atom = self.readout(store["feat"])  # (n_atoms, output_dim)
+        batch_index = batch["batch"]  # (n_atoms,) node -> structure (torch_geometric)
+        n_graphs = int(batch_index.max().item()) + 1
+        out = torch.zeros(n_graphs, per_atom.shape[1], dtype=per_atom.dtype, device=per_atom.device)
+        return out.index_add_(0, batch_index, per_atom)
+
+
+class MACEDipoleModel(MACETensorModel):
+    """A MACE model with a direct L=1 dipole head (``1o`` for O(3), ``1e`` for SO(3))."""
+
+    def __init__(self, config: MACEConfig, mode: ParityMode) -> None:
+        super().__init__(config, mode, "1x1o")

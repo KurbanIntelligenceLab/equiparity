@@ -109,8 +109,39 @@ def _irreps_targets(dataset: CrystalDataset, target: str, kind: str) -> np.ndarr
     ).astype(np.float64)
 
 
+def build_tensor_model(config, type_names, avg_neigh, o3_output_irreps, device):  # noqa: ANN001, ANN201
+    """Build a tensor-head model for the ``nequip`` or ``allegro`` core (shared data pipeline)."""
+    if config.core == "allegro":
+        from equiparity.models.allegro import AllegroConfig, AllegroTensorModel
+
+        cfg = AllegroConfig(
+            r_max=config.model.r_max,
+            type_names=tuple(type_names),
+            num_layers=config.model.num_layers,
+            l_max=config.model.l_max,
+            num_scalar_features=config.model.num_features,
+            num_tensor_features=max(8, config.model.num_features // 4),
+            avg_num_neighbors=avg_neigh,
+            seed=config.seed,
+            model_dtype=config.training.precision,
+        )
+        return AllegroTensorModel(cfg, config.parity, o3_output_irreps).to(device)
+    cfg = NequIPConfig(
+        r_max=config.model.r_max,
+        type_names=type_names,
+        num_layers=config.model.num_layers,
+        l_max=config.model.l_max,
+        num_features=config.model.num_features,
+        type_embed_num_features=config.model.num_features,
+        avg_num_neighbors=avg_neigh,
+        seed=config.seed,
+        model_dtype=config.training.precision,
+    )
+    return NequIPTensorModel(cfg, config.parity, o3_output_irreps).to(device)
+
+
 def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> TensorRunResult:
-    """Train a NequIP tensor head (elastic or piezoelectric) and evaluate it.
+    """Train a NequIP/Allegro tensor head (elastic or piezoelectric) and evaluate it.
 
     For the piezoelectric headline, pass ``ood_npz`` to also evaluate the violation magnitude on
     the centrosymmetric OOD set (exactly zero for O(3), spurious nonzero for SO(3)).
@@ -148,18 +179,9 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
     scale = float(train_targets.std()) or 1.0
     norm_targets = torch.tensor(train_targets / scale, dtype=target_dtype, device=device)
 
-    model_cfg = NequIPConfig(
-        r_max=r_max,
-        type_names=type_names,
-        num_layers=config.model.num_layers,
-        l_max=config.model.l_max,
-        num_features=config.model.num_features,
-        type_embed_num_features=config.model.num_features,
-        avg_num_neighbors=avg_num_neighbors(train_graphs),
-        seed=config.seed,
-        model_dtype=config.training.precision,
+    model = build_tensor_model(
+        config, type_names, avg_num_neighbors(train_graphs), TARGETS[config.target].irreps, device
     )
-    model = NequIPTensorModel(model_cfg, config.parity, TARGETS[config.target].irreps).to(device)
     n_params = sum(int(p.numel()) for p in model.parameters())
     optimizer = torch.optim.Adam(
         model.parameters(), lr=config.training.lr, weight_decay=config.training.weight_decay
