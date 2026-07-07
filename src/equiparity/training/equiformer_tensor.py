@@ -7,6 +7,8 @@ VIOLATES parity on centrosymmetric crystals (nonzero piezo). Trains in float32 (
 
 from __future__ import annotations
 
+import time
+
 import numpy as np
 import torch
 
@@ -27,9 +29,10 @@ from equiparity.training.nequip_scalar import RunResult
 from equiparity.training.nequip_tensor import (
     TensorRunResult,
     _irreps_targets,
-    false_flag_fraction,
+    _raw_variant,
     violation_magnitudes,
 )
+from equiparity.training.ood_eval import evaluate_ood_variants
 
 
 def _config(config: ExperimentConfig) -> EquiformerV2Config:
@@ -96,7 +99,17 @@ def train_equiformer_tensor(
     loss_fn = torch.nn.MSELoss()
     batch_size = config.training.batch_size
 
-    for _ in range(config.training.epochs):
+    def evaluate(ds: CrystalDataset) -> MetricSummary:
+        structs = [ds[i].structure for i in range(len(ds))]
+        preds = _predict(model, structs, r_max, batch_size, device) * scale
+        return regression_metrics(preds, _irreps_targets(ds, config.target, kind))
+
+    if device.type == "cuda":
+        torch.cuda.reset_peak_memory_stats()
+    t_train = time.perf_counter()
+    ckpt_every = max(1, config.training.epochs // 10)
+    best_val, checkpoint_best = float("inf"), None
+    for epoch in range(config.training.epochs):
         model.train()
         offset = 0
         for batch in _batched(train_structs, r_max, batch_size, device):
@@ -107,27 +120,61 @@ def train_equiformer_tensor(
             loss.backward()
             optimizer.step()
             offset += n
+        if (epoch + 1) % ckpt_every == 0 or epoch == config.training.epochs - 1:
+            vm = evaluate(val_ds).mae
+            if vm < best_val:
+                best_val = vm
+                checkpoint_best = {
+                    k: v.detach().cpu().clone() for k, v in model.state_dict().items()
+                }
+    train_seconds = time.perf_counter() - t_train
 
-    def evaluate(ds: CrystalDataset) -> MetricSummary:
-        structs = [ds[i].structure for i in range(len(ds))]
-        preds = _predict(model, structs, r_max, batch_size, device) * scale
-        return regression_metrics(preds, _irreps_targets(ds, config.target, kind))
-
+    t_eval = time.perf_counter()
     val, test = evaluate(val_ds), evaluate(test_ds)
+    eval_seconds = time.perf_counter() - t_eval
 
     ood_median = ood_max = ood_ff = None
+    ood_variants = ood_vectors = None
+    ood_seconds = 0.0
     if ood_npz is not None and kind == "piezoelectric":
-        ood = CrystalDataset(load_crystal_dataset(ood_npz))
-        if config.training.max_eval_samples is not None:
-            ids = np.array(
-                [ood[i].identifier for i in range(min(config.training.max_eval_samples, len(ood)))]
-            )
-            ood = CrystalDataset(load_crystal_dataset(ood_npz), ids)
-        structs = [ood[i].structure for i in range(len(ood))]
-        ood_preds = _predict(model, structs, r_max, batch_size, device) * scale
-        v = violation_magnitudes(ood_preds)
-        ood_median, ood_max = float(np.median(v)), float(v.max())
-        ood_ff = false_flag_fraction(v, threshold=0.01)
+
+        def _ood_violations(npz_path: str) -> np.ndarray:
+            ood = CrystalDataset(load_crystal_dataset(npz_path))
+            if config.training.max_eval_samples is not None:
+                cap = min(config.training.max_eval_samples, len(ood))
+                ids = np.array([ood[i].identifier for i in range(cap)])
+                ood = CrystalDataset(load_crystal_dataset(npz_path), ids)
+            structs = [ood[i].structure for i in range(len(ood))]
+            preds = _predict(model, structs, r_max, batch_size, device) * scale
+            return violation_magnitudes(preds)
+
+        t_ood = time.perf_counter()
+        results = evaluate_ood_variants(
+            _ood_violations, {"idealized": ood_npz, "raw": _raw_variant(ood_npz)}
+        )
+        ood_seconds = time.perf_counter() - t_ood
+        ood_variants = {k: v["stats"] for k, v in results.items()}
+        ood_vectors = {k: v["vector"] for k, v in results.items()}
+        prim = ood_variants.get("idealized") or next(iter(ood_variants.values()))
+        ood_median, ood_max = prim["median"], prim["max"]
+        ood_ff = prim["false_flag_at_0.01"]
+
+    peak_mem = float(torch.cuda.max_memory_allocated() / 1e6) if device.type == "cuda" else 0.0
+    timing = {
+        "train_seconds": train_seconds,
+        "train_seconds_per_epoch": train_seconds / max(1, config.training.epochs),
+        "eval_seconds": eval_seconds,
+        "ood_seconds": ood_seconds,
+        "train_throughput_structs_per_s": len(train_structs)
+        * config.training.epochs
+        / max(1e-9, train_seconds),
+        "peak_gpu_mem_mb": peak_mem,
+    }
+    checkpoint_latest = {
+        "model": {k: v.detach().cpu().clone() for k, v in model.state_dict().items()},
+        "optimizer": optimizer.state_dict(),
+        "epoch": config.training.epochs,
+    }
 
     return TensorRunResult(
         val=val,
@@ -137,6 +184,11 @@ def train_equiformer_tensor(
         ood_violation_median=ood_median,
         ood_violation_max=ood_max,
         ood_false_flag_fraction=ood_ff,
+        ood_variants=ood_variants,
+        ood_vectors=ood_vectors,
+        timing=timing,
+        checkpoint_best=checkpoint_best,
+        checkpoint_latest=checkpoint_latest,
     )
 
 

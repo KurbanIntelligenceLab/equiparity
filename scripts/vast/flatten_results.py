@@ -20,9 +20,22 @@ from pathlib import Path
 import yaml
 
 _COLS = [
-    "run_label", "core", "parity", "target", "seed", "epochs_run",
-    "val_mae", "test_mae", "ood_false_flag", "ood_median", "ood_max",
-    "n_params", "git_sha", "git_dirty", "box", "experiment_id",
+    "run_label",
+    "core",
+    "parity",
+    "target",
+    "seed",
+    "epochs_run",
+    "val_mae",
+    "test_mae",
+    "ood_false_flag",
+    "ood_median",
+    "ood_max",
+    "n_params",
+    "git_sha",
+    "git_dirty",
+    "box",
+    "experiment_id",
 ]
 
 

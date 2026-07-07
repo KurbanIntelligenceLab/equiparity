@@ -149,5 +149,23 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
         value = getattr(result, field, None)
         if value is not None:
             metrics[field] = value
+    # Reviewer instrumentation: both-variant OOD curves/distributions + wall-clock timing.
+    for field in ("ood_variants", "timing"):
+        value = getattr(result, field, None)
+        if value is not None:
+            metrics[field] = value
     (run_dir / "metrics.json").write_text(json.dumps(metrics, indent=2, sort_keys=True) + "\n")
+
+    # Per-structure OOD violation vectors (offline threshold curves + histograms).
+    import numpy as np
+
+    for variant, vec in (getattr(result, "ood_vectors", None) or {}).items():
+        np.save(run_dir / f"ood_violations_{variant}.npy", np.asarray(vec))
+    # Checkpoints: best-val (re-eval) + latest (model+optimizer+epoch, resumable for more training).
+    import torch
+
+    if getattr(result, "checkpoint_best", None) is not None:
+        torch.save(result.checkpoint_best, run_dir / "checkpoint_best.pt")
+    if getattr(result, "checkpoint_latest", None) is not None:
+        torch.save(result.checkpoint_latest, run_dir / "checkpoint_latest.pt")
     return run_dir

@@ -68,8 +68,10 @@ def main() -> None:
         positions=np.concatenate(out_pos).astype(np.float64),
         cells=np.stack(out_cells).astype(np.float64),
     )
-    print(f"idealized {len(out_ids)} OOD structures (symprec={OOD_SYMPREC}); "
-          f"{failed} kept raw (spglib refine failed). Backup: *_raw.npz")
+    print(
+        f"idealized {len(out_ids)} OOD structures (symprec={OOD_SYMPREC}); "
+        f"{failed} kept raw (spglib refine failed). Backup: *_raw.npz"
+    )
 
 
 if __name__ == "__main__":

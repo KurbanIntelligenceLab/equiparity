@@ -158,11 +158,34 @@ class MACETensorModel(torch.nn.Module):
 
         self.backbone = build_mace_matched(config, mode)
         self.output_irreps = o3.Irreps(output_irreps(o3_output_irreps, mode))
-        self._probe_name = MACE_PROBE_LAYER
+        # The parity gate probes interactions.0 (any layer proves equivariance), but a tensor HEAD
+        # needs learned angular features: probe the DEEPEST interaction whose linear still carries
+        # l>0 (mirrors NequIP's penultimate / Allegro's deepest-with-l>0). Reading interactions.0
+        # was ~6x undertrained for the dipole (shallow features); deeper fixes accuracy and cannot
+        # affect the O(3) zero (parity cancellation is structural at every layer).
+        self._probe_name = self._deepest_tensor_probe()
         self._probe_module = self._find_probe(self._probe_name)
         self.readout = o3.Linear(self._probe_module.irreps_out, self.output_irreps)
         readout_dtype = torch.float32 if config.model_dtype == "float32" else torch.float64
         self.readout = self.readout.to(readout_dtype)
+
+    def _deepest_tensor_probe(self) -> str:
+        """Return the deepest ``interactions.{i}.linear`` whose output irreps carry l>0."""
+        from e3nn import o3
+
+        best_idx, best_name = -1, None
+        for name, module in self.backbone.named_modules():
+            if not (".interactions." in f".{name}" and name.endswith(".linear")):
+                continue
+            irreps = getattr(module, "irreps_out", None)
+            if irreps is None:
+                continue
+            if not any(ir.ir.l > 0 for ir in o3.Irreps(irreps)):
+                continue
+            idx = int(name.split("interactions.")[1].split(".")[0])
+            if idx > best_idx:
+                best_idx, best_name = idx, name.split("backbone.")[-1]
+        return best_name if best_name is not None else MACE_PROBE_LAYER
 
     def _find_probe(self, name: str):  # noqa: ANN202
         for module_name, module in self.backbone.named_modules():

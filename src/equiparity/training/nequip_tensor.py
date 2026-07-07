@@ -8,7 +8,9 @@ spurious nonzero tensor. The violation magnitude is ``||predicted tensor||`` per
 
 from __future__ import annotations
 
+import time
 from dataclasses import dataclass
+from pathlib import Path
 
 import numpy as np
 import torch
@@ -26,8 +28,16 @@ from equiparity.training.nequip_data import (
     move_batch,
     to_atomic_data,
 )
+from equiparity.training.ood_eval import evaluate_ood_variants
 
 _VOIGT_SHAPE = {"piezoelectric": (3, 6), "elastic": (6, 6)}
+
+
+def _raw_variant(ood_npz: str) -> str | None:
+    """Sibling raw OOD npz: ``..._processed.npz`` -> ``..._processed_raw.npz`` (None if absent)."""
+    p = Path(ood_npz)
+    raw = p.with_name(p.stem + "_raw" + p.suffix)
+    return str(raw) if raw.exists() else None
 
 
 def periodic_type_map(max_z: int = 100) -> tuple[tuple[str, ...], dict[int, int]]:
@@ -97,6 +107,13 @@ class TensorRunResult:
     ood_violation_median: float | None = None
     ood_violation_max: float | None = None
     ood_false_flag_fraction: float | None = None
+    # Reviewer instrumentation (Checkpoint 7): both OOD variants w/ threshold curves + distros,
+    # per-structure vectors (offline histograms), wall-clock timing, and checkpoints.
+    ood_variants: dict[str, object] | None = None  # {variant: violation_stats(...)}
+    ood_vectors: dict[str, object] | None = None  # {variant: np.ndarray of magnitudes}
+    timing: dict[str, float] | None = None  # train/eval/ood seconds, throughput, peak mem
+    checkpoint_best: dict[str, object] | None = None  # best-val model state_dict
+    checkpoint_latest: dict[str, object] | None = None  # model+optimizer+epoch (resumable)
 
 
 def _irreps_targets(dataset: CrystalDataset, target: str, kind: str) -> np.ndarray:
@@ -189,7 +206,21 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
     loss_fn = torch.nn.MSELoss()
     batch_size = config.training.batch_size
 
-    for _ in range(config.training.epochs):
+    def evaluate(ds: CrystalDataset) -> MetricSummary:
+        preds = predict_tensors(
+            model, ds, z_map, r_max=r_max, device=device, dtype=dtype, batch_size=batch_size
+        )
+        preds = preds * scale
+        targets = _irreps_targets(ds, config.target, kind)
+        return regression_metrics(preds, targets)
+
+    # ---- train with timing + best-val checkpoint tracking ----
+    if device.type == "cuda":
+        torch.cuda.reset_peak_memory_stats()
+    t_train = time.perf_counter()
+    ckpt_every = max(1, config.training.epochs // 10)
+    best_val, checkpoint_best = float("inf"), None
+    for epoch in range(config.training.epochs):
         model.train()
         order = np.random.permutation(len(train_graphs))
         for start in range(0, len(order), batch_size):
@@ -201,34 +232,73 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+        if (epoch + 1) % ckpt_every == 0 or epoch == config.training.epochs - 1:
+            vm = evaluate(val_ds).mae
+            if vm < best_val:
+                best_val = vm
+                checkpoint_best = {
+                    k: v.detach().cpu().clone() for k, v in model.state_dict().items()
+                }
+    train_seconds = time.perf_counter() - t_train
 
-    def evaluate(ds: CrystalDataset) -> MetricSummary:
-        preds = predict_tensors(
-            model, ds, z_map, r_max=r_max, device=device, dtype=dtype, batch_size=batch_size
-        )
-        preds = preds * scale
-        targets = _irreps_targets(ds, config.target, kind)
-        return regression_metrics(preds, targets)
-
+    t_eval = time.perf_counter()
     val, test = evaluate(val_ds), evaluate(test_ds)
+    eval_seconds = time.perf_counter() - t_eval
 
+    # ---- OOD: evaluate on BOTH idealized + raw variants, keep threshold curves + vectors ----
     ood_median = ood_max = ood_ff = None
+    ood_variants = ood_vectors = None
+    ood_seconds = 0.0
     if ood_npz is not None and kind == "piezoelectric":
-        ood = CrystalDataset(load_crystal_dataset(ood_npz))
-        if config.training.max_eval_samples is not None:
-            ids = np.array(
-                [ood[i].identifier for i in range(min(config.training.max_eval_samples, len(ood)))]
+
+        def _ood_violations(npz_path: str) -> np.ndarray:
+            ood = CrystalDataset(load_crystal_dataset(npz_path))
+            if config.training.max_eval_samples is not None:
+                cap = min(config.training.max_eval_samples, len(ood))
+                ids = np.array([ood[i].identifier for i in range(cap)])
+                ood = CrystalDataset(load_crystal_dataset(npz_path), ids)
+            preds = (
+                predict_tensors(
+                    model,
+                    ood,
+                    z_map,
+                    r_max=r_max,
+                    device=device,
+                    dtype=dtype,
+                    batch_size=batch_size,
+                )
+                * scale
             )
-            ood = CrystalDataset(load_crystal_dataset(ood_npz), ids)
-        ood_preds = (
-            predict_tensors(
-                model, ood, z_map, r_max=r_max, device=device, dtype=dtype, batch_size=batch_size
-            )
-            * scale
+            return violation_magnitudes(preds)
+
+        t_ood = time.perf_counter()
+        results = evaluate_ood_variants(
+            _ood_violations, {"idealized": ood_npz, "raw": _raw_variant(ood_npz)}
         )
-        v = violation_magnitudes(ood_preds)
-        ood_median, ood_max = float(np.median(v)), float(v.max())
-        ood_ff = false_flag_fraction(v, threshold=0.01)
+        ood_seconds = time.perf_counter() - t_ood
+        ood_variants = {k: v["stats"] for k, v in results.items()}
+        ood_vectors = {k: v["vector"] for k, v in results.items()}
+        prim = ood_variants.get("idealized") or next(iter(ood_variants.values()))
+        ood_median, ood_max = prim["median"], prim["max"]
+        ood_ff = prim["false_flag_at_0.01"]
+
+    peak_mem = float(torch.cuda.max_memory_allocated() / 1e6) if device.type == "cuda" else 0.0
+    n_train = len(train_graphs)
+    timing = {
+        "train_seconds": train_seconds,
+        "train_seconds_per_epoch": train_seconds / max(1, config.training.epochs),
+        "eval_seconds": eval_seconds,
+        "ood_seconds": ood_seconds,
+        "train_throughput_structs_per_s": n_train
+        * config.training.epochs
+        / max(1e-9, train_seconds),
+        "peak_gpu_mem_mb": peak_mem,
+    }
+    checkpoint_latest = {
+        "model": {k: v.detach().cpu().clone() for k, v in model.state_dict().items()},
+        "optimizer": optimizer.state_dict(),
+        "epoch": config.training.epochs,
+    }
 
     return TensorRunResult(
         val=val,
@@ -238,4 +308,9 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
         ood_violation_median=ood_median,
         ood_violation_max=ood_max,
         ood_false_flag_fraction=ood_ff,
+        ood_variants=ood_variants,
+        ood_vectors=ood_vectors,
+        timing=timing,
+        checkpoint_best=checkpoint_best,
+        checkpoint_latest=checkpoint_latest,
     )
