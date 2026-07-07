@@ -9,6 +9,7 @@ set -uo pipefail
 cd /workspace
 exec > >(tee -a /workspace/grid_run.log) 2>&1
 touch /root/.no_auto_tmux
+chown -R root:root /root/.ssh 2>/dev/null || true
 chmod 700 /root/.ssh 2>/dev/null || true
 chmod 600 /root/.ssh/authorized_keys 2>/dev/null || true
 
