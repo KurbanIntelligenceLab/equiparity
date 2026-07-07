@@ -2,9 +2,11 @@
 
 CliffordSTF (vendored under :mod:`equiparity.models.clifford_stf`) is O(3)-correct via graded
 geometric algebra, NOT e3nn irreps — so it demonstrates the parity finding transcends the e3nn
-framework. Its per-node ``(N, C, 20)`` feature carries Cl(3,0) grades + STF tracks. We build the
-target irreps from two verified base blocks (grade-1 = Cartesian ``1o``; grade-2 bivector Hodge-dual
-= axial ``1e``) plus grade-0 (``0e``), combined by e3nn tensor products:
+framework. We run the backbone with ``stf_mode="none"`` (pure Cl(3,0), per-node ``(N, C, 8)``): the
+STF (spherical-tensor) tracks' ``augmented_product`` couples grades in a parity-blind way and breaks
+O(3)-equivariance (perfect-centro leak ~0.09 vs ~1e-15 without STF), and the head does not use them
+anyway. We build the target irreps from two verified base blocks (grade-1 = Cartesian ``1o``;
+grade-2 bivector Hodge-dual = axial ``1e``) plus grade-0 (``0e``), combined by e3nn tensor products:
 
 - ``0e`` <- grade-0        ``1o`` <- grade-1        ``1e`` <- grade-2 · Hodge
 - ``2e`` <- TP(1e, 1e)     ``2o`` <- TP(1o, 1e)     ``3o`` <- TP(1o, 2e)     ``4e`` <- TP(2e, 2e)
@@ -80,7 +82,7 @@ class CliffordSTFTensorModel(torch.nn.Module):
             n_channels=c,
             n_interactions=config.n_interactions,
             cutoff=config.r_max,
-            stf_mode="stf2+stf3",
+            stf_mode="none",
             direct_forces=True,
             use_adaptive_routing=False,
             use_multiscale=False,

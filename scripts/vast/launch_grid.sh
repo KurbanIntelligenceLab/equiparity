@@ -9,6 +9,7 @@ set -euo pipefail
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/_common.sh"
 
 PROFILE=""; IMAGE=""; MAX_PRICE="1.0"; DISK="40"; GPU="either"; SHARD_INDEX="0"; SHARD_COUNT="1"
+ONSTART_FILE="${_COMMON_DIR}/onstart_grid.sh"
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --profile) PROFILE="$2"; shift 2 ;;
@@ -18,6 +19,7 @@ while [[ $# -gt 0 ]]; do
         --gpu) GPU="$2"; shift 2 ;;
         --shard-index) SHARD_INDEX="$2"; shift 2 ;;
         --shard-count) SHARD_COUNT="$2"; shift 2 ;;
+        --onstart) ONSTART_FILE="$2"; shift 2 ;;
         *) echo "unknown flag: $1" >&2; exit 1 ;;
     esac
 done
@@ -32,7 +34,7 @@ read -r OFFER_ID DPH GPU_NAME < <(vast_find_offer "$GPU" "$MAX_PRICE" "$DISK")
 echo ">>> Cheapest offer: id=${OFFER_ID} \$${DPH}/hr ${GPU_NAME}"
 
 ENV_STR="PROFILE='${PROFILE}' GIT_SHA='${GIT_SHA}' SHARD_INDEX='${SHARD_INDEX}' SHARD_COUNT='${SHARD_COUNT}'"
-ONSTART="$(vast_inject_onstart "${_COMMON_DIR}/onstart_grid.sh" "$ENV_STR")"
+ONSTART="$(vast_inject_onstart "${ONSTART_FILE}" "$ENV_STR")"
 LABEL="equiparity-grid-${PROFILE}-${SHARD_INDEX}of${SHARD_COUNT}"
 INSTANCE_ID="$(vast_create_start "$OFFER_ID" "$IMAGE" "$DISK" "$LABEL" "$ONSTART")"
 [[ -z "${INSTANCE_ID:-}" ]] && { echo "ERROR: instance creation failed" >&2; exit 1; }
