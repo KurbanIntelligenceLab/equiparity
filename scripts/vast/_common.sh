@@ -65,6 +65,8 @@ vast_find_offer() {
     python3 - "$tmp" "$max_price" <<'PY'
 import json, sys, glob, os
 tmp, max_price = sys.argv[1], float(sys.argv[2])
+# Skip known-bad machines (e.g. broken sshd authorized_keys perms). Comma-separated machine_ids.
+excluded = {m.strip() for m in os.environ.get("VAST_EXCLUDE_MACHINES", "").split(",") if m.strip()}
 best = None
 for f in glob.glob(os.path.join(tmp, "*.json")):
     try:
@@ -74,6 +76,8 @@ for f in glob.glob(os.path.join(tmp, "*.json")):
     for o in offers or []:
         dph = o.get("dph_total", o.get("dph"))
         if dph is None or dph >= max_price:
+            continue
+        if str(o.get("machine_id")) in excluded:
             continue
         if best is None or dph < best[1]:
             best = (o["id"], dph, o.get("gpu_name", "?"))
