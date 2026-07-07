@@ -51,10 +51,13 @@ def main() -> None:
         label = metrics.get("run_label") or run_dir.name
         box = run_dir.parent.name
         epochs = metrics.get("epochs_run", 0) or 0
+        # experiment_id is <sha>_<confighash>_<utc_timestamp>; the trailing stamp sorts lexically.
+        ts = run_dir.name.rsplit("_", 1)[-1]
 
-        # Keep the most-trained copy if the same run appears twice (partial + complete fetch).
+        # Same run_label can appear twice (partial fetch, or a re-run like the idealized-OOD piezo
+        # pass). Keep the LATEST by timestamp so re-runs supersede the originals.
         prev = rows.get(label)
-        if prev is not None and (prev.get("epochs_run") or 0) >= epochs:
+        if prev is not None and prev["_ts"] >= ts:
             continue
 
         val = metrics.get("val", {})
@@ -76,11 +79,12 @@ def main() -> None:
             "git_dirty": man.get("git_dirty", ""),
             "box": box,
             "experiment_id": run_dir.name,
+            "_ts": ts,
         }
         shutil.copyfile(run_dir / "metrics.json", flat / f"{label}.json")
 
     with (dest / "summary.csv").open("w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=_COLS)
+        w = csv.DictWriter(f, fieldnames=_COLS, extrasaction="ignore")
         w.writeheader()
         for label in sorted(rows):
             w.writerow(rows[label])
