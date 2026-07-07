@@ -11,15 +11,16 @@ from __future__ import annotations
 
 from pathlib import Path
 
+# Four-core scope (CliffordSTF dropped from the paper — ill-conditioned cubic head; see
+# archive_clifford/ + docs). 7 arms x 4 targets x 3 seeds = 84 runs.
 CORE_PARITY = {
     "nequip": ["o3", "so3"],
     "allegro": ["o3", "so3"],
     "mace": ["o3", "so3"],
     "equiformer_v2": ["so3"],
-    "clifford_stf": ["o3"],
 }
 PROFILE = {  # which docker image runs each core
-    "nequip": "nequip", "allegro": "nequip", "equiformer_v2": "nequip", "clifford_stf": "nequip",
+    "nequip": "nequip", "allegro": "nequip", "equiformer_v2": "nequip",
     "mace": "mace",
 }
 SEEDS = [0, 1, 2]
