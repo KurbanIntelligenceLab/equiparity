@@ -227,7 +227,20 @@ def train_equiformer_dipole(config: ExperimentConfig) -> RunResult:
         model.parameters(), lr=config.training.lr, weight_decay=config.training.weight_decay
     )
     loss_fn = torch.nn.MSELoss()
-    for _ in range(config.training.epochs):
+
+    def evaluate(part):  # noqa: ANN001, ANN202
+        structs, targets = prep(part, config.training.max_eval_samples)
+        preds = _predict(model, structs, r_max, batch_size, device) * scale
+        return regression_metrics(preds, targets)
+
+    from equiparity.training.run_instrument import build_latest, build_timing, state_cpu
+
+    if device.type == "cuda":
+        torch.cuda.reset_peak_memory_stats()
+    t_train = time.perf_counter()
+    ckpt_every = max(1, config.training.epochs // 10)
+    best_val, checkpoint_best = float("inf"), None
+    for epoch in range(config.training.epochs):
         model.train()
         offset = 0
         for batch in _batched(train_structs, r_max, batch_size, device):
@@ -237,17 +250,29 @@ def train_equiformer_dipole(config: ExperimentConfig) -> RunResult:
             loss.backward()
             optimizer.step()
             offset += n
+        if (epoch + 1) % ckpt_every == 0 or epoch == config.training.epochs - 1:
+            vm = evaluate("val").mae
+            if vm < best_val:
+                best_val, checkpoint_best = vm, state_cpu(model)
+    train_seconds = time.perf_counter() - t_train
 
-    def evaluate(part):  # noqa: ANN001, ANN202
-        structs, targets = prep(part, config.training.max_eval_samples)
-        preds = _predict(model, structs, r_max, batch_size, device) * scale
-        return regression_metrics(preds, targets)
-
+    t_eval = time.perf_counter()
+    val, test = evaluate("val"), evaluate("test")
+    eval_seconds = time.perf_counter() - t_eval
     return RunResult(
-        val=evaluate("val"),
-        test=evaluate("test"),
+        val=val,
+        test=test,
         n_params=n_params,
         epochs_run=config.training.epochs,
+        timing=build_timing(
+            train_seconds=train_seconds,
+            eval_seconds=eval_seconds,
+            epochs=config.training.epochs,
+            n_train=len(train_structs),
+            device=device,
+        ),
+        checkpoint_best=checkpoint_best,
+        checkpoint_latest=build_latest(model, optimizer, config.training.epochs),
     )
 
 
@@ -273,7 +298,20 @@ def train_equiformer_scalar(config: ExperimentConfig) -> RunResult:
         model.parameters(), lr=config.training.lr, weight_decay=config.training.weight_decay
     )
     loss_fn = torch.nn.MSELoss()
-    for _ in range(config.training.epochs):
+
+    def evaluate(part):  # noqa: ANN001, ANN202
+        structs, targets = prep(part, config.training.max_eval_samples)
+        preds = _predict(model, structs, r_max, batch_size, device).reshape(-1) * std + mean
+        return regression_metrics(preds.reshape(-1, 1), targets.reshape(-1, 1))
+
+    from equiparity.training.run_instrument import build_latest, build_timing, state_cpu
+
+    if device.type == "cuda":
+        torch.cuda.reset_peak_memory_stats()
+    t_train = time.perf_counter()
+    ckpt_every = max(1, config.training.epochs // 10)
+    best_val, checkpoint_best = float("inf"), None
+    for epoch in range(config.training.epochs):
         model.train()
         offset = 0
         for batch in _batched(train_structs, r_max, batch_size, device):
@@ -284,15 +322,27 @@ def train_equiformer_scalar(config: ExperimentConfig) -> RunResult:
             loss.backward()
             optimizer.step()
             offset += n
+        if (epoch + 1) % ckpt_every == 0 or epoch == config.training.epochs - 1:
+            vm = evaluate("val").mae
+            if vm < best_val:
+                best_val, checkpoint_best = vm, state_cpu(model)
+    train_seconds = time.perf_counter() - t_train
 
-    def evaluate(part):  # noqa: ANN001, ANN202
-        structs, targets = prep(part, config.training.max_eval_samples)
-        preds = _predict(model, structs, r_max, batch_size, device).reshape(-1) * std + mean
-        return regression_metrics(preds.reshape(-1, 1), targets.reshape(-1, 1))
-
+    t_eval = time.perf_counter()
+    val, test = evaluate("val"), evaluate("test")
+    eval_seconds = time.perf_counter() - t_eval
     return RunResult(
-        val=evaluate("val"),
-        test=evaluate("test"),
+        val=val,
+        test=test,
         n_params=n_params,
         epochs_run=config.training.epochs,
+        timing=build_timing(
+            train_seconds=train_seconds,
+            eval_seconds=eval_seconds,
+            epochs=config.training.epochs,
+            n_train=len(train_structs),
+            device=device,
+        ),
+        checkpoint_best=checkpoint_best,
+        checkpoint_latest=build_latest(model, optimizer, config.training.epochs),
     )

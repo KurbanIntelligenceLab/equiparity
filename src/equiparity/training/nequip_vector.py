@@ -130,7 +130,16 @@ def train_dipole(config: ExperimentConfig) -> RunResult:
     loss_fn = torch.nn.MSELoss()
     batch_size = config.training.batch_size
 
-    for _ in range(config.training.epochs):
+    import time
+
+    from equiparity.training.run_instrument import build_latest, build_timing, state_cpu
+
+    if device.type == "cuda":
+        torch.cuda.reset_peak_memory_stats()
+    t_train = time.perf_counter()
+    ckpt_every = max(1, config.training.epochs // 10)
+    best_val, checkpoint_best = float("inf"), None
+    for epoch in range(config.training.epochs):
         model.train()
         order = np.random.permutation(len(train_graphs))
         for start in range(0, len(order), batch_size):
@@ -143,7 +152,28 @@ def train_dipole(config: ExperimentConfig) -> RunResult:
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+        if (epoch + 1) % ckpt_every == 0 or epoch == config.training.epochs - 1:
+            vm = _evaluate(model, val_graphs, val_targets, scale, device, dtype, batch_size).mae
+            if vm < best_val:
+                best_val, checkpoint_best = vm, state_cpu(model)
+    train_seconds = time.perf_counter() - t_train
 
+    t_eval = time.perf_counter()
     val = _evaluate(model, val_graphs, val_targets, scale, device, dtype, batch_size)
     test = _evaluate(model, test_graphs, test_targets, scale, device, dtype, batch_size)
-    return RunResult(val=val, test=test, n_params=n_params, epochs_run=config.training.epochs)
+    eval_seconds = time.perf_counter() - t_eval
+    return RunResult(
+        val=val,
+        test=test,
+        n_params=n_params,
+        epochs_run=config.training.epochs,
+        timing=build_timing(
+            train_seconds=train_seconds,
+            eval_seconds=eval_seconds,
+            epochs=config.training.epochs,
+            n_train=len(train_graphs),
+            device=device,
+        ),
+        checkpoint_best=checkpoint_best,
+        checkpoint_latest=build_latest(model, optimizer, config.training.epochs),
+    )

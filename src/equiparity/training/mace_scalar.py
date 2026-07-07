@@ -104,7 +104,25 @@ def train_mace_scalar(config: ExperimentConfig) -> RunResult:
     loss_fn = torch.nn.MSELoss()
     batch_size = config.training.batch_size
 
-    for _ in range(config.training.epochs):
+    def evaluate(graphs, targets):  # noqa: ANN001, ANN202
+        model.eval()
+        preds = []
+        with torch.no_grad():
+            for batch in _batches(graphs, batch_size, dtype):
+                batch = {k: (v.to(device) if torch.is_tensor(v) else v) for k, v in batch.items()}
+                preds.append(_energy(model, batch).view(-1).cpu().numpy() * std + mean)
+        return regression_metrics(np.concatenate(preds).reshape(-1, 1), targets.reshape(-1, 1))
+
+    import time
+
+    from equiparity.training.run_instrument import build_latest, build_timing, state_cpu
+
+    if device.type == "cuda":
+        torch.cuda.reset_peak_memory_stats()
+    t_train = time.perf_counter()
+    ckpt_every = max(1, config.training.epochs // 10)
+    best_val, checkpoint_best = float("inf"), None
+    for epoch in range(config.training.epochs):
         model.train()
         offset = 0
         for batch in _batches(train_graphs, batch_size, dtype):
@@ -116,19 +134,27 @@ def train_mace_scalar(config: ExperimentConfig) -> RunResult:
             loss.backward()
             optimizer.step()
             offset += n
+        if (epoch + 1) % ckpt_every == 0 or epoch == config.training.epochs - 1:
+            vm = evaluate(val_graphs, val_targets).mae
+            if vm < best_val:
+                best_val, checkpoint_best = vm, state_cpu(model)
+    train_seconds = time.perf_counter() - t_train
 
-    def evaluate(graphs, targets):  # noqa: ANN001, ANN202
-        model.eval()
-        preds = []
-        with torch.no_grad():
-            for batch in _batches(graphs, batch_size, dtype):
-                batch = {k: (v.to(device) if torch.is_tensor(v) else v) for k, v in batch.items()}
-                preds.append(_energy(model, batch).view(-1).cpu().numpy() * std + mean)
-        return regression_metrics(np.concatenate(preds).reshape(-1, 1), targets.reshape(-1, 1))
-
+    t_eval = time.perf_counter()
+    val, test = evaluate(val_graphs, val_targets), evaluate(test_graphs, test_targets)
+    eval_seconds = time.perf_counter() - t_eval
     return RunResult(
-        val=evaluate(val_graphs, val_targets),
-        test=evaluate(test_graphs, test_targets),
+        val=val,
+        test=test,
         n_params=n_params,
         epochs_run=config.training.epochs,
+        timing=build_timing(
+            train_seconds=train_seconds,
+            eval_seconds=eval_seconds,
+            epochs=config.training.epochs,
+            n_train=len(train_graphs),
+            device=device,
+        ),
+        checkpoint_best=checkpoint_best,
+        checkpoint_latest=build_latest(model, optimizer, config.training.epochs),
     )

@@ -261,7 +261,18 @@ def train_mace_dipole(config: ExperimentConfig) -> RunResult:
     loss_fn = torch.nn.MSELoss()
     batch_size = config.training.batch_size
 
-    for _ in range(config.training.epochs):
+    def evaluate(graphs, targets):  # noqa: ANN001, ANN202
+        preds = _predict(model, graphs, batch_size, dtype, device) * scale
+        return regression_metrics(preds, targets)
+
+    from equiparity.training.run_instrument import build_latest, build_timing, state_cpu
+
+    if device.type == "cuda":
+        torch.cuda.reset_peak_memory_stats()
+    t_train = time.perf_counter()
+    ckpt_every = max(1, config.training.epochs // 10)
+    best_val, checkpoint_best = float("inf"), None
+    for epoch in range(config.training.epochs):
         model.train()
         offset = 0
         for batch in _batches(train_graphs, batch_size, dtype):
@@ -272,14 +283,27 @@ def train_mace_dipole(config: ExperimentConfig) -> RunResult:
             loss.backward()
             optimizer.step()
             offset += n
+        if (epoch + 1) % ckpt_every == 0 or epoch == config.training.epochs - 1:
+            vm = evaluate(val_graphs, val_targets).mae
+            if vm < best_val:
+                best_val, checkpoint_best = vm, state_cpu(model)
+    train_seconds = time.perf_counter() - t_train
 
-    def evaluate(graphs, targets):  # noqa: ANN001, ANN202
-        preds = _predict(model, graphs, batch_size, dtype, device) * scale
-        return regression_metrics(preds, targets)
-
+    t_eval = time.perf_counter()
+    val, test = evaluate(val_graphs, val_targets), evaluate(test_graphs, test_targets)
+    eval_seconds = time.perf_counter() - t_eval
     return RunResult(
-        val=evaluate(val_graphs, val_targets),
-        test=evaluate(test_graphs, test_targets),
+        val=val,
+        test=test,
         n_params=n_params,
         epochs_run=config.training.epochs,
+        timing=build_timing(
+            train_seconds=train_seconds,
+            eval_seconds=eval_seconds,
+            epochs=config.training.epochs,
+            n_train=len(train_graphs),
+            device=device,
+        ),
+        checkpoint_best=checkpoint_best,
+        checkpoint_latest=build_latest(model, optimizer, config.training.epochs),
     )
