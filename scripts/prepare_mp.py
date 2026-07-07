@@ -211,6 +211,9 @@ def prepare_ood(mpr) -> None:
             break
     print(f"  verified {len(verified)} centrosymmetric; rejected {leaks} spglib mismatches")
     n = _save_crystal_dataset("mp_ood_centrosymmetric", verified, None, [])
+    # NOTE: raw MP coords deviate from perfect inversion by up to ~symprec, which an O(3)-exact
+    # model with a sensitive head reports as a spurious nonzero piezo response. Idealize the saved
+    # geometries onto their exact space group before use: `python scripts/idealize_ood.py`.
     _write_manifest(
         "mp_ood_centrosymmetric",
         "Materials Project materials.summary (centrosymmetric space groups, band_gap>0.1 eV)",
