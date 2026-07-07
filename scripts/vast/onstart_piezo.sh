@@ -8,6 +8,10 @@ set -uo pipefail
 cd /workspace
 exec > >(tee -a /workspace/grid_run.log) 2>&1
 touch /root/.no_auto_tmux
+# Some vast hosts provision /root/.ssh/authorized_keys with perms sshd's StrictModes rejects,
+# breaking SSH (and thus result fetch). Repair it here — the onstart runs regardless of SSH.
+chmod 700 /root/.ssh 2>/dev/null || true
+chmod 600 /root/.ssh/authorized_keys 2>/dev/null || true
 PROFILE="${PROFILE:-nequip}"
 SHARD_INDEX="${SHARD_INDEX:-0}"
 SHARD_COUNT="${SHARD_COUNT:-1}"
