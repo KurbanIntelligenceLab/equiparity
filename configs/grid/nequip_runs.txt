@@ -58,15 +58,3 @@ configs/grid/equiformer_v2_elastic_so3_seed2.yaml
 configs/grid/equiformer_v2_piezoelectric_so3_seed0.yaml
 configs/grid/equiformer_v2_piezoelectric_so3_seed1.yaml
 configs/grid/equiformer_v2_piezoelectric_so3_seed2.yaml
-configs/grid/clifford_stf_U0_o3_seed0.yaml
-configs/grid/clifford_stf_U0_o3_seed1.yaml
-configs/grid/clifford_stf_U0_o3_seed2.yaml
-configs/grid/clifford_stf_dipole_o3_seed0.yaml
-configs/grid/clifford_stf_dipole_o3_seed1.yaml
-configs/grid/clifford_stf_dipole_o3_seed2.yaml
-configs/grid/clifford_stf_elastic_o3_seed0.yaml
-configs/grid/clifford_stf_elastic_o3_seed1.yaml
-configs/grid/clifford_stf_elastic_o3_seed2.yaml
-configs/grid/clifford_stf_piezoelectric_o3_seed0.yaml
-configs/grid/clifford_stf_piezoelectric_o3_seed1.yaml
-configs/grid/clifford_stf_piezoelectric_o3_seed2.yaml
