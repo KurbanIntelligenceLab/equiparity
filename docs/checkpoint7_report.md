@@ -161,11 +161,14 @@ Reporting them as significance would be a mistake. Instead:
 core: |Δ/σ| ≤ 0.94, with inconsistent sign. On the piezoelectric tensor, O(3) is *better*
 in-distribution, consistently: Δ/σ = +4.09 (NequIP), +3.43 (Allegro), +4.55 (MACE).
 
-**The Allegro U₀ gap — resolved as noise.** O(3) 31.08 ± **12.89** meV vs SO(3) 26.98 ± 4.88 meV. The
-4.10 meV difference is **0.42σ**, seed-level p = 0.75, and it favours **SO(3)** — the opposite
+**The Allegro U₀ gap — resolved as noise.** O(3) 31.08 ± **12.89** eV vs SO(3) 26.98 ± 4.88 eV. The
+4.10 eV difference is **0.42σ**, seed-level p = 0.75, and it favours **SO(3)** — the opposite
 direction to any parity-based explanation. The O(3) arm's own seed spread is three times the gap.
 There is no gap. What the data show is that the U₀ setup is under-converged with high seed variance
-across all cores (NequIP O(3) s.d. = 22.5), which is worth noting but is not a parity effect.
+across all cores (NequIP O(3) s.d. = 22.5 eV), which is worth noting but is not a parity effect.
+
+(Units: U₀ is QM9 **total** internal energy in **eV** — mean −11,178.97, s.d. 1,085.57 eV — not the
+atomisation energy in meV that the work plan originally specified. See `METHODS.md` §5.1.)
 
 ### 4b. The MACE dipole anomaly — a bug, now fixed
 
@@ -257,3 +260,32 @@ idealized/raw split in item 2 exists for exactly this reason and is now permanen
 | 5 — Equiformer v1, dipole reframing, process note | Done |
 
 Both blocking items are cleared. Figures and writing are unblocked.
+
+---
+
+## Addendum — corrections made while preparing METHODS.md / RESULTS.md
+
+Three defects in this report and in the first draft of `RESULTS.md` were found and fixed during the
+paper write-up. They are recorded here rather than silently overwritten.
+
+1. **U₀ units.** Reported as meV; the target is QM9 **total** internal energy in **eV**
+   (mean −11,178.97, s.d. 1,085.57 eV). The Allegro difference is 4.10 **eV**, not 4.10 meV. The
+   conclusion (0.42σ, seed noise, favours SO(3)) is unchanged. Corrected above.
+
+2. **Timing was hardware-confounded.** 60 runs ran on an RTX 5090; all 24 MACE runs ran on an
+   RTX PRO 6000 Blackwell. Cross-core wall-clock comparisons are therefore not like-for-like. Timing is
+   now reported per GPU class (`RESULTS.md` §10, `docs/results/a4_compute.md`).
+
+3. **Item 2's finding was stated too weakly.** This report described the O(3) raw-variant false-flag
+   (≤ 0.00033) as negligible degradation. A subsequent spglib audit shows it is not degradation at all:
+   every raw O(3) flag, across all cores and seeds, is the same crystal (**mp-1227949**), whose raw
+   coordinates are space group **P1 — non-centrosymmetric — at any tolerance tighter than the
+   `symprec = 1e-3` used to build the OOD set. For that structure a nonzero piezoelectric tensor is not
+   symmetry-forbidden. More generally, only 97.8 % of raw structures are centrosymmetric at
+   `symprec = 1e-4` (93.5 % at 1e-5), and the O(3) raw false-flag fraction at threshold 1e-4
+   (2.45–2.82 %) agrees in magnitude with that 2.2 % non-centrosymmetric population. See
+   `docs/results/a5_ood_symmetry.md`.
+
+A further caveat, not a defect: **U₀ absolute accuracy is not competitive** (total energy, no
+atomic-reference subtraction, 25k subset, no LR schedule). The U₀ null remains valid as a *comparative*
+result because both arms share the configuration exactly. See `METHODS.md` §5.1.

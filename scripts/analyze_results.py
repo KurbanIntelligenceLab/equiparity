@@ -381,6 +381,406 @@ def timing_table(runs_by_key) -> str:
     return "\n".join(lines)
 
 
+# --------------------------------------------------------------------------------------
+# appendix analyses (added for the paper write-up)
+# --------------------------------------------------------------------------------------
+ROOT = Path(__file__).resolve().parent.parent
+DOCS = ROOT / "docs" / "results"
+PIEZO_NPZ = ROOT / "data" / "raw" / "mp" / "mp_piezoelectric_processed.npz"
+PIEZO_SPLIT = ROOT / "data" / "splits" / "mp_piezoelectric_split.npz"
+OOD_NPZ = ROOT / "data" / "raw" / "mp" / "mp_ood_centrosymmetric_processed.npz"
+
+# Which GPU ran which core (from the per-run manifests); timing is not comparable across classes.
+GPU_OF_CORE = {
+    "nequip": "RTX 5090",
+    "allegro": "RTX 5090",
+    "equiformer_v2": "RTX 5090",
+    "mace": "RTX PRO 6000 Blackwell WS",
+}
+# vast.ai offer-selection ceiling; the price actually paid was never persisted.
+MAX_DPH = 1.00
+
+
+def capacity_table(runs_by_key) -> tuple[str, dict]:
+    """Parameter counts per arm. SO(3) is never smaller than O(3), so capacity is not the cause."""
+    lines = ["| Core | Target | O(3) params | SO(3) params | SO(3)/O(3) |", "|---|---|---|---|---|"]
+    stats = {}
+    for core in CORES:
+        for t in TARGETS:
+            o3 = [
+                runs_by_key[(core, "o3", t, s)]["n_params"]
+                for s in SEEDS
+                if (core, "o3", t, s) in runs_by_key
+            ]
+            so3 = [
+                runs_by_key[(core, "so3", t, s)]["n_params"]
+                for s in SEEDS
+                if (core, "so3", t, s) in runs_by_key
+            ]
+            if not so3:
+                continue
+            if not o3:
+                lines.append(f"| {CORE_LABEL[core]} | {t} | - (SO(3)-only) | {so3[0]:,} | - |")
+                continue
+            ratio = so3[0] / o3[0]
+            stats[f"{core}/{t}"] = dict(o3=o3[0], so3=so3[0], ratio=ratio)
+            lines.append(f"| {CORE_LABEL[core]} | {t} | {o3[0]:,} | {so3[0]:,} | {ratio:.3f} |")
+    return "\n".join(lines), stats
+
+
+def accuracy_full_table(runs_by_key) -> str:
+    """Validation and test, MAE and RMSE, mean +/- s.d. over seeds."""
+    lines = [
+        "| Core | Parity | Target | val MAE | val RMSE | test MAE | test RMSE |",
+        "|---|---|---|---|---|---|---|",
+    ]
+    for core in CORES:
+        for parity in ("o3", "so3"):
+            for t in TARGETS:
+                rows = [
+                    runs_by_key[(core, parity, t, s)]
+                    for s in SEEDS
+                    if (core, parity, t, s) in runs_by_key
+                ]
+                if not rows:
+                    continue
+                cells = [
+                    fmt(*ms([r[split][metric] for r in rows]))
+                    for split in ("val", "test")
+                    for metric in ("mae", "rmse")
+                ]
+                vm, vr, tm, tr = cells[0], cells[1], cells[2], cells[3]
+                lines.append(
+                    f"| {CORE_LABEL[core]} | {parity.upper()} | {t} | {vm} | {vr} | {tm} | {tr} |"
+                )
+    return "\n".join(lines)
+
+
+def target_calibration() -> tuple[str, dict]:
+    """The real piezoelectric tensor magnitudes, for scale reference against OOD violations."""
+    data = np.load(PIEZO_NPZ, allow_pickle=True)
+    mags = np.sqrt((np.asarray(data["piezoelectric"], dtype=float) ** 2).sum(axis=1))
+    split = np.load(PIEZO_SPLIT, allow_pickle=True)
+    ids = np.asarray([str(x) for x in data["ids"]])
+    train_ids = np.asarray([str(x) for x in split["train"]])
+    mask = np.isin(ids, train_ids)
+    if not mask.any():  # split stored as positional indices
+        mask = np.zeros(ids.size, dtype=bool)
+        mask[np.asarray(split["train"], dtype=int)] = True
+
+    stats, lines = (
+        {},
+        [
+            "| Subset | n | p5 | median | p95 | max | fraction > 0.01 C/m² |",
+            "|---|---|---|---|---|---|---|",
+        ],
+    )
+    for label, sel in (("train split", mask), ("all labelled", np.ones(ids.size, dtype=bool))):
+        m = mags[sel]
+        p5, p50, p95 = (float(x) for x in np.percentile(m, [5, 50, 95]))
+        frac = float((m > 0.01).mean())
+        stats[label] = dict(
+            n=int(sel.sum()),
+            p5=p5,
+            median=p50,
+            p95=p95,
+            max=float(m.max()),
+            fraction_above_0p01=frac,
+        )
+        lines.append(
+            f"| {label} | {int(sel.sum())} | {p5:.4f} | {p50:.4f} | {p95:.4f} "
+            f"| {m.max():.3f} | {frac:.4f} |"
+        )
+    return "\n".join(lines), stats
+
+
+def violation_agreement(vecs) -> tuple[str, dict]:
+    """Is the SO(3) violation a property of the structure, or of the model/seed?"""
+    from scipy.stats import spearmanr
+
+    stats: dict[str, object] = {}
+    seed_lines = ["| Core | mean seed-pair Spearman rho | min |", "|---|---|---|"]
+    for core in CORES:
+        vs = [
+            vecs[(core, "so3", s, "idealized")]
+            for s in SEEDS
+            if (core, "so3", s, "idealized") in vecs
+        ]
+        if len(vs) < 2:
+            continue
+        rs = [
+            float(spearmanr(vs[i], vs[j]).statistic)
+            for i in range(len(vs))
+            for j in range(i + 1, len(vs))
+        ]
+        stats[f"seed_rho/{core}"] = dict(mean=float(np.mean(rs)), min=float(min(rs)))
+        seed_lines.append(f"| {CORE_LABEL[core]} | {np.mean(rs):.3f} | {min(rs):.3f} |")
+
+    cross_lines = [
+        "| Core A | Core B | Spearman rho (mean over seeds) | flag-set Jaccard (mean) | (min) |",
+        "|---|---|---|---|---|",
+    ]
+    for i in range(len(CORES)):
+        for j in range(i + 1, len(CORES)):
+            a_core, b_core = CORES[i], CORES[j]
+            rhos, jacs = [], []
+            for s in SEEDS:
+                a = vecs.get((a_core, "so3", s, "idealized"))
+                b = vecs.get((b_core, "so3", s, "idealized"))
+                if a is None or b is None:
+                    continue
+                rhos.append(float(spearmanr(a, b).statistic))
+                fa, fb = a > 0.01, b > 0.01
+                jacs.append(float((fa & fb).sum() / (fa | fb).sum()))
+            if not rhos:
+                continue
+            stats[f"cross/{a_core}-{b_core}"] = dict(
+                rho_mean=float(np.mean(rhos)),
+                jaccard_mean=float(np.mean(jacs)),
+                jaccard_min=float(min(jacs)),
+            )
+            cross_lines.append(
+                f"| {CORE_LABEL[a_core]} | {CORE_LABEL[b_core]} | {np.mean(rhos):+.3f} "
+                f"| {np.mean(jacs):.3f} | {min(jacs):.3f} |"
+            )
+    md = (
+        "### Seed-to-seed reproducibility of the SO(3) violation vector\n\n"
+        + "\n".join(seed_lines)
+        + "\n\n### Agreement between independent SO(3) architectures\n\n"
+        + "\n".join(cross_lines)
+    )
+    return md, stats
+
+
+def o3_floor_table(vecs) -> tuple[str, dict]:
+    """The O(3) residual, pooled over seeds -- a numerical-precision floor, not a symmetry error."""
+    lines = ["| Core | median | p95 | max | (idealized, 3 seeds pooled) |", "|---|---|---|---|---|"]
+    stats = {}
+    for core in ("nequip", "allegro", "mace"):
+        pooled = [
+            vecs[(core, "o3", s, "idealized")]
+            for s in SEEDS
+            if (core, "o3", s, "idealized") in vecs
+        ]
+        if not pooled:
+            continue
+        a = np.concatenate(pooled)
+        med, p95, mx = float(np.median(a)), float(np.percentile(a, 95)), float(a.max())
+        stats[core] = dict(median=med, p95=p95, max=mx)
+        lines.append(f"| {CORE_LABEL[core]} | {med:.3e} | {p95:.3e} | {mx:.3e} | |")
+    return "\n".join(lines), stats
+
+
+def size_dependence(vecs) -> tuple[str, dict]:
+    """||T|| sums over atoms, so it is extensive: a fixed absolute threshold is size-dependent."""
+    from scipy.stats import spearmanr
+
+    n_atoms = np.asarray(np.load(OOD_NPZ, allow_pickle=True)["n_atoms"], dtype=float)
+    lines = ["| Core | Parity | Spearman rho(violation, n_atoms) |", "|---|---|---|"]
+    stats = {}
+    for core in CORES:
+        for parity in ("o3", "so3"):
+            vs = [
+                vecs[(core, parity, s, "idealized")]
+                for s in SEEDS
+                if (core, parity, s, "idealized") in vecs
+            ]
+            if not vs:
+                continue
+            rho = float(spearmanr(np.mean(vs, axis=0), n_atoms).statistic)
+            stats[f"{core}/{parity}"] = rho
+            lines.append(f"| {CORE_LABEL[core]} | {parity.upper()} | {rho:+.3f} |")
+    return "\n".join(lines), stats
+
+
+def compute_table(runs_by_key) -> tuple[str, dict]:
+    """Measured compute. Reported per GPU class; the two classes are not interchangeable."""
+    total_train = sum(m["timing"]["train_seconds"] for m in runs_by_key.values())
+    total_eval = sum(m["timing"]["eval_seconds"] for m in runs_by_key.values())
+    total_ood = sum(m["timing"].get("ood_seconds", 0.0) for m in runs_by_key.values())
+
+    per_core, lines = (
+        {},
+        [
+            "| Core | GPU | runs | train (h) | s/epoch | throughput (struct/s) "
+            "| peak GPU (MB) | eval (s) | OOD (s) |",
+            "|---|---|---|---|---|---|---|---|---|",
+        ],
+    )
+    for core in CORES:
+        rows = [m for (c, _, _, _), m in runs_by_key.items() if c == core]
+        t = [r["timing"] for r in rows]
+        train_h = sum(x["train_seconds"] for x in t) / 3600
+        spe = ms([x["train_seconds_per_epoch"] for x in t])
+        thr = ms([x["train_throughput_structs_per_s"] for x in t])
+        mem = ms([x["peak_gpu_mem_mb"] for x in t])
+        ev = ms([x["eval_seconds"] for x in t])
+        od = ms([x.get("ood_seconds", 0.0) for x in t])
+        per_core[core] = dict(
+            gpu=GPU_OF_CORE[core],
+            runs=len(rows),
+            train_hours=train_h,
+            s_per_epoch=spe[0],
+            throughput=thr[0],
+            peak_gpu_mb=mem[0],
+            eval_seconds=ev[0],
+            ood_seconds=od[0],
+        )
+        lines.append(
+            f"| {CORE_LABEL[core]} | {GPU_OF_CORE[core]} | {len(rows)} | {train_h:.2f} "
+            f"| {spe[0]:.1f} ± {spe[1]:.1f} | {thr[0]:.1f} ± {thr[1]:.1f} | {mem[0]:.0f} "
+            f"| {ev[0]:.1f} | {od[0]:.1f} |"
+        )
+
+    by_gpu: dict[str, float] = {}
+    for rec in per_core.values():
+        by_gpu[rec["gpu"]] = by_gpu.get(rec["gpu"], 0.0) + rec["train_hours"]
+    gpu_lines = ["| GPU | runs | train (h) |", "|---|---|---|"]
+    for gpu in sorted(by_gpu):
+        n = sum(r["runs"] for r in per_core.values() if r["gpu"] == gpu)
+        gpu_lines.append(f"| {gpu} | {n} | {by_gpu[gpu]:.2f} |")
+
+    stats = dict(
+        total_train_seconds=total_train,
+        total_train_hours=total_train / 3600,
+        total_eval_seconds=total_eval,
+        total_ood_seconds=total_ood,
+        per_core=per_core,
+        train_hours_by_gpu=by_gpu,
+        cost_upper_bound_usd=(total_train / 3600) * MAX_DPH,
+        cost_note=(
+            "price actually paid was not recorded; launch_grid.sh selects the cheapest "
+            f"offer with dph < ${MAX_DPH:.2f}/hr, so this is an upper bound, not an estimate"
+        ),
+    )
+    md = (
+        f"Total training: **{total_train:,.1f} s = {total_train / 3600:.2f} GPU-hours** "
+        "across 84 runs.\n"
+        f"Total evaluation: {total_eval:,.1f} s. Total OOD evaluation: {total_ood:,.1f} s.\n\n"
+        "### By GPU class\n\n" + "\n".join(gpu_lines) + "\n\n"
+        "The two GPU classes are not interchangeable; per-core wall-clock is not a like-for-like\n"
+        "architecture comparison.\n\n### Per core\n\n" + "\n".join(lines)
+    )
+    return md, stats
+
+
+def threshold_tables(runs_by_key) -> str:
+    """The full 25-point false-flag curve as markdown, per arm and variant."""
+    out = []
+    for variant in VARIANTS:
+        rows, thr = {}, None
+        for core in CORES:
+            for parity in ("o3", "so3"):
+                runs = [
+                    runs_by_key[(core, parity, "piezoelectric", s)]
+                    for s in SEEDS
+                    if (core, parity, "piezoelectric", s) in runs_by_key
+                ]
+                if not runs:
+                    continue
+                thr = np.asarray(runs[0]["ood_variants"][variant]["thresholds"])
+                ff = np.stack(
+                    [np.asarray(r["ood_variants"][variant]["false_flag_fraction"]) for r in runs]
+                )
+                rows[f"{CORE_LABEL[core]} {parity.upper()}"] = ff.mean(0)
+        header = "| threshold (C/m²) | " + " | ".join(rows) + " |"
+        sep = "|---" * (len(rows) + 1) + "|"
+        body = [
+            f"| {t:.3e} | " + " | ".join(f"{v[i]:.4f}" for v in rows.values()) + " |"
+            for i, t in enumerate(thr)
+        ]
+        out.append(f"## {variant}\n\n" + "\n".join([header, sep, *body]))
+    return "\n\n".join(out)
+
+
+def distribution_tables(runs_by_key) -> str:
+    """Percentiles / IQR / max of the violation magnitude, per arm and variant."""
+    lines = [
+        "| Core | Parity | Variant | n | p5 | p25 | median | p75 | p95 | max |",
+        "|---|---|---|---|---|---|---|---|---|---|",
+    ]
+    for core in CORES:
+        for parity in ("o3", "so3"):
+            for variant in VARIANTS:
+                runs = [
+                    runs_by_key[(core, parity, "piezoelectric", s)]
+                    for s in SEEDS
+                    if (core, parity, "piezoelectric", s) in runs_by_key
+                ]
+                if not runs:
+                    continue
+                pcts = np.mean(
+                    [r["ood_variants"][variant]["percentiles_5_25_50_75_95"] for r in runs], axis=0
+                )
+                mx = np.mean([r["ood_variants"][variant]["max"] for r in runs])
+                n = runs[0]["ood_variants"][variant]["n"]
+                cells = " | ".join(f"{p:.3e}" for p in pcts)
+                lines.append(
+                    f"| {CORE_LABEL[core]} | {parity.upper()} | {variant} | {n} | {cells} "
+                    f"| {mx:.3e} |"
+                )
+    return "\n".join(lines)
+
+
+def per_seed_table(runs_by_key) -> str:
+    """Every run, every headline metric -- the reproducibility dump."""
+    lines = [
+        "| Core | Parity | Target | Seed | params | epochs | val MAE | test MAE | test RMSE "
+        "| ff(idealized) | ff(raw) | train (s) |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|",
+    ]
+    for core in CORES:
+        for parity in ("o3", "so3"):
+            for t in TARGETS:
+                for s in SEEDS:
+                    m = runs_by_key.get((core, parity, t, s))
+                    if m is None:
+                        continue
+                    ov = m.get("ood_variants") or {}
+                    ffi = ov.get("idealized", {}).get("false_flag_at_0.01")
+                    ffr = ov.get("raw", {}).get("false_flag_at_0.01")
+                    f = lambda x: "-" if x is None else f"{x:.5f}"  # noqa: E731
+                    lines.append(
+                        f"| {CORE_LABEL[core]} | {parity.upper()} | {t} | {s} | {m['n_params']:,} "
+                        f"| {m['epochs_run']} | {m['val']['mae']:.5g} | {m['test']['mae']:.5g} "
+                        f"| {m['test']['rmse']:.5g} | {f(ffi)} | {f(ffr)} "
+                        f"| {m['timing']['train_seconds']:.0f} |"
+                    )
+    return "\n".join(lines)
+
+
+def write_appendices(runs, vecs, extra) -> None:
+    DOCS.mkdir(parents=True, exist_ok=True)
+    gen = "Generated by `scripts/analyze_results.py`. Do not edit by hand.\n"
+    (DOCS / "a1_per_seed.md").write_text(
+        f"# A1 — Per-run results (all 84 runs)\n\n{gen}\n" + per_seed_table(runs) + "\n"
+    )
+    (DOCS / "a2_threshold_curves.md").write_text(
+        f"# A2 — False-flag fraction vs threshold\n\n{gen}\n"
+        "Mean over 3 seeds. Machine-readable form: `results/threshold_curves.csv`.\n\n"
+        + threshold_tables(runs)
+        + "\n"
+    )
+    (DOCS / "a3_distributions.md").write_text(
+        f"# A3 — Violation-magnitude distributions\n\n{gen}\n"
+        "Per-structure ||T||_F on the 2000 centrosymmetric crystals, whose true tensor is zero.\n\n"
+        "## Percentiles (mean over seeds)\n\n"
+        + distribution_tables(runs)
+        + "\n\n## O(3) residual floor\n\n"
+        + extra["o3_floor_md"]
+        + "\n\n## Scale reference: the real piezoelectric tensors\n\n"
+        + extra["calibration_md"]
+        + "\n\n## Structure- vs model-dependence\n\n"
+        + extra["agreement_md"]
+        + "\n\n## Size dependence of the metric\n\n"
+        + extra["size_md"]
+        + "\n"
+    )
+    (DOCS / "a4_compute.md").write_text(
+        f"# A4 — Compute resources\n\n{gen}\n" + extra["compute_md"] + "\n"
+    )
+
+
 def main() -> None:
     OUT.mkdir(exist_ok=True)
     runs = load_metrics()
@@ -424,6 +824,46 @@ def main() -> None:
             indent=2,
         )
     )
+    # Appendix analyses. Written to a separate json so results/stats.json stays byte-identical.
+    cap_md, cap_stats = capacity_table(runs)
+    calib_md, calib_stats = target_calibration()
+    agree_md, agree_stats = violation_agreement(vecs)
+    floor_md, floor_stats = o3_floor_table(vecs)
+    size_md, size_stats = size_dependence(vecs)
+    comp_md, comp_stats = compute_table(runs)
+
+    write_appendices(
+        runs,
+        vecs,
+        dict(
+            o3_floor_md=floor_md,
+            calibration_md=calib_md,
+            agreement_md=agree_md,
+            size_md=size_md,
+            compute_md=comp_md,
+        ),
+    )
+    (OUT / "appendix_stats.json").write_text(
+        json.dumps(
+            dict(
+                capacity=cap_stats,
+                target_calibration=calib_stats,
+                violation_agreement=agree_stats,
+                o3_floor=floor_stats,
+                size_dependence=size_stats,
+                compute=comp_stats,
+            ),
+            indent=2,
+        )
+    )
+    (OUT / "tables_extra.md").write_text(
+        "# Supplementary tables\n\n## Parameter counts (capacity control)\n\n"
+        + cap_md
+        + "\n\n## Accuracy: val and test, MAE and RMSE\n\n"
+        + accuracy_full_table(runs)
+        + "\n"
+    )
+
     print(acc_md)
     print()
     print(ood_md)
@@ -436,6 +876,8 @@ def main() -> None:
             f"  {k}: max_p={v['max_p']:.3e}  frac(o3<so3)="
             f"{np.mean([d['frac_o3_lt_so3'] for d in v['detail']]):.4f}"
         )
+    print()
+    print(comp_md.splitlines()[0])
 
 
 if __name__ == "__main__":

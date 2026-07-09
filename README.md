@@ -11,6 +11,22 @@ for odd-parity tensors) and turns it into a practitioner rule.
 The full scientific plan, scope, experiments, gates, and checkpoints live in
 [`docs/parity_work_plan.md`](docs/parity_work_plan.md).
 
+## The study
+
+| Document | Contents |
+|---|---|
+| [`INTRO.md`](INTRO.md) | the physical constraint, the mechanism under test, the design |
+| [`METHODS.md`](METHODS.md) | data, models, parity toggle, metrics, training, verification gate |
+| [`RESULTS.md`](RESULTS.md) | all measurements as tables, with limitations |
+| [`docs/results/`](docs/results/) | appendices: per-run values, threshold curves, distributions, compute, symmetry audit |
+
+Regenerate every table and figure:
+
+```bash
+python3 scripts/analyze_results.py                            # tables, curves, appendices A1–A4
+uv run --extra nequip python scripts/analyze_ood_symmetry.py  # appendix A5 (needs spglib)
+```
+
 ## Installation
 
 Requires Python 3.12 and [uv](https://docs.astral.sh/uv/).
