@@ -108,7 +108,7 @@ Pooled over 3 seeds, idealized set:
 
 | Core | median | p95 | max |
 |---|---|---|---|
-| NequIP | 3.13e-07 | 1.07e-06 | 5.53e-04 |
+| NequIP | 3.13e-07 | 1.06e-06 | 5.53e-04 |
 | Allegro | 3.83e-07 | 1.41e-06 | 1.13e-03 |
 | MACE | 2.73e-06 | 1.05e-05 | 1.32e-03 |
 
