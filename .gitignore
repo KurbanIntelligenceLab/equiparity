@@ -218,3 +218,6 @@ __marimo__/
 *.parquet
 !data/manifests/**
 !data/splits/**
+
+# H1/H2 external source checkouts (pinned shas recorded in reports; code not committed)
+third_party/
