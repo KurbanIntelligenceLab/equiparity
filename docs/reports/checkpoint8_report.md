@@ -72,7 +72,7 @@ at symprec 1e-8.
 [`e3_jacobian.md`](../results/e3_jacobian.md)
 
 `J = dT/dr` by autograd at the centrosymmetric geometry of 20 crystals across 19 space groups, both
-arms of the three e3nn cores, 3 seeds (360 Jacobians, each FD-checked to 6.6e-05–1.6e-04). Primary
+arms of the three e3nn cores, 3 seeds (360 Jacobians, each FD-checked to 6.6e-05–1.4e-04). Primary
 statistic: even-subspace energy fraction `‖J·P_even‖/‖J‖` — O(3) 1.4e-07–9.7e-07, SO(3) 0.42–0.54,
 five to six orders of magnitude with no overlap. Parity scores of the top singular vectors were
 demoted to secondary: they only partially separate the arms (O(3) exactly −1.00000, but trained SO(3)

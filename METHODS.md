@@ -366,7 +366,102 @@ Details: [`docs/checkpoint7_report.md`](docs/checkpoint7_report.md).
 
 ---
 
-## 8. Reproducibility
+## 8. Strengthening experiments (E1–E7)
+
+Seven experiments probe the trained models beyond the headline OOD test. Six (E2–E7) are
+inference-only and reuse the 21 committed piezoelectric checkpoints through one reload harness
+(`src/equiparity/inference/reload.py`); E1 is the only one that trains. Every physics claim they rely
+on is verified by a test (`tests/test_physics_claims.py`); the claim-by-claim table is
+[`docs/reports/checkpoint8_claims.md`](docs/reports/checkpoint8_claims.md).
+
+**Reload harness.** `load_trained()` rebuilds a run from its `config_snapshot.yaml` and
+`checkpoint_latest["model"]` — the **final-epoch** state dict, which is what `metrics.json` reports —
+recomputing `scale` and `avg_num_neighbors` from the training split and asserting they match the values
+the run used. Reload fidelity was verified against the committed metrics: NequIP/Allegro/MACE SO(3)
+reproduce the OOD median to relative ≤ 1e-6 with the false-flag fraction exact.
+
+**EquiformerV2 is stochastic under reload.** Its forward pass draws a fresh random per-edge reference
+frame every call (`models/equiformer_v2/edge_rot_mat.py`), so it is nondeterministic even in `eval()`.
+Every EquiformerV2 figure in these experiments is a mean over five seeded draws
+(`seeded_predict(..., draws=5)`), and its autograd Jacobian is incomplete (the Wigner-D matrices are
+detached from the position graph), which is why it is excluded from E3.
+
+### 8.1 E1 — augmentation rebuttal
+
+Training set = the 2,649 real piezoelectric tensors + 1,000 fresh centrosymmetric insulators labelled
+with the exact-zero 18-vector, pulled from `materials.summary.search` restricted to the six most
+populous centrosymmetric space groups `{2, 12, 14, 15, 62, 225}`, spglib-verified and idealized
+identically to the OOD set (`scripts/prepare_e1_augmented.py`). Contamination is asserted absent: the
+augmentation ids are disjoint from the OOD 2,000 and from the piezoelectric training ids, and no
+UNSEEN-SG space group appears in training. Validation and test partitions are the headline split's,
+unchanged, so non-centrosymmetric test MAE stays comparable. **Only the SO(3) arms are retrained**
+(4 cores × 3 seeds = 12 runs, hyperparameters identical to the headline); O(3) zeros are structural and
+hold for any training data, so the headline O(3) runs answer for them. The evaluation partitions the
+untouched OOD 2,000 into SEEN-SG (space group in the augmentation list; 1,232) and UNSEEN-SG (the other
+67 space groups; 768).
+
+`TrainingParams.target_scale` freezes the target normalisation at the un-augmented **0.749134**;
+recomputing it after adding zero rows gives 0.638289, which would make augmented violations
+incomparable to the headline. An **in-training control** reports predictions on the zero-labelled
+crystals the model trained on, which distinguishes "learned zeros do not generalise" from "the zeros
+were never learned".
+
+### 8.2 E2 — symmetry-breaking sweep
+
+`x(δ) = x_parent + δ·Δx` along a [001] polar mode, δ over a log-spaced tail from 1e-3 plus a linear
+body to 1.2 (33 frames), structures built analytically in memory
+(`src/equiparity/inference/structures.py`). The load-bearing material is **rutile TiO₂** (P4₂/mnm 136 →
+P4₂nm 102): its proper-rotation subgroup is **422**, which admits a rank-3 invariant (verified by a
+Reynolds-operator rank test in `tests/test_physics_claims.py`), so only parity forbids a response at
+δ=0. The perovskites BaTiO₃/PbTiO₃ (Pm-3̄m 221, subgroup **432**) are reported as a reference with the
+caveat that 432 forbids a rank-3 tensor by rotation alone, so both arms start at machine zero there and
+the panel cannot exhibit the parity effect. **spglib verifies every frame at symprec 1e-8**, because at
+the selection tolerance 1e-3 a distortion below δ ≈ 0.006 is wrongly reported centrosymmetric (the
+maximum displacement falls below the tolerance — the same phenomenon as the mp-1227949 raw-coordinate
+artifact).
+
+### 8.3 E3 — Jacobian order-parameter analysis
+
+`J = dT/dr` (18 × 3N) by autograd at the centrosymmetric geometry of 20 OOD crystals spanning 19 space
+groups, at fixed connectivity, both arms of the three e3nn cores. The primary statistic is the
+**even-subspace energy fraction** `f = ‖J·P_even‖_F / ‖J‖_F` with `P_even = (id + P)/2` and
+`(Pu)_i = −u_{σ(i)}`, σ the inversion permutation from spglib. It is basis-independent and exactly zero
+for O(3) by the identity `J∘P = −J`. Per-vector parity scores of the leading singular vectors are a
+secondary check only: a *trained* SO(3) model is approximately odd, so its scores also sit near −1 and
+do not separate the arms cleanly, whereas the energy fraction does. Every Jacobian is spot-checked
+against central finite differences before use. EquiformerV2 is excluded (detached Wigner-D, above).
+
+### 8.4 E4 — test-time inversion averaging
+
+`T_sym(x) = [T(x) − T(I·x)]/2`, where `I·x` inverts positions about the cell origin, on both OOD
+variants. On an exactly centrosymmetric input `I·x` is the same periodic crystal up to a permutation,
+so any permutation- and translation-invariant model gives `T(I·x) = T(x)` and `T_sym ≡ 0` identically
+for either arm; the informative content is which inversion law the model obeys, checked on
+non-centrosymmetric crystals where `T` is a real signal.
+
+### 8.5 E5 — output-level equivariance audit
+
+For each trained model, three tests on the same structures: a **mirror** test `T(Mx)` vs `D(M) T(x)`
+for an improper `M` (the parity test; `D` built on the physical parity-odd irreps `2x1o+1x2o+1x3o`), a
+**rotation** test `T(Rx)` vs `D(R) T(x)` for a proper `R` (must hold in both arms), and a
+**determinism** test (five forward passes on one graph). The relative laws are measured on
+non-centrosymmetric structures, where `T` is nonzero — on centrosymmetric inputs an O(3) model predicts
+machine zero and a ratio would divide float noise. This is the deferred EquiformerV2 positive control.
+
+### 8.6 E6 / E7 — named materials and the rotation subgroup
+
+E6 evaluates ten familiar centrosymmetric compounds, each annotated with its point group: two already
+present in the OOD 2,000 (diamond, KCl) and eight pulled fresh from MP, spglib-verified and idealized
+identically, evaluated inference-only. Germanium is absent from the centrosymmetric-insulator pool (its
+GGA band gap is ~0 eV, below the 0.1 eV cut), so silicon stands in. E7 joins the cached OOD space groups
+(`scripts/ood_spacegroups.py`) to the committed violation vectors and tabulates the false-flag rate by
+point-group family. The group theory behind it — that the only rank-3 tensor invariant under the proper
+subgroup **432** of m-3̄m is zero, while **23** (m-3̄) permits one — is asserted as a Reynolds-operator
+rank test, not stated.
+
+---
+
+## 9. Reproducibility
 
 Every run writes `outputs/<experiment_id>/` with:
 
