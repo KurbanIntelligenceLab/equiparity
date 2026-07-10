@@ -1,6 +1,7 @@
 # Table 1 — prevalence audit (Task 0.4)
 
-Which released models attach a **parity label** to their internal features? Only those can
+Which released models attach a **parity label** to their internal features? Only 
+those can
 produce a structurally exact zero for a parity-odd tensor on a centrosymmetric crystal.
 
 Every row was classified by reading the released source at the version or commit given.
@@ -82,26 +83,35 @@ Equiformer v1 as released.
 
 ## What this table is for
 
-The introduction claims that the parity distinction is (a) invisible in most model cards and
-(b) load-bearing for tensor properties. This table supports (a) by showing that the two most
+The introduction claims that the parity distinction is (a) invisible in most 
+model cards and
+(b) load-bearing for tensor properties. This table supports (a) by showing that 
+the two most
 widely deployed equivariant transformers in this list are SO(3)-only, and that the
-distinction is nowhere in their configuration surface — EquiformerV2 exposes `lmax`, not a
-parity flag. NequIP is the sharpest case: it *has* a `parity` boolean, and that boolean does
+distinction is nowhere in their configuration surface — EquiformerV2 exposes 
+`lmax`, not a
+parity flag. NequIP is the sharpest case: it *has* a `parity` boolean, and that 
+boolean does
 not do what its name suggests (its own docstring shows `1o` features surviving
-`parity=False`). Our SO(3) arms are therefore built by relabelling irreps, not by flipping
+`parity=False`). Our SO(3) arms are therefore built by relabelling irreps, not 
+by flipping
 that flag — see `docs/reports/checkpoint1_offcycle_parity_toggle.md`.
 
 ## Honesty notes
 
-- `GotenNet` is left **undetermined on purpose**. Its edge spherical harmonics carry natural
+- `GotenNet` is left **undetermined on purpose**. Its edge spherical harmonics 
+carry natural
   parity, but its node features flow through custom attention blocks that are not
-  parity-typed. Deciding this requires building the model and running a reflection test, not
+parity-typed. Deciding this requires building the model and running a reflection 
+test, not
   reading it.
 - `ICTP` is classified `parity-aware` from a *construction* argument (rank-l Cartesian
   harmonics scale as `(-1)^l` under inversion), not from an explicit parity label. That
-  argument is sound but is weaker evidence than an `Irreps` string; a reflection test would
+argument is sound but is weaker evidence than an `Irreps` string; a reflection 
+test would
   settle it.
-- `eSCN` is classified by family resemblance to EquiformerV2 rather than by a decisive line
+- `eSCN` is classified by family resemblance to EquiformerV2 rather than by a 
+decisive line
   of its own. It shares the `lmax`/`mmax` SO(3) embedding.
 - `FAENet` is listed `invariant` because the *network* is; its symmetry comes from frame
   averaging applied outside the model, and whether that includes improper operations is a
