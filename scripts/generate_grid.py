@@ -20,22 +20,49 @@ CORE_PARITY = {
     "equiformer_v2": ["so3"],
 }
 PROFILE = {  # which docker image runs each core
-    "nequip": "nequip", "allegro": "nequip", "equiformer_v2": "nequip",
+    "nequip": "nequip",
+    "allegro": "nequip",
+    "equiformer_v2": "nequip",
     "mace": "mace",
 }
 SEEDS = [0, 1, 2]
 TARGET = {
-    "U0": dict(dataset="qm9", npz="data/raw/qm9/qm9_processed.npz",
-              split="data/splits/qm9_split.npz", lmax=2, epochs=100, batch=32, max_train=25000),
-    "dipole": dict(dataset="qm9", npz="data/raw/qm9/qm9_processed.npz",
-                  split="data/splits/qm9_split.npz", lmax=2, epochs=100, batch=32, max_train=25000),
-    "elastic": dict(dataset="mp_elastic", npz="data/raw/mp/mp_elastic_processed.npz",
-                   split="data/splits/mp_elastic_split.npz", lmax=2, epochs=120, batch=16,
-                   max_train=None),
-    "piezoelectric": dict(dataset="mp_piezoelectric",
-                         npz="data/raw/mp/mp_piezoelectric_processed.npz",
-                         split="data/splits/mp_piezoelectric_split.npz", lmax=3, epochs=150,
-                         batch=16, max_train=None),
+    "U0": dict(
+        dataset="qm9",
+        npz="data/raw/qm9/qm9_processed.npz",
+        split="data/splits/qm9_split.npz",
+        lmax=2,
+        epochs=100,
+        batch=32,
+        max_train=25000,
+    ),
+    "dipole": dict(
+        dataset="qm9",
+        npz="data/raw/qm9/qm9_processed.npz",
+        split="data/splits/qm9_split.npz",
+        lmax=2,
+        epochs=100,
+        batch=32,
+        max_train=25000,
+    ),
+    "elastic": dict(
+        dataset="mp_elastic",
+        npz="data/raw/mp/mp_elastic_processed.npz",
+        split="data/splits/mp_elastic_split.npz",
+        lmax=2,
+        epochs=120,
+        batch=16,
+        max_train=None,
+    ),
+    "piezoelectric": dict(
+        dataset="mp_piezoelectric",
+        npz="data/raw/mp/mp_piezoelectric_processed.npz",
+        split="data/splits/mp_piezoelectric_split.npz",
+        lmax=3,
+        epochs=150,
+        batch=16,
+        max_train=None,
+    ),
 }
 # moderate production size (headline verified at 128; 64 keeps the 96-run grid tractable)
 FEATURES = 64
@@ -45,13 +72,25 @@ def _config_yaml(core: str, parity: str, target: str, seed: int) -> str:
     t = TARGET[target]
     precision = "float64" if core == "clifford_stf" else "float32"
     lines = [
-        f"seed: {seed}", f"core: {core}", f"parity: {parity}", f"target: {target}",
-        f"dataset: {t['dataset']}", f"processed_npz: {t['npz']}", f"split_npz: {t['split']}",
+        f"seed: {seed}",
+        f"core: {core}",
+        f"parity: {parity}",
+        f"target: {target}",
+        f"dataset: {t['dataset']}",
+        f"processed_npz: {t['npz']}",
+        f"split_npz: {t['split']}",
         "output_dir: outputs",
-        "model:", "  num_layers: 3", f"  l_max: {t['lmax']}", f"  num_features: {FEATURES}",
+        "model:",
+        "  num_layers: 3",
+        f"  l_max: {t['lmax']}",
+        f"  num_features: {FEATURES}",
         "  r_max: 5.0",
-        "training:", f"  batch_size: {t['batch']}", f"  epochs: {t['epochs']}", "  lr: 0.002",
-        "  device: cuda", f"  precision: {precision}",
+        "training:",
+        f"  batch_size: {t['batch']}",
+        f"  epochs: {t['epochs']}",
+        "  lr: 0.002",
+        "  device: cuda",
+        f"  precision: {precision}",
     ]
     if t["max_train"] is not None:
         lines += [f"  max_train_samples: {t['max_train']}"]

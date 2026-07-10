@@ -119,7 +119,7 @@ def _structures_from(npz: Path) -> tuple[np.ndarray, list[dict]]:
                 "z": data["z"][start:stop],
             }
         )
-    targets = data["piezoelectric"] if "piezoelectric" in data else None
+    targets = data.get("piezoelectric")
     return targets, out
 
 
