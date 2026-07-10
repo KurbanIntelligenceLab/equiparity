@@ -50,12 +50,20 @@ class TrainingParams:
     # std (0.749 -> 0.638), and freezing it keeps augmented violations directly comparable to the
     # main runs. None (the default) recomputes, which is what every headline run did.
     target_scale: float | None = None
+    # Up-weight the exactly-zero-target training rows in the MSE by this factor. 1.0 (default) is a
+    # numeric no-op == plain MSELoss. The H3 loss-weight sweep raises it to probe whether a large
+    # enough weight can force an SO(3) model's centrosymmetric violation to zero.
+    zero_row_loss_weight: float = 1.0
 
     def __post_init__(self) -> None:
         if self.precision not in ("float32", "float64"):
             raise ValueError(f"precision must be float32 or float64, got {self.precision!r}")
         if self.target_scale is not None and self.target_scale <= 0:
             raise ValueError(f"target_scale must be positive, got {self.target_scale!r}")
+        if self.zero_row_loss_weight <= 0:
+            raise ValueError(
+                f"zero_row_loss_weight must be positive, got {self.zero_row_loss_weight!r}"
+            )
 
 
 # The datasets the headline grid uses. Anything else (e.g. the E1 augmented piezoelectric set) is

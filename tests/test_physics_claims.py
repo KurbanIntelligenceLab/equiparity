@@ -412,3 +412,28 @@ def test_rank_three_cartesian_tensor_is_parity_odd() -> None:
 
     even = np.abs(rank2(x) - rank2(-x)).max() / np.abs(rank2(x)).max()
     assert even < 1e-12, even
+
+
+# --------------------------------------------------- H3 : weighted-MSE mechanism
+def test_zero_row_weighted_mse_is_a_noop_at_weight_one() -> None:
+    """At W=1 the per-row weighted MSE is bit-identical to torch.nn.MSELoss; the mask picks the
+    exactly-zero-target rows. Guards the H3 loss-weight sweep's control column."""
+    torch.manual_seed(0)
+    pred = torch.randn(16, 18, dtype=torch.float64)
+    target = torch.randn(16, 18, dtype=torch.float64)
+    target[3] = 0.0  # one exactly-zero row
+
+    def weighted_mse(p: torch.Tensor, t: torch.Tensor, w: torch.Tensor) -> torch.Tensor:
+        return (w[:, None] * (p - t) ** 2).mean()
+
+    ones = torch.ones(16, dtype=torch.float64)
+    assert torch.equal(weighted_mse(pred, target, ones), torch.nn.MSELoss()(pred, target))
+
+    # the mask selects exactly the zero-target rows
+    mask = np.abs(target.numpy()).max(axis=1) == 0.0
+    assert mask.sum() == 1 and mask[3]
+
+    # at W=10 the zero row is up-weighted, so the loss changes
+    w10 = ones.clone()
+    w10[torch.tensor(mask)] = 10.0
+    assert not torch.equal(weighted_mse(pred, target, w10), torch.nn.MSELoss()(pred, target))

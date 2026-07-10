@@ -203,7 +203,15 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
     optimizer = torch.optim.Adam(
         model.parameters(), lr=config.training.lr, weight_decay=config.training.weight_decay
     )
-    loss_fn = torch.nn.MSELoss()
+    # Per-row loss weight: exactly-zero-target rows get zero_row_loss_weight, all others 1. At the
+    # default weight 1.0 this is identical to torch.nn.MSELoss (verified in tests). H3 raises it.
+    zero_mask = np.abs(train_targets).max(axis=1) == 0.0
+    row_weight = torch.ones(len(train_targets), dtype=target_dtype, device=device)
+    row_weight[torch.tensor(zero_mask, device=device)] = config.training.zero_row_loss_weight
+
+    def weighted_mse(pred: torch.Tensor, target: torch.Tensor, w: torch.Tensor) -> torch.Tensor:
+        return (w[:, None] * (pred - target) ** 2).mean()
+
     batch_size = config.training.batch_size
 
     def evaluate(ds: CrystalDataset) -> MetricSummary:
@@ -228,7 +236,7 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
             batch = move_batch(
                 AtomicDataDict.batched_from_list([train_graphs[i] for i in idx]), device, dtype
             )
-            loss = loss_fn(model(batch).to(target_dtype), norm_targets[idx])
+            loss = weighted_mse(model(batch).to(target_dtype), norm_targets[idx], row_weight[idx])
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()

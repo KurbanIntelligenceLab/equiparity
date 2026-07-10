@@ -59,6 +59,7 @@ def _config_snapshot(config: ExperimentConfig) -> dict[str, object]:
             # that would otherwise be recomputed from the training split. Omitting it from the
             # snapshot silently dropped it from the config hash and the provenance manifest.
             "target_scale": config.training.target_scale,
+            "zero_row_loss_weight": config.training.zero_row_loss_weight,
             "max_train_samples": config.training.max_train_samples,
             "max_eval_samples": config.training.max_eval_samples,
         },
