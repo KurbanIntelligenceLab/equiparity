@@ -30,7 +30,12 @@ OUT_JSON = REPO / "results" / "e1_augmentation.json"
 OUT_MD = REPO / "docs" / "results" / "e1_augmentation.md"
 
 THRESHOLD = 0.01
+_TABLE_HEADER = (
+    "| core | arm | false-flag SEEN-SG | false-flag UNSEEN-SG "
+    "| median SEEN | median UNSEEN | test MAE |"
+)
 SEEDS = [0, 1, 2]
+_METRICS = ("ff_seen", "ff_unseen", "median_seen", "median_unseen", "test_mae")
 CORES = ["nequip", "allegro", "mace", "equiformer_v2"]
 CORE_LABEL = {
     "nequip": "NequIP",
@@ -38,6 +43,16 @@ CORE_LABEL = {
     "mace": "MACE",
     "equiformer_v2": "EquiformerV2",
 }
+
+
+def _mean(per_seed: list[dict], key: str) -> float:
+    return float(np.mean([s[key] for s in per_seed]))
+
+
+def _std(per_seed: list[dict], key: str) -> float:
+    if len(per_seed) < 2:
+        return 0.0
+    return float(np.std([s[key] for s in per_seed], ddof=1))
 
 
 def _find_runs(pattern: str) -> dict[str, Path]:
@@ -120,16 +135,8 @@ def collect() -> dict:
                     "arm": tag,
                     "n_seeds": len(per_seed),
                     "per_seed": per_seed,
-                    **{
-                        f"{k}_mean": float(np.mean([s[k] for s in per_seed]))
-                        for k in ("ff_seen", "ff_unseen", "median_seen", "median_unseen", "test_mae")
-                    },
-                    **{
-                        f"{k}_std": float(np.std([s[k] for s in per_seed], ddof=1))
-                        if len(per_seed) > 1
-                        else 0.0
-                        for k in ("ff_seen", "ff_unseen", "median_seen", "median_unseen", "test_mae")
-                    },
+                    **{f"{k}_mean": _mean(per_seed, k) for k in _METRICS},
+                    **{f"{k}_std": _std(per_seed, k) for k in _METRICS},
                 }
     return out
 
@@ -145,10 +152,12 @@ def render() -> None:
         "The target normalisation scale is frozen at the un-augmented value (0.749134) so that",
         "violation magnitudes stay directly comparable to the headline table.",
         "",
-        f"Evaluation splits the untouched OOD 2,000 by space group: **SEEN-SG** ({d['n_seen']}) and",
-        f"**UNSEEN-SG** ({d['n_unseen']}). Neither overlaps the training ids. Mean ± std over 3 seeds.",
+        "Evaluation splits the untouched OOD 2,000 by space group: "
+        f"**SEEN-SG** ({d['n_seen']}) and",
+        f"**UNSEEN-SG** ({d['n_unseen']}). Neither overlaps the training ids. "
+        "Mean ± std over 3 seeds.",
         "",
-        "| core | arm | false-flag SEEN-SG | false-flag UNSEEN-SG | median SEEN | median UNSEEN | test MAE |",
+        _TABLE_HEADER,
         "|---|---|---|---|---|---|---|",
     ]
     for key in sorted(arms):
@@ -168,8 +177,9 @@ def render() -> None:
         "## Reading",
         "",
         "See the generated numbers above. The decisive comparison is `augmented_so3` on SEEN-SG",
-        "versus UNSEEN-SG. A large gap means learned zeros do not transfer across symmetry classes.",
-        "No gap means the fix works only because the space groups were curated into the training set,",
+        "versus UNSEEN-SG. A large gap means learned zeros do not transfer across symmetry",
+        "classes.",
+        "No gap means the fix works only because the space groups were curated into training,",
         "and it still carries no guarantee for an unseen class. Either outcome leaves the O(3)",
         "guarantee as the only one that holds by construction rather than by data coverage.",
     ]

@@ -29,7 +29,7 @@ import spglib
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from prepare_mp import _load_token  # noqa: E402
+from prepare_mp import _load_token
 
 REPO = Path(__file__).resolve().parent.parent
 RAW_DIR = REPO / "data/raw/mp"
@@ -51,7 +51,7 @@ SYMPREC = 1e-3
 SEED = 42
 
 
-def _idealize(cell: np.ndarray, pos_frac: np.ndarray, z: np.ndarray):  # noqa: ANN202
+def _idealize(cell: np.ndarray, pos_frac: np.ndarray, z: np.ndarray):
     """Snap onto the exact space group -- identical treatment to the OOD set (idealize_ood.py)."""
     std = spglib.standardize_cell(
         (cell, pos_frac % 1.0, z), to_primitive=True, no_idealize=False, symprec=SYMPREC
