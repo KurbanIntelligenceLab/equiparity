@@ -30,6 +30,11 @@ OUT_JSON = REPO / "results" / "e1_augmentation.json"
 OUT_MD = REPO / "docs" / "results" / "e1_augmentation.md"
 
 THRESHOLD = 0.01
+FROZEN_SCALE = 0.749134
+_CONTROL_HEADER = (
+    "| core | median ‖T‖ on trained zeros | false-flag on trained zeros "
+    "| train MAE (zero rows) | train MAE (real rows) | mean &#124;target&#124; (real rows) |"
+)
 _TABLE_HEADER = (
     "| core | arm | false-flag SEEN-SG | false-flag UNSEEN-SG "
     "| median SEEN | median UNSEEN | test MAE |"
@@ -89,7 +94,46 @@ def _vector(run_dir: Path, variant: str = "idealized") -> np.ndarray:
     return np.load(run_dir / f"ood_violations_{variant}.npy")
 
 
-def collect() -> dict:
+def in_train_control(run_dir: Path) -> dict:
+    """What does the model predict on the zero-labelled crystals it actually trained on?
+
+    Without this, E1 cannot separate "learned zeros do not generalize" from "the model never
+    learned the zeros at all". Reload the run, predict on its own training split, and split the
+    rows by whether the label was an exact zero.
+    """
+    import torch
+    import yaml
+
+    from equiparity.inference import load_trained
+    from equiparity.io.mp_dataset import CrystalDataset, load_crystal_dataset, load_split
+    from equiparity.training.nequip_tensor import _irreps_targets
+
+    cfg = yaml.safe_load((run_dir / "config_snapshot.yaml").read_text())
+    # The snapshot predates target_scale serialisation; the frozen value is verified empirically.
+    trained = load_trained(run_dir, repo_root=REPO, scale=FROZEN_SCALE)
+    data = load_crystal_dataset(REPO / cfg["processed_npz"], ("piezoelectric",))
+    train = CrystalDataset(data, load_split(REPO / cfg["split_npz"], "train"))
+
+    targets = _irreps_targets(train, "piezoelectric", "piezoelectric")
+    zero_row = np.abs(targets).max(axis=1) == 0
+
+    torch.manual_seed(0)
+    preds = trained.predict([train[i].structure for i in range(len(train))])
+    mags = np.sqrt((preds**2).sum(axis=1))
+    errors = np.abs(preds - targets).mean(axis=1)
+
+    return {
+        "n_zero_labelled": int(zero_row.sum()),
+        "n_real_tensor": int((~zero_row).sum()),
+        "median_violation_on_trained_zeros": float(np.median(mags[zero_row])),
+        "false_flag_on_trained_zeros": float((mags[zero_row] > THRESHOLD).mean()),
+        "train_mae_zero_rows": float(errors[zero_row].mean()),
+        "train_mae_real_rows": float(errors[~zero_row].mean()),
+        "mean_abs_target_real_rows": float(np.abs(targets[~zero_row]).mean()),
+    }
+
+
+def collect(cores: list[str]) -> dict:
     split = json.loads(EVAL_SPLIT.read_text())
     seen = np.array(split["seen_indices"])
     unseen = np.array(split["unseen_indices"])
@@ -107,7 +151,7 @@ def collect() -> dict:
         "arms": {},
     }
 
-    for core in CORES:
+    for core in cores:
         for tag, runs, parity in (
             ("baseline_so3", baseline, "so3"),
             ("augmented_so3", augmented, "so3"),
@@ -134,6 +178,16 @@ def collect() -> dict:
                     }
                 )
             if per_seed:
+                if tag == "augmented_so3":
+                    controls = []
+                    for seed in SEEDS:
+                        lbl = f"{core}_{parity}_piezoelectric_seed{seed}"
+                        if lbl in runs:
+                            controls.append(in_train_control(runs[lbl]))
+                    if controls:
+                        out.setdefault("in_train_control", {})[core] = {
+                            k: float(np.mean([c[k] for c in controls])) for k in controls[0]
+                        }
                 out["arms"][f"{core}_{tag}"] = {
                     "core": core,
                     "arm": tag,
@@ -148,16 +202,54 @@ def collect() -> dict:
 def render() -> None:
     d = json.loads(OUT_JSON.read_text())
     arms = d["arms"]
+    control = d.get("in_train_control", {})
+
+    def arm(core: str, tag: str) -> dict | None:
+        return arms.get(f"{core}_{tag}")
+
     lines = [
         "# E1 — the augmentation rebuttal",
         "",
-        f"Training set: 2,649 real piezoelectric tensors + {d['n_augmentation']} centrosymmetric",
-        f"crystals labelled exactly zero, drawn only from space groups {d['seen_spacegroups']}.",
-        "The target normalisation scale is frozen at the un-augmented value (0.749134) so that",
-        "violation magnitudes stay directly comparable to the headline table.",
+        "The obvious objection to the headline is: *just train the SO(3) model on centrosymmetric",
+        "crystals labelled zero.* This measures what that buys.",
         "",
-        "Evaluation splits the untouched OOD 2,000 by space group: "
-        f"**SEEN-SG** ({d['n_seen']}) and",
+        f"Training set: 2,649 real piezoelectric tensors + {d['n_augmentation']} fresh",
+        "centrosymmetric insulators labelled **exactly zero**, drawn only from space groups",
+        f"{d['seen_spacegroups']}. Validation and test partitions are inherited unchanged from the",
+        "headline split, and the target normalisation scale is frozen at the un-augmented value",
+        "(0.749134), so every number below is directly comparable to the main table. ",
+        "SO(3) arms only,",
+        "3 seeds, hyperparameters identical to the headline runs.",
+        "",
+        "## The control that decides what this experiment means",
+        "",
+        "Before asking whether learned zeros *generalize*, ask whether they are learned at all.",
+        "Below: what each model predicts on the very crystals it trained on with ",
+        "exact-zero labels.",
+        "",
+        _CONTROL_HEADER,
+        "|---|---|---|---|---|---|",
+    ]
+    for core, v in control.items():
+        lines.append(
+            f"| {CORE_LABEL[core]} | {v['median_violation_on_trained_zeros']:.4f} "
+            f"| {v['false_flag_on_trained_zeros']:.4f} | {v['train_mae_zero_rows']:.4f} "
+            f"| {v['train_mae_real_rows']:.4f} | {v['mean_abs_target_real_rows']:.4f} |"
+        )
+    lines += [
+        "",
+        "The zero rows *are* fit better than the real-tensor rows — train MAE ",
+        "0.014–0.045 against",
+        "0.086–0.128, on targets whose mean component magnitude is 0.145. The model is ",
+        "not ignoring",
+        "them. **But it still false-flags ~90% of the crystals it was explicitly trained to call",
+        "zero.** Gradient descent drives the prediction towards zero; it cannot make it ",
+        "zero. An O(3)",
+        "model does not have to try: the zero is structural.",
+        "",
+        "## Transfer: does it help on space groups seen in training?",
+        "",
+        f"Evaluation splits the untouched OOD 2,000 by space group — **SEEN-SG** ({d['n_seen']}),",
         f"**UNSEEN-SG** ({d['n_unseen']}). Neither overlaps the training ids. "
         "Mean ± std over 3 seeds.",
         "",
@@ -173,19 +265,76 @@ def render() -> None:
             f"| {a['median_seen_mean']:.3e} | {a['median_unseen_mean']:.3e} "
             f"| {a['test_mae_mean']:.4f} ± {a['test_mae_std']:.4f} |"
         )
+
     lines += [
         "",
-        "`baseline_o3` is quoted from the headline runs and was **not** retrained: an O(3) model's",
-        "zeros are structural, holding for any weights and any training data. That is the point.",
+        "### Change in false-flag rate, baseline → augmented",
+        "",
+        "| core | SEEN-SG | UNSEEN-SG |",
+        "|---|---|---|",
+    ]
+    for core in CORES:
+        b, g = arm(core, "baseline_so3"), arm(core, "augmented_so3")
+        if not (b and g):
+            continue
+        lines.append(
+            f"| {CORE_LABEL[core]} "
+            f"| {b['ff_seen_mean']:.4f} → {g['ff_seen_mean']:.4f} "
+            f"({g['ff_seen_mean'] - b['ff_seen_mean']:+.4f}) "
+            f"| {b['ff_unseen_mean']:.4f} → {g['ff_unseen_mean']:.4f} "
+            f"({g['ff_unseen_mean'] - b['ff_unseen_mean']:+.4f}) |"
+        )
+
+    lines += [
         "",
         "## Reading",
         "",
-        "See the generated numbers above. The decisive comparison is `augmented_so3` on SEEN-SG",
-        "versus UNSEEN-SG. A large gap means learned zeros do not transfer across symmetry",
-        "classes.",
-        "No gap means the fix works only because the space groups were curated into training,",
-        "and it still carries no guarantee for an unseen class. Either outcome leaves the O(3)",
-        "guarantee as the only one that holds by construction rather than by data coverage.",
+        "**Augmentation does not buy the zero.** The false-flag rate on SEEN-SG — the ",
+        "space groups",
+        "the augmentation was drawn from — falls by between 0.0000 and 0.0206. On ",
+        "UNSEEN-SG it falls",
+        "by 0.013–0.032. There is no meaningful transfer advantage for the space groups ",
+        "the model was",
+        "trained on, because there is barely any improvement to transfer.",
+        "",
+        "What augmentation *does* do is shrink violation magnitudes roughly uniformly, ",
+        "by about half",
+        "(e.g. NequIP SEEN 0.826 → 0.449, UNSEEN 0.422 → 0.254). The predictions move ",
+        "towards zero",
+        "everywhere and reach it nowhere. Since the physical answer is exactly zero, a ",
+        "factor-of-two",
+        "reduction in an impossible quantity is not a fix.",
+        "",
+        "**A caveat on SEEN vs UNSEEN.** The two subsets differ in composition, not only in space",
+        "group: median ‖T‖ is higher on SEEN-SG than on UNSEEN-SG in the *baseline* ",
+        "runs too, before",
+        "any augmentation exists. The interpretable quantity is therefore the change relative to",
+        "baseline within each subset, which is what the table above reports — not the ",
+        "SEEN/UNSEEN",
+        "difference itself.",
+        "",
+        "**The O(3) rows were not retrained.** They are quoted from the headline runs, ",
+        "and they are",
+        "0.0000 on both subsets at machine-zero medians (3e-07 – 3e-06). Their zeros ",
+        "hold for any",
+        "weights and any training data; that is the entire point, and it is why ",
+        "retraining them would",
+        "answer nothing.",
+        "",
+        "**Augmentation is not free of benefits.** Non-centrosymmetric test MAE ",
+        "*improves* for every",
+        "core (NequIP 0.2405 → 0.2278; EquiformerV2 0.2157 → 0.1774): a thousand extra ",
+        "crystals is a",
+        "thousand extra crystals. The augmented models are better regressors that still predict",
+        "physically impossible values.",
+        "",
+        "## Off-cycle note",
+        "",
+        "The design anticipated two outcomes — SEEN-SG false-flags drop substantially ",
+        "(fix requires",
+        "curated data), or they drop and UNSEEN-SG does not (learned zeros do not generalize). The",
+        "measured outcome is the third one the plan flagged: **no drop even on SEEN-SG**, which",
+        "triggers the standing rule. See `docs/reports/checkpoint8_offcycle_e1.md`.",
     ]
     OUT_MD.parent.mkdir(parents=True, exist_ok=True)
     OUT_MD.write_text("\n".join(lines) + "\n")
@@ -194,15 +343,24 @@ def render() -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--cores", nargs="+", default=["nequip", "allegro", "equiformer_v2"])
     parser.add_argument("--render", action="store_true")
     args = parser.parse_args()
     if args.render:
         render()
         return
-    result = collect()
-    OUT_JSON.write_text(json.dumps(result, indent=1) + "\n")
-    print(f"wrote {OUT_JSON} ({len(result['arms'])} arms)")
-    render()
+
+    merged = json.loads(OUT_JSON.read_text()) if OUT_JSON.exists() else {}
+    fresh = collect(args.cores)
+    if merged:
+        merged["arms"].update(fresh["arms"])
+        merged.setdefault("in_train_control", {}).update(fresh.get("in_train_control", {}))
+        for k, v in fresh.items():
+            if k not in ("arms", "in_train_control"):
+                merged[k] = v
+        fresh = merged
+    OUT_JSON.write_text(json.dumps(fresh, indent=1) + "\n")
+    print(f"wrote {OUT_JSON} ({len(fresh['arms'])} arms)")
 
 
 if __name__ == "__main__":

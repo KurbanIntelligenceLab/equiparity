@@ -55,6 +55,10 @@ def _config_snapshot(config: ExperimentConfig) -> dict[str, object]:
             "lr": config.training.lr,
             "weight_decay": config.training.weight_decay,
             "precision": config.training.precision,
+            # Load-bearing for reproducibility: when set, it overrides the target normalisation
+            # that would otherwise be recomputed from the training split. Omitting it from the
+            # snapshot silently dropped it from the config hash and the provenance manifest.
+            "target_scale": config.training.target_scale,
             "max_train_samples": config.training.max_train_samples,
             "max_eval_samples": config.training.max_eval_samples,
         },

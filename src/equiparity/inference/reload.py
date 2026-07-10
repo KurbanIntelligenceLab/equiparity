@@ -119,16 +119,27 @@ def _dataset_of(run_dir: Path, metrics: dict) -> str | None:
 
 
 def load_trained(
-    run_dir: Path, *, repo_root: Path, device: torch.device | None = None
+    run_dir: Path,
+    *,
+    repo_root: Path,
+    device: torch.device | None = None,
+    scale: float | None = None,
 ) -> TrainedModel:
-    """Rebuild the trained model recorded in ``run_dir`` from its final-epoch checkpoint."""
+    """Rebuild the trained model recorded in ``run_dir`` from its final-epoch checkpoint.
+
+    ``scale`` overrides the target normalisation. Needed for the E1 augmented runs: they were
+    trained with ``training.target_scale = 0.749134`` frozen, but ``_config_snapshot`` did not
+    serialise that field at the time, so it cannot be recovered from the snapshot. That the frozen
+    value was the one actually used is verified empirically -- reloading with 0.749134 reproduces
+    the committed OOD median to rel 3.9e-08, while the recomputed 0.638289 is 15% off.
+    """
     dev = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
     raw = yaml.safe_load((run_dir / "config_snapshot.yaml").read_text())
     config = parse_experiment_config(raw)
 
     data = load_crystal_dataset(repo_root / config.processed_npz, (config.target,))
     train_ds = CrystalDataset(data, load_split(repo_root / config.split_npz, "train"))
-    scale = _recompute_scale(train_ds, config)
+    resolved_scale = scale if scale is not None else _recompute_scale(train_ds, config)
 
     builder = {
         "nequip": _build_e3nn,
@@ -144,7 +155,7 @@ def load_trained(
 
     return TrainedModel(
         model=model,
-        scale=scale,
+        scale=resolved_scale,
         config=config,
         core=config.core,
         parity=config.parity.value,
@@ -170,10 +181,14 @@ def seeded_predict(
 
 
 def _recompute_scale(train_ds: CrystalDataset, config: ExperimentConfig) -> float:
+    """The scale a run used: its frozen override if set, else recomputed from the training split."""
     from equiparity.training.nequip_tensor import _irreps_targets
 
+    if config.training.target_scale is not None:
+        return float(config.training.target_scale)
     scale = float(_irreps_targets(train_ds, config.target, config.target).std()) or 1.0
-    if config.target == "piezoelectric" and abs(scale - PIEZO_SCALE) > 1e-5:
+    headline_piezo = config.target == "piezoelectric" and config.dataset == "mp_piezoelectric"
+    if headline_piezo and abs(scale - PIEZO_SCALE) > 1e-5:
         raise RuntimeError(f"piezo scale drifted: {scale!r} != {PIEZO_SCALE}")
     return scale
 
@@ -194,7 +209,7 @@ def _build_e3nn(
         for i in range(len(train_ds))
     ]
     avg_neigh = avg_num_neighbors(graphs)
-    if config.target == "piezoelectric" and abs(avg_neigh - PIEZO_AVG_NEIGHBORS) > 1e-3:
+    if config.dataset == "mp_piezoelectric" and abs(avg_neigh - PIEZO_AVG_NEIGHBORS) > 1e-3:
         raise RuntimeError(f"avg_num_neighbors drifted: {avg_neigh!r}")
     model = build_tensor_model(config, type_names, avg_neigh, TARGETS[config.target].irreps, dev)
     return model, {"z_map": z_map, "dtype": dtype}
@@ -220,7 +235,7 @@ def _build_mace(
     r_max = config.model.r_max
     graphs = [_to_mace_data(train_ds[i].structure, z_table, r_max) for i in range(len(train_ds))]
     avg_neigh = _avg_neighbors(graphs)
-    if config.target == "piezoelectric" and abs(avg_neigh - PIEZO_AVG_NEIGHBORS) > 1e-3:
+    if config.dataset == "mp_piezoelectric" and abs(avg_neigh - PIEZO_AVG_NEIGHBORS) > 1e-3:
         raise RuntimeError(f"avg_num_neighbors drifted: {avg_neigh!r}")
 
     mace_cfg = MACEConfig(
