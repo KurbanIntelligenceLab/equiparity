@@ -21,7 +21,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from analyze_results import CORE_LABEL, CORES, SEEDS, load_vectors  # noqa: E402
+from analyze_results import CORE_LABEL, CORES, SEEDS, load_vectors
 
 REPO = Path(__file__).resolve().parent.parent
 OOD_NPZ = REPO / "data/raw/mp/mp_ood_centrosymmetric_processed.npz"
