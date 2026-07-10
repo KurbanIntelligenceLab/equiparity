@@ -12,13 +12,12 @@ the row says `undetermined` rather than guessing.
 
 | category | n | consequence for a parity-odd tensor |
 |---|---|---|
-| `parity-aware` | 5 | odd-parity output is **structurally zero** on a centrosymmetric input |
+| `parity-aware` | 6 | odd-parity output is **structurally zero** on a centrosymmetric input |
 | `SO(3)-only` | 3 | **nothing** forces an odd-parity output to vanish |
 | `vector-only` | 3 | no typed irreps; a rank-3 head needs extra machinery |
 | `invariant` | 3 | cannot express an equivariant output at all |
-| `undetermined` | 1 | source does not settle it; needs a reflection test |
 
-Of the 15 models surveyed, **5** carry parity
+Of the 15 models surveyed, **6** carry parity
 labels on their features. **9** do not, and one is undetermined. The
 SO(3)-only group is not a fringe: it contains EquiformerV2 and the eSCN family, which are
 the current state of the art on large-scale catalysis and materials benchmarks, and
@@ -41,7 +40,10 @@ Equiformer v1 as released.
 *Evidence* (`src/matten/model_factory/tfn_scalar_tensor.py`): Default `conv_layer_irreps: '32x0o + 32x0e + 16x1o + 16x1e'` (line 206) and `irreps_edge_sh: '0e + 1o'` (line 207). Both parities are present and explicitly labelled; this is an O(3) model (it targets the even-parity elasticity tensor).
 
 **ICTP** — nec-research/ICTP, `commit f40592a`  
-*Evidence* (`ictp/o3/cartesian_harmonics.py`): Uses its own `CartesianHarmonics(l_max)` (line 253) rather than e3nn irreps. A rank-l Cartesian harmonic is a homogeneous degree-l polynomial in the displacement vector, so under inversion it picks up `(-1)^l` -- parity is carried implicitly and correctly, as in MACE. Classified parity-aware on that construction; a reflection test on the built model would confirm it directly and is the honest next step.
+*Evidence* (`ictp/o3/cartesian_harmonics.py`): Uses its own `CartesianHarmonics(l_max)` (line 253) rather than e3nn irreps. **Measured(H2, random init, `results/h2_probes.json`):** `RankThreeCartesianHarmonics` gives `‖f(-x)+f(x)‖/‖f‖ = 0.0` (rank-3 odd) and the rank-2 output is even -- the `(-1)^l` construction confirmed to machine precision. Parity-aware by measurement, not argument.
+
+**GotenNet** — sarpaykent/GotenNet, `commit 44c945b`  
+*Evidence* (`gotennet/models/representation/gotennet.py`): Edge features come from `e3nn.o3.SphericalHarmonics(lmax)` (line 861), carrying naturalparity. We suspected the non-e3nn `GATA` blocks might strip it, but **the measurement (H2, isolated CPU env, random init, `results/h2_probes.json`) overturns that**: the l=1 vector output satisfies `X(gx) = g X(x)` for a random rotation (rel 1.2e-15) AND arandom improper op (rel 1.8e-15), while the pseudovector law fails (rel 1.9). So the output is a genuine polar (1o) vector -- reflection-equivariant, parity-aware. This iswhy the row was left undetermined until measured.
 
 ### `SO(3)-only` — **nothing** forces an odd-parity output to vanish
 
@@ -51,8 +53,8 @@ Equiformer v1 as released.
 **EquiformerV2** — vendored (src/equiparity/models/equiformer_v2), `as vendored in this repo`  
 *Evidence* (`src/equiparity/models/equiformer_v2/so3.py`): `SO3_Embedding` is indexed by `lmax_list`/`mmax_list` only; `so3.py` contains zero `Irreps` constructions and no parity anywhere. Confirmed behaviourally in E5: it violates the mirror law by O(1). Separately, its rotation equivariance is only approximate (edge_rot_mat.py draws a random per-edge frame each forward).
 
-**eSCN** — FAIR-Chem/fairchem, `commit a838178`  
-*Evidence* (`fairchem (escn)`): eSCN is the SO(2)-reduced convolution underlying EquiformerV2; its embeddings are `lmax`/`mmax`-typed with no parity label. Same family, same conclusion.
+**eSCN** — vendored so3.py / so2_ops.py (Meta OCP eSCN lineage), `as vendored @ EquiformerV2 8fe8cba`  
+*Evidence* (`src/equiparity/models/equiformer_v2/so3.py`): eSCN is the SO(2)-reduced convolution EquiformerV2 is built on; its code IS the vendored `so3.py`/`so2_ops.py` (Meta OCP header). The `SO3_Embedding` is `lmax`/`mmax`-typed with **no parity label** -- deciding line, in-repo. (The `fairchem` clone carriesonly the newer UMA MoE eSCN variant, not the EquiformerV2 lineage.)
 
 ### `vector-only` — no typed irreps; a rank-3 head needs extra machinery
 
@@ -76,11 +78,6 @@ Equiformer v1 as released.
 **FAENet** — vict0rsch/faenet, `commit 1f725cf`  
 *Evidence* (`faenet/tests/test_model_symmetries.py`): The network itself is not equivariant; symmetry is imposed externally by frame averaging (`frame_averaging` in {'', '2D', '3D', 'DA'}). Parity is a property of the chosen frame set, not of the features. Reflections enter only if the frame set includes them.
 
-### `undetermined` — source does not settle it; needs a reflection test
-
-**GotenNet** — sarpaykent/GotenNet, `commit 44c945b`  
-*Evidence* (`gotennet/models/representation/gotennet.py`): Edge features come from `e3nn.o3.Irreps.spherical_harmonics(lmax)` (line 860), which does carry natural parity `(-1)^l`. But the node tensor features `X` are propagated through the model's own (non-e3nn) `GATA` attention blocks, which are not parity-typed. Source inspection does not settle whether an odd output is structurally zero on a centrosymmetric input. **A reflection test on the built model is required before this row can be filled in; we do not guess.**
-
 ## What this table is for
 
 The introduction claims that the parity distinction is (a) invisible in most 
@@ -97,22 +94,14 @@ not do what its name suggests (its own docstring shows `1o` features surviving
 by flipping
 that flag — see `docs/reports/checkpoint1_offcycle_parity_toggle.md`.
 
-## Honesty notes
+## Notes (H2: two rows converted from reading to measurement)
 
-- `GotenNet` is left **undetermined on purpose**. Its edge spherical harmonics 
-carry natural
-  parity, but its node features flow through custom attention blocks that are not
-parity-typed. Deciding this requires building the model and running a reflection 
-test, not
-  reading it.
-- `ICTP` is classified `parity-aware` from a *construction* argument (rank-l Cartesian
-  harmonics scale as `(-1)^l` under inversion), not from an explicit parity label. That
-argument is sound but is weaker evidence than an `Irreps` string; a reflection 
-test would
-  settle it.
-- `eSCN` is classified by family resemblance to EquiformerV2 rather than by a 
-decisive line
-  of its own. It shares the `lmax`/`mmax` SO(3) embedding.
-- `FAENet` is listed `invariant` because the *network* is; its symmetry comes from frame
-  averaging applied outside the model, and whether that includes improper operations is a
-  choice made at the call site.
+- `GotenNet` was `undetermined`; **now `parity-aware` by measurement** (H2). We suspected its non-e3nn `GATA` blocks might strip the parity its edge spherical harmonics carry; a reflection test on the built model at random init showed the opposite -- its l=1 output isa polar (1o) vector, reflection-equivariant to machine precision. Measuring overturned theguess, which is why the row was held open until measured.
+- `ICTP` was `parity-aware` by a *construction* argument; **now confirmed by measurement**(H2): its rank-3 Cartesian harmonic is odd (`(-1)^3`) to machine precision, rank-2 even.
+- `eSCN` now cites a **decisive in-repo source line** -- the vendored `so3.py` (Meta OCP eSCN, the code EquiformerV2 is built on), whose `SO3_Embedding` is `lmax`/`mmax`-typed withno parity label -- rather than family resemblance.
+- `FAENet` is listed `invariant` because the *network* is; its symmetry comes from frame averaging applied outside the model, and whether that includes improper operations is a choice made at the call site.
+
+### Changelog
+
+- eSCN was added during the audit, bringing the survey to **15** models (an earlier hand-written summary said 14; corrected).
+- H2 converted the GotenNet and ICTP rows from source-reading to measurement; GotenNet moved`undetermined` -> `parity-aware`, so the counts are now **6 parity-aware, 3 SO(3)-only, 3 vector-only, 3 invariant, 0 undetermined**.

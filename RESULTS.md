@@ -384,8 +384,10 @@ expenditure but are not part of the 84-run grid.
 
 The prevalence of the distinction across released models is tabulated separately in **Table 1**
 ([`docs/reports/checkpoint8_prevalence_audit.md`](docs/reports/checkpoint8_prevalence_audit.md)):
-of 14 surveyed architectures, 5 carry parity labels on their features, 3 are SO(3)-only, 3 are
-vector-only, 3 are invariant, and 1 could not be settled by source inspection.
+of 15 surveyed architectures, 6 carry parity labels on their features, 3 are SO(3)-only, 3 are
+vector-only, and 3 are invariant. (Two rows — GotenNet and ICTP — were converted from source-reading
+to measurement in Checkpoint 9's H2; GotenNet, previously undetermined, measured **parity-aware** —
+its l=1 output is a reflection-equivariant polar vector.)
 
 
 1. All three O(3) arms predict `‖e‖ < 0.01 C/m²` for every one of the 2,000 centrosymmetric crystals,

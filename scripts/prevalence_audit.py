@@ -171,13 +171,17 @@ ROWS: list[dict] = [
     },
     {
         "model": "eSCN",
-        "source": "FAIR-Chem/fairchem",
-        "version": "commit a838178",
+        "source": "vendored so3.py / so2_ops.py (Meta OCP eSCN lineage)",
+        "version": "as vendored @ EquiformerV2 8fe8cba",
         "category": "SO(3)-only",
-        "evidence_file": "fairchem (escn)",
+        "evidence_file": "src/equiparity/models/equiformer_v2/so3.py",
         "evidence": (
-            "eSCN is the SO(2)-reduced convolution underlying EquiformerV2; its embeddings are "
-            "`lmax`/`mmax`-typed with no parity label. Same family, same conclusion."
+            "eSCN is the SO(2)-reduced convolution EquiformerV2 is built on; its code IS the "
+            "vendored `so3.py`/`so2_ops.py` (Meta OCP header). The `SO3_Embedding` is "
+            "`lmax`/`mmax`-"
+            "typed with **no parity label** -- deciding line, in-repo. (The `fairchem` clone "
+            "carries"
+            "only the newer UMA MoE eSCN variant, not the EquiformerV2 lineage.)"
         ),
     },
     {
@@ -199,27 +203,31 @@ ROWS: list[dict] = [
         "category": "parity-aware",
         "evidence_file": "ictp/o3/cartesian_harmonics.py",
         "evidence": (
-            "Uses its own `CartesianHarmonics(l_max)` (line 253) rather than e3nn irreps. A rank-l "
-            "Cartesian harmonic is a homogeneous degree-l polynomial in the displacement vector, "
-            "so under inversion it picks up `(-1)^l` -- parity is carried implicitly and "
-            "correctly, as in MACE. Classified parity-aware on that construction; a reflection "
-            "test on the "
-            "built model would confirm it directly and is the honest next step."
+            "Uses its own `CartesianHarmonics(l_max)` (line 253) rather than e3nn irreps. "
+            "**Measured"
+            "(H2, random init, `results/h2_probes.json`):** `RankThreeCartesianHarmonics` gives "
+            "`‖f(-x)+f(x)‖/‖f‖ = 0.0` (rank-3 odd) and the rank-2 output is even -- the `(-1)^l` "
+            "construction confirmed to machine precision. Parity-aware by measurement, not "
+            "argument."
         ),
     },
     {
         "model": "GotenNet",
         "source": "sarpaykent/GotenNet",
         "version": "commit 44c945b",
-        "category": "undetermined",
+        "category": "parity-aware",
         "evidence_file": "gotennet/models/representation/gotennet.py",
         "evidence": (
-            "Edge features come from `e3nn.o3.Irreps.spherical_harmonics(lmax)` (line 860), which "
-            "does carry natural parity `(-1)^l`. But the node tensor features `X` are propagated "
-            "through the model's own (non-e3nn) `GATA` attention blocks, which are not "
-            "parity-typed. Source inspection does not settle whether an odd output is structurally "
-            "zero on a centrosymmetric input. **A reflection test on the built model is required "
-            "before this row can be filled in; we do not guess.**"
+            "Edge features come from `e3nn.o3.SphericalHarmonics(lmax)` (line 861), carrying "
+            "natural"
+            "parity. We suspected the non-e3nn `GATA` blocks might strip it, but **the measurement "
+            "(H2, isolated CPU env, random init, `results/h2_probes.json`) overturns that**: the "
+            "l=1 vector output satisfies `X(gx) = g X(x)` for a random rotation (rel 1.2e-15) AND "
+            "a"
+            "random improper op (rel 1.8e-15), while the pseudovector law fails (rel 1.9). So the "
+            "output is a genuine polar (1o) vector -- reflection-equivariant, parity-aware. This "
+            "is"
+            "why the row was left undetermined until measured."
         ),
     },
 ]
@@ -303,25 +311,34 @@ def main() -> None:
         "by flipping",
         "that flag — see `docs/reports/checkpoint1_offcycle_parity_toggle.md`.",
         "",
-        "## Honesty notes",
+        "## Notes (H2: two rows converted from reading to measurement)",
         "",
-        "- `GotenNet` is left **undetermined on purpose**. Its edge spherical harmonics ",
-        "carry natural",
-        "  parity, but its node features flow through custom attention blocks that are not",
-        "parity-typed. Deciding this requires building the model and running a reflection ",
-        "test, not",
-        "  reading it.",
-        "- `ICTP` is classified `parity-aware` from a *construction* argument (rank-l Cartesian",
-        "  harmonics scale as `(-1)^l` under inversion), not from an explicit parity label. That",
-        "argument is sound but is weaker evidence than an `Irreps` string; a reflection ",
-        "test would",
-        "  settle it.",
-        "- `eSCN` is classified by family resemblance to EquiformerV2 rather than by a ",
-        "decisive line",
-        "  of its own. It shares the `lmax`/`mmax` SO(3) embedding.",
-        "- `FAENet` is listed `invariant` because the *network* is; its symmetry comes from frame",
-        "  averaging applied outside the model, and whether that includes improper operations is a",
-        "  choice made at the call site.",
+        "- `GotenNet` was `undetermined`; **now `parity-aware` by measurement** (H2). We suspected "
+        "its non-e3nn `GATA` blocks might strip the parity its edge spherical harmonics carry; a "
+        "reflection test on the built model at random init showed the opposite -- its l=1 output "
+        "is"
+        "a polar (1o) vector, reflection-equivariant to machine precision. Measuring overturned "
+        "the"
+        "guess, which is why the row was held open until measured.",
+        "- `ICTP` was `parity-aware` by a *construction* argument; **now confirmed by "
+        "measurement**"
+        "(H2): its rank-3 Cartesian harmonic is odd (`(-1)^3`) to machine precision, rank-2 even.",
+        "- `eSCN` now cites a **decisive in-repo source line** -- the vendored `so3.py` (Meta OCP "
+        "eSCN, the code EquiformerV2 is built on), whose `SO3_Embedding` is `lmax`/`mmax`-typed "
+        "with"
+        "no parity label -- rather than family resemblance.",
+        "- `FAENet` is listed `invariant` because the *network* is; its symmetry comes from frame "
+        "averaging applied outside the model, and whether that includes improper operations is a "
+        "choice made at the call site.",
+        "",
+        "### Changelog",
+        "",
+        "- eSCN was added during the audit, bringing the survey to **15** models (an earlier "
+        "hand-written summary said 14; corrected).",
+        "- H2 converted the GotenNet and ICTP rows from source-reading to measurement; GotenNet "
+        "moved"
+        "`undetermined` -> `parity-aware`, so the counts are now **6 parity-aware, 3 SO(3)-only, "
+        "3 vector-only, 3 invariant, 0 undetermined**.",
     ]
     OUT_MD.parent.mkdir(parents=True, exist_ok=True)
     OUT_MD.write_text("\n".join(lines) + "\n")

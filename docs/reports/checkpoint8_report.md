@@ -124,10 +124,11 @@ is unchanged.
 
 [`checkpoint8_prevalence_audit.md`](checkpoint8_prevalence_audit.md)
 
-14 models classified by reading released source at a pinned version/commit, with the deciding line
-recorded: 5 parity-aware, 3 SO(3)-only, 3 vector-only, 3 invariant, 1 undetermined (GotenNet, left
-open honestly). Equiformer v1 as released is SO(3)-only; NequIP's own docstring shows `parity=False`
-does not strip parity labels — corroborating the Checkpoint-1 finding.
+15 models classified by inspecting released source at a pinned version/commit, with the deciding line
+recorded: 6 parity-aware, 3 SO(3)-only, 3 vector-only, 3 invariant (0 undetermined after H2).
+Equiformer v1 as released is SO(3)-only; NequIP's own docstring shows `parity=False` does not strip
+parity labels — corroborating the Checkpoint-1 finding. (Checkpoint 9 H2 converted the GotenNet and
+ICTP rows from reading to measurement; GotenNet, previously undetermined, measured **parity-aware**.)
 
 ## F1 / F2 — framing and corrections
 

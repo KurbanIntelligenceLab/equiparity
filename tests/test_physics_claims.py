@@ -371,3 +371,44 @@ def test_run_label_collides_across_datasets_but_run_key_does_not() -> None:
     assert side.run_key.endswith("__mp_piezoelectric_augmented")
     assert "mp_piezoelectric" in CANONICAL_DATASETS
     assert "mp_piezoelectric_augmented" not in CANONICAL_DATASETS
+
+
+# --------------------------------------------------- H2 : rank-3 Cartesian tensor is parity-odd
+def test_rank_three_cartesian_tensor_is_parity_odd() -> None:
+    """The math ICTP relies on, self-contained (no external checkout).
+
+    A rank-l irreducible Cartesian tensor built from a displacement vector is a homogeneous
+    degree-l polynomial in that vector, so under inversion x -> -x it scales by (-1)^l. For l=3
+    (the piezoelectric-relevant odd rank) that is -1: an odd tensor. This is why a model whose
+    features carry this parity (ICTP's Cartesian harmonics; measured in H2) produces a structural
+    zero for an odd tensor on centrosymmetric input, exactly as an e3nn O(3) model does.
+    """
+    rng = np.random.default_rng(0)
+    x = rng.normal(size=(8, 3))
+
+    # symmetric-traceless rank-3 harmonic from x (the l=3 irreducible part), built self-contained.
+    def rank3(v: np.ndarray) -> np.ndarray:
+        outer = np.einsum("ai,aj,ak->aijk", v, v, v)
+        eye = np.eye(3)
+        # remove the traces to isolate the l=3 irreducible piece (symmetric in all indices)
+        trace = (
+            np.einsum("aijk,jk->ai", outer, eye)[:, :, None, None] * eye[None, None, :, :]
+            + np.einsum("aijk,ik->aj", outer, eye)[:, None, :, None] * eye[None, :, None, :]
+            + np.einsum("aijk,ij->ak", outer, eye)[:, None, None, :] * eye[None, :, :, None]
+        )
+        return outer - trace / 5.0
+
+    t = rank3(x)
+    t_inv = rank3(-x)
+    odd = np.abs(t + t_inv).max() / np.abs(t).max()  # 0 => f(-x) = -f(x)
+    assert odd < 1e-12, odd
+
+    # sanity: a rank-2 harmonic (l=2) is even under the same inversion.
+    def rank2(v: np.ndarray) -> np.ndarray:
+        outer = np.einsum("ai,aj->aij", v, v)
+        return (
+            outer - np.eye(3)[None] * np.einsum("aij,ij->a", outer, np.eye(3))[:, None, None] / 3.0
+        )
+
+    even = np.abs(rank2(x) - rank2(-x)).max() / np.abs(rank2(x)).max()
+    assert even < 1e-12, even
