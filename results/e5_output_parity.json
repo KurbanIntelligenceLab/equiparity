@@ -1,0 +1,212 @@
+{
+  "allegro_o3_piezoelectric_seed0": {
+    "centrosymmetric_median_norm": 7.215518280645483e-07,
+    "core": "allegro",
+    "determinism_spread": 2.147211034753127e-06,
+    "mirror_rel_error": 8.274783656055128e-07,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "o3",
+    "rotation_rel_error": 1.2113942501917465e-06
+  },
+  "allegro_o3_piezoelectric_seed1": {
+    "centrosymmetric_median_norm": 7.767229135424714e-07,
+    "core": "allegro",
+    "determinism_spread": 7.306506631721277e-06,
+    "mirror_rel_error": 9.156957573219253e-07,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "o3",
+    "rotation_rel_error": 1.1602083885244896e-06
+  },
+  "allegro_o3_piezoelectric_seed2": {
+    "centrosymmetric_median_norm": 7.054573529785557e-07,
+    "core": "allegro",
+    "determinism_spread": 2.418442818452604e-06,
+    "mirror_rel_error": 8.178022903359183e-07,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "o3",
+    "rotation_rel_error": 1.1719767746921727e-06
+  },
+  "allegro_so3_piezoelectric_seed0": {
+    "centrosymmetric_median_norm": 0.9404308199882507,
+    "core": "allegro",
+    "determinism_spread": 4.559755325317383e-06,
+    "mirror_rel_error": 1.165899635730405,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "so3",
+    "rotation_rel_error": 1.2889297404020393e-06
+  },
+  "allegro_so3_piezoelectric_seed1": {
+    "centrosymmetric_median_norm": 1.628760576248169,
+    "core": "allegro",
+    "determinism_spread": 1.0967254638671875e-05,
+    "mirror_rel_error": 1.129509467842504,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "so3",
+    "rotation_rel_error": 1.087319635992948e-06
+  },
+  "allegro_so3_piezoelectric_seed2": {
+    "centrosymmetric_median_norm": 1.0517550706863403,
+    "core": "allegro",
+    "determinism_spread": 8.821487426757812e-06,
+    "mirror_rel_error": 1.113328690177074,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "so3",
+    "rotation_rel_error": 1.3370392470958111e-06
+  },
+  "equiformer_v2_so3_piezoelectric_seed0": {
+    "centrosymmetric_median_norm": 0.7136382232668969,
+    "core": "equiformer_v2",
+    "determinism_spread": 0.11056655522374073,
+    "mirror_rel_error": 0.9820863636755878,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "so3",
+    "rotation_rel_error": 0.07273523762884923
+  },
+  "equiformer_v2_so3_piezoelectric_seed1": {
+    "centrosymmetric_median_norm": 0.48420408599472015,
+    "core": "equiformer_v2",
+    "determinism_spread": 0.14324130578926328,
+    "mirror_rel_error": 0.9286202983258592,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "so3",
+    "rotation_rel_error": 0.09373274553971636
+  },
+  "equiformer_v2_so3_piezoelectric_seed2": {
+    "centrosymmetric_median_norm": 0.35339254868832853,
+    "core": "equiformer_v2",
+    "determinism_spread": 0.1437806059842227,
+    "mirror_rel_error": 0.7127311959426198,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "so3",
+    "rotation_rel_error": 0.1063961321372581
+  },
+  "mace_o3_piezoelectric_seed0": {
+    "centrosymmetric_median_norm": 3.5910820770368446e-06,
+    "core": "mace",
+    "determinism_spread": 1.0242015378025826e-06,
+    "mirror_rel_error": 2.952537958899806e-07,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "o3",
+    "rotation_rel_error": 2.6455486956933855e-06
+  },
+  "mace_o3_piezoelectric_seed1": {
+    "centrosymmetric_median_norm": 3.4766692351695383e-06,
+    "core": "mace",
+    "determinism_spread": 1.4288590364230913e-06,
+    "mirror_rel_error": 3.68614964698821e-07,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "o3",
+    "rotation_rel_error": 4.171504464235577e-06
+  },
+  "mace_o3_piezoelectric_seed2": {
+    "centrosymmetric_median_norm": 3.419489075895399e-06,
+    "core": "mace",
+    "determinism_spread": 8.368364774469228e-07,
+    "mirror_rel_error": 3.7604922134127144e-07,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "o3",
+    "rotation_rel_error": 3.4286447602789566e-06
+  },
+  "mace_so3_piezoelectric_seed0": {
+    "centrosymmetric_median_norm": 1.3794273138046265,
+    "core": "mace",
+    "determinism_spread": 9.5367431640625e-07,
+    "mirror_rel_error": 0.9546213886254303,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "so3",
+    "rotation_rel_error": 3.030475902435659e-06
+  },
+  "mace_so3_piezoelectric_seed1": {
+    "centrosymmetric_median_norm": 0.8047586679458618,
+    "core": "mace",
+    "determinism_spread": 7.301568984985352e-07,
+    "mirror_rel_error": 0.9690410063802792,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "so3",
+    "rotation_rel_error": 3.196935608663576e-06
+  },
+  "mace_so3_piezoelectric_seed2": {
+    "centrosymmetric_median_norm": 1.4417215585708618,
+    "core": "mace",
+    "determinism_spread": 1.1920928955078125e-06,
+    "mirror_rel_error": 0.932497342227078,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "so3",
+    "rotation_rel_error": 3.892481673074047e-06
+  },
+  "nequip_o3_piezoelectric_seed0": {
+    "centrosymmetric_median_norm": 3.6813577253269614e-07,
+    "core": "nequip",
+    "determinism_spread": 1.0883886716328561e-06,
+    "mirror_rel_error": 5.252358148903776e-07,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "o3",
+    "rotation_rel_error": 1.0608604110559617e-06
+  },
+  "nequip_o3_piezoelectric_seed1": {
+    "centrosymmetric_median_norm": 3.754106217002118e-07,
+    "core": "nequip",
+    "determinism_spread": 1.1386218830011785e-06,
+    "mirror_rel_error": 5.824050161156761e-07,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "o3",
+    "rotation_rel_error": 1.0020696571232224e-06
+  },
+  "nequip_o3_piezoelectric_seed2": {
+    "centrosymmetric_median_norm": 2.6103512595909706e-07,
+    "core": "nequip",
+    "determinism_spread": 8.762923471294926e-07,
+    "mirror_rel_error": 6.038677961913266e-07,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "o3",
+    "rotation_rel_error": 8.836614945502649e-07
+  },
+  "nequip_so3_piezoelectric_seed0": {
+    "centrosymmetric_median_norm": 0.9201067090034485,
+    "core": "nequip",
+    "determinism_spread": 1.5851403531996766e-06,
+    "mirror_rel_error": 0.5206413555765159,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "so3",
+    "rotation_rel_error": 9.673331345256116e-07
+  },
+  "nequip_so3_piezoelectric_seed1": {
+    "centrosymmetric_median_norm": 1.0187774896621704,
+    "core": "nequip",
+    "determinism_spread": 1.0269923222949728e-06,
+    "mirror_rel_error": 1.2990937013420507,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "so3",
+    "rotation_rel_error": 9.065860003868888e-07
+  },
+  "nequip_so3_piezoelectric_seed2": {
+    "centrosymmetric_median_norm": 0.679111123085022,
+    "core": "nequip",
+    "determinism_spread": 9.376886964673758e-07,
+    "mirror_rel_error": 1.0329705063688686,
+    "n_centrosymmetric": 25,
+    "n_noncentrosymmetric": 25,
+    "parity": "so3",
+    "rotation_rel_error": 8.569339780017797e-07
+  }
+}

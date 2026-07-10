@@ -107,7 +107,7 @@ def fmt(mean: float, std: float, sig: int = 4) -> str:
 # --------------------------------------------------------------------------------------
 def accuracy_table(runs_by_key) -> tuple[str, dict]:
     lines = [
-        "| Core | Target | O(3) test MAE | SO(3) test MAE | Δ (SO3−O3) | Δ / seed-σ |",  # noqa: RUF001
+        "| Core | Target | O(3) test MAE | SO(3) test MAE | Δ (SO3−O3) | Δ / seed-σ |",
         "|---|---|---|---|---|---|",
     ]
     stats = {}

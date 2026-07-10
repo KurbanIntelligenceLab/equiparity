@@ -90,7 +90,9 @@ select = ["E", "F", "I", "N", "UP", "B", "ANN", "RUF", "SIM", "PTH", "RET"]
 
 [tool.ruff.lint.per-file-ignores]
 # Diagnostic/orchestration scripts wrap untyped third-party models; don't force annotations.
-"scripts/*" = ["ANN"]
+# They also emit Markdown reports containing typographic characters (en dash, minus sign, U+2016
+# for the tensor norm, and the overbar in point-group names like m-3m), which RUF001 flags.
+"scripts/*" = ["ANN", "RUF001"]
 
 [tool.ruff.format]
 docstring-code-format = true
