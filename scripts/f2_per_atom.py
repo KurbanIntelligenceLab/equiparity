@@ -77,8 +77,9 @@ def main() -> None:
         f"The OOD set's median cell has **{median_atoms:.0f} atoms**.",
         "",
         "Below, the headline false-flag rate is recomputed with the size-normalised metric",
-        f"`‖T‖_F / n_atoms` against a threshold rescaled by the median atom count",
-        f"(`0.01 / {median_atoms:.0f}` = `{per_atom_threshold:.3e}`), so the two agree exactly on a",
+        "`‖T‖_F / n_atoms` against a threshold rescaled by the median atom count",
+        f"(`0.01 / {median_atoms:.0f}` = `{per_atom_threshold:.3e}`), so the two agree exactly",
+        "on a",
         "median-sized crystal. Mean ± std over 3 seeds, idealized variant.",
         "",
         "| core | arm | false-flag (absolute ‖T‖) | false-flag (‖T‖/n_atoms) | Δ |",
@@ -98,14 +99,14 @@ def main() -> None:
         "",
         "## Reading",
         "",
-        f"Every O(3) arm stays at exactly **0.0000** under both metrics "
-        f"({len(o3)} arms). The SO(3) arms move by at most "
-        f"**{max(abs(r['delta']) for r in so3):.4f}** in false-flag rate. The headline conclusion —",
+        f"Every O(3) arm stays at exactly **0.0000** under both metrics ({len(o3)} arms). The "
+        f"SO(3) arms move by at most **{max(abs(r['delta']) for r in so3):.4f}** in false-flag "
+        "rate. The headline conclusion —",
         "O(3) produces structural zeros, SO(3) false-flags ~90% of centrosymmetric crystals — is",
         "unchanged by size normalisation.",
         "",
-        "This is expected rather than lucky: the O(3) zeros are exact to machine precision, so no",
-        "rescaling of a threshold can move them. The extensivity caveat matters for interpreting the",
+        "This is expected rather than lucky: the O(3) zeros are exact to machine precision, so",
+        "no rescaling of a threshold can move them. The caveat matters for interpreting the",
         "*magnitude* of an SO(3) violation, not for whether it is nonzero.",
     ]
     OUT_MD.parent.mkdir(parents=True, exist_ok=True)
