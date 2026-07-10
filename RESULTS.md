@@ -375,6 +375,12 @@ expenditure but are not part of the 84-run grid.
 
 ## 11. Summary of measurements
 
+The prevalence of the distinction across released models is tabulated separately in **Table 1**
+([`docs/reports/checkpoint8_prevalence_audit.md`](docs/reports/checkpoint8_prevalence_audit.md)):
+of 14 surveyed architectures, 5 carry parity labels on their features, 3 are SO(3)-only, 3 are
+vector-only, 3 are invariant, and 1 could not be settled by source inspection.
+
+
 1. All three O(3) arms predict `‖e‖ < 0.01 C/m²` for every one of the 2,000 centrosymmetric crystals,
    in every seed, on the idealized set (median 3e-07 to 3e-06 C/m²).
 2. All four SO(3) arms exceed that threshold for 89.5–95.7 % of the same crystals, with median
@@ -412,6 +418,17 @@ EquiformerV2 is a deployed model, not a research ablation, and it exhibits the h
 fraction measured here (0.957). Its inclusion indicates that the behaviour is not an artefact of the
 matched-pair construction used for the other three cores.
 
+**EquiformerV2's evaluation is stochastic.** Its forward pass draws a fresh random per-edge reference
+frame on every call (`models/equiformer_v2/edge_rot_mat.py`), so it is nondeterministic even in
+`eval()` mode. Over five seeded draws of the full 2,000-crystal OOD evaluation the median violation has
+a relative standard deviation of 6.5e-03 and the false-flag fraction a standard deviation of 5.0e-04;
+the value reported above is a single draw and lies within that spread. No conclusion here depends on
+it. The nondeterminism is itself a measurement: an exactly SO(3)-equivariant network's output does not
+depend on the arbitrary frame, so the spread is a direct read-out of EquiformerV2's rotational
+equivariance error — confirmed independently in [E5](docs/results/e5_output_parity.md), where it fails
+the rotation law by 7e-02 to 1.1e-01 while every e3nn core satisfies it to ~1e-06. All EquiformerV2
+figures in the supplementary experiments are means over five seeded draws.
+
 ---
 
 ## 13. Limitations
@@ -422,7 +439,8 @@ matched-pair construction used for the other three cores.
    although EquiformerV2 — which does not use parity-labelled irreps — provides partial evidence
    against this on the SO(3) side.
 2. **U₀ is far from converged** and its absolute accuracy is not comparable to the QM9 literature
-   (METHODS §5.1). It supports a comparative null only.
+   (METHODS §5.1). With n = 3 seeds the arms show **no consistent direction across cores** (the sign of
+   Δ differs by core and seed variance is large); this is not a tested null, and no null is claimed.
 3. **Seed-level statistics are underpowered** (n = 3; Wilcoxon p ≥ 0.25 by construction). Only the
    structure-level tests carry statistical weight.
 4. **The violation metric is extensive** (§9), so absolute magnitudes depend on system size.
