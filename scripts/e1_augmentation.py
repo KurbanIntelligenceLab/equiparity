@@ -55,8 +55,20 @@ def _std(per_seed: list[dict], key: str) -> float:
     return float(np.std([s[key] for s in per_seed], ddof=1))
 
 
+def _dataset_of(run_dir: Path, metrics: dict) -> str | None:
+    if "dataset" in metrics:
+        return metrics["dataset"]
+    snapshot = run_dir / "config_snapshot.yaml"
+    if not snapshot.exists():
+        return None
+    for line in snapshot.read_text().splitlines():
+        if line.startswith("dataset:"):
+            return line.split(":", 1)[1].strip()
+    return None
+
+
 def _find_runs(pattern: str) -> dict[str, Path]:
-    """Latest run directory per run_label matching ``pattern`` in its dataset field."""
+    """Latest run directory per run_label whose dataset is ``pattern``."""
     latest: dict[str, tuple[str, Path]] = {}
     for metrics_file in MIRROR.glob("raw/box*/*/metrics.json"):
         run_dir = metrics_file.parent
@@ -64,7 +76,7 @@ def _find_runs(pattern: str) -> dict[str, Path]:
             m = json.loads(metrics_file.read_text())
         except json.JSONDecodeError:
             continue
-        if m.get("dataset") != pattern or "piezoelectric" not in m.get("run_label", ""):
+        if _dataset_of(run_dir, m) != pattern or "piezoelectric" not in m.get("run_label", ""):
             continue
         stamp = run_dir.name.split("_")[-1]
         label = m["run_label"]
@@ -105,16 +117,8 @@ def collect() -> dict:
                 continue
             per_seed = []
             for seed in SEEDS:
-                label = next(
-                    (
-                        k
-                        for k in runs
-                        if k.startswith(f"{core}_{parity}_piezoelectric_seed{seed}")
-                        or k.startswith(f"{core}_{parity}_piezoelectric_aug_seed{seed}")
-                    ),
-                    None,
-                )
-                if label is None:
+                label = f"{core}_{parity}_piezoelectric_seed{seed}"
+                if label not in runs:
                     continue
                 run_dir = runs[label]
                 v = _vector(run_dir)

@@ -78,23 +78,44 @@ class TrainedModel:
         return np.sqrt((preds**2).sum(axis=1))
 
 
-def find_piezo_runs(mirror: Path) -> dict[str, Path]:
-    """Map ``<core>_<parity>_piezoelectric_seed<N>`` to its canonical (latest) run directory."""
+def find_piezo_runs(mirror: Path, *, dataset: str = "mp_piezoelectric") -> dict[str, Path]:
+    """Map ``<core>_<parity>_piezoelectric_seed<N>`` to its latest run directory for ``dataset``.
+
+    ``run_label`` omits the dataset, so the E1 augmented runs share labels with the headline runs.
+    Filtering on the dataset (read from config_snapshot.yaml, which every run writes) is what keeps
+    a side study from silently shadowing the headline.
+    """
     latest: dict[str, tuple[str, Path]] = {}
     for metrics_file in mirror.glob("raw/box*/*/metrics.json"):
         run_dir = metrics_file.parent
         if not (run_dir / "checkpoint_latest.pt").exists():
             continue
         try:
-            label = json.loads(metrics_file.read_text()).get("run_label", "")
+            metrics = json.loads(metrics_file.read_text())
         except json.JSONDecodeError:
             continue
+        label = metrics.get("run_label", "")
         if not label or label.startswith("clifford") or "piezoelectric" not in label:
+            continue
+        if _dataset_of(run_dir, metrics) != dataset:
             continue
         stamp = run_dir.name.split("_")[-1]
         if label not in latest or stamp > latest[label][0]:
             latest[label] = (stamp, run_dir)
     return {label: run_dir for label, (_, run_dir) in latest.items()}
+
+
+def _dataset_of(run_dir: Path, metrics: dict) -> str | None:
+    """`dataset` was added to metrics.json late; config_snapshot.yaml has always carried it."""
+    if "dataset" in metrics:
+        return metrics["dataset"]
+    snapshot = run_dir / "config_snapshot.yaml"
+    if not snapshot.exists():
+        return None
+    for line in snapshot.read_text().splitlines():
+        if line.startswith("dataset:"):
+            return line.split(":", 1)[1].strip()
+    return None
 
 
 def load_trained(

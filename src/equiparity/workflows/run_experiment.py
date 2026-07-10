@@ -137,6 +137,10 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
     (run_dir / "config_snapshot.yaml").write_text(config_text)
     metrics = {
         "run_label": config.run_label,
+        # `run_label` is (core, parity, target, seed) and does NOT include the dataset, so two
+        # datasets sharing a target (e.g. the E1 augmented piezoelectric set) collide. Record the
+        # dataset so downstream flattening and analysis can tell them apart.
+        "dataset": config.dataset,
         "target": config.target,
         "parity": config.parity.value,
         "n_params": result.n_params,

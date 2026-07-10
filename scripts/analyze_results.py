@@ -45,13 +45,25 @@ SEEDS = [0, 1, 2]
 C_O3, C_SO3 = "#2a78d6", "#e34948"  # validated categorical slots 1 and 6
 
 
+# Side studies (E1's augmented piezoelectric set) share a target with the headline grid and would
+# otherwise be indistinguishable: run_label omits the dataset.
+CANONICAL_DATASETS = frozenset({"qm9", "mp_elastic", "mp_piezoelectric"})
+
+
+def _is_headline(dataset: str | None) -> bool:
+    """Older runs predate the `dataset` field in metrics.json; those are all headline runs."""
+    return dataset is None or dataset in CANONICAL_DATASETS
+
+
 def load_metrics() -> dict[tuple[str, str, str, int], dict]:
     """label -> metrics dict, for the four-core scope (clifford_stf excluded)."""
     out = {}
     for f in sorted((MIRROR / "metrics").glob("*.json")):
-        if f.name.startswith("clifford"):
+        if f.name.startswith("clifford") or "__" in f.name:
             continue
         m = json.loads(f.read_text())
+        if not _is_headline(m.get("dataset")):
+            continue
         # run_label = <core>_<parity>_<target>_seed<N>; core may contain '_'
         label = m["run_label"]
         parity, target = m["parity"], m["target"]
@@ -75,6 +87,8 @@ def load_vectors() -> dict[tuple[str, str, int, str], np.ndarray]:
         label = m.get("run_label", "")
         if not label or label.startswith("clifford"):
             continue
+        if not _is_headline(_dataset_of(d, m)):
+            continue
         ts = d.name.split("_")[-1]
         if label not in latest or ts > latest[label][0]:
             latest[label] = (ts, d)
@@ -89,6 +103,19 @@ def load_vectors() -> dict[tuple[str, str, int, str], np.ndarray]:
             if p.exists():
                 vecs[(core, parity, seed, v)] = np.load(p)
     return vecs
+
+
+def _dataset_of(run_dir: Path, metrics: dict) -> str | None:
+    """metrics.json carries `dataset` only for recent runs; config_snapshot.yaml always does."""
+    if "dataset" in metrics:
+        return metrics["dataset"]
+    snapshot = run_dir / "config_snapshot.yaml"
+    if not snapshot.exists():
+        return None
+    for line in snapshot.read_text().splitlines():
+        if line.startswith("dataset:"):
+            return line.split(":", 1)[1].strip()
+    return None
 
 
 def ms(vals: list[float]) -> tuple[float, float]:

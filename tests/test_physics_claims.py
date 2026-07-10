@@ -339,3 +339,35 @@ def test_inversion_averaging_is_trivially_zero_on_an_exactly_centrosymmetric_inp
     t_ix = model(-pos, z)  # inversion; the +/- pairing makes this the same structure
     t_sym = (t_x - t_ix) / 2
     assert float(t_sym.norm()) < 1e-10
+
+
+# --------------------------------------------------- run identity (not a physics claim, but a gate)
+def test_run_label_collides_across_datasets_but_run_key_does_not() -> None:
+    """Regression guard for a real contamination incident.
+
+    ``run_label`` is ``(core, parity, target, seed)`` and omits the dataset, so the E1 augmented
+    piezoelectric runs produced labels identical to the headline runs. Flattening then overwrote
+    the headline ``metrics/`` files with side-study numbers and ``results/stats.json`` moved.
+    ``run_key`` is the dataset-qualified identifier that must be used wherever runs from different
+    datasets can be mixed.
+    """
+    from equiparity.domain.experiment import CANONICAL_DATASETS
+    from equiparity.io.config import parse_experiment_config
+
+    base = {
+        "seed": 1,
+        "core": "nequip",
+        "parity": "so3",
+        "target": "piezoelectric",
+        "processed_npz": "a",
+        "split_npz": "b",
+    }
+    headline = parse_experiment_config({**base, "dataset": "mp_piezoelectric"})
+    side = parse_experiment_config({**base, "dataset": "mp_piezoelectric_augmented"})
+
+    assert headline.run_label == side.run_label  # the collision that caused the incident
+    assert headline.run_key != side.run_key  # the fix
+    assert headline.run_key == headline.run_label  # canonical datasets keep their bare label
+    assert side.run_key.endswith("__mp_piezoelectric_augmented")
+    assert "mp_piezoelectric" in CANONICAL_DATASETS
+    assert "mp_piezoelectric_augmented" not in CANONICAL_DATASETS

@@ -58,6 +58,11 @@ class TrainingParams:
             raise ValueError(f"target_scale must be positive, got {self.target_scale!r}")
 
 
+# The datasets the headline grid uses. Anything else (e.g. the E1 augmented piezoelectric set) is
+# a side study and must never overwrite a headline run's flattened metrics.
+CANONICAL_DATASETS = frozenset({"qm9", "mp_elastic", "mp_piezoelectric"})
+
+
 @dataclass(frozen=True, slots=True)
 class ExperimentConfig:
     """A fully specified training run."""
@@ -81,5 +86,16 @@ class ExperimentConfig:
 
     @property
     def run_label(self) -> str:
-        """Stable label for this run, e.g. ``nequip_o3_U0_seed42``."""
+        """Stable label for this run, e.g. ``nequip_o3_U0_seed42``.
+
+        Note this does NOT identify the dataset: two datasets sharing a target produce the same
+        label. Use :attr:`run_key` when runs from different datasets may be mixed.
+        """
         return f"{self.core}_{self.parity.value}_{self.target}_seed{self.seed}"
+
+    @property
+    def run_key(self) -> str:
+        """``run_label`` qualified by dataset when the dataset is not the target's canonical one."""
+        if self.dataset in CANONICAL_DATASETS:
+            return self.run_label
+        return f"{self.run_label}__{self.dataset}"

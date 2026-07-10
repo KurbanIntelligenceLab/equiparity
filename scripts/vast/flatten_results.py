@@ -4,23 +4,31 @@ Reads every ``<raw>/box*/<experiment_id>/{metrics,config_snapshot,manifest}`` tr
   <dest>/metrics/<run_label>.json   -- flat copy, named by run_label (core_parity_target_seedN)
   <dest>/summary.csv                -- one row per run, sorted, easy to scan/track
 
-run_label is unique per (core, parity, target, seed), so there are no cross-box collisions.
-Idempotent: safe to re-run every sync; later (more-trained) copies of a run overwrite earlier ones
-only if they have more epochs, so partial fetches never clobber a completed run.
+run_label is (core, parity, target, seed) and does NOT include the dataset, so two datasets sharing
+a target collide. Files are therefore named by the dataset-qualified **run_key**: a run on a
+non-canonical dataset (e.g. the E1 augmented piezoelectric set) gets a ``__<dataset>`` suffix and
+can never overwrite the headline run it shadows. The dataset is read from config_snapshot.yaml,
+which every run writes, because older metrics.json predate the `dataset` field.
+
+Idempotent: safe to re-run every sync; later copies of a run supersede earlier ones by timestamp.
 """
 
 from __future__ import annotations
 
 import csv
 import json
-import shutil
 import sys
 from pathlib import Path
 
 import yaml
 
+# Datasets used by the headline grid; anything else is a side study and gets a suffixed key.
+CANONICAL_DATASETS = frozenset({"qm9", "mp_elastic", "mp_piezoelectric"})
+
 _COLS = [
+    "run_key",
     "run_label",
+    "dataset",
     "core",
     "parity",
     "target",
@@ -62,6 +70,10 @@ def main() -> None:
         cfg = _load(run_dir / "config_snapshot.yaml")
         man = _load(run_dir / "manifest.json")
         label = metrics.get("run_label") or run_dir.name
+        # metrics.json only carries `dataset` for runs made after that field was added; the config
+        # snapshot always has it.
+        dataset = metrics.get("dataset") or cfg.get("dataset") or ""
+        key = label if dataset in CANONICAL_DATASETS else f"{label}__{dataset}"
         box = run_dir.parent.name
         epochs = metrics.get("epochs_run", 0) or 0
         # experiment_id is <sha>_<confighash>_<utc_timestamp>; the trailing stamp sorts lexically.
@@ -69,14 +81,16 @@ def main() -> None:
 
         # Same run_label can appear twice (partial fetch, or a re-run like the idealized-OOD piezo
         # pass). Keep the LATEST by timestamp so re-runs supersede the originals.
-        prev = rows.get(label)
+        prev = rows.get(key)
         if prev is not None and prev["_ts"] >= ts:
             continue
 
         val = metrics.get("val", {})
         test = metrics.get("test", {})
-        rows[label] = {
+        rows[key] = {
+            "run_key": key,
             "run_label": label,
+            "dataset": dataset,
             "core": cfg.get("core", ""),
             "parity": metrics.get("parity", cfg.get("parity", "")),
             "target": metrics.get("target", cfg.get("target", "")),
@@ -94,7 +108,11 @@ def main() -> None:
             "experiment_id": run_dir.name,
             "_ts": ts,
         }
-        shutil.copyfile(run_dir / "metrics.json", flat / f"{label}.json")
+        # Inject `dataset` so downstream analysis can filter even on runs made before the field
+        # existed, then write under the dataset-qualified key.
+        payload = dict(metrics)
+        payload.setdefault("dataset", dataset)
+        (flat / f"{key}.json").write_text(json.dumps(payload, indent=1))
 
     with (dest / "summary.csv").open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=_COLS, extrasaction="ignore")
@@ -104,7 +122,8 @@ def main() -> None:
 
     n = len(rows)
     n_odd = sum(1 for r in rows.values() if r["target"] in ("piezoelectric", "dipole"))
-    print(f">>> flattened {n} completed runs -> {flat} ({n_odd} odd-target)")
+    n_side = sum(1 for r in rows.values() if r["dataset"] not in CANONICAL_DATASETS)
+    print(f">>> flattened {n} completed runs -> {flat} ({n_odd} odd-target, {n_side} side-study)")
     print(f">>> summary -> {dest / 'summary.csv'}")
 
 
