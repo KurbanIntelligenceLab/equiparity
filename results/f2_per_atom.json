@@ -1,0 +1,70 @@
+{
+ "threshold": 0.01,
+ "median_n_atoms": 28.0,
+ "per_atom_threshold": 0.00035714285714285714,
+ "rows": [
+  {
+   "core": "nequip",
+   "parity": "o3",
+   "ff_absolute_mean": 0.0,
+   "ff_absolute_std": 0.0,
+   "ff_per_atom_mean": 0.0,
+   "ff_per_atom_std": 0.0,
+   "delta": 0.0
+  },
+  {
+   "core": "nequip",
+   "parity": "so3",
+   "ff_absolute_mean": 0.8953333333333333,
+   "ff_absolute_std": 0.0007637626158259982,
+   "ff_per_atom_mean": 0.9090000000000001,
+   "ff_per_atom_std": 1.3597399555105182e-16,
+   "delta": 0.013666666666666827
+  },
+  {
+   "core": "allegro",
+   "parity": "o3",
+   "ff_absolute_mean": 0.0,
+   "ff_absolute_std": 0.0,
+   "ff_per_atom_mean": 0.0,
+   "ff_per_atom_std": 0.0,
+   "delta": 0.0
+  },
+  {
+   "core": "allegro",
+   "parity": "so3",
+   "ff_absolute_mean": 0.9095,
+   "ff_absolute_std": 0.0015000000000000013,
+   "ff_per_atom_mean": 0.914,
+   "ff_per_atom_std": 0.0013228756555323175,
+   "delta": 0.0045000000000000595
+  },
+  {
+   "core": "mace",
+   "parity": "o3",
+   "ff_absolute_mean": 0.0,
+   "ff_absolute_std": 0.0,
+   "ff_per_atom_mean": 0.0,
+   "ff_per_atom_std": 0.0,
+   "delta": 0.0
+  },
+  {
+   "core": "mace",
+   "parity": "so3",
+   "ff_absolute_mean": 0.9076666666666666,
+   "ff_absolute_std": 0.0007637626158259498,
+   "ff_per_atom_mean": 0.9119999999999999,
+   "ff_per_atom_std": 0.0013228756555322754,
+   "delta": 0.0043333333333333
+  },
+  {
+   "core": "equiformer_v2",
+   "parity": "so3",
+   "ff_absolute_mean": 0.957,
+   "ff_absolute_std": 0.005220153254455248,
+   "ff_per_atom_mean": 0.9746666666666667,
+   "ff_per_atom_std": 0.006525590650150606,
+   "delta": 0.01766666666666672
+  }
+ ]
+}
