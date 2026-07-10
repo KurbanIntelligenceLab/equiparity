@@ -193,7 +193,7 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
 
     train_graphs = graphs_of(train_ds)
     train_targets = _irreps_targets(train_ds, config.target, kind)
-    scale = float(train_targets.std()) or 1.0
+    scale = config.training.target_scale or float(train_targets.std()) or 1.0
     norm_targets = torch.tensor(train_targets / scale, dtype=target_dtype, device=device)
 
     model = build_tensor_model(

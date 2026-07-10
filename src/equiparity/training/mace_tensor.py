@@ -92,7 +92,7 @@ def train_mace_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -
 
     train_graphs = graphs_of(train_ds)
     train_targets = _irreps_targets(train_ds, config.target, kind)
-    scale = float(train_targets.std()) or 1.0
+    scale = config.training.target_scale or float(train_targets.std()) or 1.0
     norm_targets = torch.tensor(train_targets / scale, dtype=dtype, device=device)
 
     mace_cfg = MACEConfig(
@@ -240,7 +240,7 @@ def train_mace_dipole(config: ExperimentConfig) -> RunResult:
     val_graphs, val_targets = prepare(subset("val", config.training.max_eval_samples))
     test_graphs, test_targets = prepare(subset("test", config.training.max_eval_samples))
 
-    scale = float(train_targets.std()) or 1.0
+    scale = config.training.target_scale or float(train_targets.std()) or 1.0
     norm_targets = torch.tensor(train_targets / scale, dtype=dtype, device=device)
 
     mace_cfg = MACEConfig(

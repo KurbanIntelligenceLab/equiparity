@@ -45,10 +45,17 @@ class TrainingParams:
     precision: str = "float32"
     max_train_samples: int | None = None  # cap for smoke runs; None uses the full split
     max_eval_samples: int | None = None
+    # Override the target normalization scale instead of recomputing it from the training split.
+    # Needed by the E1 augmentation study: adding zero-labelled crystals shrinks the recomputed
+    # std (0.749 -> 0.638), and freezing it keeps augmented violations directly comparable to the
+    # main runs. None (the default) recomputes, which is what every headline run did.
+    target_scale: float | None = None
 
     def __post_init__(self) -> None:
         if self.precision not in ("float32", "float64"):
             raise ValueError(f"precision must be float32 or float64, got {self.precision!r}")
+        if self.target_scale is not None and self.target_scale <= 0:
+            raise ValueError(f"target_scale must be positive, got {self.target_scale!r}")
 
 
 @dataclass(frozen=True, slots=True)

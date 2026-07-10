@@ -68,9 +68,15 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev --extra ${PROFILE}
 
 # --- Data layer: bake the 62 MB processed npz (self-contained image) ---
+# The OOD set ships in BOTH variants: `_processed.npz` is idealized onto the exact space group,
+# `_processed_raw.npz` keeps the DFT-relaxed coordinates. The tensor trainers evaluate both
+# (`_raw_variant()` silently skips the raw one if it is missing), so omitting it would quietly
+# drop half the headline OOD table. `_augmented` is the E1 rebuttal training set.
 COPY data/raw/qm9/qm9_processed.npz ./data/raw/qm9/
 COPY data/raw/mp/mp_piezoelectric_processed.npz data/raw/mp/mp_elastic_processed.npz \
-     data/raw/mp/mp_ood_centrosymmetric_processed.npz ./data/raw/mp/
+     data/raw/mp/mp_ood_centrosymmetric_processed.npz \
+     data/raw/mp/mp_ood_centrosymmetric_processed_raw.npz \
+     data/raw/mp/mp_piezoelectric_augmented_processed.npz ./data/raw/mp/
 
 # Sanity: the CLI wires up and torch imports. CUDA availability is checked at runtime on the GPU host.
 RUN equiparity --version && python -c "import torch; print('torch', torch.__version__)"

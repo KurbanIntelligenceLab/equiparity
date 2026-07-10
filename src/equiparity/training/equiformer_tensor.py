@@ -87,7 +87,7 @@ def train_equiformer_tensor(
     test_ds = subset("test", config.training.max_eval_samples)
     train_structs = [train_ds[i].structure for i in range(len(train_ds))]
     train_targets = _irreps_targets(train_ds, config.target, kind)
-    scale = float(train_targets.std()) or 1.0
+    scale = config.training.target_scale or float(train_targets.std()) or 1.0
     norm_targets = torch.tensor(train_targets / scale, dtype=torch.float32, device=device)
 
     model = EquiformerV2TensorModel(_config(config), ParityMode.SO3, TARGETS[config.target].irreps)
@@ -218,7 +218,7 @@ def train_equiformer_dipole(config: ExperimentConfig) -> RunResult:
         return structs, targets
 
     train_structs, train_targets = prep("train", config.training.max_train_samples)
-    scale = float(train_targets.std()) or 1.0
+    scale = config.training.target_scale or float(train_targets.std()) or 1.0
     norm_targets = torch.tensor(train_targets / scale, dtype=torch.float32, device=device)
 
     model = EquiformerV2DipoleModel(_config(config), ParityMode.SO3).to(device)
