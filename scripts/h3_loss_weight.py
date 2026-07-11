@@ -141,21 +141,33 @@ def render() -> None:
             f"| {r['ff_unseen_mean']:.4f} ± {r['ff_unseen_std']:.4f} "
             f"| {r['test_mae_mean']:.4f} ± {r['test_mae_std']:.4f} |"
         )
-    o3_ref = "O(3), untrained: 0.0000 on every population, median ~3e-07 (structural)."
+    by_w = {r["weight"]: r for r in d["rows"]}
     lines += [
         "",
-        f"For reference, {o3_ref}",
+        "For reference, O(3) untrained: 0.0000 on every population, median ~3e-07 (structural).",
         "",
         "## Reading",
         "",
-        "See the generated numbers. The question the sweep answers: as W increases, does the",
-        "false-flag rate on the crystals the model was *trained to call zero* fall to O(3)'s "
-        "0.0000,",
-        "and at what cost to the non-centrosymmetric test MAE? A rate that stays well above zero, "
-        "or a",
-        "test MAE that degrades, is the expected outcome — gradient descent can push the violation",
-        "down but the physical answer is exactly zero, which only the O(3) structure delivers for "
-        "free.",
+        "**Extreme reweighting does not buy the zero.** As W goes 1 -> 10 -> 100, the false-flag "
+        "rate on the crystals the model was *trained to call zero* falls only "
+        f"{by_w[1]['ff_trained_zeros_mean']:.3f} -> {by_w[10]['ff_trained_zeros_mean']:.3f} -> "
+        f"{by_w[100]['ff_trained_zeros_mean']:.3f}, and on held-out SEEN-SG "
+        f"{by_w[1]['ff_seen_mean']:.3f} -> {by_w[100]['ff_seen_mean']:.3f}. Even at 100x it still "
+        "false-flags roughly two-thirds of its own trained-zero crystals and ~87% of held-out seen "
+        "ones -- far above O(3)'s 0.0000.",
+        "",
+        "The median violation does shrink with weight "
+        f"({by_w[1]['median_trained_zeros_mean']:.3f} -> "
+        f"{by_w[100]['median_trained_zeros_mean']:.3f} on the trained zeros, ~9x), and "
+        f"non-centrosymmetric test MAE is not harmed -- it slightly improves "
+        f"({by_w[1]['test_mae_mean']:.4f} -> {by_w[100]['test_mae_mean']:.4f}). So the fix costs "
+        "nothing in regression quality; it simply cannot reach zero. Gradient descent pushes the "
+        "prediction towards zero and cannot arrive, because the physical answer is *exactly* zero "
+        "-- which only the O(3) structure delivers, for free, at any weight.",
+        "",
+        "No weight setting achieved ~0.00 false-flag with intact MAE, so no off-cycle report is "
+        "triggered. The E1 conclusion stands, sharpened: augmentation with even 100x loss "
+        "weighting reduces but does not remove the impossible predictions.",
     ]
     OUT_MD.parent.mkdir(parents=True, exist_ok=True)
     OUT_MD.write_text("\n".join(lines) + "\n")
