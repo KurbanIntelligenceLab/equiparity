@@ -1,0 +1,20 @@
+{
+ "ictp": {
+  "model": "ICTP",
+  "sha": "f40592a",
+  "verdict": "parity-aware",
+  "rank3_odd_residual": 0.0,
+  "rank2_even_residual": 0.0,
+  "method": "direct rank-l Cartesian-harmonic parity: f(-x) vs (-1)^l f(x), random init"
+ },
+ "gotennet": {
+  "model": "GotenNet",
+  "sha": "44c945b",
+  "verdict": "parity-aware (vector output is a polar 1o vector, reflection-equivariant)",
+  "measured": true,
+  "rotation_polar_rel": 1.1736301203470044e-15,
+  "rotation_pseudo_rel": 1.1147742840612792e-15,
+  "improper_polar_rel": 1.811232538430694e-15,
+  "improper_pseudo_rel": 1.923620745371204
+ }
+}

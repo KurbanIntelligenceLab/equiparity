@@ -1,0 +1,14 @@
+name: mp_ood_centrosymmetric
+source: Materials Project materials.summary (centrosymmetric space groups, band_gap>0.1
+  eV)
+version: Materials Project API; fetched 2026-07-04
+license: CC-BY-4.0 (Materials Project)
+file_hashes: {}
+schema:
+  positions: angstrom
+  target: "none \u2014 piezoelectric tensor is exactly zero by symmetry"
+structure_format: pymatgen Structure (periodic)
+query: scripts/prepare_mp.py
+cleaning: 2000 entries retained. spglib-verified centrosymmetric (symprec=0.001);
+  103 candidates rejected.
+limitations: MP DFPT tensors; provenance is the MP material_id + API fetch date.

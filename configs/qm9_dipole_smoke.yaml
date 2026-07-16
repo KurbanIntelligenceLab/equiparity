@@ -1,0 +1,22 @@
+# Smoke config: QM9 dipole (parity-odd vector, the first parity signal), tiny subset.
+# The O(3) arm reads out a 1o polar vector; the SO(3) arm a 1e (wrong reflection parity).
+seed: 42
+core: nequip
+parity: o3
+target: dipole
+dataset: qm9
+processed_npz: data/raw/qm9/qm9_processed.npz
+split_npz: data/splits/qm9_split.npz
+output_dir: outputs
+model:
+  num_layers: 3
+  l_max: 1
+  num_features: 16
+  r_max: 5.0
+training:
+  batch_size: 16
+  epochs: 15
+  lr: 0.005
+  device: cuda
+  max_train_samples: 600
+  max_eval_samples: 200

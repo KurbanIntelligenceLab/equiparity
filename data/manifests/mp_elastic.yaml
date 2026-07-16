@@ -1,0 +1,13 @@
+name: mp_elastic
+source: Materials Project materials.elasticity
+version: Materials Project API; fetched 2026-07-04
+license: CC-BY-4.0 (Materials Project)
+file_hashes: {}
+schema:
+  elastic: elastic tensor ieee_format 6x6 flattened to 36 (21 unique, parity-even)
+  positions: angstrom
+structure_format: pymatgen Structure (periodic)
+query: scripts/prepare_mp.py
+cleaning: 13080 entries retained. Excluded 147 with |C| > 2000.0 GPa (unphysical failed-DFT
+  tensors).
+limitations: MP DFPT tensors; provenance is the MP material_id + API fetch date.

@@ -205,3 +205,19 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# equiparity: research artifacts (CODING_RULES.md §A — never commit raw data or outputs)
+/outputs/
+/outputs_cloud/
+/data/raw/
+/data/**/*.lmdb
+/data/**/*.h5
+/data/**/*.tar.gz
+*.pt
+*.ckpt
+*.parquet
+!data/manifests/**
+!data/splits/**
+
+# H1/H2 external source checkouts (pinned shas recorded in reports; code not committed)
+third_party/

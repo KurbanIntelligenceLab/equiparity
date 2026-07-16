@@ -1,0 +1,527 @@
+{
+  "allegro_o3_piezoelectric_seed0": {
+    "core": "allegro",
+    "idealized": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 1.430045247077942,
+      "median_rel_T_of_Ix_equals_plus_T": 1.4006197452545166,
+      "median_violation": 5.221376113695442e-07,
+      "median_violation_symmetrized": 3.714449405833875e-07
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 7.788251537022006e-07,
+      "median_rel_T_of_Ix_equals_plus_T": 2.0,
+      "n": 25
+    },
+    "parity": "o3",
+    "raw": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 1.3632104396820068,
+      "median_rel_T_of_Ix_equals_plus_T": 1.4422264099121094,
+      "median_violation": 5.870432460142183e-07,
+      "median_violation_symmetrized": 4.1383756865798205e-07
+    }
+  },
+  "allegro_o3_piezoelectric_seed1": {
+    "core": "allegro",
+    "idealized": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 1.4147868156433105,
+      "median_rel_T_of_Ix_equals_plus_T": 1.4138007164001465,
+      "median_violation": 5.76454851852759e-07,
+      "median_violation_symmetrized": 4.0071199691738e-07
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 7.236859573822585e-07,
+      "median_rel_T_of_Ix_equals_plus_T": 2.0,
+      "n": 25
+    },
+    "parity": "o3",
+    "raw": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 1.3816428184509277,
+      "median_rel_T_of_Ix_equals_plus_T": 1.4695022106170654,
+      "median_violation": 6.168361892378016e-07,
+      "median_violation_symmetrized": 4.4158770151625504e-07
+    }
+  },
+  "allegro_o3_piezoelectric_seed2": {
+    "core": "allegro",
+    "idealized": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 1.4278637170791626,
+      "median_rel_T_of_Ix_equals_plus_T": 1.414428949356079,
+      "median_violation": 5.389670150179882e-07,
+      "median_violation_symmetrized": 3.826373813353712e-07
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 9.623947789805243e-07,
+      "median_rel_T_of_Ix_equals_plus_T": 2.0,
+      "n": 25
+    },
+    "parity": "o3",
+    "raw": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 1.3572334051132202,
+      "median_rel_T_of_Ix_equals_plus_T": 1.4461718797683716,
+      "median_violation": 5.935438593951403e-07,
+      "median_violation_symmetrized": 4.195293286102242e-07
+    }
+  },
+  "allegro_so3_piezoelectric_seed0": {
+    "core": "allegro",
+    "idealized": {
+      "false_flag": 0.9095,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 1.3586634395323927e-06,
+      "median_violation": 0.8558908700942993,
+      "median_violation_symmetrized": 5.676993737324665e-07
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 1.165899634361267,
+      "median_rel_T_of_Ix_equals_plus_T": 1.7875401973724365,
+      "n": 25
+    },
+    "parity": "so3",
+    "raw": {
+      "false_flag": 0.9095,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 1.4404289458980202e-06,
+      "median_violation": 0.8585199117660522,
+      "median_violation_symmetrized": 6.38260132745927e-07
+    }
+  },
+  "allegro_so3_piezoelectric_seed1": {
+    "core": "allegro",
+    "idealized": {
+      "false_flag": 0.911,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 1.2858997706644004e-06,
+      "median_violation": 1.10312819480896,
+      "median_violation_symmetrized": 7.439272735609848e-07
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 1.1295099258422852,
+      "median_rel_T_of_Ix_equals_plus_T": 1.7994632720947266,
+      "n": 25
+    },
+    "parity": "so3",
+    "raw": {
+      "false_flag": 0.911,
+      "false_flag_symmetrized": 0.0005,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 1.4045375564819551e-06,
+      "median_violation": 1.121863842010498,
+      "median_violation_symmetrized": 8.424668180850858e-07
+    }
+  },
+  "allegro_so3_piezoelectric_seed2": {
+    "core": "allegro",
+    "idealized": {
+      "false_flag": 0.908,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 1.3520527772925561e-06,
+      "median_violation": 0.9200206995010376,
+      "median_violation_symmetrized": 6.298469088505954e-07
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 1.1133289337158203,
+      "median_rel_T_of_Ix_equals_plus_T": 1.866875410079956,
+      "n": 25
+    },
+    "parity": "so3",
+    "raw": {
+      "false_flag": 0.908,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 1.482382458561915e-06,
+      "median_violation": 0.9287337064743042,
+      "median_violation_symmetrized": 6.937938223927631e-07
+    }
+  },
+  "equiformer_v2_so3_piezoelectric_seed0": {
+    "core": "equiformer_v2",
+    "idealized": {
+      "false_flag": 0.9525,
+      "false_flag_symmetrized": 0.822,
+      "median_rel_T_of_Ix_equals_minus_T": 1.9969758544054366,
+      "median_rel_T_of_Ix_equals_plus_T": 0.09880770872989145,
+      "median_violation": 0.5397907982417309,
+      "median_violation_symmetrized": 0.027752557852993014
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 0.9761685477729561,
+      "median_rel_T_of_Ix_equals_plus_T": 1.7592683554658857,
+      "n": 25
+    },
+    "parity": "so3",
+    "raw": {
+      "false_flag": 0.953,
+      "false_flag_symmetrized": 0.8265,
+      "median_rel_T_of_Ix_equals_minus_T": 1.9959007075724755,
+      "median_rel_T_of_Ix_equals_plus_T": 0.09763507398840413,
+      "median_violation": 0.5485349250261566,
+      "median_violation_symmetrized": 0.027597806664014228
+    }
+  },
+  "equiformer_v2_so3_piezoelectric_seed1": {
+    "core": "equiformer_v2",
+    "idealized": {
+      "false_flag": 0.96,
+      "false_flag_symmetrized": 0.832,
+      "median_rel_T_of_Ix_equals_minus_T": 1.9948962247160458,
+      "median_rel_T_of_Ix_equals_plus_T": 0.10906955883632007,
+      "median_violation": 0.43059488296482856,
+      "median_violation_symmetrized": 0.027440489338595032
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 0.8812248642387415,
+      "median_rel_T_of_Ix_equals_plus_T": 1.887842403376668,
+      "n": 25
+    },
+    "parity": "so3",
+    "raw": {
+      "false_flag": 0.9605,
+      "false_flag_symmetrized": 0.8365,
+      "median_rel_T_of_Ix_equals_minus_T": 1.9953229091902873,
+      "median_rel_T_of_Ix_equals_plus_T": 0.1114188746209642,
+      "median_violation": 0.43167078909983625,
+      "median_violation_symmetrized": 0.027277656310129936
+    }
+  },
+  "equiformer_v2_so3_piezoelectric_seed2": {
+    "core": "equiformer_v2",
+    "idealized": {
+      "false_flag": 0.9525,
+      "false_flag_symmetrized": 0.8125,
+      "median_rel_T_of_Ix_equals_minus_T": 1.9920248450312394,
+      "median_rel_T_of_Ix_equals_plus_T": 0.14904739700705597,
+      "median_violation": 0.3638840419613667,
+      "median_violation_symmetrized": 0.0293281836152037
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 0.7249197662540299,
+      "median_rel_T_of_Ix_equals_plus_T": 1.9585629488085934,
+      "n": 25
+    },
+    "parity": "so3",
+    "raw": {
+      "false_flag": 0.952,
+      "false_flag_symmetrized": 0.81,
+      "median_rel_T_of_Ix_equals_minus_T": 1.992547353242553,
+      "median_rel_T_of_Ix_equals_plus_T": 0.14842386423644494,
+      "median_violation": 0.3662001058752926,
+      "median_violation_symmetrized": 0.02904868705874182
+    }
+  },
+  "mace_o3_piezoelectric_seed0": {
+    "core": "mace",
+    "idealized": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 0.14258362352848053,
+      "median_rel_T_of_Ix_equals_plus_T": 1.9945796728134155,
+      "median_violation": 2.8455197025323287e-06,
+      "median_violation_symmetrized": 2.853132627933519e-06
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 3.3040112157323165e-07,
+      "median_rel_T_of_Ix_equals_plus_T": 2.0,
+      "n": 25
+    },
+    "parity": "o3",
+    "raw": {
+      "false_flag": 0.0005,
+      "false_flag_symmetrized": 0.0005,
+      "median_rel_T_of_Ix_equals_minus_T": 0.12986314296722412,
+      "median_rel_T_of_Ix_equals_plus_T": 1.998730182647705,
+      "median_violation": 3.2706934689485934e-06,
+      "median_violation_symmetrized": 3.2917605494731106e-06
+    }
+  },
+  "mace_o3_piezoelectric_seed1": {
+    "core": "mace",
+    "idealized": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 0.13829335570335388,
+      "median_rel_T_of_Ix_equals_plus_T": 1.9930994510650635,
+      "median_violation": 2.481191131664673e-06,
+      "median_violation_symmetrized": 2.483212483639363e-06
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 3.982834755333897e-07,
+      "median_rel_T_of_Ix_equals_plus_T": 2.0,
+      "n": 25
+    },
+    "parity": "o3",
+    "raw": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 0.12237011641263962,
+      "median_rel_T_of_Ix_equals_plus_T": 1.9991161823272705,
+      "median_violation": 2.8436686534405453e-06,
+      "median_violation_symmetrized": 2.833610324159963e-06
+    }
+  },
+  "mace_o3_piezoelectric_seed2": {
+    "core": "mace",
+    "idealized": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 0.147062748670578,
+      "median_rel_T_of_Ix_equals_plus_T": 1.9927520751953125,
+      "median_violation": 2.926802608271828e-06,
+      "median_violation_symmetrized": 2.92895310849417e-06
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 4.157511455105123e-07,
+      "median_rel_T_of_Ix_equals_plus_T": 2.0,
+      "n": 25
+    },
+    "parity": "o3",
+    "raw": {
+      "false_flag": 0.0005,
+      "false_flag_symmetrized": 0.0005,
+      "median_rel_T_of_Ix_equals_minus_T": 0.12813696265220642,
+      "median_rel_T_of_Ix_equals_plus_T": 1.996462106704712,
+      "median_violation": 3.4078120734193362e-06,
+      "median_violation_symmetrized": 3.383506509635481e-06
+    }
+  },
+  "mace_so3_piezoelectric_seed0": {
+    "core": "mace",
+    "idealized": {
+      "false_flag": 0.9085,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 5.030565262131859e-06,
+      "median_violation": 0.9812720417976379,
+      "median_violation_symmetrized": 2.445534846629016e-06
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 0.9546214938163757,
+      "median_rel_T_of_Ix_equals_plus_T": 1.8916233777999878,
+      "n": 25
+    },
+    "parity": "so3",
+    "raw": {
+      "false_flag": 0.9085,
+      "false_flag_symmetrized": 0.0005,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 6.0399379435693845e-06,
+      "median_violation": 0.9886854290962219,
+      "median_violation_symmetrized": 2.8418317015166394e-06
+    }
+  },
+  "mace_so3_piezoelectric_seed1": {
+    "core": "mace",
+    "idealized": {
+      "false_flag": 0.907,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 5.230163878877647e-06,
+      "median_violation": 0.9209558963775635,
+      "median_violation_symmetrized": 2.429678261250956e-06
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 0.9690409898757935,
+      "median_rel_T_of_Ix_equals_plus_T": 1.8766875267028809,
+      "n": 25
+    },
+    "parity": "so3",
+    "raw": {
+      "false_flag": 0.907,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 6.24949188932078e-06,
+      "median_violation": 0.9232891798019409,
+      "median_violation_symmetrized": 2.8226540962350555e-06
+    }
+  },
+  "mace_so3_piezoelectric_seed2": {
+    "core": "mace",
+    "idealized": {
+      "false_flag": 0.9075,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 5.2848390623694286e-06,
+      "median_violation": 0.8724396824836731,
+      "median_violation_symmetrized": 2.3236348170030396e-06
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 0.9324975609779358,
+      "median_rel_T_of_Ix_equals_plus_T": 1.8988622426986694,
+      "n": 25
+    },
+    "parity": "so3",
+    "raw": {
+      "false_flag": 0.9075,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 6.379699698300101e-06,
+      "median_violation": 0.8784056305885315,
+      "median_violation_symmetrized": 2.6329539650760125e-06
+    }
+  },
+  "nequip_o3_piezoelectric_seed0": {
+    "core": "nequip",
+    "idealized": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 1.4143377542495728,
+      "median_rel_T_of_Ix_equals_plus_T": 1.415118932723999,
+      "median_violation": 3.672993500458688e-07,
+      "median_violation_symmetrized": 2.560780956173403e-07
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 1.0912818879660335e-06,
+      "median_rel_T_of_Ix_equals_plus_T": 1.9999998807907104,
+      "n": 25
+    },
+    "parity": "o3",
+    "raw": {
+      "false_flag": 0.0005,
+      "false_flag_symmetrized": 0.0005,
+      "median_rel_T_of_Ix_equals_minus_T": 1.3592934608459473,
+      "median_rel_T_of_Ix_equals_plus_T": 1.4655981063842773,
+      "median_violation": 3.9166138776636217e-07,
+      "median_violation_symmetrized": 2.772830498543044e-07
+    }
+  },
+  "nequip_o3_piezoelectric_seed1": {
+    "core": "nequip",
+    "idealized": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 1.4087879657745361,
+      "median_rel_T_of_Ix_equals_plus_T": 1.39455246925354,
+      "median_violation": 2.948267479041533e-07,
+      "median_violation_symmetrized": 2.029881045473303e-07
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 6.059986503714754e-07,
+      "median_rel_T_of_Ix_equals_plus_T": 2.0,
+      "n": 25
+    },
+    "parity": "o3",
+    "raw": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 1.3633043766021729,
+      "median_rel_T_of_Ix_equals_plus_T": 1.4523484706878662,
+      "median_violation": 3.251280418226088e-07,
+      "median_violation_symmetrized": 2.2935145693736558e-07
+    }
+  },
+  "nequip_o3_piezoelectric_seed2": {
+    "core": "nequip",
+    "idealized": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 1.41951584815979,
+      "median_rel_T_of_Ix_equals_plus_T": 1.424107551574707,
+      "median_violation": 2.62512259041614e-07,
+      "median_violation_symmetrized": 1.8522766254136513e-07
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 4.770531631947961e-07,
+      "median_rel_T_of_Ix_equals_plus_T": 1.9999998807907104,
+      "n": 25
+    },
+    "parity": "o3",
+    "raw": {
+      "false_flag": 0.0,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 1.35798978805542,
+      "median_rel_T_of_Ix_equals_plus_T": 1.4738411903381348,
+      "median_violation": 2.893870600928494e-07,
+      "median_violation_symmetrized": 2.0670856315518904e-07
+    }
+  },
+  "nequip_so3_piezoelectric_seed0": {
+    "core": "nequip",
+    "idealized": {
+      "false_flag": 0.896,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 8.669616704537475e-07,
+      "median_violation": 0.6928948163986206,
+      "median_violation_symmetrized": 3.279862141880585e-07
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 0.5206414461135864,
+      "median_rel_T_of_Ix_equals_plus_T": 1.8423091173171997,
+      "n": 25
+    },
+    "parity": "so3",
+    "raw": {
+      "false_flag": 0.896,
+      "false_flag_symmetrized": 0.0005,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 9.657237569626886e-07,
+      "median_violation": 0.6971023678779602,
+      "median_violation_symmetrized": 3.707118594320491e-07
+    }
+  },
+  "nequip_so3_piezoelectric_seed1": {
+    "core": "nequip",
+    "idealized": {
+      "false_flag": 0.8955,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 8.519771768078499e-07,
+      "median_violation": 0.7021276354789734,
+      "median_violation_symmetrized": 3.198818490091071e-07
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 1.2990938425064087,
+      "median_rel_T_of_Ix_equals_plus_T": 1.8341443538665771,
+      "n": 25
+    },
+    "parity": "so3",
+    "raw": {
+      "false_flag": 0.8955,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 9.343731903754815e-07,
+      "median_violation": 0.7081508636474609,
+      "median_violation_symmetrized": 3.5597383885033196e-07
+    }
+  },
+  "nequip_so3_piezoelectric_seed2": {
+    "core": "nequip",
+    "idealized": {
+      "false_flag": 0.8945,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 8.117493734971504e-07,
+      "median_violation": 0.6042238473892212,
+      "median_violation_symmetrized": 2.616280312395247e-07
+    },
+    "noncentrosymmetric_control": {
+      "median_rel_T_of_Ix_equals_minus_T": 1.0329704284667969,
+      "median_rel_T_of_Ix_equals_plus_T": 1.8529473543167114,
+      "n": 25
+    },
+    "parity": "so3",
+    "raw": {
+      "false_flag": 0.8945,
+      "false_flag_symmetrized": 0.0,
+      "median_rel_T_of_Ix_equals_minus_T": 2.0,
+      "median_rel_T_of_Ix_equals_plus_T": 8.915167200029828e-07,
+      "median_violation": 0.6090118288993835,
+      "median_violation_symmetrized": 2.9206003659965063e-07
+    }
+  }
+}

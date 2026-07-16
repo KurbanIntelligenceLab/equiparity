@@ -1,0 +1,124 @@
+{
+ "rows": [
+  {
+   "model": "SchNet",
+   "source": "torch_geometric.nn.models.schnet",
+   "version": "torch-geometric 2.8.0",
+   "category": "invariant",
+   "evidence_file": "torch_geometric/nn/models/schnet.py",
+   "evidence": "Interactions consume only `edge_weight` (interatomic distances); the file contains zero references to `Irreps` or `o3`. A distance-only network is invariant under every element of O(3), so it cannot emit a tensor of any rank."
+  },
+  {
+   "model": "DimeNet++",
+   "source": "torch_geometric.nn.models.dimenet",
+   "version": "torch-geometric 2.8.0",
+   "category": "invariant",
+   "evidence_file": "torch_geometric/nn/models/dimenet.py",
+   "evidence": "Message passing is over distances and bond angles; zero references to `Irreps` or `o3`. Angles are invariant under reflection, so the representation cannot distinguish a structure from its mirror image."
+  },
+  {
+   "model": "PaiNN",
+   "source": "torchmd-net (torchmdnet/models)",
+   "version": "commit 2a2c913",
+   "category": "vector-only",
+   "evidence_file": "torchmdnet/models/torchmd_et.py",
+   "evidence": "Equivariance is carried by an explicit Cartesian vector channel `vec = torch.zeros(x.size(0), 3, x.size(1))` (line 213), updated alongside scalars. No `Irreps` anywhere in `torchmdnet/models/`. A vector channel is an l=1 object; the code does not label its parity, and there is no rank-3 path."
+  },
+  {
+   "model": "TorchMD-Net (ET)",
+   "source": "torchmd-net",
+   "version": "commit 2a2c913",
+   "category": "vector-only",
+   "evidence_file": "torchmdnet/models/torchmd_et.py",
+   "evidence": "Same Cartesian `vec` channel (line 213), `dx, dvec = attn(...)` (line 216). No typed irreps; parity is never represented."
+  },
+  {
+   "model": "ViSNet",
+   "source": "torch_geometric.nn.models.visnet",
+   "version": "torch-geometric 2.8.0",
+   "category": "vector-only",
+   "evidence_file": "torch_geometric/nn/models/visnet.py",
+   "evidence": "Maintains a Cartesian vector channel (`vec = torch.cat([vec1, vec2], dim=1)`, line 269); zero references to `Irreps` or `o3`."
+  },
+  {
+   "model": "FAENet",
+   "source": "vict0rsch/faenet",
+   "version": "commit 1f725cf",
+   "category": "invariant",
+   "evidence_file": "faenet/tests/test_model_symmetries.py",
+   "evidence": "The network itself is not equivariant; symmetry is imposed externally by frame averaging (`frame_averaging` in {'', '2D', '3D', 'DA'}). Parity is a property of the chosen frame set, not of the features. Reflections enter only if the frame set includes them."
+  },
+  {
+   "model": "NequIP",
+   "source": "nequip",
+   "version": "0.18.0",
+   "category": "parity-aware",
+   "evidence_file": "nequip/model/nequip_models.py",
+   "evidence": "`parity: bool = True` (line 120). Its own docstring (line 138) shows that with `parity=False` and `l_max=2` the features are still `5x0e, 2x1o, 7x2e` -- i.e. the flag does not strip parity labels. This corroborates our Checkpoint-1 finding that the boolean is NOT the SO(3) toggle; we build the SO(3) arm by relabelling irreps."
+  },
+  {
+   "model": "Allegro",
+   "source": "nequip-allegro",
+   "version": "0.8.3",
+   "category": "parity-aware",
+   "evidence_file": "allegro/model/allegro_models.py",
+   "evidence": "`parity: bool = True` (line 36), 'whether to include features with odd mirror parity' (line 48), consumed at line 75. Features are e3nn irreps with parity labels."
+  },
+  {
+   "model": "MACE",
+   "source": "mace-torch",
+   "version": "0.3.16",
+   "category": "parity-aware",
+   "evidence_file": "mace/modules/models.py",
+   "evidence": "`use_so3: bool = False` (line 67), stored at line 104. The default builds the edge spherical harmonics with natural parity `(-1)^l`; `use_so3=True` makes them all-even, which is the correct native SO(3) toggle and is what our matched pair uses."
+  },
+  {
+   "model": "Equiformer (v1)",
+   "source": "atomicarchitects/equiformer",
+   "version": "commit 64cb786",
+   "category": "SO(3)-only",
+   "evidence_file": "nets/graph_attention_transformer.py",
+   "evidence": "Every shipped default node embedding is all-even: `irreps_node_embedding='128x0e+64x1e+32x2e'` (line 739; likewise dp_attention_transformer.py:261, equiformer_md17_dens.py:59) and `'256x0e+128x1e'` for OC20 (graph_attention_transformer_oc20.py:89). Odd irreps appear only in an `irreps_head` and in auxiliary force outputs (dp_attention_transformer_oc20.py:182). As released, Equiformer v1's node features carry no odd-parity channel."
+  },
+  {
+   "model": "EquiformerV2",
+   "source": "vendored (src/equiparity/models/equiformer_v2)",
+   "version": "as vendored in this repo",
+   "category": "SO(3)-only",
+   "evidence_file": "src/equiparity/models/equiformer_v2/so3.py",
+   "evidence": "`SO3_Embedding` is indexed by `lmax_list`/`mmax_list` only; `so3.py` contains zero `Irreps` constructions and no parity anywhere. Confirmed behaviourally in E5: it violates the mirror law by O(1). Separately, its rotation equivariance is only approximate (edge_rot_mat.py draws a random per-edge frame each forward)."
+  },
+  {
+   "model": "eSCN",
+   "source": "vendored so3.py / so2_ops.py (Meta OCP eSCN lineage)",
+   "version": "as vendored @ EquiformerV2 8fe8cba",
+   "category": "SO(3)-only",
+   "evidence_file": "src/equiparity/models/equiformer_v2/so3.py",
+   "evidence": "eSCN is the SO(2)-reduced convolution EquiformerV2 is built on; its code IS the vendored `so3.py`/`so2_ops.py` (Meta OCP header). The `SO3_Embedding` is `lmax`/`mmax`-typed with **no parity label** -- deciding line, in-repo. (The `fairchem` clone carriesonly the newer UMA MoE eSCN variant, not the EquiformerV2 lineage.)"
+  },
+  {
+   "model": "MatTen",
+   "source": "wengroup/matten",
+   "version": "commit 0a04f1c",
+   "category": "parity-aware",
+   "evidence_file": "src/matten/model_factory/tfn_scalar_tensor.py",
+   "evidence": "Default `conv_layer_irreps: '32x0o + 32x0e + 16x1o + 16x1e'` (line 206) and `irreps_edge_sh: '0e + 1o'` (line 207). Both parities are present and explicitly labelled; this is an O(3) model (it targets the even-parity elasticity tensor)."
+  },
+  {
+   "model": "ICTP",
+   "source": "nec-research/ICTP",
+   "version": "commit f40592a",
+   "category": "parity-aware",
+   "evidence_file": "ictp/o3/cartesian_harmonics.py",
+   "evidence": "Uses its own `CartesianHarmonics(l_max)` (line 253) rather than e3nn irreps. **Measured(H2, random init, `results/h2_probes.json`):** `RankThreeCartesianHarmonics` gives `\u2016f(-x)+f(x)\u2016/\u2016f\u2016 = 0.0` (rank-3 odd) and the rank-2 output is even -- the `(-1)^l` construction confirmed to machine precision. Parity-aware by measurement, not argument."
+  },
+  {
+   "model": "GotenNet",
+   "source": "sarpaykent/GotenNet",
+   "version": "commit 44c945b",
+   "category": "parity-aware",
+   "evidence_file": "gotennet/models/representation/gotennet.py",
+   "evidence": "Edge features come from `e3nn.o3.SphericalHarmonics(lmax)` (line 861), carrying naturalparity. We suspected the non-e3nn `GATA` blocks might strip it, but **the measurement (H2, isolated CPU env, random init, `results/h2_probes.json`) overturns that**: the l=1 vector output satisfies `X(gx) = g X(x)` for a random rotation (rel 1.2e-15) AND arandom improper op (rel 1.8e-15), while the pseudovector law fails (rel 1.9). So the output is a genuine polar (1o) vector -- reflection-equivariant, parity-aware. This iswhy the row was left undetermined until measured."
+  }
+ ]
+}

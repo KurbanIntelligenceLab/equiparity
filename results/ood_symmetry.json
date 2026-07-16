@@ -1,0 +1,65 @@
+{
+  "n_structures": 2000,
+  "selection_symprec": 0.001,
+  "counts_centrosymmetric": {
+    "idealized": {
+      "1e-05": 1999,
+      "0.0001": 1999,
+      "0.001": 2000,
+      "0.01": 2000
+    },
+    "raw": {
+      "1e-05": 1869,
+      "0.0001": 1956,
+      "0.001": 2000,
+      "0.01": 2000
+    }
+  },
+  "o3_raw_flagged": {
+    "mp-1227949": {
+      "index": 1038,
+      "idealized": {
+        "n_atoms": 20,
+        "by_symprec": {
+          "1e-05": {
+            "space_group": 47,
+            "centrosymmetric": true
+          },
+          "0.0001": {
+            "space_group": 47,
+            "centrosymmetric": true
+          },
+          "0.001": {
+            "space_group": 47,
+            "centrosymmetric": true
+          },
+          "0.01": {
+            "space_group": 47,
+            "centrosymmetric": true
+          }
+        }
+      },
+      "raw": {
+        "n_atoms": 40,
+        "by_symprec": {
+          "1e-05": {
+            "space_group": 1,
+            "centrosymmetric": false
+          },
+          "0.0001": {
+            "space_group": 1,
+            "centrosymmetric": false
+          },
+          "0.001": {
+            "space_group": 47,
+            "centrosymmetric": true
+          },
+          "0.01": {
+            "space_group": 47,
+            "centrosymmetric": true
+          }
+        }
+      }
+    }
+  }
+}

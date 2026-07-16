@@ -1,0 +1,6845 @@
+{
+ "structures": 20,
+ "rows": [
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.745501854425062e-07,
+   "jp_plus_j_rel": 3.95793726585149e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999672,
+    -0.9999999999999629,
+    -0.9999999999999463,
+    -0.9999999999999611,
+    -0.9999999999999615
+   ],
+   "fd_rel_error": 0.00010366308561800497
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.7823313403036503e-07,
+   "jp_plus_j_rel": 2.3425138612605687e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999878,
+    -0.999999999999953,
+    -0.9999999999999541,
+    -0.9999999999999118,
+    -0.9999999999999488
+   ],
+   "fd_rel_error": 0.00022214192314153825
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 1.5771304988240237e-07,
+   "jp_plus_j_rel": 3.3160726817766186e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999415,
+    -0.9999999999999927,
+    -0.9999999999999909,
+    -0.9999999999999598,
+    -0.9999999999999379
+   ],
+   "fd_rel_error": 0.00015949867960223
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.1686515091144687e-07,
+   "jp_plus_j_rel": 1.4852222654052445e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999886,
+    -0.999999999999989,
+    -0.9999999999999939,
+    -0.9999999999999247,
+    -0.999999999999858
+   ],
+   "fd_rel_error": 0.00011945918550579577
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 2.641352913900171e-07,
+   "jp_plus_j_rel": 3.9390475243883864e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999674,
+    -0.9999999999999027,
+    -0.999999999999736,
+    -0.9999999999996045,
+    -0.9999999999995671
+   ],
+   "fd_rel_error": 0.00010957609149367346
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 2.222276424572992e-07,
+   "jp_plus_j_rel": 4.1194958346469207e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999585,
+    -0.9999999999999676,
+    -0.9999999999999192,
+    -0.9999999999998714,
+    -0.9999999999998406
+   ],
+   "fd_rel_error": 0.00018151809641004182
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.7004431928264074e-07,
+   "jp_plus_j_rel": 5.092190661570758e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.999999999999991,
+    -0.9999999999999694,
+    -0.9999999999999257,
+    -0.9999999999998739,
+    -0.9999999999998869
+   ],
+   "fd_rel_error": 9.15834934422608e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 4.804884254246311e-07,
+   "jp_plus_j_rel": 9.931423295023884e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999998254,
+    -0.9999999999995106,
+    -0.9999999999997367,
+    -0.9999999999997388,
+    -0.9999999999994936
+   ],
+   "fd_rel_error": 0.00024139414813183484
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.5567548757564948e-07,
+   "jp_plus_j_rel": 2.2210358070921542e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999656,
+    -0.9999999999999727,
+    -0.9999999999999927,
+    -0.9999999999999873,
+    -0.9999999999999218
+   ],
+   "fd_rel_error": 9.489059912201991e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 1.5005240395087189e-07,
+   "jp_plus_j_rel": 3.872339746553407e-07,
+   "rank": 9,
+   "parity_scores_top5": [
+    -0.999999999999974,
+    -0.9999999999999816,
+    -0.999999999999996,
+    -0.9999999999999204,
+    -0.9999999999996175
+   ],
+   "fd_rel_error": 5.709803020642201e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 2.377072385399217e-07,
+   "jp_plus_j_rel": 3.849025629421464e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.999999999999951,
+    -0.999999999999933,
+    -0.9999999999999516,
+    -0.9999999999999578,
+    -0.9999999999995117
+   ],
+   "fd_rel_error": 9.24763461387122e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 1.060625854985928e-07,
+   "jp_plus_j_rel": 1.3143873217176944e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999984,
+    -0.9999999999999889,
+    -0.9999999999999776,
+    -0.9999999999999545,
+    -0.999999999999983
+   ],
+   "fd_rel_error": 4.683105434778551e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 7.61697732415463e-08,
+   "jp_plus_j_rel": 1.4012861137125599e-07,
+   "rank": 10,
+   "parity_scores_top5": [
+    -0.9999999999999925,
+    -0.9999999999999969,
+    -0.9999999999999901,
+    -0.9999999999997209,
+    -0.9999999999995477
+   ],
+   "fd_rel_error": 3.0890604955744784e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 7.58549450710835e-08,
+   "jp_plus_j_rel": 7.895050461957235e-08,
+   "rank": 11,
+   "parity_scores_top5": [
+    -0.9999999999999951,
+    -0.9999999999999901,
+    -0.9999999999999973,
+    -0.9999999999999971,
+    -0.9999999999999611
+   ],
+   "fd_rel_error": 4.154487323205086e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 6.448895805349378e-08,
+   "jp_plus_j_rel": 6.964241588090694e-08,
+   "rank": 10,
+   "parity_scores_top5": [
+    -0.9999999999999986,
+    -0.9999999999999983,
+    -0.9999999999999967,
+    -0.9999999999999636,
+    -0.9999999999999538
+   ],
+   "fd_rel_error": 7.113503931413412e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.3244235325523887e-07,
+   "jp_plus_j_rel": 3.808204544776566e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.999999999999976,
+    -0.999999999999979,
+    -0.9999999999999521,
+    -0.9999999999999927,
+    -0.9999999999999665
+   ],
+   "fd_rel_error": 0.00012030528626617372
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.910422049596853e-07,
+   "jp_plus_j_rel": 2.0941359479462393e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999757,
+    -0.9999999999999439,
+    -0.9999999999999758,
+    -0.999999999999927,
+    -0.9999999999998913
+   ],
+   "fd_rel_error": 6.849077240555365e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 2.1573970703843152e-07,
+   "jp_plus_j_rel": 2.967990043010674e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.999999999999944,
+    -0.99999999999994,
+    -0.9999999999999359,
+    -0.9999999999999475,
+    -0.9999999999999442
+   ],
+   "fd_rel_error": 0.0001339395848151186
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 9.411123079492897e-08,
+   "jp_plus_j_rel": 1.8765010345978798e-07,
+   "rank": 11,
+   "parity_scores_top5": [
+    -0.9999999999999979,
+    -0.999999999999981,
+    -0.9999999999999927,
+    -0.99999999999998,
+    -0.9999999999999443
+   ],
+   "fd_rel_error": 0.00010374858094286494
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 2.3123673446507327e-07,
+   "jp_plus_j_rel": 6.211209204906035e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999508,
+    -0.9999999999999568,
+    -0.99999999999993,
+    -0.9999999999999427,
+    -0.9999999999998672
+   ],
+   "fd_rel_error": 6.963840636469213e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.7661810476671126e-07,
+   "jp_plus_j_rel": 4.0316667836552907e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999909,
+    -0.999999999999959,
+    -0.9999999999999365,
+    -0.9999999999999383,
+    -0.9999999999998769
+   ],
+   "fd_rel_error": 0.00017328584705110189
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.9420474676163028e-07,
+   "jp_plus_j_rel": 3.68778275586976e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999886,
+    -0.9999999999999186,
+    -0.9999999999999098,
+    -0.9999999999998904,
+    -0.9999999999998743
+   ],
+   "fd_rel_error": 0.00012429222628293452
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 2.3473156305921471e-07,
+   "jp_plus_j_rel": 5.044643314299345e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999998563,
+    -0.9999999999999906,
+    -0.9999999999999862,
+    -0.9999999999997556,
+    -0.9999999999996223
+   ],
+   "fd_rel_error": 9.399379443128521e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.2077464958214475e-07,
+   "jp_plus_j_rel": 2.0096991032285905e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999967,
+    -0.9999999999999836,
+    -0.9999999999999519,
+    -0.9999999999999555,
+    -0.999999999999915
+   ],
+   "fd_rel_error": 0.00012212841481167754
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 3.4169421197818294e-07,
+   "jp_plus_j_rel": 1.2247654051466338e-06,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999409,
+    -0.9999999999998584,
+    -0.9999999999999836,
+    -0.9999999999968205,
+    -0.9999999999983183
+   ],
+   "fd_rel_error": 0.0001717135622134162
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.572912586561351e-07,
+   "jp_plus_j_rel": 4.664546039436332e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999833,
+    -0.9999999999999437,
+    -0.9999999999999821,
+    -0.9999999999999795,
+    -0.9999999999999415
+   ],
+   "fd_rel_error": 5.7202429552857645e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.834749950154371e-07,
+   "jp_plus_j_rel": 4.1861581349213263e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999567,
+    -0.9999999999999486,
+    -0.9999999999999816,
+    -0.9999999999999738,
+    -0.9999999999999543
+   ],
+   "fd_rel_error": 6.166182336640684e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 2.5492333461307433e-07,
+   "jp_plus_j_rel": 7.737637940157453e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999605,
+    -0.999999999999968,
+    -0.9999999999997627,
+    -0.999999999999874,
+    -0.9999999999998394
+   ],
+   "fd_rel_error": 0.00010800491633461689
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.9114977114802285e-07,
+   "jp_plus_j_rel": 4.7267138940693026e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999538,
+    -0.9999999999999322,
+    -0.9999999999999878,
+    -0.9999999999999274,
+    -0.9999999999999669
+   ],
+   "fd_rel_error": 0.00011953491509706376
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 8.738918154371516e-08,
+   "jp_plus_j_rel": 2.7969597794496956e-07,
+   "rank": 9,
+   "parity_scores_top5": [
+    -0.9999999999999986,
+    -0.9999999999999946,
+    -0.9999999999999963,
+    -0.9999999999999654,
+    -0.9999999999998662
+   ],
+   "fd_rel_error": 2.5428795058423172e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 1.1678007131534604e-07,
+   "jp_plus_j_rel": 1.6265083857142758e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999827,
+    -0.9999999999999823,
+    -0.999999999999982,
+    -0.9999999999999737,
+    -0.9999999999999778
+   ],
+   "fd_rel_error": 6.931176113236148e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 9.556039745158216e-08,
+   "jp_plus_j_rel": 2.38508409681259e-07,
+   "rank": 11,
+   "parity_scores_top5": [
+    -0.9999999999999986,
+    -0.9999999999999861,
+    -0.9999999999999845,
+    -0.9999999999999959,
+    -0.9999999999999664
+   ],
+   "fd_rel_error": 4.289757558732313e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 1.7735602667314844e-07,
+   "jp_plus_j_rel": 3.61387969723676e-07,
+   "rank": 11,
+   "parity_scores_top5": [
+    -0.9999999999999956,
+    -0.9999999999998812,
+    -0.9999999999999716,
+    -0.9999999999999594,
+    -0.9999999999990704
+   ],
+   "fd_rel_error": 0.00010123341734000123
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 8.489224951864486e-08,
+   "jp_plus_j_rel": 1.601178600197252e-07,
+   "rank": 11,
+   "parity_scores_top5": [
+    -0.9999999999999936,
+    -0.9999999999999977,
+    -0.9999999999999979,
+    -0.9999999999999573,
+    -0.9999999999999691
+   ],
+   "fd_rel_error": 7.70490056514396e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 1.0801417235200088e-07,
+   "jp_plus_j_rel": 1.8490768005082667e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999871,
+    -0.9999999999999912,
+    -0.9999999999999805,
+    -0.9999999999998355,
+    -0.9999999999999795
+   ],
+   "fd_rel_error": 3.682193190226593e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.14813900068245e-07,
+   "jp_plus_j_rel": 3.792227777014794e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999564,
+    -0.9999999999999747,
+    -0.9999999999999908,
+    -0.9999999999999744,
+    -0.9999999999999742
+   ],
+   "fd_rel_error": 0.00012950913660451214
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 2.0416063576093686e-07,
+   "jp_plus_j_rel": 3.8064969462996446e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999492,
+    -0.99999999999997,
+    -0.9999999999999737,
+    -0.9999999999998256,
+    -0.9999999999997217
+   ],
+   "fd_rel_error": 6.828795181822094e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 2.6534104573665767e-07,
+   "jp_plus_j_rel": 2.587809376747548e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999397,
+    -0.9999999999998731,
+    -0.9999999999999203,
+    -0.9999999999997822,
+    -0.9999999999998221
+   ],
+   "fd_rel_error": 0.0002804252543603593
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 2.030445364078713e-07,
+   "jp_plus_j_rel": 3.331059731751477e-07,
+   "rank": 10,
+   "parity_scores_top5": [
+    -0.9999999999999952,
+    -0.9999999999999765,
+    -0.9999999999999939,
+    -0.9999999999999878,
+    -0.9999999999994108
+   ],
+   "fd_rel_error": 0.00014773004023786265
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 2.8046441143523006e-07,
+   "jp_plus_j_rel": 5.156139298695495e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999711,
+    -0.9999999999999107,
+    -0.9999999999999691,
+    -0.9999999999998876,
+    -0.9999999999997031
+   ],
+   "fd_rel_error": 0.00011335940950806987
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.5767723762043083e-07,
+   "jp_plus_j_rel": 5.943019837473248e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999891,
+    -0.9999999999999863,
+    -0.9999999999999578,
+    -0.9999999999999776,
+    -0.9999999999999526
+   ],
+   "fd_rel_error": 9.366564774180584e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.809231115385254e-07,
+   "jp_plus_j_rel": 2.9825066603990615e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999748,
+    -0.9999999999999827,
+    -0.9999999999999534,
+    -0.9999999999998938,
+    -0.9999999999999083
+   ],
+   "fd_rel_error": 0.00012015498533332749
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 5.6200117729019845e-08,
+   "jp_plus_j_rel": 1.3634194600548592e-07,
+   "rank": 11,
+   "parity_scores_top5": [
+    -0.9999999999999954,
+    -0.999999999999989,
+    -0.9999999999999972,
+    -0.9999999999999949,
+    -0.9999999999999958
+   ],
+   "fd_rel_error": 6.935218550540368e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.874851603171273e-07,
+   "jp_plus_j_rel": 2.4407313855198897e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999665,
+    -0.9999999999999418,
+    -0.9999999999999487,
+    -0.999999999999929,
+    -0.9999999999998892
+   ],
+   "fd_rel_error": 0.00010345812530619227
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.2332490666929698e-07,
+   "jp_plus_j_rel": 2.171678366387017e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999717,
+    -0.9999999999999926,
+    -0.9999999999999557,
+    -0.9999999999999729,
+    -0.9999999999999258
+   ],
+   "fd_rel_error": 0.00012955593339381493
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 2.042590418867502e-07,
+   "jp_plus_j_rel": 4.5934051028342546e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999791,
+    -0.9999999999999444,
+    -0.999999999999944,
+    -0.9999999999999635,
+    -0.999999999999942
+   ],
+   "fd_rel_error": 0.0001244031769584362
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.3544224437030786e-07,
+   "jp_plus_j_rel": 2.6759746279584367e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999966,
+    -0.9999999999999739,
+    -0.999999999999962,
+    -0.9999999999999757,
+    -0.9999999999999539
+   ],
+   "fd_rel_error": 7.754027458693782e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 2.1749601131404836e-07,
+   "jp_plus_j_rel": 3.999748668108368e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999841,
+    -0.9999999999999398,
+    -0.9999999999999429,
+    -0.9999999999997141,
+    -0.9999999999998518
+   ],
+   "fd_rel_error": 6.926283326227738e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.4916450520727333e-07,
+   "jp_plus_j_rel": 3.297594901217572e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999726,
+    -0.9999999999999739,
+    -0.999999999999983,
+    -0.9999999999999754,
+    -0.9999999999999731
+   ],
+   "fd_rel_error": 7.8666660788828e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 1.5856249676629428e-07,
+   "jp_plus_j_rel": 2.5729725794985063e-07,
+   "rank": 9,
+   "parity_scores_top5": [
+    -0.9999999999999933,
+    -0.9999999999999973,
+    -0.999999999999971,
+    -0.9999999999997455,
+    -0.9999999999999497
+   ],
+   "fd_rel_error": 7.610828401973732e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 2.5849847730459863e-07,
+   "jp_plus_j_rel": 6.255724360168845e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999004,
+    -0.9999999999999375,
+    -0.9999999999999426,
+    -0.9999999999998924,
+    -0.9999999999998594
+   ],
+   "fd_rel_error": 8.49023210727256e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 1.4467522467660477e-07,
+   "jp_plus_j_rel": 3.2523870765545266e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999668,
+    -0.9999999999999477,
+    -0.9999999999999793,
+    -0.9999999999999941,
+    -0.9999999999999548
+   ],
+   "fd_rel_error": 7.453540923576315e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 2.436089722739465e-07,
+   "jp_plus_j_rel": 4.1026667737868063e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999816,
+    -0.9999999999999759,
+    -0.999999999999978,
+    -0.9999999999994688,
+    -0.9999999999993977
+   ],
+   "fd_rel_error": 5.0510755653263984e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 1.1492623745185624e-07,
+   "jp_plus_j_rel": 1.0928285620763117e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.999999999999988,
+    -0.9999999999999821,
+    -0.9999999999999505,
+    -0.9999999999999815,
+    -0.9999999999999797
+   ],
+   "fd_rel_error": 0.00012113774765249623
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 1.123751544944233e-07,
+   "jp_plus_j_rel": 1.952357123738316e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999943,
+    -0.9999999999999882,
+    -0.9999999999999912,
+    -0.9999999999998836,
+    -0.9999999999999782
+   ],
+   "fd_rel_error": 0.00011291641641596103
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 9.024014069535403e-08,
+   "jp_plus_j_rel": 2.02362389123293e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.999999999999994,
+    -0.9999999999999736,
+    -0.9999999999999891,
+    -0.9999999999999843,
+    -0.9999999999999932
+   ],
+   "fd_rel_error": 9.384727076437618e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.6072245406548844e-07,
+   "jp_plus_j_rel": 3.9045872095273734e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999618,
+    -0.9999999999999849,
+    -0.9999999999999852,
+    -0.9999999999999768,
+    -0.9999999999999557
+   ],
+   "fd_rel_error": 4.337211465034047e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 1.9111354248536675e-07,
+   "jp_plus_j_rel": 2.5800485449663753e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999696,
+    -0.9999999999999635,
+    -0.9999999999999737,
+    -0.9999999999999127,
+    -0.9999999999999067
+   ],
+   "fd_rel_error": 8.176893807832583e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 1.0308999296988678e-07,
+   "jp_plus_j_rel": 2.671736456101146e-07,
+   "rank": 10,
+   "parity_scores_top5": [
+    -0.9999999999999982,
+    -0.9999999999999695,
+    -0.9999999999999971,
+    -0.9999999999998226,
+    -0.9999999999998259
+   ],
+   "fd_rel_error": 7.639900659767126e-05
+  },
+  {
+   "run": "allegro_o3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "o3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 2.2930965865670616e-07,
+   "jp_plus_j_rel": 3.967145945776104e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999675,
+    -0.9999999999999309,
+    -0.9999999999998713,
+    -0.9999999999999611,
+    -0.999999999999881
+   ],
+   "fd_rel_error": 8.238416688548798e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.5218771662619424,
+   "jp_plus_j_rel": 1.7162150451488,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.7916353581461831,
+    -0.8993964711923335,
+    0.2620517430116733,
+    -0.7036351747434092,
+    -0.7924838486286446
+   ],
+   "fd_rel_error": 0.00011119604507144848
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.6413240153203205,
+   "jp_plus_j_rel": 1.0695835632044466,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.49562097107812697,
+    -0.2802362371036529,
+    -0.20437861847254674,
+    0.5680263879586674,
+    -0.03561192101070979
+   ],
+   "fd_rel_error": 0.00016350345175818903
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.5483193368259365,
+   "jp_plus_j_rel": 1.3855033345705692,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.997160903021551,
+    -0.9971609050755494,
+    -0.9971609076860869,
+    0.9999999999999132,
+    0.9999999999999384
+   ],
+   "fd_rel_error": 5.073541436737095e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.23729382403007904,
+   "jp_plus_j_rel": 0.25865569631984703,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9740139310301408,
+    -0.9567059066321271,
+    -0.9303121313193462,
+    -0.7094503758385668,
+    -0.03665208841046559
+   ],
+   "fd_rel_error": 0.00011730776255600991
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.3365808689712976,
+   "jp_plus_j_rel": 0.30282796612024715,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.988649440307734,
+    -0.9886494432872267,
+    -0.8696772248353567,
+    -0.869677243926993,
+    -0.9516233613124215
+   ],
+   "fd_rel_error": 0.0002235959180504211
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.6870901277716603,
+   "jp_plus_j_rel": 0.9131466474132348,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.05804896253220039,
+    -0.1799650309703321,
+    -0.5523300542143197,
+    0.7517285928763816,
+    -0.4106372397700018
+   ],
+   "fd_rel_error": 0.00010548335707194142
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.6124856353030923,
+   "jp_plus_j_rel": 1.740926150546852,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.7548580356926966,
+    -0.33785253233367374,
+    0.2165291445146712,
+    0.6664689780591292,
+    -0.6707360165399349
+   ],
+   "fd_rel_error": 0.0001237940032830756
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.30122081216136926,
+   "jp_plus_j_rel": 0.6273133795682543,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9999440603257008,
+    -0.8404972348417764,
+    -0.8404972703773296,
+    -0.6801067380168646,
+    -0.6801067770143523
+   ],
+   "fd_rel_error": 0.00010693393041648594
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.7522662859253967,
+   "jp_plus_j_rel": 1.9618482535041106,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.9520516241457351,
+    -0.313560420746824,
+    -0.950813966206399,
+    0.10179589506139242,
+    -0.7645833972445222
+   ],
+   "fd_rel_error": 0.00011910507090103024
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 0.4103820474967075,
+   "jp_plus_j_rel": 0.77527188629139,
+   "rank": 9,
+   "parity_scores_top5": [
+    -0.787470444237581,
+    -0.787470541948818,
+    -0.9999999999999312,
+    -0.9999999999796301,
+    0.7288251530954557
+   ],
+   "fd_rel_error": 6.023422783135425e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 0.5165162202379684,
+   "jp_plus_j_rel": 1.0717479846305664,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.8293029616250855,
+    -0.44384428087707245,
+    -0.013130776236363991,
+    -0.6035594795975642,
+    -0.4050376888312513
+   ],
+   "fd_rel_error": 0.00014128341884697617
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 0.49778494267548956,
+   "jp_plus_j_rel": 0.7549433956698498,
+   "rank": 17,
+   "parity_scores_top5": [
+    -0.8688403232429714,
+    -0.9999279942077526,
+    0.4820415927466797,
+    0.3212910119698645,
+    -0.9457727529853998
+   ],
+   "fd_rel_error": 7.047768444043762e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.5565855915363281,
+   "jp_plus_j_rel": 1.3733190218803288,
+   "rank": 15,
+   "parity_scores_top5": [
+    -0.9999999999998896,
+    -0.14486243210568783,
+    -0.14486200608284885,
+    -0.169382469773438,
+    -0.16938300538562626
+   ],
+   "fd_rel_error": 5.288975754500332e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.29182412903688887,
+   "jp_plus_j_rel": 0.6582580874748392,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9356830936642179,
+    -0.8819799852004407,
+    -0.99999999999998,
+    0.4101246373711989,
+    -0.9999999999993705
+   ],
+   "fd_rel_error": 5.0421031779122123e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 0.2531895797947912,
+   "jp_plus_j_rel": 0.20963521227315415,
+   "rank": 16,
+   "parity_scores_top5": [
+    -0.9999999999999936,
+    -0.34674689369323763,
+    -0.3467466858908742,
+    -0.22714520371834962,
+    -0.22714443932855646
+   ],
+   "fd_rel_error": 0.0002822020404526461
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.2880341416032208,
+   "jp_plus_j_rel": 0.35964996809270583,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9048962925056557,
+    -0.904896336737848,
+    -0.9048963140280681,
+    -0.781530076535254,
+    -0.7815298751716231
+   ],
+   "fd_rel_error": 8.843979971249388e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.4810486579752647,
+   "jp_plus_j_rel": 0.8098918661518139,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9249607768910966,
+    -0.9249608413212094,
+    0.45195580140169656,
+    -0.5078571344320739,
+    -0.9147519059572105
+   ],
+   "fd_rel_error": 4.153362314619624e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 0.4890172742659376,
+   "jp_plus_j_rel": 0.6109553579911071,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9145043362400013,
+    -0.5932203695103143,
+    -0.5932204800374077,
+    -0.27711403871781043,
+    -0.8130163558987654
+   ],
+   "fd_rel_error": 0.00019294666475797162
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.38303399224326723,
+   "jp_plus_j_rel": 1.0508735923892847,
+   "rank": 14,
+   "parity_scores_top5": [
+    -0.9999999999999866,
+    -0.9999999999999686,
+    0.6391189781053463,
+    0.6391193641906864,
+    -0.999999999998853
+   ],
+   "fd_rel_error": 7.701654032186097e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed0",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.7373633590648412,
+   "jp_plus_j_rel": 1.3494842066312667,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.19794357093724244,
+    0.21333578804132264,
+    0.2514776839328429,
+    0.47791938928853694,
+    0.0711347256754298
+   ],
+   "fd_rel_error": 0.00010549443210220537
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.5476257642686173,
+   "jp_plus_j_rel": 1.49229345154263,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.6337386784397557,
+    -0.05795159892099006,
+    -0.44195937853774053,
+    -0.4611100837854015,
+    0.11845426901310643
+   ],
+   "fd_rel_error": 0.00011677893339215727
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.44577222928442495,
+   "jp_plus_j_rel": 0.7478256330922373,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.51490317481437,
+    -0.851906150018478,
+    -0.8093531889089642,
+    -0.5957050382562341,
+    -0.76238496632511
+   ],
+   "fd_rel_error": 0.00011104881612481486
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.3435948672602818,
+   "jp_plus_j_rel": 0.6282691596915501,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9995797095506956,
+    -0.999579709127843,
+    -0.9995797090314622,
+    0.9999999999999214,
+    0.9999999999999193
+   ],
+   "fd_rel_error": 0.0003334475654503368
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.49369870371305846,
+   "jp_plus_j_rel": 1.151523506387063,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.5748106160515484,
+    -0.8144573051108109,
+    -0.34896309723584584,
+    -0.549253591895706,
+    -0.2740618188430155
+   ],
+   "fd_rel_error": 0.00021318397141206424
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.5711044306133357,
+   "jp_plus_j_rel": 1.2504328063005692,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.6057680685777455,
+    -0.9853118880111913,
+    -0.985311879430013,
+    -0.9842467388172558,
+    -0.9842467347617581
+   ],
+   "fd_rel_error": 8.195901640771814e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.628030738697548,
+   "jp_plus_j_rel": 0.7177379980828255,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.8340616755497116,
+    0.1397285791298044,
+    -0.39158136665437776,
+    0.0015508026876899467,
+    -0.5847372560992862
+   ],
+   "fd_rel_error": 8.22252010872459e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.5733355379439318,
+   "jp_plus_j_rel": 1.402506213995978,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.7039189981865047,
+    0.3110369149171651,
+    -0.9618132726459706,
+    -0.9628332452168702,
+    0.6874840483811947
+   ],
+   "fd_rel_error": 0.00010915170664842197
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.6565334965370024,
+   "jp_plus_j_rel": 1.8710865620506307,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9739817359139012,
+    0.3952354121863587,
+    0.3952351870798636,
+    0.9681165857006929,
+    -0.8586833036076909
+   ],
+   "fd_rel_error": 9.702872278525903e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.741396718639491,
+   "jp_plus_j_rel": 1.4626785101150632,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.030167837103402803,
+    -0.10626538610954578,
+    0.5483209786846277,
+    -0.018514018427189246,
+    -0.2497473090639376
+   ],
+   "fd_rel_error": 0.00014922825137869737
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 0.47038631945156983,
+   "jp_plus_j_rel": 1.2486162089084532,
+   "rank": 9,
+   "parity_scores_top5": [
+    -0.999999999999971,
+    -0.822429322238927,
+    -0.822429513682035,
+    0.03166799171801355,
+    0.03166870938051143
+   ],
+   "fd_rel_error": 3.8651460578891466e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 0.4059590627962934,
+   "jp_plus_j_rel": 0.6673183079402599,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9089976443192237,
+    -0.7222530550048215,
+    -0.546550559551669,
+    -0.57668789387907,
+    -0.7611929150180983
+   ],
+   "fd_rel_error": 4.5747311676256683e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 0.45212589905487716,
+   "jp_plus_j_rel": 0.658104436027143,
+   "rank": 16,
+   "parity_scores_top5": [
+    -0.9150450225224452,
+    -0.9684306175660833,
+    -0.8285209715661231,
+    -0.40688239025903816,
+    -0.2555634310839225
+   ],
+   "fd_rel_error": 5.175029174046104e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.7700281856529106,
+   "jp_plus_j_rel": 1.999999741578506,
+   "rank": 14,
+   "parity_scores_top5": [
+    0.7697387355846834,
+    0.769738564967891,
+    -0.9999999999998911,
+    -0.7438927436094509,
+    -0.7438928987609245
+   ],
+   "fd_rel_error": 3.4919331750190763e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.4273765984746848,
+   "jp_plus_j_rel": 1.034999813385069,
+   "rank": 16,
+   "parity_scores_top5": [
+    -0.6521864643618027,
+    -0.9999999999999657,
+    -0.32487716015379137,
+    -0.8798217410120195,
+    -0.9999999999993234
+   ],
+   "fd_rel_error": 0.00010193466285953232
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 0.18577732315193016,
+   "jp_plus_j_rel": 0.21290601231599743,
+   "rank": 15,
+   "parity_scores_top5": [
+    -0.9999999999999978,
+    -0.9290566355028903,
+    -0.929056708048456,
+    -0.7798297889876284,
+    -0.7798297990576176
+   ],
+   "fd_rel_error": 4.542792505787504e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.36564620759741073,
+   "jp_plus_j_rel": 0.5700446680000196,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.8808214556663301,
+    -0.8808213941874782,
+    -0.8808213351018501,
+    -0.964427011270538,
+    -0.9644269631989895
+   ],
+   "fd_rel_error": 0.00011920614905227506
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.5606874909129878,
+   "jp_plus_j_rel": 1.1560492063515122,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9576350301644815,
+    0.995045910621881,
+    -0.6702552860539143,
+    -0.6702558005262028,
+    -0.39332485426929875
+   ],
+   "fd_rel_error": 0.00010907008000726409
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 0.6312369376352384,
+   "jp_plus_j_rel": 0.9492442457397225,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.20723802205209202,
+    -0.20723792378782943,
+    -0.8715191032465694,
+    0.4241016133665559,
+    0.42410181291711196
+   ],
+   "fd_rel_error": 0.00018633952251515638
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.4636213509797195,
+   "jp_plus_j_rel": 1.2647106305306137,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999899,
+    -0.9999999999995267,
+    -0.999999999998944,
+    0.9999999999979362,
+    -0.9999999999877618
+   ],
+   "fd_rel_error": 3.164267803106019e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed1",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.5856983971501104,
+   "jp_plus_j_rel": 0.8333152245384685,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.765284689626267,
+    -0.5556280354705846,
+    -0.18132040066290694,
+    0.03593754610500436,
+    0.18053248438412117
+   ],
+   "fd_rel_error": 0.00010475294714230431
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.65526719211232,
+   "jp_plus_j_rel": 1.9999996685379116,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.2670695233233346,
+    0.6071572043083191,
+    -0.6422265116442895,
+    -0.6392431354987047,
+    -0.14666964348321315
+   ],
+   "fd_rel_error": 0.00013796635145245048
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.34491511561577787,
+   "jp_plus_j_rel": 0.6108837642167958,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9677732373045209,
+    -0.936655063955192,
+    -0.88240235961558,
+    -0.58616771845565,
+    -0.6659347549587722
+   ],
+   "fd_rel_error": 7.327441948841977e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.2075103012304119,
+   "jp_plus_j_rel": 0.34089576674412325,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.998744038932365,
+    -0.9987440408104857,
+    -0.9987440440612991,
+    -0.8364570337604593,
+    -0.8364568339537335
+   ],
+   "fd_rel_error": 0.0001984657236854868
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.5634963188851346,
+   "jp_plus_j_rel": 1.0171143343793425,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.40415015966172546,
+    -0.662362317291895,
+    -0.8531211883500203,
+    -0.43950810965577286,
+    -0.31120348896643096
+   ],
+   "fd_rel_error": 0.00013296572913052543
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.7248006922491638,
+   "jp_plus_j_rel": 1.9999999058671045,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.987369421563901,
+    0.9873694193335314,
+    -0.9938780900756484,
+    -0.9938780829729672,
+    0.7684256075689595
+   ],
+   "fd_rel_error": 0.0001457319507587491
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.6648225901168608,
+   "jp_plus_j_rel": 1.8068288584804988,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.10435262606163474,
+    -0.8223885601980383,
+    0.017389083051758517,
+    -0.4469381358973314,
+    0.37408128648324446
+   ],
+   "fd_rel_error": 7.598953475183111e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.6900867754861052,
+   "jp_plus_j_rel": 1.99360677081925,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.6484496651094284,
+    -0.8677424982102652,
+    -0.3353364881286976,
+    0.9037393907310037,
+    0.526282768949857
+   ],
+   "fd_rel_error": 9.970438363976291e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.6634143210968468,
+   "jp_plus_j_rel": 1.1473031613020912,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9694767424917832,
+    -0.06734978920138425,
+    -0.0673497275774809,
+    0.9575845746988795,
+    -0.23773686887822823
+   ],
+   "fd_rel_error": 0.00010840901745520845
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.6913048618269269,
+   "jp_plus_j_rel": 1.4061601200126155,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.6099963821785129,
+    0.609758780266343,
+    0.5180663417019453,
+    0.4878700240591055,
+    -0.44120051069586563
+   ],
+   "fd_rel_error": 0.00016687196998113626
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 0.4827895603576896,
+   "jp_plus_j_rel": 1.9999998850135645,
+   "rank": 9,
+   "parity_scores_top5": [
+    -0.9999999999995532,
+    -0.2907289607970868,
+    -0.2907289693602362,
+    -0.9999999999998915,
+    0.0464420946236518
+   ],
+   "fd_rel_error": 7.628458871989825e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 0.475080686647504,
+   "jp_plus_j_rel": 1.0677432137064042,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9291389162775708,
+    -0.3984249952326067,
+    -0.601809816752623,
+    -0.8458139305365764,
+    -0.7758611755049121
+   ],
+   "fd_rel_error": 0.00010499272458538349
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 0.4475505688569143,
+   "jp_plus_j_rel": 1.1588259855833036,
+   "rank": 17,
+   "parity_scores_top5": [
+    -0.85624671060504,
+    -0.9991488827928292,
+    -0.8173536760547724,
+    -0.9459241563571033,
+    0.5699719937092832
+   ],
+   "fd_rel_error": 4.028332763244535e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.7220191900975391,
+   "jp_plus_j_rel": 1.9999997025439125,
+   "rank": 15,
+   "parity_scores_top5": [
+    -0.18681422431628864,
+    -0.18681314240170824,
+    0.9999999999998604,
+    0.3688957224156607,
+    0.3688955361450732
+   ],
+   "fd_rel_error": 4.113516560792674e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.49954807473836144,
+   "jp_plus_j_rel": 1.0468115583977389,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9523436320538645,
+    -0.9999999999998652,
+    -0.6966503412137662,
+    0.9180762982312306,
+    -0.19860136464971354
+   ],
+   "fd_rel_error": 6.786803574058238e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 0.1503890848450325,
+   "jp_plus_j_rel": 0.27378511681165707,
+   "rank": 16,
+   "parity_scores_top5": [
+    -0.9999999999999976,
+    -0.9773763613330664,
+    -0.9773763163831534,
+    -0.9511416220145996,
+    -0.9511416118112378
+   ],
+   "fd_rel_error": 5.186825507360207e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.2785769324365016,
+   "jp_plus_j_rel": 0.43556695133012374,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.940240108489678,
+    -0.9402405762346101,
+    -0.9402398480610358,
+    -0.9010006818471096,
+    -0.901000417536329
+   ],
+   "fd_rel_error": 0.00011864271020993201
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.7754209180399152,
+   "jp_plus_j_rel": 1.8433187177920694,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.5881487087120878,
+    0.8984968682690113,
+    0.8984968270012872,
+    0.43986518070935804,
+    0.28533665459027624
+   ],
+   "fd_rel_error": 6.486993080157359e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 0.6345117556740004,
+   "jp_plus_j_rel": 0.8989740103019784,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.7419795454637846,
+    0.036959159962340844,
+    0.036958968985799395,
+    0.08691310551485462,
+    0.08691352325477086
+   ],
+   "fd_rel_error": 0.00010601560520352417
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.6642611114083524,
+   "jp_plus_j_rel": 1.7904073536395655,
+   "rank": 14,
+   "parity_scores_top5": [
+    -0.9999999999998346,
+    0.9909964903652332,
+    0.9909964804195062,
+    -0.9999999999999534,
+    -0.9999999999997481
+   ],
+   "fd_rel_error": 4.0654382670661225e-05
+  },
+  {
+   "run": "allegro_so3_piezoelectric_seed2",
+   "core": "allegro",
+   "parity": "so3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.639736654370567,
+   "jp_plus_j_rel": 1.041600703009803,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.7531118455650987,
+    -0.5235710985952241,
+    0.5250095302709908,
+    -0.2898696405773507,
+    0.5728869666252623
+   ],
+   "fd_rel_error": 0.00011142857457217677
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.750629726935965e-07,
+   "jp_plus_j_rel": 6.294066599714442e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999857,
+    -0.9999999999999671,
+    -0.9999999999999594,
+    -0.999999999999901,
+    -0.9999999999999113
+   ],
+   "fd_rel_error": 9.42438291196286e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 7.810183846237602e-08,
+   "jp_plus_j_rel": 9.809082067272455e-08,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999983,
+    -0.9999999999999961,
+    -0.9999999999999891,
+    -0.9999999999999907,
+    -0.9999999999998856
+   ],
+   "fd_rel_error": 8.319017592072294e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 6.24801371794027e-08,
+   "jp_plus_j_rel": 8.028289603046615e-08,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999961,
+    -0.9999999999999973,
+    -0.9999999999999997,
+    -0.9999999999998619,
+    -0.9999999999998083
+   ],
+   "fd_rel_error": 4.8619896042780186e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.2633113961001205e-07,
+   "jp_plus_j_rel": 2.3590238392785125e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999858,
+    -0.9999999999999726,
+    -0.9999999999999861,
+    -0.9999999999999813,
+    -0.999999999999977
+   ],
+   "fd_rel_error": 8.831256149249741e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.3813145511582595e-07,
+   "jp_plus_j_rel": 2.466353899289328e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999436,
+    -0.9999999999999705,
+    -0.9999999999999942,
+    -0.9999999999999447,
+    -0.999999999999956
+   ],
+   "fd_rel_error": 9.519868601653216e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.8786251200585845e-07,
+   "jp_plus_j_rel": 3.8917144274945573e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999283,
+    -0.9999999999999809,
+    -0.9999999999999877,
+    -0.9999999999999475,
+    -0.9999999999999833
+   ],
+   "fd_rel_error": 7.739659791645948e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.6544517885815927e-07,
+   "jp_plus_j_rel": 2.534566967860107e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999901,
+    -0.9999999999999744,
+    -0.9999999999999556,
+    -0.9999999999999468,
+    -0.9999999999999766
+   ],
+   "fd_rel_error": 9.97432558140848e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.817002109625366e-07,
+   "jp_plus_j_rel": 4.6089856098295915e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999998599,
+    -0.9999999999999778,
+    -0.9999999999999732,
+    -0.9999999999999776,
+    -0.9999999999999764
+   ],
+   "fd_rel_error": 4.302984239276458e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 2.1048282317110207e-07,
+   "jp_plus_j_rel": 3.1767974990171105e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999913,
+    -0.9999999999999871,
+    -0.9999999999999694,
+    -0.9999999999997864,
+    -0.9999999999999671
+   ],
+   "fd_rel_error": 9.17683427375434e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 2.078701307023708e-08,
+   "jp_plus_j_rel": 4.7172197074366906e-08,
+   "rank": 7,
+   "parity_scores_top5": [
+    -1.0,
+    -0.999999999999999,
+    -0.9999999999999992,
+    -0.9999999999999998,
+    -1.0
+   ],
+   "fd_rel_error": 2.458020587853774e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 1.5897084605311132e-07,
+   "jp_plus_j_rel": 2.5221316454522123e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999648,
+    -0.9999999999999968,
+    -0.9999999999999653,
+    -0.9999999999998861,
+    -0.9999999999999607
+   ],
+   "fd_rel_error": 9.713726813199262e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 8.297250619181853e-08,
+   "jp_plus_j_rel": 1.254903966480115e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999971,
+    -0.9999999999999949,
+    -0.9999999999999967,
+    -0.9999999999999766,
+    -0.9999999999999747
+   ],
+   "fd_rel_error": 8.250323384305127e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 3.106357302498744e-07,
+   "jp_plus_j_rel": 5.192615480120645e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999929,
+    -0.9999999999998589,
+    -0.9999999999998321,
+    -0.9999999999999796,
+    -0.9999999999998441
+   ],
+   "fd_rel_error": 6.123003206239394e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 1.884199535614866e-07,
+   "jp_plus_j_rel": 4.3509740950154996e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999916,
+    -0.9999999999999959,
+    -0.9999999999999811,
+    -0.9999999999999996,
+    -0.9999999999999806
+   ],
+   "fd_rel_error": 2.0448980242464982e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 4.6812852735334186e-08,
+   "jp_plus_j_rel": 8.668099509364332e-08,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999997,
+    -1.0,
+    -0.9999999999999929,
+    -0.9999999999999996,
+    -0.9999999999999943
+   ],
+   "fd_rel_error": 6.985153705113698e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.2948733427033003e-07,
+   "jp_plus_j_rel": 4.5807223833069886e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999846,
+    -0.9999999999999707,
+    -0.9999999999999734,
+    -0.9999999999999766,
+    -0.9999999999999447
+   ],
+   "fd_rel_error": 6.06215373290867e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.569756663170849e-07,
+   "jp_plus_j_rel": 3.280354027485723e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.999999999999996,
+    -0.9999999999999624,
+    -0.9999999999999902,
+    -0.9999999999999786,
+    -0.9999999999999697
+   ],
+   "fd_rel_error": 5.880632758823961e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 1.9541600528205456e-07,
+   "jp_plus_j_rel": 3.008575480779288e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999921,
+    -0.9999999999999768,
+    -0.9999999999999569,
+    -0.9999999999999255,
+    -0.9999999999998962
+   ],
+   "fd_rel_error": 7.895346932532387e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 1.2821438538737133e-07,
+   "jp_plus_j_rel": 2.1575295469201406e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999998,
+    -0.9999999999999948,
+    -0.9999999999999946,
+    -0.9999999999999979,
+    -0.9999999999999899
+   ],
+   "fd_rel_error": 7.733457499646598e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.470045597739286e-07,
+   "jp_plus_j_rel": 2.1362293907563866e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999898,
+    -0.9999999999999826,
+    -0.9999999999999755,
+    -0.9999999999999613,
+    -0.9999999999999754
+   ],
+   "fd_rel_error": 5.2786529104204236e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.9444453609232305e-07,
+   "jp_plus_j_rel": 4.1180928352159e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999747,
+    -0.9999999999999827,
+    -0.9999999999999531,
+    -0.9999999999999758,
+    -0.999999999999924
+   ],
+   "fd_rel_error": 0.00022096912865552087
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.4056130963589823e-07,
+   "jp_plus_j_rel": 4.873056944517203e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999761,
+    -0.999999999999987,
+    -0.9999999999999749,
+    -0.999999999999938,
+    -0.999999999999959
+   ],
+   "fd_rel_error": 5.455611836707273e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 5.1851182124209623e-08,
+   "jp_plus_j_rel": 1.1952735659240913e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999953,
+    -0.9999999999999993,
+    -0.9999999999999991,
+    -0.9999999999999998,
+    -0.9999999999999998
+   ],
+   "fd_rel_error": 3.081541553119526e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 6.213451396910364e-08,
+   "jp_plus_j_rel": 1.2115075507700586e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999967,
+    -0.9999999999999962,
+    -0.9999999999999969,
+    -0.9999999999999826,
+    -0.9999999999999831
+   ],
+   "fd_rel_error": 5.2245809761783674e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.2765859204895514e-07,
+   "jp_plus_j_rel": 4.6507386894432286e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999826,
+    -0.9999999999999665,
+    -0.999999999999984,
+    -0.9999999999999675,
+    -0.9999999999999948
+   ],
+   "fd_rel_error": 4.56505153951849e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.622684650467906e-07,
+   "jp_plus_j_rel": 2.596082042820812e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999809,
+    -0.9999999999999869,
+    -0.9999999999999313,
+    -0.9999999999999318,
+    -0.9999999999999514
+   ],
+   "fd_rel_error": 0.00012824393410443754
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.3864605534494064e-07,
+   "jp_plus_j_rel": 2.873447210402112e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999921,
+    -0.9999999999999869,
+    -0.9999999999999736,
+    -0.999999999999986,
+    -0.9999999999999152
+   ],
+   "fd_rel_error": 7.525472432797132e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 2.2518079363174632e-07,
+   "jp_plus_j_rel": 3.60644149656693e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999937,
+    -0.9999999999998861,
+    -0.9999999999999407,
+    -0.9999999999999717,
+    -0.9999999999998913
+   ],
+   "fd_rel_error": 4.791980994356732e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.8327515873783012e-07,
+   "jp_plus_j_rel": 5.248234624305248e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999929,
+    -0.9999999999999916,
+    -0.9999999999999521,
+    -0.9999999999999568,
+    -0.9999999999999227
+   ],
+   "fd_rel_error": 8.961859154034903e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 8.020830980463483e-08,
+   "jp_plus_j_rel": 2.7791142152067687e-07,
+   "rank": 9,
+   "parity_scores_top5": [
+    -0.9999999999999993,
+    -0.9999999999999957,
+    -0.9999999999999984,
+    -0.9999999999999987,
+    -0.9999999999999921
+   ],
+   "fd_rel_error": 4.240487388243291e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 2.343399994095449e-07,
+   "jp_plus_j_rel": 3.6913914664256836e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999521,
+    -0.9999999999999389,
+    -0.999999999999958,
+    -0.999999999999866,
+    -0.9999999999999106
+   ],
+   "fd_rel_error": 9.240086327975047e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 1.2969935641512822e-07,
+   "jp_plus_j_rel": 3.230495061479484e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999963,
+    -0.9999999999999918,
+    -0.9999999999999976,
+    -0.9999999999998902,
+    -0.9999999999999954
+   ],
+   "fd_rel_error": 5.314758040317128e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 2.773569345482545e-07,
+   "jp_plus_j_rel": 6.639262109080945e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999302,
+    -0.9999999999999849,
+    -0.9999999999999346,
+    -0.9999999999999543,
+    -0.999999999995349
+   ],
+   "fd_rel_error": 7.09417026844843e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 6.402062311781749e-08,
+   "jp_plus_j_rel": 7.954467744335602e-08,
+   "rank": 12,
+   "parity_scores_top5": [
+    -1.0,
+    -0.9999999999999984,
+    -0.9999999999999843,
+    -0.9999999999999518,
+    -0.9999999999999637
+   ],
+   "fd_rel_error": 2.4171749050196174e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 6.480546570418572e-08,
+   "jp_plus_j_rel": 1.5401617661459482e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999991,
+    -0.999999999999995,
+    -0.9999999999999919,
+    -0.9999999999999949,
+    -0.9999999999999808
+   ],
+   "fd_rel_error": 7.206495032672094e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 9.151432816108708e-08,
+   "jp_plus_j_rel": 2.2858798760500812e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999936,
+    -0.9999999999999892,
+    -0.9999999999999877,
+    -0.9999999999999668,
+    -0.9999999999999264
+   ],
+   "fd_rel_error": 9.645347352758764e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.1483740002262158e-07,
+   "jp_plus_j_rel": 2.0240942388545595e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999915,
+    -0.9999999999999821,
+    -0.9999999999999849,
+    -0.9999999999999947,
+    -0.9999999999998995
+   ],
+   "fd_rel_error": 6.202326715275399e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 2.195582699623087e-07,
+   "jp_plus_j_rel": 3.2174075447129967e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999671,
+    -0.999999999999948,
+    -0.9999999999999506,
+    -0.9999999999999402,
+    -0.9999999999999623
+   ],
+   "fd_rel_error": 9.320546817255107e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 1.1540007269877731e-07,
+   "jp_plus_j_rel": 2.2919931553753348e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.999999999999971,
+    -0.999999999999984,
+    -0.9999999999999971,
+    -0.9999999999999989,
+    -0.999999999999869
+   ],
+   "fd_rel_error": 4.128884764124604e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 2.0881988492385988e-07,
+   "jp_plus_j_rel": 3.096016465689275e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.999999999999972,
+    -0.9999999999999525,
+    -0.9999999999999513,
+    -0.9999999999999424,
+    -0.9999999999999637
+   ],
+   "fd_rel_error": 9.43662741989194e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.8672447468639105e-07,
+   "jp_plus_j_rel": 2.9314215867954725e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999787,
+    -0.9999999999999644,
+    -0.9999999999999827,
+    -0.9999999999999574,
+    -0.9999999999999261
+   ],
+   "fd_rel_error": 0.00024212252718757777
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 8.297470307683524e-08,
+   "jp_plus_j_rel": 1.0438390701657312e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999948,
+    -0.9999999999999951,
+    -0.9999999999999838,
+    -0.9999999999999859,
+    -0.9999999999999828
+   ],
+   "fd_rel_error": 4.3053172371274165e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 5.988153219799561e-08,
+   "jp_plus_j_rel": 8.424771791131382e-08,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999991,
+    -0.9999999999999989,
+    -0.9999999999999949,
+    -0.9999999999999796,
+    -0.9999999999999781
+   ],
+   "fd_rel_error": 5.266117222854813e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 5.74737791961678e-08,
+   "jp_plus_j_rel": 2.0578056038548716e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.999999999999998,
+    -0.9999999999999981,
+    -0.9999999999999944,
+    -0.9999999999999832,
+    -0.9999999999999889
+   ],
+   "fd_rel_error": 3.364177870552897e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.8923594095075773e-07,
+   "jp_plus_j_rel": 3.5127277927082557e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999803,
+    -0.9999999999999488,
+    -0.9999999999999494,
+    -0.9999999999999796,
+    -0.999999999999769
+   ],
+   "fd_rel_error": 8.338199485431334e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 2.4053861403125235e-07,
+   "jp_plus_j_rel": 4.873903272509308e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999714,
+    -0.9999999999999689,
+    -0.9999999999999531,
+    -0.999999999999849,
+    -0.9999999999999014
+   ],
+   "fd_rel_error": 6.430060468092961e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.338137830105057e-07,
+   "jp_plus_j_rel": 2.7306376476871896e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999832,
+    -0.999999999999985,
+    -0.9999999999999808,
+    -0.9999999999999711,
+    -0.9999999999999741
+   ],
+   "fd_rel_error": 5.3645703120079363e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 2.0736279404386656e-07,
+   "jp_plus_j_rel": 3.274327744991326e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999771,
+    -0.9999999999999685,
+    -0.9999999999999291,
+    -0.9999999999999231,
+    -0.9999999999998749
+   ],
+   "fd_rel_error": 8.918042639511495e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.1289669483586352e-07,
+   "jp_plus_j_rel": 2.375688564047826e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999907,
+    -0.9999999999999871,
+    -0.9999999999999734,
+    -0.9999999999999769,
+    -0.9999999999999833
+   ],
+   "fd_rel_error": 6.296825770936319e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 4.540583595784517e-08,
+   "jp_plus_j_rel": 1.3626502930317152e-07,
+   "rank": 8,
+   "parity_scores_top5": [
+    -0.9999999999999972,
+    -0.9999999999999954,
+    -0.9999999999999996,
+    -0.9999999999999958,
+    -0.9999999999999819
+   ],
+   "fd_rel_error": 2.206681826401004e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 2.0465742099306817e-07,
+   "jp_plus_j_rel": 5.03177517978058e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999638,
+    -0.999999999999944,
+    -0.9999999999999756,
+    -0.9999999999998079,
+    -0.9999999999999254
+   ],
+   "fd_rel_error": 7.11967475639375e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 1.3904426891153742e-07,
+   "jp_plus_j_rel": 2.9130078015109855e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999831,
+    -0.9999999999999989,
+    -0.9999999999999376,
+    -0.9999999999999446,
+    -0.9999999999999942
+   ],
+   "fd_rel_error": 7.482350109792117e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 4.1345466376590335e-07,
+   "jp_plus_j_rel": 1.0762045334523177e-06,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999343,
+    -0.9999999999999247,
+    -0.9999999999999362,
+    -0.9999999999990175,
+    -0.9999999999998613
+   ],
+   "fd_rel_error": 0.00011607740016446838
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 1.6778964850386228e-07,
+   "jp_plus_j_rel": 4.5498922820759764e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999347,
+    -0.9999999999999688,
+    -0.9999999999999954,
+    -0.9999999999999764,
+    -0.9999999999999905
+   ],
+   "fd_rel_error": 3.518238330141043e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 3.8292874901088205e-08,
+   "jp_plus_j_rel": 9.46782386717532e-08,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999989,
+    -0.9999999999999999,
+    -0.9999999999999986,
+    -0.9999999999999951,
+    -0.9999999999999994
+   ],
+   "fd_rel_error": 6.599116395771587e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 7.833953643829631e-08,
+   "jp_plus_j_rel": 1.9532868862083676e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999888,
+    -0.9999999999999952,
+    -0.9999999999999916,
+    -0.999999999999993,
+    -0.9999999999999932
+   ],
+   "fd_rel_error": 3.091390897891427e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.0884719803649081e-07,
+   "jp_plus_j_rel": 2.554828663518334e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999934,
+    -0.9999999999999909,
+    -0.999999999999991,
+    -0.9999999999999709,
+    -0.9999999999999013
+   ],
+   "fd_rel_error": 2.604459385111238e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 1.916404081212404e-07,
+   "jp_plus_j_rel": 4.827492847962075e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999811,
+    -0.9999999999999234,
+    -0.999999999999925,
+    -0.9999999999998528,
+    -0.999999999999921
+   ],
+   "fd_rel_error": 6.725183991669091e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 7.418039390518904e-08,
+   "jp_plus_j_rel": 1.1566945622603953e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999999999971,
+    -0.9999999999999671,
+    -0.9999999999999961,
+    -0.9999999999999938,
+    -0.9999999999999993
+   ],
+   "fd_rel_error": 7.77885322074532e-05
+  },
+  {
+   "run": "nequip_o3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "o3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 2.1211958830711743e-07,
+   "jp_plus_j_rel": 5.167767725526748e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999999687,
+    -0.9999999999999769,
+    -0.9999999999999822,
+    -0.9999999999998845,
+    -0.9999999999999232
+   ],
+   "fd_rel_error": 5.076369373532913e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.6042793886731923,
+   "jp_plus_j_rel": 1.7041057678559683,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.13111687376154776,
+    -0.8638871715984251,
+    -0.8760379733318469,
+    0.6441435067324252,
+    0.43701921417543105
+   ],
+   "fd_rel_error": 0.00018414522233969476
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.3421534024185523,
+   "jp_plus_j_rel": 0.37314823537634395,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9581635637402386,
+    -0.87243481435281,
+    -0.8649745309457522,
+    -0.7836160132199442,
+    -0.8359813686346015
+   ],
+   "fd_rel_error": 0.00012138984812710163
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.12130352642682227,
+   "jp_plus_j_rel": 0.26900652555309895,
+   "rank": 17,
+   "parity_scores_top5": [
+    -0.9998869489602948,
+    -0.9998869488138009,
+    -0.9998869490022295,
+    -0.9996976189967736,
+    -0.9996976193212197
+   ],
+   "fd_rel_error": 0.00010579096709975126
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.20886863052902385,
+   "jp_plus_j_rel": 0.3661358816981916,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9651665433350063,
+    -0.9655043718040556,
+    -0.9785720275911046,
+    -0.9667406234107876,
+    -0.963866120383007
+   ],
+   "fd_rel_error": 8.578343864298066e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.7819673003105021,
+   "jp_plus_j_rel": 1.9999999003373274,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.9970815177196273,
+    0.9970815172901372,
+    -0.9919594312165614,
+    -0.9919594339805675,
+    -0.9994005236904895
+   ],
+   "fd_rel_error": 5.760854817108012e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.37636650541207345,
+   "jp_plus_j_rel": 0.46632598185506524,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9625492471514008,
+    -0.9162503192631455,
+    -0.8903198132016313,
+    -0.21868132807146137,
+    0.46449176300477096
+   ],
+   "fd_rel_error": 5.1860188787838276e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.2666676163735239,
+   "jp_plus_j_rel": 0.4588495977631078,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9334216389957936,
+    -0.9695471163696123,
+    -0.9972161752507214,
+    -0.9493970388795258,
+    -0.431228399688571
+   ],
+   "fd_rel_error": 5.4313949441995706e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.4961352667708864,
+   "jp_plus_j_rel": 1.053282915498581,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9977887456350851,
+    -0.8627595308206324,
+    -0.862759427582108,
+    0.9945009324644756,
+    -0.07690386548880455
+   ],
+   "fd_rel_error": 6.570841886160587e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.37672743895929944,
+   "jp_plus_j_rel": 0.5978771009377236,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9876855508208792,
+    -0.8708109288984617,
+    -0.8411762194106197,
+    -0.9863476980025154,
+    -0.9243339621446874
+   ],
+   "fd_rel_error": 0.00010581227787960913
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 0.23831495614788337,
+   "jp_plus_j_rel": 1.2950331172396943,
+   "rank": 9,
+   "parity_scores_top5": [
+    -1.0,
+    -0.9937562235899358,
+    -0.9937562211033429,
+    0.9999999999997748,
+    -0.9959877405687694
+   ],
+   "fd_rel_error": 4.0615667729290524e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 0.6566205954533566,
+   "jp_plus_j_rel": 1.9999999877171613,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.38548349368390805,
+    -0.9129260609402788,
+    -0.6873929979866424,
+    0.7593946142981279,
+    -0.7104156778428349
+   ],
+   "fd_rel_error": 9.700960417445448e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 0.3137608220705025,
+   "jp_plus_j_rel": 0.4488008208672703,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9163641359903122,
+    -0.9994612749350148,
+    -0.9881825548138666,
+    -0.935539751419494,
+    -0.9121703330963455
+   ],
+   "fd_rel_error": 0.00011063025703867899
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.6600656121531234,
+   "jp_plus_j_rel": 1.8051173514768115,
+   "rank": 15,
+   "parity_scores_top5": [
+    -0.9999999999999776,
+    0.9296048758826125,
+    0.929604689576782,
+    -0.31628340611233363,
+    -0.31628289708988966
+   ],
+   "fd_rel_error": 2.554890510690824e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.10553979724085388,
+   "jp_plus_j_rel": 0.09979291271511949,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9975408341767512,
+    -0.9912829259635345,
+    -0.9999999999999963,
+    -0.9925652245459136,
+    -0.8096601192120574
+   ],
+   "fd_rel_error": 1.536686942375036e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 0.3893698331276199,
+   "jp_plus_j_rel": 0.9218698794203486,
+   "rank": 16,
+   "parity_scores_top5": [
+    -0.7492055777478672,
+    -0.7492056174035688,
+    -0.9999999999999984,
+    -0.8246996033700535,
+    -0.8246996835248427
+   ],
+   "fd_rel_error": 4.762910196786387e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.1593904121459404,
+   "jp_plus_j_rel": 0.5412676334377223,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9911139644545057,
+    -0.9911139643714311,
+    -0.9911139603509455,
+    -0.9714039347280655,
+    -0.971403931190028
+   ],
+   "fd_rel_error": 1.964791769157503e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.3959330884991573,
+   "jp_plus_j_rel": 0.6895771769176734,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9722854081181497,
+    -0.9722854264054192,
+    -0.8604074581783712,
+    -0.4619198459140677,
+    -0.46191985172171723
+   ],
+   "fd_rel_error": 5.03430211448987e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 0.6207708787369267,
+   "jp_plus_j_rel": 1.1294743224202048,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.0830414934909762,
+    -0.08304164900566507,
+    -0.5229750155979391,
+    -0.2502426993656115,
+    -0.2502426732270625
+   ],
+   "fd_rel_error": 9.790619999545979e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.37120986875738066,
+   "jp_plus_j_rel": 1.3123073935736569,
+   "rank": 15,
+   "parity_scores_top5": [
+    -0.9999999999999862,
+    -0.9999999999999121,
+    -0.9999999999999578,
+    0.9917745411643588,
+    0.9917771559765655
+   ],
+   "fd_rel_error": 6.709519967076397e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed0",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.81874027468341,
+   "jp_plus_j_rel": 1.769607064118788,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.7515612519684289,
+    0.6959229554089974,
+    -0.29619399504675004,
+    0.45157080964194485,
+    0.2650728446178769
+   ],
+   "fd_rel_error": 9.442263574963253e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.46868035012920084,
+   "jp_plus_j_rel": 1.5944803196777764,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.8020286320129593,
+    -0.9219986276700706,
+    -0.8670263231340892,
+    -0.9207060895754113,
+    0.11515531547617786
+   ],
+   "fd_rel_error": 0.00020272317768322206
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.47161132744632306,
+   "jp_plus_j_rel": 0.8776816290718026,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.6093573023832494,
+    -0.8548083547470713,
+    -0.6831944363609431,
+    -0.7629457300366027,
+    -0.02605471360525528
+   ],
+   "fd_rel_error": 9.907224334782035e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.2009089909741562,
+   "jp_plus_j_rel": 0.5372795960676175,
+   "rank": 17,
+   "parity_scores_top5": [
+    -0.9999772309888649,
+    -0.999977230989266,
+    -0.9999772309696844,
+    -0.9992374709472582,
+    -0.9992374710251318
+   ],
+   "fd_rel_error": 4.620262452079962e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.1419799869990152,
+   "jp_plus_j_rel": 0.19965834239063215,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9929789127646231,
+    -0.9866976556354761,
+    -0.9802413339834516,
+    -0.9647133036992177,
+    -0.90800776389387
+   ],
+   "fd_rel_error": 0.00014811589363622954
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.5032962030436965,
+   "jp_plus_j_rel": 0.8474063501144093,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9986045370572401,
+    -0.9294282841428543,
+    -0.9294282647388636,
+    0.8520014356279806,
+    0.8520013653969639
+   ],
+   "fd_rel_error": 4.1525508352037826e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.53325997086871,
+   "jp_plus_j_rel": 0.7329142489751516,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.44098833398430487,
+    -0.9388198280549093,
+    -0.8223730680751518,
+    -0.396427339380404,
+    0.08931145497543344
+   ],
+   "fd_rel_error": 6.497588850640782e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.35468037731703295,
+   "jp_plus_j_rel": 0.7481522750307004,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9369636216746332,
+    -0.9350835845724018,
+    -0.9635153162936861,
+    -0.8143720782522478,
+    -0.9073148907381212
+   ],
+   "fd_rel_error": 8.178391013482017e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.5212988943684471,
+   "jp_plus_j_rel": 0.7201452096220302,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9921286817375666,
+    -0.47899792109083456,
+    -0.4789980998507169,
+    -0.9972791452553489,
+    0.1928692169856364
+   ],
+   "fd_rel_error": 7.135133765225128e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.6110746981809048,
+   "jp_plus_j_rel": 1.1537022171240565,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.11729321887293506,
+    -0.6262188150012785,
+    0.6182459610957897,
+    -0.802516477585,
+    -0.5820456963532026
+   ],
+   "fd_rel_error": 6.505678864481407e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 0.21974056073776269,
+   "jp_plus_j_rel": 0.4085538658805639,
+   "rank": 9,
+   "parity_scores_top5": [
+    -0.9736801994675267,
+    -0.9736801940065328,
+    -0.9999999999999958,
+    -0.9999999999999979,
+    -0.4684389321970255
+   ],
+   "fd_rel_error": 2.9334659554309755e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 0.47954842236872786,
+   "jp_plus_j_rel": 1.09457549468564,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9865850112951027,
+    -0.081836649611245,
+    -0.9596506576138693,
+    -0.7218252139152287,
+    0.11729081350229438
+   ],
+   "fd_rel_error": 7.045292650941011e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 0.3987044435125116,
+   "jp_plus_j_rel": 0.8735717699510357,
+   "rank": 17,
+   "parity_scores_top5": [
+    -0.9992869746120315,
+    -0.9918103621629758,
+    0.7922787922583381,
+    0.9703642464438565,
+    -0.8686546566932077
+   ],
+   "fd_rel_error": 3.9421138169634914e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.880542701555985,
+   "jp_plus_j_rel": 1.9999999829859976,
+   "rank": 15,
+   "parity_scores_top5": [
+    0.9228206368435808,
+    0.9228206354617392,
+    -0.999999999999956,
+    -0.11670816063620763,
+    -0.11670918589292785
+   ],
+   "fd_rel_error": 5.676780233038146e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.16360482536973828,
+   "jp_plus_j_rel": 0.28910159986283335,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9999456492674428,
+    -0.999999999999996,
+    -0.9978423282265418,
+    -0.3605982261457897,
+    0.9806868103669029
+   ],
+   "fd_rel_error": 7.576386715869706e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 0.3636921227353314,
+   "jp_plus_j_rel": 0.6935235592678115,
+   "rank": 16,
+   "parity_scores_top5": [
+    -0.9999999999999793,
+    -0.6751070420370906,
+    -0.6751073184274887,
+    -0.20652937559008974,
+    -0.20652952489587262
+   ],
+   "fd_rel_error": 4.91285423356765e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.25402540976336196,
+   "jp_plus_j_rel": 0.344086252131813,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9545219104458641,
+    -0.9545218925336652,
+    -0.954521896330175,
+    -0.874597936005101,
+    -0.8745978687806257
+   ],
+   "fd_rel_error": 0.00010171230611176405
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.5972430568041905,
+   "jp_plus_j_rel": 0.8516918574003322,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.31428008548633873,
+    -0.3142799968357503,
+    -0.42009787520792347,
+    -0.4200979207001059,
+    -0.5565515162288602
+   ],
+   "fd_rel_error": 5.690040051468757e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 0.6837398547451328,
+   "jp_plus_j_rel": 1.5388168216978713,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.20779192325138532,
+    0.2077919323927225,
+    -0.5993930549944188,
+    -0.04096922860029569,
+    -0.2458191326954534
+   ],
+   "fd_rel_error": 0.0001088891669039161
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.19687238902633009,
+   "jp_plus_j_rel": 0.5363260614282269,
+   "rank": 15,
+   "parity_scores_top5": [
+    -0.9999999999999982,
+    -0.9999999999999842,
+    -0.999999999999995,
+    -0.9999999999998108,
+    -0.09480192167922075
+   ],
+   "fd_rel_error": 3.823195634956817e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed1",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.6824608850287823,
+   "jp_plus_j_rel": 1.2725847159663324,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.69422941587028,
+    0.2615966458431971,
+    0.27120761358940093,
+    -0.0592378223531492,
+    -0.01265164270423274
+   ],
+   "fd_rel_error": 8.133617908286504e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.5185081841387627,
+   "jp_plus_j_rel": 1.3625887085026769,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.7759306589137805,
+    -0.6796061990719119,
+    -0.5728012589960672,
+    -0.7860107943521457,
+    -0.3551923362892342
+   ],
+   "fd_rel_error": 9.62519968664171e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.3280088613106548,
+   "jp_plus_j_rel": 0.7623127814157814,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.8857864777939932,
+    -0.946608000867887,
+    -0.9423350106541284,
+    -0.9510117075799275,
+    -0.5144293635540196
+   ],
+   "fd_rel_error": 7.250195806014129e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.36678081987777494,
+   "jp_plus_j_rel": 1.070043046474894,
+   "rank": 17,
+   "parity_scores_top5": [
+    -0.9980136159509057,
+    -0.9980136145261064,
+    -0.9980136159127994,
+    -0.9916302125706774,
+    -0.9916302092005495
+   ],
+   "fd_rel_error": 8.502212225517506e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.2399037209979433,
+   "jp_plus_j_rel": 0.2954782564399494,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9663398766659264,
+    -0.9844905703366339,
+    -0.9795843439267697,
+    -0.587557729276774,
+    -0.6310196751118513
+   ],
+   "fd_rel_error": 6.731761626208037e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.516391459051703,
+   "jp_plus_j_rel": 1.1602032530557145,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9959287024739868,
+    -0.9959287022408689,
+    -0.9980890412552808,
+    0.6576322753654459,
+    0.4690722670201744
+   ],
+   "fd_rel_error": 5.767388230338995e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.5360071000408532,
+   "jp_plus_j_rel": 1.462191947911764,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.8675855198422787,
+    -0.9230490412579258,
+    0.723103497460573,
+    0.7277131229414586,
+    0.09330669980706617
+   ],
+   "fd_rel_error": 7.414859607980491e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.44171096132331056,
+   "jp_plus_j_rel": 0.7834760319835693,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9844098977364358,
+    -0.9526428635863944,
+    -0.8847541644157698,
+    -0.957462079587677,
+    0.5106642061957891
+   ],
+   "fd_rel_error": 5.555858747921249e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.7214003738500409,
+   "jp_plus_j_rel": 1.9999997303566075,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.8091022035623326,
+    -0.9403521471886584,
+    0.3111619145645504,
+    0.31116211638791563,
+    0.028690249656867502
+   ],
+   "fd_rel_error": 4.501654824591423e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.5356582555399328,
+   "jp_plus_j_rel": 0.9961867231692606,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9536078884833346,
+    -0.979079840025557,
+    0.22497712140798484,
+    -0.15180840886990649,
+    -0.38849351100303653
+   ],
+   "fd_rel_error": 7.374588522160022e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 0.10456327741389014,
+   "jp_plus_j_rel": 0.16399827161920827,
+   "rank": 9,
+   "parity_scores_top5": [
+    -0.9999999999999993,
+    -0.9812066231487065,
+    -0.9812066178466093,
+    -0.9999999999986272,
+    0.9732823246044402
+   ],
+   "fd_rel_error": 1.8309022327027085e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 0.6772619413286661,
+   "jp_plus_j_rel": 1.999999964385909,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.5012692102291422,
+    -0.24604461984656906,
+    -0.06103317155442296,
+    -0.4500514272818103,
+    0.24261092454721392
+   ],
+   "fd_rel_error": 6.66278827651057e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 0.5357678620138345,
+   "jp_plus_j_rel": 1.983939431065501,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9994498149170874,
+    0.9184497560381036,
+    -0.7726709775580896,
+    -0.9769155168311766,
+    -0.8457726816527457
+   ],
+   "fd_rel_error": 5.255554208248261e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.6546188732891466,
+   "jp_plus_j_rel": 1.6470905256830097,
+   "rank": 15,
+   "parity_scores_top5": [
+    -0.9999999999999922,
+    0.3438986659517674,
+    0.34389861908891534,
+    0.999999999948666,
+    -0.9999999999465417
+   ],
+   "fd_rel_error": 5.668473331887791e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.10510490569424362,
+   "jp_plus_j_rel": 0.29084781197337506,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9960601974024712,
+    -0.9965215115988065,
+    -0.9999999999999928,
+    -0.9785952500292496,
+    -0.7989106608189678
+   ],
+   "fd_rel_error": 2.8402365142953888e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 0.19518944627457746,
+   "jp_plus_j_rel": 0.5232397472885288,
+   "rank": 16,
+   "parity_scores_top5": [
+    -1.0,
+    -0.8947013623734326,
+    -0.8947013834125925,
+    -0.9999999999999996,
+    -0.9310952786766143
+   ],
+   "fd_rel_error": 4.7776849253166954e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.17368633678650053,
+   "jp_plus_j_rel": 0.35725716507753735,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9891488019775362,
+    -0.989148805876712,
+    -0.9891488087139219,
+    -0.9885072286147316,
+    -0.9885072236776377
+   ],
+   "fd_rel_error": 6.970331326819618e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.5647180504555632,
+   "jp_plus_j_rel": 1.0437459164430536,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.6211358224689902,
+    -0.6211360034618543,
+    -0.9431091738151801,
+    0.1640433518345329,
+    0.16404348160624926
+   ],
+   "fd_rel_error": 5.474481154691147e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 0.6144338613828085,
+   "jp_plus_j_rel": 0.8116608279407195,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.6612466580230187,
+    -0.6612463999229529,
+    -0.3202107676025402,
+    0.037781546506820425,
+    0.03778154753155862
+   ],
+   "fd_rel_error": 8.906900547968799e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.2852139632233173,
+   "jp_plus_j_rel": 0.6560390876917545,
+   "rank": 15,
+   "parity_scores_top5": [
+    -0.9999999999999946,
+    -0.999999999999924,
+    -0.9999999999997359,
+    -0.9999999999998641,
+    -0.9999999999998028
+   ],
+   "fd_rel_error": 5.462435925120192e-05
+  },
+  {
+   "run": "nequip_so3_piezoelectric_seed2",
+   "core": "nequip",
+   "parity": "so3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.7565473166540135,
+   "jp_plus_j_rel": 1.5909332960113303,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.5270518665970403,
+    0.09662916662800697,
+    0.29547332851672586,
+    -0.24183543203677993,
+    0.3019204373935376
+   ],
+   "fd_rel_error": 9.864709277868021e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.0132349871835568e-06,
+   "jp_plus_j_rel": 1.8297560179143916e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000041894601,
+    -1.0000000103190974,
+    -1.0000000494546704,
+    -0.999999998366279,
+    -0.9999999983504335
+   ],
+   "fd_rel_error": 0.00021949131041765213
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 9.377703231107195e-07,
+   "jp_plus_j_rel": 1.6326444235190406e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999989907351,
+    -0.9999999978256215,
+    -1.0000000093075379,
+    -1.0000000094455217,
+    -1.0000000047056838
+   ],
+   "fd_rel_error": 0.00016698714898666367
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 2.1714745778765125e-07,
+   "jp_plus_j_rel": 2.740349708082746e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.000000019829121,
+    -1.000000010749829,
+    -0.9999999856095123,
+    -0.999999994336098,
+    -0.9999999894541773
+   ],
+   "fd_rel_error": 0.00015694863395765424
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.0031168041534938e-06,
+   "jp_plus_j_rel": 2.0238278260280016e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000563678861,
+    -0.999999992066696,
+    -0.9999999951534303,
+    -0.9999999928724062,
+    -1.0000000011599603
+   ],
+   "fd_rel_error": 0.00010266667231917381
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 6.558469039678234e-07,
+   "jp_plus_j_rel": 1.609944390374164e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.000000007235634,
+    -1.0000000259153359,
+    -1.0000000006276206,
+    -0.9999999996985016,
+    -1.0000000001168299
+   ],
+   "fd_rel_error": 9.983753261622041e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.4345085592861066e-06,
+   "jp_plus_j_rel": 2.7273675526306795e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999896889175,
+    -1.0000000078144466,
+    -0.9999999978346024,
+    -0.9999999979585017,
+    -1.000000025071862
+   ],
+   "fd_rel_error": 0.00015603608335368335
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 7.222757092099309e-07,
+   "jp_plus_j_rel": 1.4632478297845797e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999914599723,
+    -1.0000000493565881,
+    -1.0000000117229482,
+    -1.0000000013782333,
+    -1.0000000018727457
+   ],
+   "fd_rel_error": 0.00010869320976780728
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 3.306041150853686e-07,
+   "jp_plus_j_rel": 5.758311593019858e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000503109403,
+    -0.9999999968148438,
+    -1.0000000038633945,
+    -1.0000000033721121,
+    -1.0000000107416938
+   ],
+   "fd_rel_error": 9.245167166227475e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.805426236620904e-06,
+   "jp_plus_j_rel": 5.199173870013649e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.000000002026195,
+    -1.0000000118135641,
+    -1.0000000605014276,
+    -0.9999999950050918,
+    -1.000000064919382
+   ],
+   "fd_rel_error": 0.00019366846390767023
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 1.2583535430425437e-06,
+   "jp_plus_j_rel": 3.593128712703324e-06,
+   "rank": 12,
+   "parity_scores_top5": [
+    -1.0000000076385154,
+    -0.9999999946188154,
+    -1.0000000460951253,
+    -1.0000000340373032,
+    -1.0000000029368585
+   ],
+   "fd_rel_error": 6.787978782085702e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 1.1461621413398308e-06,
+   "jp_plus_j_rel": 1.660607914029835e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000003797216,
+    -1.0000000049604718,
+    -1.0000000649773042,
+    -0.9999999923234641,
+    -0.999999998794026
+   ],
+   "fd_rel_error": 0.00022781765437684953
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 1.3847617692080785e-06,
+   "jp_plus_j_rel": 3.98678770812193e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000201652113,
+    -1.0000000057527991,
+    -1.0000000008047463,
+    -0.9999999978672899,
+    -0.999999995270203
+   ],
+   "fd_rel_error": 0.00011963159340666607
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 3.4726775115106473e-07,
+   "jp_plus_j_rel": 6.91644302144732e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -1.0000000029191918,
+    -1.000000041280819,
+    -1.0000000178503705,
+    -1.0000000232025237,
+    -1.0000000128983404
+   ],
+   "fd_rel_error": 0.0002077944009215571
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 1.1908914235147432e-06,
+   "jp_plus_j_rel": 2.3359071254652526e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000096858965,
+    -1.0000000157077702,
+    -1.0000000314822193,
+    -1.0000000327159344,
+    -1.0000000086218026
+   ],
+   "fd_rel_error": 0.00012386096932459623
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 3.5976280299046346e-07,
+   "jp_plus_j_rel": 1.284462118643197e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999958744911,
+    -0.9999999966882355,
+    -1.0000000115242869,
+    -1.0000000016444544,
+    -1.0000000231060147
+   ],
+   "fd_rel_error": 7.140914021874778e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 2.3350065134930997e-06,
+   "jp_plus_j_rel": 7.224373003104621e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999921801681,
+    -1.0000000492501542,
+    -0.9999999956271881,
+    -0.9999999968816315,
+    -1.0000000011029242
+   ],
+   "fd_rel_error": 6.459001633629669e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.1924189361958307e-06,
+   "jp_plus_j_rel": 1.4669516744205541e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000017662667,
+    -1.000000038962544,
+    -0.9999999978103918,
+    -1.0000000105330709,
+    -0.9999999894768087
+   ],
+   "fd_rel_error": 0.00012627074102056213
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 1.1778984817215966e-06,
+   "jp_plus_j_rel": 2.1636838197446398e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000072705966,
+    -0.9999999889656468,
+    -1.000000023957618,
+    -1.0000000125567627,
+    -1.0000000006850003
+   ],
+   "fd_rel_error": 0.00012095232523279265
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 3.1651853762100413e-07,
+   "jp_plus_j_rel": 6.717811974091291e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999905097785,
+    -1.0000000461947818,
+    -0.9999999954605798,
+    -1.0000000111643326,
+    -1.000000015477708
+   ],
+   "fd_rel_error": 9.564412903273478e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.1463479065264476e-06,
+   "jp_plus_j_rel": 2.7990532764307107e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000038784038,
+    -1.0000000484446843,
+    -1.000000048881398,
+    -0.9999999994085818,
+    -0.9999999990437708
+   ],
+   "fd_rel_error": 0.00011202433597645722
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.1053759269996926e-06,
+   "jp_plus_j_rel": 2.4004554692791853e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000051882385,
+    -0.9999999985043871,
+    -1.000000059852603,
+    -1.000000006372224,
+    -1.0000000009421386
+   ],
+   "fd_rel_error": 0.0002509582263883203
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 6.68724922353535e-07,
+   "jp_plus_j_rel": 1.1170194545072727e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000546294099,
+    -1.000000004570276,
+    -1.0000000110730365,
+    -1.0000000484680618,
+    -1.000000047742481
+   ],
+   "fd_rel_error": 0.00014611738151870668
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 3.396463731505361e-07,
+   "jp_plus_j_rel": 5.652918555547597e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.999999996326919,
+    -0.9999999921347378,
+    -0.999999990488569,
+    -0.99999999077583,
+    -1.0000000099433157
+   ],
+   "fd_rel_error": 0.00011398474089219235
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 8.262126123040572e-07,
+   "jp_plus_j_rel": 8.510128040641297e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000074600008,
+    -1.000000028973502,
+    -1.0000000036958632,
+    -1.000000005955261,
+    -0.999999998028168
+   ],
+   "fd_rel_error": 0.00017928685701917857
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 8.988602407729987e-07,
+   "jp_plus_j_rel": 1.285127920231222e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999982660436,
+    -0.9999999960863077,
+    -1.0000000068523667,
+    -1.0000000077138038,
+    -0.9999999904877658
+   ],
+   "fd_rel_error": 0.00010504063720873091
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.2635379277807815e-06,
+   "jp_plus_j_rel": 1.8591253107561156e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000440521717,
+    -0.9999999925469487,
+    -1.0000000051926659,
+    -1.000000004004403,
+    -1.000000002456692
+   ],
+   "fd_rel_error": 0.00012875476022600196
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.0840373273579924e-06,
+   "jp_plus_j_rel": 3.2793916186734833e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.000000000937109,
+    -1.0000000371321616,
+    -0.9999999965164487,
+    -1.0000000617319482,
+    -0.9999999941687239
+   ],
+   "fd_rel_error": 0.00016843412595335394
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 3.2882704943780756e-07,
+   "jp_plus_j_rel": 6.930977170747395e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000029675584,
+    -1.000000008991443,
+    -0.9999999989432957,
+    -0.9999999812551043,
+    -1.000000004194103
+   ],
+   "fd_rel_error": 0.00012564725329866633
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.9990749618093863e-06,
+   "jp_plus_j_rel": 3.7958765717750192e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999900374394,
+    -1.0000000604279462,
+    -1.0000000077323419,
+    -0.9999999975130881,
+    -0.9999999866279562
+   ],
+   "fd_rel_error": 0.00030770567536819726
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 6.74914554708752e-07,
+   "jp_plus_j_rel": 1.5896204145412116e-06,
+   "rank": 10,
+   "parity_scores_top5": [
+    -1.0000000047104598,
+    -0.9999999909756957,
+    -1.0000000058197405,
+    -0.9999999785935189,
+    -1.0000000313603006
+   ],
+   "fd_rel_error": 6.604719055758324e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 1.3123103536986955e-06,
+   "jp_plus_j_rel": 1.860207403608162e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999999504224,
+    -1.0000000160953033,
+    -0.9999999838837387,
+    -0.9999999955279961,
+    -1.000000011014659
+   ],
+   "fd_rel_error": 0.00014058516535442322
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 9.774002715635585e-07,
+   "jp_plus_j_rel": 1.9034700551947748e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000153510835,
+    -0.9999999982954995,
+    -0.9999999879685043,
+    -0.9999999928202513,
+    -1.00000001191701
+   ],
+   "fd_rel_error": 0.0001450159979867749
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 4.2337852539317604e-07,
+   "jp_plus_j_rel": 7.80981766321079e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999966274548,
+    -1.000000003215006,
+    -1.000000005976223,
+    -1.000000010235978,
+    -1.0000000529432567
+   ],
+   "fd_rel_error": 0.0001532787864562124
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 6.855321633390751e-07,
+   "jp_plus_j_rel": 7.298805240323199e-07,
+   "rank": 12,
+   "parity_scores_top5": [
+    -1.0000000115557404,
+    -1.0000000041380004,
+    -1.000000016356305,
+    -1.0000000012634838,
+    -0.9999999964228392
+   ],
+   "fd_rel_error": 8.267967859865166e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 2.567629075104152e-07,
+   "jp_plus_j_rel": 6.317452227110386e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999865839575,
+    -1.0000000231065544,
+    -0.9999999995784193,
+    -1.000000000155042,
+    -0.9999999956780117
+   ],
+   "fd_rel_error": 7.416127664328087e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 9.545257102548064e-07,
+   "jp_plus_j_rel": 2.2690007234658673e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000074662398,
+    -1.0000000007984047,
+    -1.0000000073115414,
+    -1.0000000049031057,
+    -1.0000000159705877
+   ],
+   "fd_rel_error": 7.086159166647121e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.281519502398124e-06,
+   "jp_plus_j_rel": 2.2220574704578767e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.000000005509949,
+    -0.999999982374809,
+    -1.000000055090317,
+    -1.0000000212610416,
+    -0.9999999983592591
+   ],
+   "fd_rel_error": 0.00011372670996934175
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 1.598532900172705e-06,
+   "jp_plus_j_rel": 4.233726361195947e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000108107738,
+    -0.9999999937220945,
+    -1.0000000002110154,
+    -0.9999999947814094,
+    -1.0000000083421157
+   ],
+   "fd_rel_error": 0.00016111699369503185
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 5.856674125093245e-07,
+   "jp_plus_j_rel": 1.7782392056696124e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999945536938,
+    -0.999999991481713,
+    -1.000000000165207,
+    -0.9999999994331163,
+    -1.0000000030500398
+   ],
+   "fd_rel_error": 5.807656634715386e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.344698390182081e-06,
+   "jp_plus_j_rel": 2.058111362347705e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.000000011951955,
+    -1.0000000599718417,
+    -0.9999999985587487,
+    -1.0000000560448934,
+    -0.9999999938737546
+   ],
+   "fd_rel_error": 0.0001683786031208001
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.0298173272515295e-06,
+   "jp_plus_j_rel": 2.2156898059593825e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000020332043,
+    -0.9999999962097887,
+    -1.0000000031108727,
+    -1.0000000004152716,
+    -1.0000000509005684
+   ],
+   "fd_rel_error": 0.00016073978622443974
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 9.606947330903261e-07,
+   "jp_plus_j_rel": 2.2799548762385223e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000041581145,
+    -0.9999999953826579,
+    -1.0000000103397018,
+    -1.0000000528503115,
+    -1.0000000086706864
+   ],
+   "fd_rel_error": 0.000150499923620373
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 4.5965364453299903e-07,
+   "jp_plus_j_rel": 6.414419386713087e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999972350443,
+    -0.9999999852801057,
+    -0.9999999918192085,
+    -1.000000019045075,
+    -1.0000000108221532
+   ],
+   "fd_rel_error": 0.0005063599674031138
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 6.494768350252717e-07,
+   "jp_plus_j_rel": 6.258836695058836e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000038580066,
+    -0.9999999905815979,
+    -1.0000000517028702,
+    -1.000000015296056,
+    -1.0000000000963973
+   ],
+   "fd_rel_error": 9.278795005229767e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.140272700506027e-06,
+   "jp_plus_j_rel": 2.209577599230637e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999904205601,
+    -0.9999999985434217,
+    -1.0000000000339788,
+    -1.000000007366098,
+    -1.000000000977081
+   ],
+   "fd_rel_error": 0.0001730783042148687
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 1.2822936011062522e-06,
+   "jp_plus_j_rel": 1.56040587310044e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000173179369,
+    -0.9999999992339538,
+    -1.0000000043502932,
+    -1.0000000073238604,
+    -0.9999999980882169
+   ],
+   "fd_rel_error": 0.00014918443048372865
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 8.395026971423633e-07,
+   "jp_plus_j_rel": 1.9830598255103903e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999911793898,
+    -1.0000000055403717,
+    -1.0000000486827418,
+    -1.0000000076012137,
+    -0.9999999977102608
+   ],
+   "fd_rel_error": 0.00018105455455952324
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 3.393373995869101e-07,
+   "jp_plus_j_rel": 4.980872199018253e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000013211494,
+    -0.9999999922610976,
+    -1.0000000042203274,
+    -1.0000000032129468,
+    -0.9999999912503423
+   ],
+   "fd_rel_error": 0.00015885849279584363
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.1828674722326002e-06,
+   "jp_plus_j_rel": 1.5861995003647818e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.00000004579472,
+    -0.999999997862857,
+    -1.0000000629083339,
+    -1.0000000060412382,
+    -0.9999999986330419
+   ],
+   "fd_rel_error": 0.00024771751486696303
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 6.260130823207793e-07,
+   "jp_plus_j_rel": 1.3038433520873814e-06,
+   "rank": 10,
+   "parity_scores_top5": [
+    -1.0000000059338974,
+    -1.0000000056912395,
+    -1.0000000091833265,
+    -0.999999988075627,
+    -1.0000000430369966
+   ],
+   "fd_rel_error": 5.597651397692971e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 1.6191999007913964e-06,
+   "jp_plus_j_rel": 3.234224377550417e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000057908556,
+    -1.000000007193119,
+    -0.9999999988641652,
+    -0.999999984505972,
+    -0.9999999958957634
+   ],
+   "fd_rel_error": 0.00027033541846321896
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 6.437301867482569e-07,
+   "jp_plus_j_rel": 1.7310586069199335e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.000000011964148,
+    -0.9999999935488745,
+    -1.0000000123352473,
+    -1.0000000531373252,
+    -1.000000005243929
+   ],
+   "fd_rel_error": 0.00011652954708551988
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 5.187622024851772e-07,
+   "jp_plus_j_rel": 7.006862252542224e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000219438478,
+    -1.0000000079093525,
+    -0.9999999974090484,
+    -0.9999999883288363,
+    -0.9999999714715972
+   ],
+   "fd_rel_error": 0.0001706399634713307
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 5.236553113409718e-07,
+   "jp_plus_j_rel": 7.090346104952676e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.0000000520465735,
+    -1.0000000072966706,
+    -1.000000018389993,
+    -1.0000000501498454,
+    -0.9999999899092011
+   ],
+   "fd_rel_error": 0.00010342793757445179
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 3.6073450754241107e-07,
+   "jp_plus_j_rel": 8.778190916289026e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999968747723,
+    -1.0000000079065656,
+    -1.0000000121320842,
+    -1.0000000064659444,
+    -1.0000000051346813
+   ],
+   "fd_rel_error": 4.320214247854892e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 1.1073811239247162e-06,
+   "jp_plus_j_rel": 3.853520657825092e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999970572663,
+    -0.9999999949111846,
+    -0.9999999992852232,
+    -0.9999999871647791,
+    -0.9999999955734032
+   ],
+   "fd_rel_error": 0.0001296469235967379
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 2.178147196298381e-06,
+   "jp_plus_j_rel": 7.247748135580528e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.99999999909098,
+    -1.000000002549459,
+    -1.0000000565067697,
+    -0.9999999956842232,
+    -0.9999999940173848
+   ],
+   "fd_rel_error": 0.00033538539719302207
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 1.297725028982418e-06,
+   "jp_plus_j_rel": 1.4629095093331286e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999965466817,
+    -0.99999999722774,
+    -0.9999999996447181,
+    -0.9999999951387537,
+    -0.9999999930802298
+   ],
+   "fd_rel_error": 0.0001556655697640963
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 2.4537408555232147e-07,
+   "jp_plus_j_rel": 4.4935516891324995e-07,
+   "rank": 13,
+   "parity_scores_top5": [
+    -0.9999999828867844,
+    -1.000000008070557,
+    -1.0000000187400369,
+    -1.000000000120291,
+    -1.0000000232711235
+   ],
+   "fd_rel_error": 5.938446702202782e-05
+  },
+  {
+   "run": "mace_o3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "o3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 1.5555986639103627e-06,
+   "jp_plus_j_rel": 3.5934278791358677e-06,
+   "rank": 13,
+   "parity_scores_top5": [
+    -1.000000064133607,
+    -0.9999999994307397,
+    -0.9999999933025319,
+    -1.0000000040559804,
+    -1.0000000543551306
+   ],
+   "fd_rel_error": 0.00027144746854901314
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.7051790665424823,
+   "jp_plus_j_rel": 1.9999979736110116,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.8532299120377234,
+    -0.1428186047759109,
+    -0.061302752425429576,
+    -0.7961303159997387,
+    0.16840607785012437
+   ],
+   "fd_rel_error": 0.00015497361891902983
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.3094018828717316,
+   "jp_plus_j_rel": 0.6729486287782854,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9705465282693636,
+    -0.980717966702369,
+    -0.7939606982794977,
+    -0.9074796563245969,
+    -0.18488275264409343
+   ],
+   "fd_rel_error": 0.00010256136374664493
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.08612481224315939,
+   "jp_plus_j_rel": 0.08447191567231413,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.999693208712568,
+    -0.9996932364561516,
+    -0.9996932349193576,
+    -0.9644810829539101,
+    -0.9644810439785445
+   ],
+   "fd_rel_error": 0.0001245781677425839
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.2649120976693159,
+   "jp_plus_j_rel": 0.36531769713988266,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9824707368857712,
+    -0.8980900049444142,
+    -0.9384984349188821,
+    -0.7066426957035173,
+    -0.8232941741606465
+   ],
+   "fd_rel_error": 8.885519855539314e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.7845662139456044,
+   "jp_plus_j_rel": 1.9999996510146443,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.9037898250280791,
+    0.9746309587282206,
+    0.9746307968514125,
+    -0.9742419277337664,
+    -0.9742419253080475
+   ],
+   "fd_rel_error": 9.811074414756149e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.5300599370902122,
+   "jp_plus_j_rel": 0.7488650651466604,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.8668946284994594,
+    -0.8871221143331199,
+    -0.713507918874288,
+    -0.08760853097687049,
+    0.8457260619685312
+   ],
+   "fd_rel_error": 0.00011465605712146498
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.5092243942173544,
+   "jp_plus_j_rel": 1.508735746854906,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.8560503069281385,
+    -0.7779431601698867,
+    -0.9632239789731611,
+    0.13303194172877056,
+    -0.26119506618255406
+   ],
+   "fd_rel_error": 0.00011219053703825921
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.4997159740070394,
+   "jp_plus_j_rel": 0.7645220792295111,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9992975145580969,
+    -0.9220425818229997,
+    -0.9096042186991318,
+    0.04219874253146394,
+    0.042198928620620316
+   ],
+   "fd_rel_error": 7.744763024675194e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.8070823157991109,
+   "jp_plus_j_rel": 1.8672413002745405,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.9646482344894456,
+    0.26489686611770213,
+    -0.13513172950969798,
+    0.3752975721404862,
+    -0.13744168534226897
+   ],
+   "fd_rel_error": 0.0001838694151956588
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 0.1614495220229254,
+   "jp_plus_j_rel": 0.3061849231580225,
+   "rank": 12,
+   "parity_scores_top5": [
+    -1.0000000107127376,
+    -0.9997768699330212,
+    -0.9997768335246846,
+    -0.993693710334632,
+    -0.9936937917190438
+   ],
+   "fd_rel_error": 4.8038815293693915e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 0.5575168236462196,
+   "jp_plus_j_rel": 0.9446386509412602,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.6149267017446371,
+    -0.7160761546045082,
+    0.8799530953283438,
+    0.07326449528015633,
+    0.3908235911882539
+   ],
+   "fd_rel_error": 0.00021963537437841296
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 0.4147207649695716,
+   "jp_plus_j_rel": 0.8537114617934535,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9738924080678686,
+    -0.6601731870334099,
+    -0.7429848432549828,
+    -0.6484722561216445,
+    0.6385877408345244
+   ],
+   "fd_rel_error": 0.00011228455696254969
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.684261756877617,
+   "jp_plus_j_rel": 2.0,
+   "rank": 16,
+   "parity_scores_top5": [
+    -0.35659937411235854,
+    -0.3565998074344641,
+    0.8897935053387283,
+    0.8897931595734223,
+    -0.9999999964787628
+   ],
+   "fd_rel_error": 0.00011933046334888786
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.7216618962519521,
+   "jp_plus_j_rel": 1.9999995903390142,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.9580239750690276,
+    -0.5337616471813353,
+    0.49822961723668135,
+    -0.9483534700380032,
+    -1.0000000088162202
+   ],
+   "fd_rel_error": 7.945958714117296e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 0.14779889763357168,
+   "jp_plus_j_rel": 0.23442577620957541,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9909540990199663,
+    -0.9909540856806882,
+    -0.9999999925909159,
+    -0.9041722445482804,
+    -0.9041721259982086
+   ],
+   "fd_rel_error": 8.244280979852192e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.44539315304802174,
+   "jp_plus_j_rel": 0.8933199380811301,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9907961209747171,
+    -0.9907961598704363,
+    -0.9907961172007648,
+    -0.7080108603415198,
+    -0.7080107986486772
+   ],
+   "fd_rel_error": 0.00011571712093427777
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.6790797600919559,
+   "jp_plus_j_rel": 1.585886964843754,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.9060704320329631,
+    -0.4148733593829785,
+    -0.4148734467964069,
+    -0.8250885336041742,
+    -0.7996419772839297
+   ],
+   "fd_rel_error": 0.00010125759945367463
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 0.6656607205715954,
+   "jp_plus_j_rel": 1.1634720042018178,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.5159086250326448,
+    -0.03350101866520945,
+    -0.03350223822082535,
+    -0.7379945533879939,
+    0.19760338776548494
+   ],
+   "fd_rel_error": 0.00017108442989410833
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.5474120811106971,
+   "jp_plus_j_rel": 1.45751260664103,
+   "rank": 16,
+   "parity_scores_top5": [
+    -0.9999999867922258,
+    0.7419147690210818,
+    0.7419143199600025,
+    -0.9999999929780621,
+    -0.9999999897314659
+   ],
+   "fd_rel_error": 5.8412384532857686e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed0",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.7224896260689623,
+   "jp_plus_j_rel": 1.1663392267079908,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.22070672201334904,
+    0.19375550005394698,
+    0.16349410225909833,
+    0.2842332919418318,
+    -0.012696537655151559
+   ],
+   "fd_rel_error": 0.0001423907779098954
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.5745375086527144,
+   "jp_plus_j_rel": 1.7414504654068423,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.3879715686636027,
+    0.19745821980178985,
+    -0.9475396443126998,
+    -0.7087212535916497,
+    -0.1674610509562396
+   ],
+   "fd_rel_error": 0.00010620734974509105
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.28118299494952814,
+   "jp_plus_j_rel": 0.4171195195910061,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9776634036925024,
+    -0.9771531095249967,
+    -0.9146272403598305,
+    -0.7165549307256924,
+    -0.3323267680708142
+   ],
+   "fd_rel_error": 0.00012554562272271141
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.1463389977873834,
+   "jp_plus_j_rel": 0.11274857679860564,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9808754489141173,
+    -0.9808753833867676,
+    -0.9808754258647938,
+    -0.9758328265209242,
+    -0.975832813253699
+   ],
+   "fd_rel_error": 0.00013192273036111146
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.43305110837780947,
+   "jp_plus_j_rel": 0.8104621479260862,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.8576906215119424,
+    -0.7676092215639104,
+    -0.7378379439537504,
+    -0.9049769837660642,
+    -0.6710165615943572
+   ],
+   "fd_rel_error": 0.00012835134839406237
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.5984754982612984,
+   "jp_plus_j_rel": 1.5811644933169358,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9661141477277795,
+    -0.9661140212745911,
+    -0.9944576516581938,
+    0.9724249708182809,
+    0.9257066915442237
+   ],
+   "fd_rel_error": 9.821320418268442e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.6223402696659384,
+   "jp_plus_j_rel": 1.5890401493342654,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.5262032910419276,
+    -0.22593134563949996,
+    0.19887895870870997,
+    -0.5286601376982267,
+    -0.7887496152705643
+   ],
+   "fd_rel_error": 0.00010699361882871017
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.5314362701179051,
+   "jp_plus_j_rel": 1.6414387397838757,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.8672836888184825,
+    -0.5580934010247016,
+    -0.9042666863551283,
+    0.35110253177019357,
+    0.029295409493528594
+   ],
+   "fd_rel_error": 0.00015984928904799744
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.7378652930804935,
+   "jp_plus_j_rel": 1.9999998691033172,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.7086251554870152,
+    -0.5190074325794284,
+    -0.16490275072336744,
+    -0.16490328779628705,
+    0.5444057419588246
+   ],
+   "fd_rel_error": 0.00010205588841927238
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.7631892808963379,
+   "jp_plus_j_rel": 1.8981739766831007,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.9596926510566118,
+    -0.7644149914125257,
+    -0.524764751089994,
+    0.559626001441677,
+    0.2999125994848283
+   ],
+   "fd_rel_error": 0.000146709535329137
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 0.16645709657040975,
+   "jp_plus_j_rel": 0.38396103755799066,
+   "rank": 11,
+   "parity_scores_top5": [
+    -0.9999999891894352,
+    -0.982672693615203,
+    -0.9826727014480034,
+    -0.8928885541039341,
+    -0.8928883020027968
+   ],
+   "fd_rel_error": 4.334478762757499e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 0.4011490411618561,
+   "jp_plus_j_rel": 0.535269799855153,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.8481530713248665,
+    -0.9252865121402006,
+    -0.8538346746632414,
+    -0.819731198970978,
+    -0.8134101383294845
+   ],
+   "fd_rel_error": 0.0001756859419401735
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 0.38559600455204707,
+   "jp_plus_j_rel": 1.121400111369529,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9926628141808655,
+    -0.7859602188513142,
+    -0.9882323509128514,
+    -0.8834629139987915,
+    -0.8852995395620598
+   ],
+   "fd_rel_error": 0.00015340253594331443
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.7021933116916722,
+   "jp_plus_j_rel": 1.9999998485165453,
+   "rank": 16,
+   "parity_scores_top5": [
+    -0.9073100667574414,
+    -0.9073095944590175,
+    0.8791728526482752,
+    0.8791733337864046,
+    -0.9999999876484738
+   ],
+   "fd_rel_error": 0.00012211683133500628
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.3860559196498945,
+   "jp_plus_j_rel": 0.8863755098537698,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9975132866973542,
+    -0.8526783639496065,
+    -1.000000001922746,
+    -0.4422070754358748,
+    0.6115710850587882
+   ],
+   "fd_rel_error": 5.766427784692496e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 0.5514030487804177,
+   "jp_plus_j_rel": 1.104931925461731,
+   "rank": 16,
+   "parity_scores_top5": [
+    -0.9999999873892413,
+    0.63465646784565,
+    0.6346564342821807,
+    -0.9670945427061987,
+    -0.9670944798664626
+   ],
+   "fd_rel_error": 7.514946446463e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.2077406594653381,
+   "jp_plus_j_rel": 0.26093182240154805,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9246950222135034,
+    -0.9246950622037495,
+    -0.9246950120012845,
+    -0.9545241045608691,
+    -0.9545240574363838
+   ],
+   "fd_rel_error": 4.7200692279147916e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.6069707905259792,
+   "jp_plus_j_rel": 1.3263586756567867,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.7748551288387437,
+    -0.627513848435344,
+    -0.6275136114616627,
+    0.8049122056787464,
+    0.8049122531862629
+   ],
+   "fd_rel_error": 0.00012440602949936874
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 0.647882554334933,
+   "jp_plus_j_rel": 1.3943450223924148,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.08854320372332052,
+    0.08854298086151995,
+    -0.8765892100745858,
+    -0.402520731288753,
+    -0.4025198731319385
+   ],
+   "fd_rel_error": 0.00011657784125418402
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.35518052802766703,
+   "jp_plus_j_rel": 0.9391525288973738,
+   "rank": 17,
+   "parity_scores_top5": [
+    -1.000000025032652,
+    -1.0000000239966889,
+    -1.000000017045377,
+    -1.000000014626422,
+    -1.000000004314929
+   ],
+   "fd_rel_error": 6.109609421400819e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed1",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.7458288666757387,
+   "jp_plus_j_rel": 1.4642154203529583,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.5014587367417485,
+    0.27202181197058517,
+    0.10481479897301235,
+    -0.38201695123817214,
+    -0.26554679122920655
+   ],
+   "fd_rel_error": 0.0001133309633587487
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1209810",
+   "spacegroup": 62,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.5314734851638392,
+   "jp_plus_j_rel": 1.1791704683177415,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9175387547834224,
+    -0.3997459450485935,
+    -0.49979940209124757,
+    -0.2467107780100425,
+    0.34607842868087174
+   ],
+   "fd_rel_error": 0.00014922096306690946
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-694931",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.3857176904392972,
+   "jp_plus_j_rel": 0.5503215858940811,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.952837318423587,
+    -0.9444170279661723,
+    -0.3485917593804772,
+    0.46066691545787714,
+    -0.8387328380135267
+   ],
+   "fd_rel_error": 0.00019605078705353662
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1111628",
+   "spacegroup": 225,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.2681258900410132,
+   "jp_plus_j_rel": 0.3431296617757414,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.874710140117905,
+    -0.8747100263798646,
+    -0.8747101486494377,
+    -0.9130877351580504,
+    -0.9130877494520584
+   ],
+   "fd_rel_error": 0.00028825242770835757
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1188923",
+   "spacegroup": 14,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.3702606116221548,
+   "jp_plus_j_rel": 0.5591765046085178,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.950293503817608,
+    -0.9520933757543644,
+    -0.9306140741437436,
+    0.199509845973927,
+    -0.41966941112823813
+   ],
+   "fd_rel_error": 0.00011247129805269651
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1182484",
+   "spacegroup": 176,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.604830587693282,
+   "jp_plus_j_rel": 2.0,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9985549529391694,
+    -0.9985549668299276,
+    -0.9938689865106686,
+    0.956011057628002,
+    0.9560109747734171
+   ],
+   "fd_rel_error": 6.369626862579025e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-11641",
+   "spacegroup": 70,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.6635126191397475,
+   "jp_plus_j_rel": 1.3348067356190187,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.10822727948479281,
+    -0.687742828145798,
+    0.030212229143189814,
+    -0.4518523655079966,
+    -0.05924873689926435
+   ],
+   "fd_rel_error": 0.00011710426770150661
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-677242",
+   "spacegroup": 15,
+   "n_atoms": 14,
+   "even_energy_fraction": 0.6164415428380943,
+   "jp_plus_j_rel": 1.9898968457806385,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.8661329712902713,
+    -0.5619392416344696,
+    -0.6189295808989993,
+    -0.6971900790044948,
+    0.19215782016014568
+   ],
+   "fd_rel_error": 9.665246761869639e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-5767",
+   "spacegroup": 141,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.6600740893365022,
+   "jp_plus_j_rel": 1.4995957537112143,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.4966453221462407,
+    -0.29149434133025126,
+    -0.2914931741351222,
+    0.6429598299506102,
+    0.1736211402531462
+   ],
+   "fd_rel_error": 0.0001570915846969001
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1213705",
+   "spacegroup": 72,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.8127685889409746,
+   "jp_plus_j_rel": 1.7148500000338236,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.9672623404664001,
+    0.1847613759356293,
+    -0.3712129597545889,
+    0.4058079860518339,
+    -0.9035428997301801
+   ],
+   "fd_rel_error": 0.0003657179040601477
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1227053",
+   "spacegroup": 166,
+   "n_atoms": 4,
+   "even_energy_fraction": 0.27591099381335393,
+   "jp_plus_j_rel": 0.7811209601524951,
+   "rank": 12,
+   "parity_scores_top5": [
+    -0.9999999952932477,
+    -0.8487591922090257,
+    -0.8487593428626586,
+    -0.9802896770452825,
+    -0.9802899258053837
+   ],
+   "fd_rel_error": 4.450907181308139e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1174267",
+   "spacegroup": 12,
+   "n_atoms": 16,
+   "even_energy_fraction": 0.5471833755681116,
+   "jp_plus_j_rel": 1.9999995924321996,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9296542346857615,
+    0.5179347221596048,
+    -0.8495016468498539,
+    -0.8419656393996835,
+    -0.723883950863214
+   ],
+   "fd_rel_error": 0.00025174280744977295
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-766486",
+   "spacegroup": 58,
+   "n_atoms": 8,
+   "even_energy_fraction": 0.5579546261100843,
+   "jp_plus_j_rel": 1.3111926920804775,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9889238070083506,
+    -0.8734065505981294,
+    0.8064842054592279,
+    -0.8268158787849834,
+    0.7637422320870498
+   ],
+   "fd_rel_error": 7.634106077603064e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-754349",
+   "spacegroup": 129,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.7874352778579601,
+   "jp_plus_j_rel": 1.999999842713284,
+   "rank": 16,
+   "parity_scores_top5": [
+    0.8527600633293979,
+    0.8527598943365496,
+    -0.9999999993576297,
+    1.00000000645518,
+    -0.8024893536419109
+   ],
+   "fd_rel_error": 0.00015991117106750607
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1223924",
+   "spacegroup": 71,
+   "n_atoms": 10,
+   "even_energy_fraction": 0.36243613487389625,
+   "jp_plus_j_rel": 0.6262123341941472,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9971044249810044,
+    -0.6699444344632794,
+    -1.0000000021947162,
+    0.31583229170853094,
+    0.588720376985116
+   ],
+   "fd_rel_error": 8.11342142696958e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-1025162",
+   "spacegroup": 139,
+   "n_atoms": 7,
+   "even_energy_fraction": 0.22001458186783004,
+   "jp_plus_j_rel": 0.5321336752750421,
+   "rank": 16,
+   "parity_scores_top5": [
+    -1.0000000146592005,
+    -0.9403542621160879,
+    -0.9403543217699021,
+    -1.0000000250325596,
+    -0.28492233180096666
+   ],
+   "fd_rel_error": 7.075578832882456e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-19965",
+   "spacegroup": 229,
+   "n_atoms": 20,
+   "even_energy_fraction": 0.3400434388323904,
+   "jp_plus_j_rel": 0.7551170181182495,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9129892619697895,
+    -0.9129892720104739,
+    -0.9129893078754703,
+    -0.9978277009706217,
+    -0.9978277698225305
+   ],
+   "fd_rel_error": 9.282513565267436e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-15567",
+   "spacegroup": 167,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.40629907506940166,
+   "jp_plus_j_rel": 1.0255586059231308,
+   "rank": 18,
+   "parity_scores_top5": [
+    -0.9820156284380182,
+    -0.982015657604743,
+    -0.9467619255584516,
+    0.044542721750437865,
+    -0.619633699893734
+   ],
+   "fd_rel_error": 8.770026579441037e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-755225",
+   "spacegroup": 148,
+   "n_atoms": 15,
+   "even_energy_fraction": 0.688358025198802,
+   "jp_plus_j_rel": 1.177698552116003,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.03823686173878456,
+    0.038236904333775176,
+    -0.6561094253987432,
+    0.03487447147114904,
+    0.03487480989983514
+   ],
+   "fd_rel_error": 0.00014607622142648324
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-7437",
+   "spacegroup": 194,
+   "n_atoms": 6,
+   "even_energy_fraction": 0.27117558695385185,
+   "jp_plus_j_rel": 0.819215960779621,
+   "rank": 17,
+   "parity_scores_top5": [
+    -1.0000000165887932,
+    -1.0000000178754869,
+    -1.0000000041990145,
+    -0.7103007449395103,
+    -0.710301074476811
+   ],
+   "fd_rel_error": 4.3558580728131346e-05
+  },
+  {
+   "run": "mace_so3_piezoelectric_seed2",
+   "core": "mace",
+   "parity": "so3",
+   "material_id": "mp-755925",
+   "spacegroup": 2,
+   "n_atoms": 12,
+   "even_energy_fraction": 0.6808910751200887,
+   "jp_plus_j_rel": 1.5014701390128893,
+   "rank": 18,
+   "parity_scores_top5": [
+    0.2834237205936971,
+    -0.16117520721775036,
+    0.45522701873228527,
+    -0.7015345298013563,
+    -0.3709264461514336
+   ],
+   "fd_rel_error": 0.0001218381839862559
+  }
+ ]
+}

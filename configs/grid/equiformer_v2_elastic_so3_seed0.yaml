@@ -1,0 +1,19 @@
+seed: 0
+core: equiformer_v2
+parity: so3
+target: elastic
+dataset: mp_elastic
+processed_npz: data/raw/mp/mp_elastic_processed.npz
+split_npz: data/splits/mp_elastic_split.npz
+output_dir: outputs
+model:
+  num_layers: 3
+  l_max: 2
+  num_features: 64
+  r_max: 5.0
+training:
+  batch_size: 16
+  epochs: 120
+  lr: 0.002
+  device: cuda
+  precision: float32

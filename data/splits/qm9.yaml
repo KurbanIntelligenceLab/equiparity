@@ -1,0 +1,19 @@
+split_id: qm9_random_seed42
+dataset: QM9
+method: random
+seed: 42
+counts:
+  train: 110000
+  val: 10000
+  test: 10831
+group_keys: []
+target_distribution:
+  train:
+    U0_mean: -11183.18622679053
+    U0_std: 1082.6153836588126
+  val:
+    U0_mean: -11160.928632401086
+    U0_std: 1100.5463255861696
+  test:
+    U0_mean: -11152.766962796537
+    U0_std: 1101.0211906443017
