@@ -1,0 +1,62 @@
+\documentclass[11pt]{article}
+\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{parskip}
+\pagestyle{empty}
+
+%% Red flags, matching the manuscript. Set \finaltrue to remove them.
+\newif\iffinal
+\finalfalse
+\iffinal
+  \newcommand{\MISSING}[1]{}
+  \newcommand{\VERIFY}[1]{}
+\else
+  \newcommand{\MISSING}[1]{\textcolor{red}{[MISSING: #1]}}
+  \newcommand{\VERIFY}[1]{\textcolor{red}{[VERIFY: #1]}}
+\fi
+
+\begin{document}
+
+\begin{flushright}
+\today
+\end{flushright}
+
+\textbf{To the Editorial Office, \\ \textit{Nature Communications}}
+
+Dear Editor,
+
+We are pleased to submit our manuscript, ``\textbf{Not all symmetry can be learned: parity-blind equivariant networks predict physically impossible material properties},'' for consideration as an Article in \textit{Nature Communications}.
+
+Whether the symmetries of physics should be hard-wired into atomistic neural networks or learned from data is one of the field's live disputes. It has been argued almost entirely on one axis, rotations, and in one currency, accuracy, and on that axis the case for learning is real. Our manuscript opens the other axis. The Euclidean group also contains reflections and the spatial inversion, and a substantial class of widely deployed models, described interchangeably as ``E(3)-equivariant'', is in fact equivariant only to rotations: their internal features carry no parity labels. Here the currency is not accuracy. Neumann's principle forces the piezoelectric tensor of a centrosymmetric crystal to vanish identically, so any nonzero prediction is known, with certainty and without reference data, to be impossible. This supplies a rare label-free test of physical validity, and parity-blind models fail it comprehensively.
+
+The manuscript makes five contributions.
+
+\textbf{1. A label-free test of physical validity.} On 2,000 spglib-verified centrosymmetric insulators the true piezoelectric tensor is exactly zero, so any nonzero prediction is a certified error, requiring no labels and no reference calculation.
+
+\textbf{2. A group-theoretic account with a parameter-free prediction.} A short argument, proved in the Supplementary Information, fixes what each symmetry class can guarantee and identifies in advance exactly which centrosymmetric crystals a rotation-only model is still forced to get right (8.3\% of our population) and which it is free to get wrong.
+
+\textbf{3. A controlled measurement.} Across matched pairs of three architectures that differ \emph{only} in whether their internal features carry parity labels, the parity-aware (O(3)) models return zero at the floating-point noise floor for all 2,000 crystals, while their rotation-only (SO(3)) counterparts predict substantial tensors for 90--96\% of the same crystals, at magnitudes typical of real piezoelectrics, and saturate the predicted ceiling to within one to two percent. The design isolates feature parity, not training or capacity, as the deciding factor. Unmodified EquiformerV2 reproduces the behaviour in a deployed model our construction never touched.
+
+\textbf{4. A negative result for learning symmetry from data, where the symmetry is exact.} Retraining on a thousand centrosymmetric crystals carrying the exact zero, and up-weighting those rows a hundredfold, still leaves two-thirds of them flagged; test-time symmetrization only appears to succeed, for a reason we prove carries no parity information at all. Where the physics permits any value, learned symmetry is a reasonable engineering trade; where it permits exactly one value, it is not a trade at all.
+
+\textbf{5. A prevalence audit.} Of fifteen released architectures classified against their source, only six type parity in their features. Three of the nine that do not are rotation-equivariant only, and their features carry no parity information at all, so the guarantee cannot be recovered from them. That places the obstruction in a symmetry class in current use rather than in any single model.
+
+We believe the work fits the journal's scope at the intersection of machine learning and the physical sciences: it contributes a label-free physical-validity test for equivariant models, a mechanism-level account of why parity-blind networks violate a symmetry they are advertised to respect, and an actionable criterion for architecture choice in materials and molecular property prediction. It also speaks to a debate the community is actively having, and it does so with a measurement rather than an opinion.
+
+The work is open and reproducible. All code, comprising the matched-pair model builders and parity toggle, the verification gate, the training and evaluation pipelines, and the test suite verifying every group-theoretic claim, together with dataset manifests, split definitions, and the machine-readable statistics behind every figure and table, is available at \url{https://github.com/KurbanIntelligenceLab/equiparity} under the \VERIFY{state the licence; confirm it matches the Code availability statement in the manuscript} and archived at \MISSING{persistent DOI of the archived release}. The underlying crystal data derive from the Materials Project (CC BY 4.0) and QM9 (CC0), and every released artefact carries a content hash for exact reconstruction.
+
+\MISSING{preprint status: state whether the manuscript is or will be posted to arXiv, and give the identifier if so}
+
+\MISSING{suggested reviewers: Nature Communications invites the names and contact details of suitable independent referees, and allows authors to request the exclusion of specific referees. Supply them, or state that you have none to suggest}
+
+This manuscript is original, has not been published previously, and is not under consideration elsewhere. All authors have approved the submission, and we declare no competing interests.
+
+Thank you for your consideration.
+
+Sincerely,\\
+Mustafa Kurban and Hasan Kurban\\
+on behalf of all authors
+\end{document}

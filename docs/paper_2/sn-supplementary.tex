@@ -1,0 +1,94 @@
+\documentclass[pdflatex,sn-nature]{sn-jnl}% Style for submissions to Nature Portfolio journals
+
+%%%% Standard Packages
+\usepackage{graphicx}%
+\usepackage{multirow}%
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage[title]{appendix}%
+\usepackage{xcolor}%
+\usepackage{textcomp}%
+\usepackage{manyfoot}%
+\usepackage{booktabs}
+\usepackage{siunitx}          % decimal-aligned numeric columns
+\sisetup{detect-all, table-align-text-before=false, table-align-text-after=false,
+         input-symbols={()[]}, table-number-alignment=center}%
+\usepackage{array}%
+\usepackage{colortbl}%
+\usepackage{amsthm}%
+%%%%
+
+\graphicspath{{figures/}}
+
+%% Theorem environments (SN-provided numbered styles)
+\theoremstyle{thmstyleone}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{thmstylethree}
+\newtheorem{definition}{Definition}
+\theoremstyle{thmstyleone}
+
+%% ---------------------------------------------------------------------------
+%% Red flags for author-supplied items. Every unresolved item in this manuscript
+%% is wrapped in one of these three and prints in red.
+%% TO PRODUCE THE FINAL SUBMISSION PDF: set \finaltrue below. Every flag then
+%% vanishes and any that is still unresolved will be obvious as a hole in the text.
+%% ---------------------------------------------------------------------------
+\newif\iffinal
+\finalfalse                     % <-- set to \finaltrue for the submission PDF
+\iffinal
+  \newcommand{\MISSING}[1]{}
+  \newcommand{\VERIFY}[1]{}
+  \newcommand{\BLOCKING}[1]{}
+\else
+  \newcommand{\MISSING}[1]{\textcolor{red}{[MISSING: #1]}}
+  \newcommand{\VERIFY}[1]{\textcolor{red}{[VERIFY: #1]}}
+  \newcommand{\BLOCKING}[1]{\textcolor{red}{[BLOCKING: #1]}}
+\fi
+
+%% Line numbers for peer review (Nature Portfolio asks for numbered lines in the
+%% review PDF). Comment out the \linenumbers line for the production version.
+\usepackage[mathlines]{lineno}
+\linenumbers
+\makeatletter
+\AtBeginDocument{\@ifpackageloaded{lineno}{%
+  \setlength{\linenumbersep}{8pt}%
+  \renewcommand\linenumberfont{\normalfont\scriptsize\color{gray}}%
+  \leftlinenumbers}{}}
+\makeatother
+
+%% Supplementary numbering: caption words "Supplementary Fig./Table",
+%% plain-arabic numbers to match the main text's "Supplementary Fig.~N" references.
+\renewcommand{\figurename}{Supplementary Fig.}
+\renewcommand{\tablename}{Supplementary Table}
+
+\raggedbottom
+
+\begin{document}
+
+\title[Supplementary Information]{Supplementary Information for\\ Not all symmetry can be learned: parity-blind equivariant networks predict physically impossible material properties}
+
+\author[1]{\fnm{Can} \sur{Polat}}% ORCID: 0000-0002-1458-302X
+
+\author*[2,3]{\fnm{Mustafa} \sur{Kurban}}\email{kurbanm@ankara.edu.tr}% ORCID: 0000-0002-7263-0234
+
+\author[1]{\fnm{Erchin} \sur{Serpedin}}% ORCID: 0000-0001-9069-770X
+
+\author*[4]{\fnm{Hasan} \sur{Kurban}}\email{hkurban@hbku.edu.qa}% ORCID: 0000-0003-3142-2866
+
+\affil[1]{\orgdiv{Department of Electrical and Computer Engineering}, \orgname{Texas A\&M University}, \orgaddress{\city{College Station}, \state{Texas}, \country{USA}}}
+
+\affil[2]{\orgdiv{Department of Electrical and Computer Engineering}, \orgname{Texas A\&M University at Qatar}, \orgaddress{\city{Doha}, \country{Qatar}}}
+
+\affil[3]{\orgdiv{Department of Prosthetics and Orthotics}, \orgname{Ankara University}, \orgaddress{\city{Ankara}, \country{Turkey}}}
+
+\affil[4]{\orgdiv{College of Science and Engineering}, \orgname{Hamad Bin Khalifa University}, \orgaddress{\city{Doha}, \country{Qatar}}}
+
+\maketitle
+
+\input{sections/supplementary}
+
+\bibliography{references}
+
+\end{document}

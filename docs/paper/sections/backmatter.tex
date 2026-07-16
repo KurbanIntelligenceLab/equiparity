@@ -1,0 +1,19 @@
+\subsection*{Data availability}
+
+The QM9 dataset is publicly available (figshare record 978904, CC0); the 3,054 uncharacterised molecules (figshare record 3195404) are excluded as described in Methods. All crystal data derive from the Materials Project (CC-BY-4.0), retrieved on 2026-07-04 via its public API; dataset manifests with content hashes, the split definitions, the identifiers of the 2,000-crystal centrosymmetric evaluation population in both coordinate variants, and the identifiers of the 1,000 augmentation crystals are provided with the code so that every dataset can be reconstructed exactly. Per-structure violation vectors for all runs, the threshold curves, and all statistics behind every figure and table are included in machine-readable form. \textcolor{red}{ATTENTION: deposit the manifests and result files in a persistent archive (e.g. Zenodo) and insert the DOI here before submission.}
+
+\subsection*{Code availability}
+
+All code --- the matched-pair model builders and parity toggle, the verification gate, training and evaluation pipelines, the strengthening experiments, the released test suite verifying every group-theoretic claim, and the scripts that regenerate every figure and table --- is available at \url{https://github.com/KurbanIntelligenceLab/equiparity}. \textcolor{red}{ATTENTION: archive a tagged release (e.g. on Zenodo) and insert its DOI, required by the journal, before submission.} The vendored EquiformerV2 sources and the upstream commit they reproduce are documented in Supplementary Note~10.
+
+\subsection*{Computing resources}
+
+Training consumed 72.4 GPU-hours across the 84 grid runs on two consumer GPU classes; per-core compute, throughput, and memory are tabulated in Supplementary Table~9, with the caveat that the two GPU classes are not interchangeable and cross-core timing is not a like-for-like comparison. The full software environment and package pins are given in Supplementary Note~6.
+
+\subsection*{Author contributions}
+
+C.P. conceived the study, designed and implemented the matched-pair parity-ablation and verification pipeline, conducted all computational experiments and benchmark runs, performed the data analysis, and wrote the original manuscript. E.S., M.K., and H.K. supervised the research, contributed to the interpretation of results, and reviewed and edited the manuscript. All authors read and approved the final manuscript.
+
+\subsection*{Competing interests}
+
+The authors declare no competing financial or non-financial interests.

@@ -1,0 +1,697 @@
+% Supplementary Information body. Compiled standalone via sn-supplementary.tex,
+% which produces the separate Supplementary PDF that Nature Communications expects.
+
+% Tighten inter-column padding so the wide numeric tables fit the single-column text block.
+\setlength{\tabcolsep}{3pt}
+
+% ===== Note 1: proofs of the main-text Lemma, Theorem, Proposition and Corollaries =====
+\section*{Supplementary Note 1: Proofs}
+
+\VERIFY{this note was drafted with AI assistance during manuscript preparation. Every definition, statement and proof step must be independently re-derived and signed off by a human author before submission, and the AI-use disclosure in Methods completed accordingly}
+
+Every statement proved here is stated in full, with its assumptions, in the main text. This note supplies the notation, the numerical evidence for the assumptions, the proofs, and the crystallographic classification that turns Corollary~3 into a quantitative ceiling. Nothing here is required to understand or to believe the main-text claims; it is required to check them.
+
+\subsection*{Notation}
+
+\begin{table}[htbp]
+\centering
+\caption{Notation used throughout the theory. The quantities on the left are exactly the quantities the experiments measure, under the same names.}
+\label{stab:notation}
+\fontsize{8bp}{10bp}\selectfont
+\begin{tabular}{@{}ll@{}}
+\toprule
+Symbol & Meaning \\
+\midrule
+$x$ & periodic structure: positions $\mathbf{r}_1,\dots,\mathbf{r}_n$, species labels, Bravais lattice $\Lambda$ \\
+$f_\theta$ & the model, with parameters $\theta$, mapping $x$ into $V$ \\
+$V$ & target space. Piezoelectric: $\mathbb{R}^{3}\otimes\mathrm{Sym}^{2}(\mathbb{R}^{3})$, $\dim V = 18$. Dipole: $\mathbb{R}^{3}$ \\
+$D$ & representation of O(3) carried by $V$; for a rank-$r$ polar tensor $D(Q) = Q^{\otimes r}$ \\
+$I$ & spatial inversion $\mathbf{r}\mapsto-\mathbf{r}$; $D(I) = (-1)^{r}\,\mathrm{id}$ \\
+$\pi$ & atom permutation induced by $I$ on a centrosymmetric $x$; $\pi^{2}=\mathrm{id}$ \\
+$G^{+}(x)$ & proper-rotation subgroup of the point group of $x$ \\
+$V^{G}$ & $\{T\in V : R^{\otimes r}T = T\ \ \forall R\in G\}$, the $G$-invariant subspace of $V$ \\
+$P$ & map on displacement fields, $(Pu)_j = -u_{\pi^{-1}(j)}$; $P^{2}=\mathrm{id}$ \\
+$P_{\mathrm{even}}$ & $(\mathrm{id}+P)/2$, orthogonal projector onto inversion-even displacement modes \\
+$J$ & $\partial f_\theta/\partial\mathbf{r}$, the Jacobian at $x$ \\
+$\lVert\cdot\rVert_F$ & Frobenius norm; $\lVert f_\theta(x)\rVert_F$ is the violation magnitude $\lVert e\rVert_F$ of every experiment \\
+$\delta,\ \eta$ & measured failures of (A1)--(A2) at $x$, and of the O(3) law at $Q=I$ (Proposition~1) \\
+$\delta_{+},\ \epsilon$ & the same two failures, maximized over the rotation subgroup $G^{+}(x)$ (Corollary~3) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{The assumptions, and the evidence for them}
+
+The main text assumes (A1) permutation invariance, (A2) translation invariance under a rigid shift by any vector as well as under lattice translations, and (A3) $G$-equivariance. The first two hold by construction for every architecture in this study: each reads out a sum of per-atom or per-edge contributions on a graph built from lattice-periodic displacement vectors, and a sum is invariant to the order of its terms. They are also measured. On centrosymmetric inputs the relative residual $\lVert f(I\!\cdot\!x)-f(x)\rVert/\lVert f(x)\rVert$ is at most $10^{-6}$ for the three matched cores (Supplementary Note~9). (A3) is measured at both the feature level, before training (Supplementary Note~3 and Supplementary Table~2), and the output level, after training (Supplementary Note~11 and Supplementary Table~16).
+
+EquiformerV2 is the exception and is treated as such. It satisfies (A1)--(A2) only to $0.10$--$0.15$ and (A3) only to $7$--$11\%$, so the exact statements below apply to it only through their stability clauses, which is measurable and is measured. \VERIFY{a quantitative test of Proposition~1 and of the stability clause of Corollary~3 is available at low cost and would strengthen the theory: measure $\delta$, $\eta$, $\delta_{+}$ and $\epsilon$ directly on the centrosymmetric evaluation population for every arm, and check that the observed residual floors lie below $(\delta+\eta)/2$ and that the m$\bar 3$m predictions lie below $\delta_{+}/(1-\epsilon)$. The run outputs already contain what is needed}
+
+\subsection*{Definition 1 and Lemma 1}
+
+\begin{definition}[Centrosymmetric structure]\label{sdef:centro}
+$x$ is centrosymmetric if, after translating the inversion centre to the origin, there is a species-preserving permutation $\pi$ of the atoms and lattice vectors $\mathbf{t}_i \in \Lambda$ with
+$-\mathbf{r}_i = \mathbf{r}_{\pi(i)} + \mathbf{t}_i$ for every $i$. Because $I^{2}=\mathrm{id}$, we have $\pi^{2}=\mathrm{id}$.
+\end{definition}
+
+\begin{lemma}[Inversion identity]\label{slem:inv}
+Let $f_\theta$ satisfy (A1) and (A2). Then $f_\theta(I\!\cdot\!x) = f_\theta(x)$ for every centrosymmetric $x$ and every $\theta$.
+\end{lemma}
+
+\begin{proof}
+Place the inversion centre at the origin; by (A2) this is a choice of coordinates and not an assumption, so inverting about the cell origin instead, as the experiments do, changes the result by a rigid shift and hence not at all. By Definition~\ref{sdef:centro}, the inverted structure $I\!\cdot\!x$ has its atoms at $-\mathbf{r}_i = \mathbf{r}_{\pi(i)} + \mathbf{t}_i$. Discarding the lattice translations $\mathbf{t}_i$ by (A2) and relabelling atom $i$ as $\pi(i)$ by (A1), which is species-preserving, $I\!\cdot\!x$ and $x$ are the same input to $f_\theta$. Hence $f_\theta(I\!\cdot\!x) = f_\theta(x)$. No property of $\theta$, and no assumption about parity, is used.
+\end{proof}
+
+\subsection*{Theorem 1: the structural zero}
+
+\begin{theorem}[Structural zero]\label{sthm:zero}
+Let $f_\theta$ satisfy (A1), (A2) and (A3) with $G=\mathrm{O}(3)$, and let the target be a rank-$r$ polar tensor with $r$ odd. Then $f_\theta(x)=0$ for every centrosymmetric $x$ and every $\theta$.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{slem:inv} gives $f_\theta(I\!\cdot\!x) = f_\theta(x)$. Assumption (A3) at $Q = I$ gives
+$f_\theta(I\!\cdot\!x) = D(I) f_\theta(x) = (-1)^{r} f_\theta(x) = -f_\theta(x)$, because $r$ is odd.
+Equating the two, $f_\theta(x) = -f_\theta(x)$, so $2 f_\theta(x) = 0$ and $f_\theta(x) = 0$. The argument does not refer to $\theta$, to the training data, or to the loss.
+\end{proof}
+
+\paragraph{Remark 1 (why the SO(3) arm escapes).} For $G=\mathrm{SO}(3)$ the second step is unavailable: (A3) is asserted for proper rotations only and $D(I)$ is never invoked. Nothing else in the construction changes. That is the entire content of the parity relabelling.
+
+\paragraph{Remark 2 (the dipole).} Theorem~\ref{sthm:zero} applies to the molecular dipole, $r=1$. It is vacuous on QM9 because no QM9 molecule has a point group containing the inversion, which is exactly why the dipole separates a parity-odd target from an active parity constraint (main-text Fig.~3).
+
+\subsection*{Proposition 1: the arithmetic floor}
+
+\begin{proposition}[Arithmetic floor]\label{sprop:floor}
+Fix a centrosymmetric $x$. Let $\delta = \lVert f_\theta(I\!\cdot\!x) - f_\theta(x)\rVert_F$ measure the failure of (A1)--(A2) at $x$, and let $\eta = \lVert f_\theta(I\!\cdot\!x) - D(I) f_\theta(x)\rVert_F$ measure the failure of the O(3) law at $Q=I$, a law an SO(3)-labelled model never asserted. Then
+\[
+\lVert f_\theta(x)\rVert_F \;\le\; \tfrac{1}{2}(\delta + \eta).
+\]
+\end{proposition}
+
+\begin{proof}
+Since $D(I) = -\mathrm{id}$ for odd $r$,
+\[
+2 f_\theta(x) = \bigl[f_\theta(x) - f_\theta(I\!\cdot\!x)\bigr] + \bigl[f_\theta(x) + f_\theta(I\!\cdot\!x)\bigr],
+\]
+and the two brackets have norms $\delta$ and $\eta$ respectively. The triangle inequality gives $2\lVert f_\theta(x)\rVert_F \le \delta + \eta$.
+\end{proof}
+
+\paragraph{Remark 3 (three consequences).} With $\delta=\eta=0$ the proposition recovers Theorem~\ref{sthm:zero}. In floating point $\delta$ and $\eta$ are set by the arithmetic, so an O(3) model's residual floor is bounded by half their sum and therefore tracks its precision, not its symmetry: this is why the measured O(3) floors sit at the float32 level ($3\times10^{-7}$ to $3\times10^{-6}$\,C\,m$^{-2}$, Supplementary Table~4) and why MACE's is roughly eight times the others', its symmetric contractions remaining in single precision even under a double-precision cast (Supplementary Note~3). Finally, for a parity-blind model Lemma~\ref{slem:inv} forces $f_\theta(I\!\cdot\!x)=f_\theta(x)$, hence $\delta=0$ and $\eta = 2\lVert f_\theta(x)\rVert_F$, and the bound reads $\lVert f_\theta(x)\rVert_F \le \lVert f_\theta(x)\rVert_F$. It is vacuous. The guarantee and its stability are lost together, which is the sharpest way to state what the missing label costs.
+
+\subsection*{Corollary 1: test-time inversion averaging is vacuous}
+
+\begin{corollary}[Inversion averaging is vacuous]\label{scor:sym}
+Let $f_\theta$ satisfy (A1) and (A2) only, with no assumption about parity. Then for every centrosymmetric $x$,
+\[
+T_{\mathrm{sym}}(x) \;:=\; \tfrac{1}{2}\bigl[f_\theta(x) - f_\theta(I\!\cdot\!x)\bigr] \;=\; 0 .
+\]
+\end{corollary}
+
+\begin{proof}
+Immediate from Lemma~\ref{slem:inv}: the bracket vanishes.
+\end{proof}
+
+The corollary holds for any $f_\theta$, trained or untrained, parity-labelled or not. A zero produced by this construction is therefore not evidence that the model has recovered the constraint. Two consequences are observed. The construction collapses on the raw coordinate variant as well as the idealized one, because the identity needs only the approximate permutation invariance that the raw variant still has. And it fails exactly when (A1) or (A2) fails: EquiformerV2 violates the identity at the $0.10$--$0.15$ level and its false-flag fraction falls only from about $0.95$ to about $0.82$ (Supplementary Table~13).
+
+\subsection*{Corollary 2: the guarantee is differentiable}
+
+\begin{corollary}[The guarantee is differentiable]\label{scor:jac}
+Let $f_\theta$ satisfy the hypotheses of Theorem~\ref{sthm:zero} and be differentiable in the atomic positions, and let $x$ be centrosymmetric with inversion permutation $\pi$. Define $P$ on displacement fields $u \in \mathbb{R}^{3n}$ by $(Pu)_{j} = -u_{\pi^{-1}(j)}$. Then $P^{2} = \mathrm{id}$ and the Jacobian $J = \partial f_\theta/\partial\mathbf{r}$ at $x$ satisfies
+\[
+J \circ P = -J, \qquad\text{hence}\qquad J\,P_{\mathrm{even}} = 0, \quad P_{\mathrm{even}} := \tfrac{1}{2}(\mathrm{id} + P),
+\]
+so the even-subspace energy fraction $\lVert J P_{\mathrm{even}}\rVert_F / \lVert J \rVert_F$ is exactly zero.
+\end{corollary}
+
+\begin{proof}
+The neighbour graph is held fixed at its value at $x$, as in the measurement; because $x$ is centrosymmetric that graph is itself inversion-symmetric, so $P$ maps it to itself and the argument below is not disturbed by it. Displace the structure by $u$, so atom $i$ sits at $\mathbf{r}_i + u_i$. Inverting, atom $i$ moves to $-\mathbf{r}_i - u_i = \mathbf{r}_{\pi(i)} + \mathbf{t}_i - u_i$ by Definition~\ref{sdef:centro}. Discarding the lattice translations by (A2) and relabelling $j = \pi(i)$ by (A1), the inverted structure is $x$ carrying the displacement field $v$ with $v_j = -u_{\pi^{-1}(j)}$, that is $v = Pu$. Hence
+\[
+f_\theta\bigl(I\!\cdot\!(x+u)\bigr) = f_\theta(x + Pu).
+\]
+By (A3) at $Q=I$ with $r$ odd, the left side equals $-f_\theta(x+u)$. Therefore $f_\theta(x+Pu) = -f_\theta(x+u)$ for every $u$. Differentiating at $u=0$ and using $f_\theta(x)=0$ from Theorem~\ref{sthm:zero} gives $J(Pu) = -J(u)$ for every $u$, that is $J\circ P = -J$.
+Because $\pi^{2}=\mathrm{id}$ we have $P^{2}=\mathrm{id}$, so $P_{\mathrm{even}}$ is the orthogonal projector onto the $+1$ eigenspace of $P$, the inversion-even displacement modes, and
+$J P_{\mathrm{even}} = \tfrac{1}{2}(J + J P) = \tfrac{1}{2}(J - J) = 0$.
+\end{proof}
+
+The measured fractions are $1.4\times10^{-7}$ to $9.7\times10^{-7}$ for the O(3) arms, consistent with the arithmetic floor of Proposition~\ref{sprop:floor}, and $0.42$--$0.54$ for the SO(3) arms, for which no such identity holds (main-text Fig.~5b).
+
+\subsection*{Corollary 3: the rotation ceiling}
+
+\begin{corollary}[Rotation ceiling]\label{scor:rot}
+Let $f_\theta$ satisfy (A1), (A2) and (A3) with $G = \mathrm{SO}(3)$, and let $G^{+}(x) \subset \mathrm{SO}(3)$ be the proper-rotation subgroup of the point group of $x$. Then $f_\theta(x) \in V^{G^{+}(x)}$. In particular, if $V^{G^{+}(x)} = \{0\}$ then $f_\theta(x) = 0$ is forced with no parity information; if $V^{G^{+}(x)} \neq \{0\}$, nothing forces $f_\theta(x)$ to vanish. Suppose instead that (A1)--(A2) and (A3) hold only approximately over $G^{+}(x)$, with defects $\delta_{+} = \max_{R} \lVert f_\theta(R\!\cdot\!x) - f_\theta(x)\rVert_F$ and $\epsilon = \max_{R} \lVert f_\theta(R\!\cdot\!x) - D(R)f_\theta(x)\rVert_F / \lVert f_\theta(x)\rVert_F < 1$. Then the forced case weakens to $\lVert f_\theta(x)\rVert_F \le \delta_{+}/(1-\epsilon)$.
+\end{corollary}
+
+\begin{proof}
+Fix $R \in G^{+}(x)$. Because $R$ is the rotational part of a space-group operation $\{R \,|\, \mathbf{v}\}$ of $x$, we have $\{R \,|\, \mathbf{v}\}\!\cdot\!x = x$ up to an atom permutation, so the pure rotation satisfies $R\!\cdot\!x = x - \mathbf{v}$ up to that permutation. The shift $\mathbf{v}$ need not be a lattice vector: for a screw axis or a glide plane it is fractional. It is absorbed by the rigid-shift clause of (A2), which with (A1) gives $f_\theta(R\!\cdot\!x) = f_\theta(x)$, while (A3) gives $f_\theta(R\!\cdot\!x) = R^{\otimes r} f_\theta(x)$. Hence $R^{\otimes r} f_\theta(x) = f_\theta(x)$ for every $R \in G^{+}(x)$, which is the assertion.
+
+For the stability clause, write $\Pi = |G^{+}(x)|^{-1}\sum_{R \in G^{+}(x)} R^{\otimes r}$ for the Reynolds projector onto $V^{G^{+}(x)}$, so that $V^{G^{+}(x)} = \{0\}$ is equivalent to $\Pi = 0$. For each $R$ we now have $f_\theta(R\!\cdot\!x) = f_\theta(x) + e_R$ with $\lVert e_R\rVert_F \le \delta_{+}$, and $f_\theta(R\!\cdot\!x) = R^{\otimes r}f_\theta(x) + g_R$ with $\lVert g_R\rVert_F \le \epsilon\lVert f_\theta(x)\rVert_F$. Subtracting and averaging over the group,
+\[
+\Pi f_\theta(x) - f_\theta(x) \;=\; \frac{1}{|G^{+}(x)|}\sum_{R}\,(g_R - e_R),
+\qquad\text{so}\qquad
+\lVert \Pi f_\theta(x) - f_\theta(x)\rVert_F \;\le\; \delta_{+} + \epsilon\lVert f_\theta(x)\rVert_F .
+\]
+With $\Pi = 0$ this reads $\lVert f_\theta(x)\rVert_F \le \delta_{+} + \epsilon \lVert f_\theta(x)\rVert_F$, and rearranging with $\epsilon<1$ gives $\lVert f_\theta(x)\rVert_F \le \delta_{+}/(1-\epsilon)$. Setting $\delta_{+} = \epsilon = 0$ recovers the exact statement.
+\end{proof}
+
+\paragraph{Crystallographic classification.} For the piezoelectric tensor, $V^{G}=\{0\}$ precisely for the eleven centrosymmetric crystal classes and for class 432: of the 21 non-centrosymmetric classes, 20 are piezoelectric and 432 is the sole exception, its rotations alone annihilating every rank-3 piezoelectric tensor\cite{nye1985crystals}. The proper-rotation subgroups of the eleven centrosymmetric classes $\bar 1$, $2/m$, $mmm$, $4/m$, $4/mmm$, $\bar 3$, $\bar 3 m$, $6/m$, $6/mmm$, $m\bar 3$, $m\bar 3 m$ are, respectively, $1$, $2$, $222$, $4$, $422$, $3$, $32$, $6$, $622$, $23$, $432$. Exactly one of them, $432$, is itself non-piezoelectric. Corollary~\ref{scor:rot} therefore forces an exactly SO(3)-equivariant model to zero on centrosymmetric crystals of class $m\bar 3 m$ and on no other centrosymmetric class.
+
+Both rank statements used in the main text are verified numerically in the released test suite, by computing the rank of the Reynolds projector $\Pi$ on the eighteen-dimensional piezoelectric space: averaging over $432$ gives the zero map (rank 0), over $23$ a one-dimensional invariant space (rank 1), and over $422$, the rotation subgroup of rutile, also rank 1.
+
+\paragraph{The ceiling, and why it is one only for exact models.} In the evaluation population, 166 of the 2,000 crystals belong to $m\bar 3 m$ and are forced to zero without parity, leaving 1,834 (91.7\%) on which nothing but parity can enforce the zero. The three matched SO(3) cores false-flag 89.53\%, 90.95\% and 90.77\% of the population, that is 97.6\%, 99.2\% and 99.0\% of the crystals on which they are free to violate the constraint. Their $\delta_{+}$ and $\epsilon$ are at the arithmetic floor, so the stability bound $\delta_{+}/(1-\epsilon)$ is of order $10^{-6}$\,C\,m$^{-2}$, four orders of magnitude below the operating threshold, and they flag none of the 166 in any seed. EquiformerV2 has $\delta_{+}$ and $\epsilon$ of order $10^{-1}$, the bound is correspondingly weak, and it false-flags 53.41\% of the $m\bar 3 m$ crystals, contributing 4.4 percentage points and taking its population false-flag fraction (95.70\%) above the ceiling.
+
+\subsection*{What these statements do not claim}
+
+They say nothing about accuracy where the constraint is inactive; that is an empirical question, answered in Supplementary Note~7. They assume the target's parity is declared correctly at the readout, and declaring a parity-odd target even, as the SO(3) arms do, is precisely what removes the constraint. They are exact statements about exactly equivariant models, and only their stability clauses apply to a model whose equivariance is approximate.
+
+Above all, they forbid; they do not compel. Theorem~\ref{sthm:zero} says an O(3) model must predict zero. Corollary~\ref{scor:rot} bounds an SO(3) model's predictions from below at zero on class $m\bar 3 m$ and constrains nothing at all on the remaining 91.7\% of the population. That the SO(3) arms in fact violate the constraint on 97.6 to 99.2\% of the crystals where they are free to is an empirical finding, not a theorem, and it is what the experiments measure.
+
+% ===== Note 2: prevalence audit =====
+\section*{Supplementary Note 2: Prevalence audit of released architectures}
+
+Each of the fifteen released architectures in main-text Table~1 was classified by reading its released source at a pinned version or commit; the deciding evidence for every row is summarized in Supplementary Table~\ref{stab:audit}. Where source inspection could not settle the classification, the model was built and probed numerically. Two rows were converted from source-reading to measurement: ICTP, whose implicit Cartesian-harmonic parity was confirmed by a reflection test at random initialization (its rank-3 output is odd to machine precision, relative residual $0.0$, and its rank-2 output even), and GotenNet, which we suspected of discarding parity in its non-parity-typed attention blocks and which the measurement proved parity-aware: its degree-1 output obeys the polar-vector law under a random rotation (relative error $1.2\times10^{-15}$) and a random improper operation ($1.8\times10^{-15}$), while failing the pseudovector law ($1.9$). Parity is architectural, so probing at random initialization is sufficient.
+
+\VERIFY{the reflection test that settled the ICTP and GotenNet rows was not applied to the three vector-only rows, and it should be. Their single Cartesian vector channel is built from edge vectors and is therefore implicitly polar, exactly as ICTP's Cartesian harmonics are, so a rank-3 head assembled from an odd number of vector factors would inherit the structural zero. The classification in this table is accurate as written, because it records the absence of typed representations and of a rank-3 path rather than the absence of parity; but the distinction between carrying no parity information at all (the SO(3)-only rows, which no readout can repair) and carrying parity implicitly while typing nothing (these rows, which a correctly built readout can) is load-bearing, and it should be measured rather than argued. Run the probe and record the result}
+
+The audit is pinned to the versions and commits listed in Supplementary Table~\ref{stab:audit} and does not extend to later releases. Three models released after the classification was frozen are built on the same spherical-channel embedding as the SO(3)-only rows and are the current deployed generation: eSEN\cite{fu2025esen}, the universal-potential family UMA\cite{wood2025uma} that builds on it, and EquiformerV3\cite{equiformerv3}, whose title declares equivariance to SE(3). \MISSING{run the same source-reading and reflection-test protocol on eSEN, UMA, and EquiformerV3 and either add three rows to Supplementary Table~1 (raising the audit to eighteen architectures and covering the current generation directly) or state explicitly in the main text that the audit predates them. Until that is done, no claim is made here about their parity structure beyond what their own documentation states.}
+
+\begin{table}[htbp]
+\centering
+\caption{Full prevalence audit. Classification of fifteen released architectures by the parity structure of their internal features, with the source version or commit inspected and the deciding evidence. Classes as in main-text Table~1.}
+\label{stab:audit}
+\fontsize{7bp}{8.5bp}\selectfont
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.2cm} l >{\raggedright\arraybackslash}p{1.9cm} >{\raggedright\arraybackslash}p{6.0cm}@{}}
+\toprule
+Model & Class & Version / commit & Deciding evidence \\
+\midrule
+NequIP & parity-aware & 0.18.0 & Features are e3nn irreducible representations with parity labels. The preset boolean \texttt{parity} does not strip them: its own docstring shows odd features surviving \texttt{parity=False}, so it is not an SO(3) toggle. \\
+Allegro & parity-aware & 0.8.3 & \texttt{parity} flag documented as ``whether to include features with odd mirror parity''; features are parity-labelled e3nn irreducible representations. \\
+MACE & parity-aware & 0.3.16 & Default builds edge spherical harmonics with natural parity $(-1)^l$; \texttt{use\_so3=True} makes them all-even, the correct native SO(3) toggle used for our matched pair. \\
+MatTen\cite{wen2024matten} & parity-aware & commit 0a04f1c & Default layer irreducible representations contain both parities explicitly (e.g. $32\times0o + 32\times0e + 16\times1o + 16\times1e$). \\
+ICTP\cite{zaverkin2024ictp} & parity-aware & commit f40592a & Cartesian harmonics carry parity $(-1)^l$ implicitly; confirmed by reflection measurement at random initialization (rank-3 odd to machine precision). \\
+GotenNet\cite{aykent2025gotennet} & parity-aware & commit 44c945b & Settled by measurement: degree-1 output satisfies the polar-vector law under improper operations to $1.8\times10^{-15}$ and fails the pseudovector law (1.9). Previously undetermined from source. \\
+\midrule
+Equiformer v1 & SO(3)-only & commit 64cb786 & Every shipped default node embedding is all-even (e.g. $128\times0e+64\times1e+32\times2e$); odd irreducible representations appear only in auxiliary heads. \\
+EquiformerV2 & SO(3)-only & vendored; upstream 8fe8cba & Embeddings indexed by degree and order only; no parity anywhere in the embedding module. Confirmed behaviourally by the mirror-law violation (Supplementary Note~11). \\
+eSCN & SO(3)-only & vendored (Meta OCP lineage) & The embedding module underlying EquiformerV2; degree/order-typed with no parity label. \\
+\midrule
+PaiNN\cite{schutt2021painn} & vector-only & commit 2a2c913 & Equivariance carried by one unlabelled Cartesian vector channel; no typed irreducible representations, no rank-3 path. \\
+TorchMD-Net (ET)\cite{tholke2022torchmdnet} & vector-only & commit 2a2c913 & Same Cartesian vector channel; parity never represented. \\
+ViSNet\cite{wang2024visnet} & vector-only & torch-geometric 2.8.0 & Cartesian vector channel; no references to irreducible representations. \\
+\midrule
+SchNet\cite{schutt2017schnet} & invariant & torch-geometric 2.8.0 & Distance-only interactions; invariant under all of O(3), cannot emit a tensor. \\
+DimeNet++\cite{gasteiger2020dimenetpp} & invariant & torch-geometric 2.8.0 & Distances and bond angles only; cannot distinguish a structure from its mirror image. \\
+FAENet\cite{duval2023faenet} & invariant & commit 1f725cf & Network itself not equivariant; symmetry imposed externally by frame averaging, and whether frames include improper operations is a call-site choice. \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+% ===== Note 3: SO(3) construction and verification gate =====
+\section*{Supplementary Note 3: Construction of the SO(3) arms and the parity verification gate}
+
+\subsection*{Framework-specific construction of the SO(3) arms}
+
+The three matched cores expose the parity toggle differently. MACE provides a correct native switch (\texttt{use\_so3=True}, Supplementary Table~\ref{stab:audit}) that builds all-even edge spherical harmonics directly. For NequIP and Allegro the preset boolean named \texttt{parity} is not an SO(3) toggle, because the preset builds natural-parity spherical harmonics unconditionally (its own docstring shows odd features surviving \texttt{parity=False}), so the SO(3) arms are constructed instead through the frameworks' raw-irreducible-representation interfaces with all-even edge harmonics. Allegro additionally requires relabelling the irreducible representations permitted on its tensor track, since its all-even edge harmonics alone do not propagate through the tensor product without the corresponding track relabelling. In every case both the edge spherical harmonics and the hidden features are relabelled, so the geometric content of the O(3) and SO(3) arms is identical and only the enforced transformation law differs.
+
+\subsection*{Parity verification gate}
+
+Before any training, each arm of each matched core was probed at an internal equivariant feature layer with a random proper rotation ($\det = +1$) and a random improper operation ($\det = -1$), measuring the maximal deviation between the features of the transformed input and the correspondingly transformed features of the original input, using the parity-aware representation appropriate to the arm's declared irreducible representations. An O(3) arm must satisfy both laws; a correctly built SO(3) arm must satisfy the rotation law and fail the reflection law. Supplementary Table~\ref{stab:gate} lists the results. The gate ran at reduced width (16 features, $l_{\max}=2$), so the parameter counts in the table are gate-scale, not production-scale; production-scale counts are given in Supplementary Note~7. MACE's symmetric-contraction tensors remain in single precision even under a double-precision cast, so its equivariance errors floor near $10^{-7}$ and the gate applies single-precision thresholds to MACE alone. A hand-built positive control (an intentionally all-even construction) yields a reflection error of order $10^{-2}$ where the natural-parity build yields order $10^{-16}$, confirming that the probe discriminates. EquiformerV2 has no parity-labelled internal features to probe and is verified at the output level instead (Supplementary Note~11).
+
+\begin{table}[htbp]
+\centering
+\caption{Parity verification gate. Maximal feature-transformation errors under a random rotation and a random improper operation, per core and arm, at gate scale (16 features, $l_{\max}=2$). The verdict is the symmetry group the measurement certifies.}
+\label{stab:gate}
+\scriptsize
+\begin{tabular}{llllrl}
+\toprule
+Core & Arm & Rotation error & Reflection error & Parameters & Verdict \\
+\midrule
+NequIP & O(3) & $4.7\times10^{-16}$ & $4.7\times10^{-16}$ & 42{,}304 & O(3) \\
+NequIP & SO(3) & $4.7\times10^{-16}$ & $9.7\times10^{-3}$ & 45{,}376 & SO(3) \\
+Allegro & O(3) & $5.4\times10^{-15}$ & $3.3\times10^{-15}$ & 12{,}608 & O(3) \\
+Allegro & SO(3) & $9.3\times10^{-15}$ & $4.9\times10^{0}$ & 12{,}640 & SO(3) \\
+MACE & O(3) & $2.4\times10^{-7}$ & $9.4\times10^{-8}$ & 43{,}280 & O(3) \\
+MACE & SO(3) & $2.4\times10^{-7}$ & $1.3\times10^{0}$ & 50{,}512 & SO(3) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ===== Note 4: thresholds, distributions, size normalization =====
+\section*{Supplementary Note 4: Threshold dependence, violation distributions, and size normalization}
+
+\subsection*{Threshold dependence}
+
+The main-text operating point of $0.01$\,C\,m$^{-2}$ is one column of a curve computed over 25 log-spaced thresholds from $10^{-4}$ to $1$\,C\,m$^{-2}$; Supplementary Table~\ref{stab:thresholds} reports five representative columns on the idealized coordinate variant, and Supplementary Fig.~\ref{sfig:rawthresholds} shows the full curves on the raw variant, which are indistinguishable from the idealized ones for every SO(3) arm. The machine-readable curves for all 25 thresholds, both variants, and every arm accompany the code release.
+
+\begin{table}[htbp]
+\centering
+\caption{False-flag fraction at five violation thresholds $\tau$ (idealized coordinate variant, mean over 3 seeds).}
+\label{stab:thresholds}
+\scriptsize
+\begin{tabular}{llrrrrr}
+\toprule
+Core & Parity & $\tau{=}10^{-4}$ & $\tau{=}10^{-3}$ & $\tau{=}10^{-2}$ & $\tau{=}10^{-1}$ & $\tau{=}1$ \\
+\midrule
+NequIP & O(3) & 0.0005 & 0.0000 & 0.0000 & 0.0000 & 0.0000 \\
+NequIP & SO(3) & 0.9170 & 0.9133 & 0.8953 & 0.8177 & 0.3548 \\
+Allegro & O(3) & 0.0005 & 0.0002 & 0.0000 & 0.0000 & 0.0000 \\
+Allegro & SO(3) & 0.9168 & 0.9155 & 0.9095 & 0.8553 & 0.4802 \\
+MACE & O(3) & 0.0007 & 0.0003 & 0.0000 & 0.0000 & 0.0000 \\
+MACE & SO(3) & 0.9168 & 0.9150 & 0.9077 & 0.8550 & 0.4672 \\
+EquiformerV2 & SO(3) & 0.9968 & 0.9918 & 0.9570 & 0.8238 & 0.2203 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.62\textwidth]{figS1_raw_thresholds}
+\caption{False-flag fraction as a function of violation threshold on the raw coordinate variant, over 25 log-spaced thresholds; mean over 3 seeds, shaded bands one standard deviation. The curves are indistinguishable from the idealized variant (Supplementary Tables~3 and~5). \MISSING{this figure cannot be drawn from the manuscript: the raw-variant threshold curves are not tabulated anywhere, and only five of the twenty-five idealized thresholds are. Export the array to figdata/figS1\_raw\_thresholds.csv and rerun build\_figures.py. The original artwork, which carries the real curves, is preserved in figures\_original/ and can be dropped back in at any time}}
+\label{sfig:rawthresholds}
+\end{figure}
+
+\subsection*{Violation distributions and the O(3) residual floor}
+
+Supplementary Table~\ref{stab:distributions} gives the per-structure violation percentiles behind main-text Fig.~2a. The distributions of the two arms are unimodal and effectively disjoint. For EquiformerV2 even the 5th percentile lies above the operating threshold. For the three matched cores the SO(3) 5th percentile falls below it, corresponding to the 9--10\% of crystals that the SO(3) arms happen to place under the threshold.
+
+Pooling all three seeds into a single distribution (rather than averaging per-seed percentiles as in Supplementary Table~4, which is why the two sets of figures differ slightly, and why the pooled maximum exceeds the seed-averaged one), the O(3) residual floors are: NequIP median $3.13\times10^{-7}$, 95th percentile $1.06\times10^{-6}$, maximum $5.53\times10^{-4}$; Allegro $3.83\times10^{-7}$, $1.41\times10^{-6}$, $1.13\times10^{-3}$; MACE $2.73\times10^{-6}$, $1.05\times10^{-5}$, $1.32\times10^{-3}$ (all in C\,m$^{-2}$). Every one of these maxima remains more than an order of magnitude below the operating threshold. MACE's floor is roughly eight times higher than the others', consistent with its single-precision symmetric contractions (Supplementary Note~3); the floor tracks arithmetic precision, not symmetry.
+
+\begin{table}[htbp]
+\centering
+\setlength{\tabcolsep}{2pt}
+\caption{Percentiles of the per-structure violation magnitude $\lVert e \rVert_F$ (C\,m$^{-2}$) on the idealized variant; mean of per-seed percentiles over 3 seeds.}
+\label{stab:distributions}
+\fontsize{7bp}{8.5bp}\selectfont
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+Core / arm & p5 & p25 & median & p75 & p95 & max \\
+\midrule
+NequIP O(3) & $2.17\times10^{-8}$ & $1.60\times10^{-7}$ & $3.19\times10^{-7}$ & $5.24\times10^{-7}$ & $1.05\times10^{-6}$ & $4.56\times10^{-4}$ \\
+NequIP SO(3) & $2.56\times10^{-7}$ & $2.01\times10^{-1}$ & $6.66\times10^{-1}$ & $1.33\times10^{0}$ & $2.97\times10^{0}$ & $9.59\times10^{0}$ \\
+Allegro O(3) & $3.65\times10^{-8}$ & $1.93\times10^{-7}$ & $3.84\times10^{-7}$ & $6.71\times10^{-7}$ & $1.41\times10^{-6}$ & $9.72\times10^{-4}$ \\
+Allegro SO(3) & $2.76\times10^{-7}$ & $3.17\times10^{-1}$ & $9.60\times10^{-1}$ & $1.87\times10^{0}$ & $4.22\times10^{0}$ & $1.89\times10^{1}$ \\
+MACE O(3) & $2.11\times10^{-7}$ & $1.40\times10^{-6}$ & $2.76\times10^{-6}$ & $4.74\times10^{-6}$ & $1.04\times10^{-5}$ & $1.14\times10^{-3}$ \\
+MACE SO(3) & $1.54\times10^{-6}$ & $3.27\times10^{-1}$ & $9.25\times10^{-1}$ & $1.68\times10^{0}$ & $3.40\times10^{0}$ & $1.58\times10^{1}$ \\
+EquiformerV2 SO(3) & $1.38\times10^{-2}$ & $1.78\times10^{-1}$ & $4.45\times10^{-1}$ & $9.06\times10^{-1}$ & $2.41\times10^{0}$ & $1.70\times10^{1}$ \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+\subsection*{Size dependence and the per-atom variant}
+
+The violation magnitude is extensive: the readout sums per-atom (or per-edge) contributions, and the Spearman correlation between violation and atom count on the idealized population ranges from $+0.50$ to $+0.69$ across the O(3) arms and $+0.49$ to $+0.61$ across the SO(3) arms. Because the correlation is present at similar strength in both parity modes, it is a property of the readout, not of the parity labelling. Recomputing the headline false-flag fractions with the size-normalized metric $\lVert e \rVert_F / n_{\mathrm{atoms}}$ against a threshold rescaled by the median cell size leaves every O(3) arm at exactly 0.0000 and moves every SO(3) arm by at most 0.0177; no conclusion depends on the normalization.
+
+% ===== Note 5: raw coordinate variant =====
+\section*{Supplementary Note 5: The raw coordinate variant and symmetry tolerance}
+
+Density-functional-relaxed coordinates satisfy inversion symmetry only to within the relaxation tolerance, so an exactly O(3)-equivariant model may return a small nonzero tensor on the raw variant, driven by residual asymmetry genuinely present in its input. The false-flag fraction of every SO(3) arm is unchanged between the two variants to within $0.0007$; the O(3) arms show a small nonzero fraction on the raw variant only ($+0.00017$ for NequIP, $0.00000$ for Allegro, $+0.00033$ for MACE at the operating threshold).
+
+Across all nine O(3) runs, exactly one structure ever exceeds the operating threshold on raw coordinates (Materials Project identifier mp-1227949, in three of nine runs). Re-examining its symmetry as a function of tolerance explains why: its idealized coordinates are space group 47 at every tolerance, but its raw coordinates refine to space group 1, which is non-centrosymmetric, at tolerances of $10^{-4}$ and tighter, recovering space group 47 only at the looser selection tolerance of $10^{-3}$. For those coordinates a nonzero piezoelectric tensor is not symmetry-forbidden, and the O(3) response is not a violation but a detection of real symmetry breaking present in the data.
+
+The observation generalizes (Supplementary Table~\ref{stab:tolerance}). All 2,000 raw structures are centrosymmetric at the selection tolerance, but 2.2\% are not at $10^{-4}$ and 6.5\% are not at $10^{-5}$. Independently, the O(3) false-flag fraction on the raw variant at the tightest threshold ($\tau = 10^{-4}$\,C\,m$^{-2}$) is 2.45--2.82\%, agreeing in magnitude with the fraction of genuinely non-centrosymmetric structures, consistent with the O(3) raw-variant response being driven entirely by residual asymmetry in the coordinates. One idealized structure (mp-2923562) also fails the tightest symmetry checks; no O(3) run places it above threshold.
+
+\begin{table}[htbp]
+\centering
+\caption{Number of the 2,000 evaluation structures verified centrosymmetric by spglib as a function of symmetry tolerance, for the two coordinate variants. The selection tolerance is $10^{-3}$.}
+\label{stab:tolerance}
+\scriptsize
+\begin{tabular}{lrr}
+\toprule
+Tolerance & Idealized & Raw \\
+\midrule
+$10^{-5}$ & 1,999 / 2,000 & 1,869 / 2,000 (93.5\%) \\
+$10^{-4}$ & 1,999 / 2,000 & 1,956 / 2,000 (97.8\%) \\
+$10^{-3}$ (selection) & 2,000 / 2,000 & 2,000 / 2,000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ===== Note 6: statistical analysis =====
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.62\textwidth]{figS2_rutile_sweep}
+\caption{Predicted piezoelectric magnitude of rutile TiO$_2$ along a continuous polar distortion $\delta$ of the centrosymmetric parent, over 33 amplitudes, every frame symmetry-verified. The O(3) arms rise smoothly from the arithmetic floor ($1.9\times10^{-7}$ to $9.1\times10^{-7}$\,C\,m$^{-2}$ at $\delta=0$); the SO(3) arms sit on a spurious floor of 0.09--0.28\,C\,m$^{-2}$ that is present already at $\delta=0$ and dominates the physical signal throughout the small-distortion regime. \MISSING{this figure cannot be drawn from the manuscript: the 33-amplitude sweep array is not tabulated anywhere. Export it to figdata/fig5a\_rutile\_sweep.csv and rerun build\_figures.py; the panel is otherwise complete}}
+\label{sfig:rutile}
+\end{figure}
+
+\section*{Supplementary Note 6: Statistical analysis}
+
+\subsection*{Structure-level paired tests}
+
+For each matched core, seed, and coordinate variant, a one-sided Wilcoxon signed-rank test over the 2,000 structure-paired violations tests whether the O(3) violation is smaller than the SO(3) violation (Supplementary Table~\ref{stab:wilcoxon}). The resulting $p$-values underflow double precision (the library returns exactly zero) and are reported as $p<10^{-300}$.
+
+\begin{table}[htbp]
+\centering
+\caption{Structure-level one-sided Wilcoxon signed-rank tests, paired by structure ($n = 2{,}000$), computed independently per seed; the worst (largest) $p$-value over seeds is shown, together with the fraction of individual crystals for which the O(3) violation is smaller.}
+\label{stab:wilcoxon}
+\scriptsize
+\begin{tabular}{llll}
+\toprule
+Core & Variant & max $p$ over seeds & fraction O(3) $<$ SO(3) \\
+\midrule
+NequIP & idealized & $<10^{-300}$ & 0.9748 \\
+NequIP & raw & $<10^{-300}$ & 0.9800 \\
+Allegro & idealized & $<10^{-300}$ & 0.9677 \\
+Allegro & raw & $<10^{-300}$ & 0.9720 \\
+MACE & idealized & $<10^{-300}$ & 0.9623 \\
+MACE & raw & $<10^{-300}$ & 0.9673 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Seed-level tests are underpowered by construction}
+
+With $n = 3$ seeds, a two-sided Wilcoxon signed-rank test cannot return $p < 0.25$ for any effect size; the observed values confirm this (every piezoelectric comparison returns exactly the floor value 0.25, reached when all three seeds agree in sign, and every null comparison returns 0.50--1.00). These $p$-values carry no evidential weight in either direction. Seed-level effects are therefore reported throughout as the between-arm difference divided by the pooled per-seed standard deviation, with no significance claimed.
+
+\subsection*{Reproducibility and cross-architecture agreement}
+
+Spearman rank correlations between the per-structure violation vectors of independently seeded runs of the same architecture (idealized variant) are: NequIP mean 0.816 (minimum over seed pairs 0.804), Allegro 0.825 (0.813), MACE 0.829 (0.825), EquiformerV2 0.773 (0.761). Between different SO(3) cores, computed per matched seed and averaged, the Spearman correlations range from $+0.64$ (NequIP--EquiformerV2) to $+0.79$ (Allegro--MACE), and the Jaccard indices of the flagged sets from 0.929 (NequIP--EquiformerV2, minimum 0.926) to 0.987 (Allegro--MACE, minimum 0.984). Architectures sharing no code beyond the common irreducible-representation library, and for EquiformerV2 not even that, flag 93--99\% of the same crystals.
+
+% ===== Note 7: accuracy, parameters, compute, environment =====
+\section*{Supplementary Note 7: Accuracy, parameter counts, compute, and software environment}
+
+\subsection*{Accuracy on all targets}
+
+Supplementary Table~\ref{stab:accuracy} reports test mean absolute error for every core, arm, and target (mean $\pm$ standard deviation over 3 seeds), the values behind main-text Fig.~3. Two features deserve comment. First, the scalar-energy target is deliberately unconverged (total energy, no atomic-reference subtraction, capped training subset, no schedule; see main-text Methods); its errors of 16.8--53.7\,eV correspond to 1.5--4.9\% of the target standard deviation of 1,085.57\,eV, and it shows by far the largest seed variance of the four targets, so its between-arm comparison has limited resolution. In particular, the apparent Allegro difference on $U_0$ (31.08 versus 26.98\,eV, favouring SO(3)) is $-0.42$ pooled seed standard deviations against an O(3) seed spread of 12.89\,eV, consistent with seed noise on an under-converged target. Second, the mean generalization gap $|$test MAE $-$ val MAE$|/$val MAE is 1.5\% ($U_0$), 0.5\% (dipole), 4.8\% (elastic), and 17.3\% (piezoelectric); the piezoelectric test partition has only 332 structures spanning three orders of magnitude in tensor norm, and the gap applies equally to both arms.
+
+An earlier MACE dipole error of 0.328\,D was traced to a misconfigured readout probe (the shallowest interaction block, whose features are effectively scalar); with the corrected deepest-tensor probe the value is as tabulated. The O(3) piezoelectric zero is structural and independent of the probe choice.
+
+\begin{table}[htbp]
+\centering
+\caption{Test mean absolute error for every core, arm and target, and the effect size the manuscript argues from. Values are the mean $\pm$ standard deviation over 3 seeds. The final column is the between-arm difference in units of the pooled per-seed standard deviation, $\Delta/\sigma = (\mathrm{MAE_{SO(3)}} - \mathrm{MAE_{O(3)}})/[(\sigma_{\mathrm{O(3)}}^2+\sigma_{\mathrm{SO(3)}}^2)/2]^{1/2}$; positive values favour the O(3) arm. On the dipole and on elasticity the sign is positive in all three cores, and on the piezoelectric target, the only one on which the parity constraint is active, it exceeds three pooled standard deviations in all three. Three seeds cannot resolve an effect below one pooled standard deviation and no significance is claimed from these figures. EquiformerV2 has no O(3) arm. MAE, mean absolute error; D, debye.}
+\label{stab:accuracy}
+\fontsize{7bp}{8.5bp}\selectfont
+\begin{tabular}{@{}l l r r r@{}}
+\toprule
+ & & \multicolumn{2}{c}{Test MAE} & \\
+\cmidrule(lr){3-4}
+Core & Target (unit) & O(3) & SO(3) & $\Delta/\sigma$ \\
+\midrule
+NequIP & $U_0$ (eV) & $53.65 \pm 22.50$ & $51.66 \pm 9.19$ & $-0.12$ \\
+NequIP & dipole (D) & $0.0519 \pm 0.0027$ & $0.0530 \pm 0.0026$ & $+0.42$ \\
+NequIP & elastic (GPa) & $24.33 \pm 0.27$ & $24.49 \pm 0.14$ & $+0.74$ \\
+NequIP & piezoelectric (C\,m$^{-2}$) & $0.2083 \pm 0.0077$ & $0.2405 \pm 0.0080$ & $+4.10$ \\
+Allegro & $U_0$ (eV) & $31.08 \pm 12.89$ & $26.98 \pm 4.88$ & $-0.42$ \\
+Allegro & dipole (D) & $0.0751 \pm 0.0023$ & $0.0764 \pm 0.0021$ & $+0.59$ \\
+Allegro & elastic (GPa) & $23.72 \pm 0.25$ & $23.89 \pm 0.31$ & $+0.60$ \\
+Allegro & piezoelectric (C\,m$^{-2}$) & $0.2140 \pm 0.0058$ & $0.2589 \pm 0.0176$ & $+3.43$ \\
+MACE & $U_0$ (eV) & $16.76 \pm 6.29$ & $26.09 \pm 12.49$ & $+0.94$ \\
+MACE & dipole (D) & $0.0484 \pm 0.0018$ & $0.0500 \pm 0.0045$ & $+0.47$ \\
+MACE & elastic (GPa) & $24.92 \pm 0.54$ & $24.94 \pm 0.60$ & $+0.04$ \\
+MACE & piezoelectric (C\,m$^{-2}$) & $0.2222 \pm 0.0066$ & $0.2567 \pm 0.0084$ & $+4.57$ \\
+EquiformerV2 & $U_0$ (eV) & --- & $20.75 \pm 5.99$ & --- \\
+EquiformerV2 & dipole (D) & --- & $0.0379 \pm 0.0013$ & --- \\
+EquiformerV2 & elastic (GPa) & --- & $35.14 \pm 3.12$ & --- \\
+EquiformerV2 & piezoelectric (C\,m$^{-2}$) & --- & $0.2157 \pm 0.0096$ & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Parameter counts}
+
+All-even labelling opens additional tensor-product paths, so the SO(3) arm has at least as many parameters as its O(3) counterpart in every configuration (Supplementary Table~\ref{stab:params}); reduced capacity therefore cannot account for any SO(3) deficit.
+
+\begin{table}[htbp]
+\centering
+\caption{Production-scale parameter counts per core and target. Ratio is SO(3)/O(3).}
+\label{stab:params}
+\scriptsize
+\begin{tabular}{llrrr}
+\toprule
+Core & Target & O(3) & SO(3) & Ratio \\
+\midrule
+NequIP & $U_0$ & 1{,}775{,}488 & 1{,}808{,}256 & 1.018 \\
+NequIP & dipole & 1{,}775{,}552 & 1{,}808{,}320 & 1.018 \\
+NequIP & elastic & 1{,}781{,}824 & 1{,}814{,}592 & 1.018 \\
+NequIP & piezoelectric & 2{,}457{,}600 & 2{,}547{,}776 & 1.037 \\
+Allegro & $U_0$ & 89{,}728 & 89{,}984 & 1.003 \\
+Allegro & dipole & 73{,}969 & 74{,}097 & 1.002 \\
+Allegro & elastic & 80{,}052 & 80{,}180 & 1.002 \\
+Allegro & piezoelectric & 84{,}547 & 84{,}900 & 1.004 \\
+MACE & $U_0$ & 444{,}224 & 536{,}640 & 1.208 \\
+MACE & dipole & 444{,}288 & 536{,}704 & 1.208 \\
+MACE & elastic & 2{,}992{,}704 & 3{,}536{,}704 & 1.182 \\
+MACE & piezoelectric & 5{,}329{,}920 & 7{,}453{,}120 & 1.398 \\
+EquiformerV2 & piezoelectric & --- & 1{,}489{,}635 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Compute}
+
+Training across the 84 grid runs consumed 260,779\,s $=$ 72.44 GPU-hours (training loop only; container start-up and data preparation excluded), plus 644\,s of validation/test evaluation and 320\,s of evaluation on the centrosymmetric population, all under CUDA 12.8 (Supplementary Table~\ref{stab:compute}). Two GPU classes were used and are not interchangeable, so per-core wall-clock is not a like-for-like architecture comparison. Per-epoch time and throughput are averaged over all four targets, whose dataset sizes differ. The augmentation experiment added 12 runs and the loss-weight sweep 6 runs on the same hardware classes; earlier exploratory runs are excluded from these figures. The monetary cost of the grid was not recorded; the offer-selection rule bounded the on-demand price at \$1.00 per GPU-hour, giving an upper bound of \$72 for the 84-run grid.
+
+\begin{table}[htbp]
+\centering
+\caption{Compute per core over the 84 grid runs. Throughput is in structures per second and peak GPU memory in MB; s/epoch and throughput are means $\pm$ standard deviation over runs of all four targets; GPU memory is the peak over runs.}
+\label{stab:compute}
+\fontsize{7bp}{8.5bp}\selectfont
+\begin{tabular}{llrrrrr}
+\toprule
+Core & GPU & Runs & Train (h) & s/epoch & struct/s & Peak (MB) \\
+\midrule
+NequIP & RTX 5090 & 24 & 7.62 & $10.3 \pm 6.0$ & $1603 \pm 996$ & 1{,}225 \\
+Allegro & RTX 5090 & 24 & 5.06 & $6.7 \pm 2.4$ & $2346 \pm 1347$ & 5{,}495 \\
+MACE & RTX PRO 6000 & 24 & 40.64 & $55.5 \pm 21.5$ & $252 \pm 101$ & 2{,}020 \\
+EquiformerV2 & RTX 5090 & 12 & 19.12 & $50.3 \pm 28.9$ & $354 \pm 267$ & 2{,}253 \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+\subsection*{Software environment}
+
+Every run records a provenance manifest: git revision and cleanliness, configuration hash, dataset and split manifests, seed, package versions, host, GPU model, and CUDA and driver versions; final-result runs refuse to execute on a modified source tree. The two framework families require conflicting versions of the e3nn library\cite{geiger2022e3nn} (0.4.4 for MACE, 0.6.0 for NequIP and Allegro), so the project defines two mutually exclusive installation profiles over a shared base within one lockfile, and each manifest records which profile produced the run. Key pins: Python 3.12, PyTorch\cite{paszke2019pytorch} 2.11.0 with CUDA 12.8, nequip 0.18.0, nequip-allegro 0.8.3, mace-torch 0.3.16, pymatgen 2026.5.4, spglib 2.7.0.
+
+% ===== Note 8: augmentation and loss weighting =====
+\section*{Supplementary Note 8: Augmentation and loss-weight detail}
+
+\subsection*{Augmentation}
+
+Supplementary Table~\ref{stab:e1} reports the full augmentation experiment behind main-text Fig.~4a: for each core, the false-flag fraction and violation median on the held-out centrosymmetric population split by whether the crystal's space group appeared in the augmentation list (seen: 1,232 crystals from space groups 2, 12, 14, 15, 62, 225; unseen: 768 crystals from the remaining 67 centrosymmetric space groups represented in the population), together with the non-centrosymmetric test error, before and after augmented retraining. The augmentation identifiers are disjoint from both the evaluation population and the original training identifiers, and no unseen-list space group appears in training. The target normalization was frozen at its unaugmented value of 0.749134 (recomputing it over the zero-augmented set would give 0.638289 and make violation magnitudes incomparable to the headline).
+
+Three observations. First, the false-flag fraction on the seen space groups falls by at most 0.021 and on unseen ones by 0.013--0.032: there is no meaningful transfer, because there is barely any improvement to transfer. Second, violation medians roughly halve on both subsets: predictions move towards zero everywhere and arrive nowhere. Third, augmentation improves the ordinary regression error for every core; the augmented models are better regressors that still predict impossible values. The two subsets differ in composition as well as space group (the baseline medians already differ), so only the within-subset change relative to baseline is interpretable, not the seen-versus-unseen difference itself. The O(3) rows are quoted from the headline runs without retraining: their zeros hold for any training data, which is the point.
+
+\MISSING{plot the false-flag fraction of the SO(3) arms against training epoch. The metrics are already logged. If it plateaus near 0.90, the claim that training cannot buy the zero is nailed and the objection that the models are undertrained dies. If it is still falling at epoch 150, a referee will say so and they will be right. See EXPERIMENTS\_TO\_RUN.md, H-1}
+
+In the in-training control (main-text Fig.~4a), the zero-labelled rows are fit better than the real-tensor rows (training MAE 0.014--0.045 versus 0.086--0.128 on targets whose mean component magnitude is 0.145), and training error on real rows is well below test error, so the models are neither ignoring the zeros nor underfitting.
+
+\begin{table}[htbp]
+\centering
+\caption{Augmentation experiment: false-flag fraction (ff) and violation median on held-out centrosymmetric crystals from seen and unseen space groups, and non-centrosymmetric test MAE, before (baseline) and after (augmented) retraining the SO(3) arms; mean $\pm$ standard deviation over 3 seeds. O(3) rows are the headline runs, not retrained. Eq.V2, EquiformerV2.}
+\label{stab:e1}
+\setlength{\tabcolsep}{2pt}
+\fontsize{7bp}{8.5bp}\selectfont
+\begin{tabular}{@{}l rr rr r@{}}
+\toprule
+ & \multicolumn{2}{c}{False-flag fraction} & \multicolumn{2}{c}{Violation median} & \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Core / arm & seen & unseen & seen & unseen & test MAE \\
+\midrule
+NequIP O(3) & $0.0000 \pm 0.0000$ & $0.0000 \pm 0.0000$ & $3.3\times10^{-7}$ & $2.9\times10^{-7}$ & $0.2083 \pm 0.0077$ \\
+NequIP SO(3) base & $0.9042 \pm 0.0021$ & $0.8811 \pm 0.0040$ & $0.826$ & $0.422$ & $0.2405 \pm 0.0080$ \\
+NequIP SO(3) aug. & $0.9042 \pm 0.0024$ & $0.8685 \pm 0.0039$ & $0.449$ & $0.254$ & $0.2278 \pm 0.0015$ \\
+Allegro O(3) & $0.0000 \pm 0.0000$ & $0.0000 \pm 0.0000$ & $4.0\times10^{-7}$ & $3.4\times10^{-7}$ & $0.2140 \pm 0.0058$ \\
+Allegro SO(3) base & $0.9075 \pm 0.0000$ & $0.9128 \pm 0.0039$ & $1.182$ & $0.586$ & $0.2589 \pm 0.0176$ \\
+Allegro SO(3) aug. & $0.9067 \pm 0.0000$ & $0.8919 \pm 0.0045$ & $0.538$ & $0.274$ & $0.2303 \pm 0.0038$ \\
+MACE O(3) & $0.0000 \pm 0.0000$ & $0.0000 \pm 0.0000$ & $3.0\times10^{-6}$ & $2.3\times10^{-6}$ & $0.2222 \pm 0.0066$ \\
+MACE SO(3) base & $0.9075 \pm 0.0000$ & $0.9080 \pm 0.0020$ & $1.156$ & $0.508$ & $0.2567 \pm 0.0084$ \\
+MACE SO(3) aug. & $0.9067 \pm 0.0008$ & $0.8924 \pm 0.0015$ & $0.534$ & $0.259$ & $0.2221 \pm 0.0107$ \\
+Eq.V2 SO(3) base & $0.9508 \pm 0.0048$ & $0.9670 \pm 0.0066$ & $0.543$ & $0.295$ & $0.2157 \pm 0.0096$ \\
+Eq.V2 SO(3) aug. & $0.9302 \pm 0.0049$ & $0.9353 \pm 0.0106$ & $0.149$ & $0.102$ & $0.1774 \pm 0.0060$ \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{In-training control (the values plotted in main-text Fig.~4a): false-flag fraction of each SO(3) arm, after augmented retraining, evaluated on the 1,000 centrosymmetric crystals it was trained on with explicit zero labels. Mean over 3 seeds. The O(3) arms are zero structurally and were not retrained. \VERIFY{these four means were transcribed from the source data behind Fig.~4a during manuscript preparation; confirm each against the augmentation run outputs, and supply the per-seed standard deviations requested below.}}
+\label{stab:intraining}
+\scriptsize
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Core (SO(3) arm) & False-flag fraction on trained-on zeros & s.d.\ over 3 seeds \\
+\midrule
+NequIP & 0.895 & 0.0020 \\
+Allegro & 0.899 & \MISSING{s.d.} \\
+MACE & 0.896 & \MISSING{s.d.} \\
+EquiformerV2 & 0.922 & \MISSING{s.d.} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Supplementary Table~\ref{stab:intraining} reports the in-training control per core. Every arm still flags roughly nine in ten of the crystals whose labels it was explicitly shown, and no arm approaches the exact zero. The NequIP value coincides to four decimals with that core's false-flag fraction on the untouched evaluation population (Supplementary Table~3). \VERIFY{the two quantities are computed on different crystal populations and with different model checkpoints, so the exact agreement to four decimal places is a coincidence rather than a shared value. Confirm from the run outputs that no value has been copied between the two experiments.}
+
+\subsection*{Loss-weight sweep}
+
+Supplementary Table~\ref{stab:h3} tabulates the sweep behind main-text Fig.~4b: the NequIP SO(3) configuration on the augmented set with the 1,016 exactly-zero rows (1,000 injected plus 16 real) up-weighted by $W$ in the loss. Even at $W = 100$ the model false-flags two-thirds of the crystals it was trained to call zero; the violation median on those crystals shrinks about ninefold and remains more than four orders of magnitude above the O(3) floor of roughly $3\times10^{-7}$, while the ordinary regression error is unharmed and in fact slightly improves. Approaching zero is not attaining it; only the parity-labelled structure delivers exactness, at any weight.
+
+\begin{table}[htbp]
+\centering
+\caption{Loss-weight sweep (NequIP SO(3), augmented training set); mean $\pm$ standard deviation over 3 seeds. ff, false-flag fraction; median is the violation median on the trained-on zero-labelled crystals in C\,m$^{-2}$. $W = 1$ is the augmentation run of Supplementary Table~\ref{stab:e1}.}
+\label{stab:h3}
+\fontsize{7bp}{8.5bp}\selectfont
+\begin{tabular}{rrrrrr}
+\toprule
+$W$ & ff trained zeros & median trained zeros & ff seen & ff unseen & test MAE \\
+\midrule
+1 & $0.8953 \pm 0.0020$ & 0.1200 & $0.9042 \pm 0.0024$ & $0.8685 \pm 0.0039$ & $0.2278 \pm 0.0015$ \\
+10 & $0.8730 \pm 0.0026$ & 0.0463 & $0.9031 \pm 0.0012$ & $0.8420 \pm 0.0072$ & $0.2180 \pm 0.0027$ \\
+100 & $0.6762 \pm 0.0154$ & 0.0140 & $0.8715 \pm 0.0031$ & $0.7604 \pm 0.0060$ & $0.2142 \pm 0.0055$ \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+% ===== Note 9: test-time inversion averaging =====
+\section*{Supplementary Note 9: Test-time inversion averaging}
+
+The proposed test-time repair antisymmetrizes the prediction over inversion, $T_{\mathrm{sym}}(x) = [T(x) - T(I\!\cdot\!x)]/2$. On an exactly centrosymmetric input, $I\!\cdot\!x$ is the same periodic crystal up to an atom permutation and a lattice translation, so any permutation- and translation-invariant model returns $T(I\!\cdot\!x) = T(x)$, verified to relative residual $10^{-6}$ for the three matched cores, and $T_{\mathrm{sym}}$ vanishes identically, for either parity arm, regardless of what the model has learned. The measurement corrected an expectation we held going in: we assumed the raw coordinate variant, being centrosymmetric only to tolerance, would retain signal under symmetrization; it does not, and the false-flag collapse occurs on both variants (Supplementary Table~\ref{stab:e4}). Neither zero is evidence that symmetrization restores parity information; the construction succeeds for a reason that carries none.
+
+Two costs remain even where the collapse occurs: inference is doubled, and the construction presupposes knowing the target's parity in advance: if the target were parity-even, the correct combination would be the symmetric one, and applying the antisymmetric projection would destroy the prediction. That knowledge is exactly what O(3) features encode per feature, everywhere, for every derived quantity at once.
+
+EquiformerV2 is the exception that proves the mechanism: its false-flag fraction falls only from about 0.95 to about 0.82, because it violates the permutation-invariance identity the fix relies on, its relative residual $|T(I\!\cdot\!x) - T(x)|/|T|$ is 0.10--0.15 rather than $10^{-6}$, consistent with its approximate rotational equivariance (Supplementary Note~11). The one deployed rotation-only model in this study is the one the proposed fix does not repair.
+
+\begin{table}[htbp]
+\centering
+\caption{Test-time inversion averaging on the centrosymmetric population, idealized variant; per-core values are means over 3 seeds (per-seed and raw-variant values differ only in the fourth decimal). ff, false-flag fraction at the operating threshold; sym, after antisymmetrization. Medians in C\,m$^{-2}$. \VERIFY{the EquiformerV2 unsymmetrized false-flag fraction is given here as 0.9550, but as 0.9570 in Supplementary Tables~3 and~15 and throughout the main text; the three matched cores agree exactly across all three tables. Reconcile: either correct this cell, or state in the caption that EquiformerV2 was re-evaluated with fresh stochastic draws for this experiment and report the draw count.}}
+\label{stab:e4}
+\scriptsize
+\begin{tabular}{llrrrr}
+\toprule
+Core & Parity & median $|T|$ & median $|T_{\mathrm{sym}}|$ & ff & ff (sym) \\
+\midrule
+NequIP & O(3) & $3.1\times10^{-7}$ & $2.1\times10^{-7}$ & 0.0000 & 0.0000 \\
+NequIP & SO(3) & $6.7\times10^{-1}$ & $3.0\times10^{-7}$ & 0.8953 & 0.0000 \\
+Allegro & O(3) & $5.5\times10^{-7}$ & $3.8\times10^{-7}$ & 0.0000 & 0.0000 \\
+Allegro & SO(3) & $9.6\times10^{-1}$ & $6.5\times10^{-7}$ & 0.9095 & 0.0000 \\
+MACE & O(3) & $2.8\times10^{-6}$ & $2.8\times10^{-6}$ & 0.0000 & 0.0000 \\
+MACE & SO(3) & $9.2\times10^{-1}$ & $2.4\times10^{-6}$ & 0.9077 & 0.0000 \\
+EquiformerV2 & SO(3) & $4.4\times10^{-1}$ & $2.8\times10^{-2}$ & 0.9550 & 0.8222 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ===== Note 10: named materials and rotation subgroups =====
+\section*{Supplementary Note 10: Named materials and the rotation-subgroup analysis}
+
+\subsection*{Named centrosymmetric materials}
+
+Supplementary Table~\ref{stab:named} evaluates ten familiar centrosymmetric compounds; the true piezoelectric tensor of every one is exactly zero. The O(3) prediction is at machine zero throughout. The SO(3) predictions split exactly along the rotation-subgroup line  below: the class-m$\bar 3$m compounds (rocksalt, fluorite, caesium chloride, diamond-structure, cubic perovskite) are near zero for the exactly rotation-equivariant cores too, because their proper-rotation subgroup 432 already admits no rank-3 tensor, while for the non-cubic compounds, corundum Al$_2$O$_3$ (sapphire) and rutile TiO$_2$, parity is the only remaining protection and every SO(3) model predicts a substantial response. EquiformerV2's small nonzero values on some m$\bar 3$m compounds reflect its approximate rotational equivariance (Supplementary Note~11). Two caveats: the as-relaxed TiO$_2$ coordinates refine to space group 74 at the study tolerance, recovering the rutile group 136 only at looser tolerance (both centrosymmetric and non-cubic, leaving the interpretation unchanged; the analytically built rutile of the symmetry-breaking sweep is exactly group 136); and germanium is absent because its band gap in the source database falls below the insulator cut, so silicon stands in for the diamond-structure semiconductor.
+
+\begin{table}[htbp]
+\centering
+\caption{Predicted piezoelectric magnitude $\lVert e \rVert_F$ (C\,m$^{-2}$) for ten familiar centrosymmetric compounds, mean over 3 seeds; the true value is exactly zero for every row. The `Rot.\ forbids' column states whether the point group's proper-rotation subgroup alone already forbids a rank-3 piezoelectric tensor (Corollary~\ref{scor:rot}). O(3) values are NequIP, representative of all three O(3) arms, which are at machine zero throughout. EquiformerV2 values are means over five evaluation draws.}
+\label{stab:named}
+\scriptsize
+\begin{tabular}{@{}llccr rrrr@{}}
+\toprule
+ & & & & & \multicolumn{4}{c}{SO(3) arms} \\
+\cmidrule(l){6-9}
+Formula & Structure & Class & Rot.\ forbids & O(3) & NequIP & Allegro & MACE & Eq.V2 \\
+\midrule
+Al$_2$O$_3$ & corundum & non-cubic & no & $2.7\times10^{-7}$ & 1.128 & 0.723 & 0.837 & 0.212 \\
+TiO$_2$ & rutile & non-cubic & no & $2.8\times10^{-7}$ & 0.260 & 0.582 & 0.245 & 0.187 \\
+C & diamond & m$\bar 3$m & yes & $5.1\times10^{-7}$ & 0.000 & 0.000 & 0.000 & 0.033 \\
+CaF$_2$ & fluorite & m$\bar 3$m & yes & $4.0\times10^{-7}$ & 0.000 & 0.000 & 0.000 & 0.008 \\
+CsCl & CsCl-type & m$\bar 3$m & yes & $3.3\times10^{-9}$ & 0.000 & 0.000 & 0.000 & 0.000 \\
+KCl & rocksalt & m$\bar 3$m & yes & $3.0\times10^{-9}$ & 0.000 & 0.000 & 0.000 & 0.000 \\
+MgO & rocksalt & m$\bar 3$m & yes & $5.7\times10^{-8}$ & 0.000 & 0.000 & 0.000 & 0.000 \\
+NaCl & rocksalt & m$\bar 3$m & yes & $5.4\times10^{-8}$ & 0.000 & 0.000 & 0.000 & 0.000 \\
+Si & diamond & m$\bar 3$m & yes & $4.8\times10^{-8}$ & 0.000 & 0.000 & 0.000 & 0.004 \\
+SrTiO$_3$ & perovskite & m$\bar 3$m & yes & $1.4\times10^{-7}$ & 0.000 & 0.000 & 0.000 & 0.011 \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+\subsection*{Rotation-subgroup analysis}
+
+Supplementary Table~\ref{stab:e7} gives the per-family false-flag fractions behind main-text Fig.~5c. The group theory is verified numerically in the released test suite by Reynolds-operator rank tests: averaging a general rank-3 tensor over the proper-rotation subgroup 432 of point group m$\bar 3$m yields the zero map (projector rank 0), while averaging over subgroup 23 of point group m$\bar 3$ yields a one-dimensional invariant space (rank 1). Of the evaluation population, 1,834 of 2,000 crystals (the 18 of class m$\bar 3$ plus the 1,816 non-cubic ones, 91.7\%) lie outside what rotation alone can enforce, closely matching the observed SO(3) false-flag fractions. The SO(3) models' correct zeros are the ones rotations already guarantee; parity extends the guarantee to the strictly larger set that inversion demands.
+
+\begin{table}[htbp]
+\centering
+\caption{False-flag fraction of the SO(3) arms by point-group family of the evaluated crystal (idealized variant, mean over 3 seeds; EquiformerV2 over five evaluation draws per seed). The three matched O(3) arms are 0.0000 in every family and every seed.}
+\label{stab:e7}
+\scriptsize
+\begin{tabular}{lrrr}
+\toprule
+Core (SO(3) arm) & m$\bar 3$m ($n{=}166$) & m$\bar 3$ ($n{=}18$) & non-cubic ($n{=}1{,}816$) \\
+\midrule
+NequIP & 0.0000 & 0.9630 & 0.9765 \\
+Allegro & 0.0000 & 0.9815 & 0.9919 \\
+MACE & 0.0000 & 0.9444 & 0.9903 \\
+EquiformerV2 & 0.5341 & 0.9630 & 0.9956 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ===== Note 11: output-level audit and upstream reproduction =====
+\section*{Supplementary Note 11: Output-level equivariance audit and EquiformerV2 upstream reproduction}
+
+\subsection*{Output-level audit of all trained piezoelectric models}
+
+For every trained piezoelectric model, three output-level tests were run on the same structures: a mirror test comparing $T(Mx)$ with the parity-transformed prediction $D(M)\,T(x)$ for a random improper operation $M$, with $D$ built on the physical odd-parity irreducible representations; a rotation test with a random proper operation, which every arm must satisfy; and a determinism test of repeated forward passes on one input. The relative laws are measured on non-centrosymmetric structures, where the prediction is nonzero, since on a centrosymmetric input an O(3) model predicts machine zero and a relative error would divide floating-point noise. Supplementary Table~\ref{stab:e5} summarizes the results as ranges over seeds.
+
+The O(3) arms satisfy the mirror law to floating-point precision; the SO(3) arms violate it by order unity, which is the parity defect measured directly at the output. Both arms of every matched core satisfy the rotation law and are bit-deterministic. EquiformerV2 fails all three: its rotation-law error is 7--11\%, and it is the only nondeterministic model, because its forward pass draws a random per-edge reference frame on every call. For an exactly rotation-equivariant network the output would not depend on that arbitrary frame, so the determinism spread is itself a direct readout of rotational equivariance error; over five seeded draws of the full population evaluation, the median violation has a relative standard deviation of $6.5\times10^{-3}$ and the false-flag fraction a standard deviation of $5.0\times10^{-4}$, within which the single-draw headline value lies.
+
+\begin{table}[htbp]
+\centering
+\caption{Output-level equivariance audit: median relative errors over 25 non-centrosymmetric structures, shown as the range over 3 seeds. Mirror, violation of the improper-operation law; rotation, violation of the proper-rotation law; determinism, spread over five forward passes on one input.}
+\label{stab:e5}
+\scriptsize
+\begin{tabular}{lllll}
+\toprule
+Core & Parity & Mirror & Rotation & Determinism \\
+\midrule
+NequIP & O(3) & $5.3$--$6.0\times10^{-7}$ & $0.9$--$1.1\times10^{-6}$ & $0.9$--$1.1\times10^{-6}$ \\
+NequIP & SO(3) & $0.52$--$1.30$ & $0.9$--$1.0\times10^{-6}$ & $0.9$--$1.6\times10^{-6}$ \\
+Allegro & O(3) & $8.2$--$9.2\times10^{-7}$ & $1.2\times10^{-6}$ & $2.1$--$7.3\times10^{-6}$ \\
+Allegro & SO(3) & $1.11$--$1.17$ & $1.1$--$1.3\times10^{-6}$ & $4.6$--$11.0\times10^{-6}$ \\
+MACE & O(3) & $3.0$--$3.8\times10^{-7}$ & $2.6$--$4.2\times10^{-6}$ & $0.8$--$1.4\times10^{-6}$ \\
+MACE & SO(3) & $0.93$--$0.97$ & $3.0$--$3.9\times10^{-6}$ & $0.7$--$1.2\times10^{-6}$ \\
+EquiformerV2 & SO(3) & $0.71$--$0.98$ & $0.073$--$0.106$ & $0.111$--$0.144$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Reproduction against pinned upstream source}
+
+To establish that the EquiformerV2 findings are properties of the released code rather than of our packaging, all of them were reproduced against the pinned upstream repository (\texttt{atomicarchitects/equiformer\_v2}, commit \texttt{8fe8cba}, dated 2023-06-28, the only commit ever to touch the model files, which are frozen since). An abstract-syntax-tree comparison of all thirteen vendored model files against upstream classified six as identical up to formatting, five as identical up to import order, and two as carrying only documented dependency-removal edits; none differs substantively. The two load-bearing files, the per-edge reference-frame construction (the source of the nondeterminism) and the Wigner-matrix module (whose detachment from atomic positions truncates the autograd Jacobian), are identical to upstream up to formatting and import order respectively.
+
+The one executed method that does not originate in the upstream model files is the graph constructor, inherited upstream from an external base class; it was relocated into an auditable shim and proven inert by measurement: the shimmed upstream model reproduces the shipped vendored model bit-for-bit on a seeded forward pass (maximal absolute difference exactly zero), and replacing the shim by a hard stub returning the precomputed graph changes nothing. Reruns of the output-level audit on the shimmed upstream model with the trained checkpoints match the vendored values to three decimals in every seed and every statistic (Supplementary Table~\ref{stab:h1}), and an EquiformerV2-specific finite-difference check confirms the incomplete autograd Jacobian on upstream source (relative disagreement 0.36--0.84, versus $9\times10^{-4}$ for NequIP under the identical check), which is the documented reason for its exclusion from the Jacobian analysis.
+
+For context: the eSCN paper describes its SO(2) reduction as mathematically equivalent to the full convolution, that is, exact in theory; the frame-induced equivariance breaking is reported by users in the upstream issue tracker (issues 17 and 5 of the upstream repository). We report all of the above strictly as measured properties of the released code at the pinned commit and make no claim of incorrectness.
+
+\begin{table}[htbp]
+\centering
+\caption{EquiformerV2 output-level audit rerun on pinned upstream source versus the vendored copy, per seed (trained checkpoints). Values are the median relative errors of Supplementary Table~\ref{stab:e5}; FD, relative disagreement between the autograd Jacobian and central finite differences.}
+\label{stab:h1}
+\scriptsize
+\begin{tabular}{@{}l ccc c@{}}
+\toprule
+ & \multicolumn{3}{c}{Median relative error (upstream / vendored)} & \\
+\cmidrule(lr){2-4}
+Seed & Mirror & Rotation & Determinism & FD rel.\ err. \\
+\midrule
+0 & 0.982 / 0.982 & 0.073 / 0.073 & 0.111 / 0.111 & 0.36 \\
+1 & 0.929 / 0.929 & 0.094 / 0.094 & 0.143 / 0.143 & 0.84 \\
+2 & 0.713 / 0.713 & 0.106 / 0.106 & 0.144 / 0.144 & 0.66 \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+% ===== Note 12: models considered and excluded =====
+\section*{Supplementary Note 12: Models considered and excluded}
+
+\subsection*{Equiformer v1}
+
+Equiformer v1 was planned as a fourth matched core and demoted, not silently omitted. Its released dependency stack (Python 3.8, torch 1.10, CUDA 11.3) does not build for the GPU architecture used in this study, and as an e3nn-based model it would exercise no equivariance mechanism not already covered by the three matched cores. EquiformerV2 supersedes it as the transformer representative. As released, Equiformer v1 is itself SO(3)-only (Supplementary Table~1).
+
+\subsection*{A geometric-algebra O(3) control, and why it was withdrawn}
+
+A non-e3nn O(3)-equivariant core based on Clifford geometric algebra\cite{polat2026cliffordstf} was intended to show that the headline effect is a property of O(3) equivariance rather than of the e3nn implementation. It was withdrawn as a numerical-conditioning failure, not a scientific counterexample, and the finding is instructive enough to record. In exact arithmetic the construction is O(3)-exact, and on machine-perfect centrosymmetric input it cancels to order $10^{-15}$. But its algebra carries geometric grades only up to degree 1, so a degree-3 output must be assembled through a cubic tensor product, which is ill-conditioned: once trained, the readout amplifies the order-$10^{-6}$ residual coordinate asymmetry of real crystals by three to four orders of magnitude, producing a false-flag fraction of 0.42 that measures the readout's condition number, not the parity of the algebra. A candidate replacement with native high-order Cartesian features was surveyed and rejected because its rank-3 features admit no clean linear readout.
+
+The general lesson: O(3) equivariance guarantees an exact zero in theory, but realizing the guarantee numerically on real data requires a well-conditioned (linear) readout of native high-order features. All three matched O(3) arms in this study satisfy that requirement through the same irreducible-representation library, which is the study's principal stated limitation.
+

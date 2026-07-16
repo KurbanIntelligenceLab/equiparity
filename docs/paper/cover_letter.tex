@@ -1,0 +1,36 @@
+\documentclass[11pt]{article}
+\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{parskip}
+\pagestyle{empty}
+
+\begin{document}
+
+\begin{flushright}
+\today
+\end{flushright}
+
+\textbf{To the Editorial Office, \\ \textit{Nature Communications}}
+
+Dear Editor,
+
+We are pleased to submit our manuscript, ``\textbf{Rotation is not enough: parity-blind equivariant networks predict physically impossible material properties},'' for consideration as an Article in \textit{Nature Communications}.
+
+Equivariant neural networks are the default architecture for predicting the properties of molecules and materials, and the community describes them almost interchangeably as ``E(3)-equivariant.'' That label conceals a fork: a network can be exactly equivariant to all rotations, SO(3), while carrying no information about parity---the reflections and spatial inversion that E(3) also contains---and a substantial class of widely deployed models is of exactly this kind. Our manuscript shows that this seemingly technical distinction decides whether a model can make predictions that are not merely inaccurate but physically impossible. Symmetry forces the piezoelectric tensor of a centrosymmetric crystal to vanish identically (Neumann's principle), which supplies a rare label-free test of physical validity: any nonzero prediction is known, with certainty and without reference data, to be wrong.
+
+Our contributions are threefold. First, across matched pairs of three architectures that differ \emph{only} in whether their internal features carry parity labels, the parity-aware (O(3)) models predict exactly zero for all 2,000 symmetry-verified centrosymmetric crystals, while their rotation-only (SO(3)) counterparts predict substantial tensors for 90--96\% of the same crystals, at magnitudes typical of real piezoelectrics---isolating feature parity, not training or capacity, as the deciding factor. Second, we show the failure is structural rather than a training artifact: retraining on zero-labelled crystals, loss reweighting, and test-time symmetrisation all fail to restore the exact zero, whereas the O(3) guarantee holds at any parameter values and differentiates correctly with respect to atomic displacements. Third, we audit 15 released architectures against their source and find that nine cannot structurally forbid such predictions, establishing that the obstruction belongs to a symmetry class in current use rather than to any single model, and we distil the result into a practitioner rule for when parity must be represented.
+
+We believe this work fits squarely within the journal's scope at the intersection of machine learning and the physical sciences: it contributes a label-free physical-validity test for equivariant models, a mechanism-level account of why parity-blind networks violate a symmetry they are advertised to respect, and a clear, actionable criterion for architecture choice in materials and molecular property prediction. The work is open and fully reproducible: all code---the matched-pair model builders and parity toggle, the verification gate, the training and evaluation pipelines, and the test suite verifying every group-theoretic claim---together with dataset manifests, split definitions, and the machine-readable statistics behind every figure and table are available at \url{https://github.com/KurbanIntelligenceLab/equiparity} under the MIT license; the underlying crystal data derive from the Materials Project (CC BY 4.0) and QM9 (CC0), and every released artifact carries a content hash for exact reconstruction.
+
+\textbf{Keywords:} equivariant neural networks; parity; O(3) versus SO(3) equivariance; piezoelectric tensor; centrosymmetric crystals; Neumann's principle; machine learning for materials.
+
+This manuscript is original, has not been published previously, and is not under consideration elsewhere. All authors have approved the submission, and we declare no competing interests.
+
+Thank you for your consideration.
+
+Sincerely,\\
+Mustafa Kurban and Hasan Kurban\\
+on behalf of all authors
+\end{document}

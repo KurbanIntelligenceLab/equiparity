@@ -1,0 +1,419 @@
+% References for "Not all symmetry can be learned: parity-blind equivariant networks
+% predict physically impossible material properties" (Nature Communications).
+% Entries marked "% VERIFY" carry an item that has not been confirmed against the
+% publisher or arXiv listing and must be completed before submission.
+
+% ---------- models under test ----------
+@article{batzner2022nequip,
+  author  = {Batzner, Simon and Musaelian, Albert and Sun, Lixin and Geiger, Mario and Mailoa, Jonathan P. and Kornbluth, Mordechai and Molinari, Nicola and Smidt, Tess E. and Kozinsky, Boris},
+  title   = {E(3)-equivariant graph neural networks for data-efficient and accurate interatomic potentials},
+  journal = {Nature Communications},
+  volume  = {13},
+  pages   = {2453},
+  year    = {2022},
+  doi     = {10.1038/s41467-022-29939-5}
+}
+@article{musaelian2023allegro,
+  author  = {Musaelian, Albert and Batzner, Simon and Johansson, Anders and Sun, Lixin and Owen, Cameron J. and Kornbluth, Mordechai and Kozinsky, Boris},
+  title   = {Learning local equivariant representations for large-scale atomistic dynamics},
+  journal = {Nature Communications},
+  volume  = {14},
+  pages   = {579},
+  year    = {2023},
+  doi     = {10.1038/s41467-023-36329-y}
+}
+@article{batatia2022mace,
+  author    = {Batatia, Ilyes and Kov{\'a}cs, D{\'a}vid P{\'e}ter and Simm, Gregor N. C. and Ortner, Christoph and Cs{\'a}nyi, G{\'a}bor},
+  title     = {{MACE}: Higher order equivariant message passing neural networks for fast and accurate force fields},
+  journal = {Advances in Neural Information Processing Systems},
+  volume    = {35},
+  year      = {2022},
+  url       = {https://arxiv.org/abs/2206.07697}
+}
+@article{liao2023equiformer,
+  author    = {Liao, Yi-Lun and Smidt, Tess},
+  title     = {Equiformer: Equivariant graph attention transformer for {3D} atomistic graphs},
+  journal = {International Conference on Learning Representations},
+  year      = {2023},
+  url       = {https://arxiv.org/abs/2206.11990}
+}
+@article{liao2024equiformerv2,
+  author    = {Liao, Yi-Lun and Wood, Brandon and Das, Abhishek and Smidt, Tess},
+  title     = {{EquiformerV2}: Improved equivariant transformer for scaling to higher-degree representations},
+  journal = {International Conference on Learning Representations},
+  year      = {2024},
+  url       = {https://arxiv.org/abs/2306.12059}
+}
+@article{passaro2023escn,
+  author    = {Passaro, Saro and Zitnick, C. Lawrence},
+  title     = {Reducing {SO(3)} convolutions to {SO(2)} for efficient equivariant {GNNs}},
+  journal = {International Conference on Machine Learning},
+  year      = {2023},
+  url       = {https://arxiv.org/abs/2302.03655}
+}
+@misc{geiger2022e3nn,
+  author = {Geiger, Mario and Smidt, Tess},
+  title  = {e3nn: Euclidean neural networks},
+  year   = {2022},
+  url    = {https://arxiv.org/abs/2207.09453}
+}
+@misc{equiformerv3,
+  author = {Liao, Yi-Lun and Hoffman, Alexander J. and Shen, Sabrina C. and Duval, Alexandre and Norwood, Sam Walton and Smidt, Tess},
+  title  = {{EquiformerV3}: Scaling efficient, expressive, and general {SE(3)}-equivariant graph attention transformers},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2604.09130}
+}
+
+% ---------- symmetry-breaking literature ----------
+@article{smidt2021symmetry,
+  author  = {Smidt, Tess E. and Geiger, Mario and Miller, Benjamin Kurt},
+  title   = {Finding symmetry breaking order parameters with {Euclidean} neural networks},
+  journal = {Physical Review Research},
+  volume  = {3},
+  pages   = {L012002},
+  year    = {2021},
+  doi     = {10.1103/PhysRevResearch.3.L012002}
+}
+@misc{xie2024symmetrybreaking,
+  author = {Xie, YuQing and Smidt, Tess},
+  title  = {Equivariant symmetry breaking sets},
+  year   = {2024},
+  url    = {https://arxiv.org/abs/2402.02681}
+}
+@article{kaba2023symmetry,
+  author    = {Kaba, S{\'e}kou-Oumar and Ravanbakhsh, Siamak},
+  title     = {Symmetry breaking and equivariant neural networks},
+  journal = {NeurIPS 2023 Workshop on Symmetry and Geometry in Neural Representations},
+  year      = {2023},
+  url       = {https://arxiv.org/abs/2312.09016}
+}
+@article{prob2025symmetry,
+  author    = {Lawrence, Hannah and Portilheiro, Vasco and Zhang, Yan and Kaba, S{\'e}kou-Oumar},
+  title     = {Improving equivariant networks with probabilistic symmetry breaking},
+  journal = {International Conference on Learning Representations},
+  year      = {2025},
+  url       = {https://arxiv.org/abs/2503.21985}
+}
+@article{langer2024broken,
+  author  = {Langer, Marcel F. and Pozdnyakov, Sergey N. and Ceriotti, Michele},
+  title   = {Probing the effects of broken symmetries in machine learning},
+  journal = {Machine Learning: Science and Technology},
+  volume  = {5},
+  pages   = {04LT01},
+  year    = {2024},
+  doi     = {10.1088/2632-2153/ad86a0}
+}
+
+% ---------- tensor-property prediction (readout-level lineage) ----------
+@article{yan2024gmtnet,
+  author    = {Yan, Keqiang and Saxton, Alexandra and Qian, Xiaofeng and Qian, Xiaoning and Ji, Shuiwang},
+  title     = {A space group symmetry informed network for {O(3)} equivariant crystal tensor prediction},
+  journal = {International Conference on Machine Learning},
+  year      = {2024},
+  url       = {https://arxiv.org/abs/2406.12888}
+}
+@misc{goectp2024,
+  author = {Hua, Haowei and Yang, Jingwen and Lin, Wanyu and Zhou, Pan},
+  title  = {Fast crystal tensor property prediction: a general {O(3)}-equivariant framework based on polar decomposition},
+  year   = {2024},
+  url    = {https://arxiv.org/abs/2410.02372}
+}
+@article{lu2025eatgnn,
+  author  = {Dong, Luqi and Zhang, Xuanlin and Yang, Ziduo and Shen, Lei and Lu, Yunhao},
+  title   = {Accurate piezoelectric tensor prediction with equivariant attention tensor graph neural network},
+  journal = {npj Computational Materials},
+  volume  = {11},
+  pages   = {63},
+  year    = {2025},
+  doi     = {10.1038/s41524-025-01546-0}
+}
+@article{piezotensornet2024,
+  author  = {Poudel, Sunil and Thapa, Ram and Basnet, Rajendra and Timofiejczuk, Anna and Kunwar, Anil},
+  title   = {{PiezoTensorNet}: Crystallography informed multi-scale hierarchical machine learning model for rapid piezoelectric performance finetuning},
+  journal = {Applied Energy},
+  volume  = {361},
+  pages   = {122901},
+  year    = {2024},
+  doi     = {10.1016/j.apenergy.2024.122901}
+}
+@article{ceitnet2026,
+  author    = {Jin, Dian and Yuan, Yancheng and Tao, Xiaoming},
+  title     = {Efficient equivariant high-order crystal tensor prediction via {Cartesian} local-environment many-body coupling},
+  journal = {International Conference on Machine Learning},
+  year      = {2026},
+  url       = {https://arxiv.org/abs/2602.04323}
+}
+@article{hung2024dielectric,
+  author  = {Mao, Zetian and Li, Wenwen and Tan, Jethro},
+  title   = {Dielectric tensor prediction for inorganic materials using latent information from Preferred Potential},
+  journal = {npj Computational Materials},
+  volume  = {10},
+  pages   = {265},
+  year    = {2024},
+  doi     = {10.1038/s41524-024-01450-z}
+}
+
+% ---------- physics ----------
+@article{aktas2021nominally,
+  author  = {Aktas, Oktay and Kangama, Moussa and Linyu, Gan and Catalan, Gustau and Ding, Xiangdong and Zunger, Alex and Salje, Ekhard K. H.},
+  title   = {Piezoelectricity in nominally centrosymmetric phases},
+  journal = {Physical Review Research},
+  volume  = {3},
+  pages   = {043221},
+  year    = {2021},
+  doi     = {10.1103/PhysRevResearch.3.043221}
+}
+
+% ---------- data and software ----------
+@article{ramakrishnan2014qm9,
+  author  = {Ramakrishnan, Raghunathan and Dral, Pavlo O. and Rupp, Matthias and von Lilienfeld, O. Anatole},
+  title   = {Quantum chemistry structures and properties of 134 kilo molecules},
+  journal = {Scientific Data},
+  volume  = {1},
+  pages   = {140022},
+  year    = {2014},
+  doi     = {10.1038/sdata.2014.22}
+}
+@article{jain2013materials,
+  author  = {Jain, Anubhav and Ong, Shyue Ping and Hautier, Geoffroy and Chen, Wei and Richards, William Davidson and Dacek, Stephen and Cholia, Shreyas and Gunter, Dan and Skinner, David and Ceder, Gerbrand and Persson, Kristin A.},
+  title   = {Commentary: The {Materials Project}: A materials genome approach to accelerating materials innovation},
+  journal = {APL Materials},
+  volume  = {1},
+  pages   = {011002},
+  year    = {2013},
+  doi     = {10.1063/1.4812323}
+}
+@article{dejong2015piezo,
+  author  = {de Jong, Maarten and Chen, Wei and Geerlings, Henry and Asta, Mark and Persson, Kristin Aslaug},
+  title   = {A database to enable discovery and design of piezoelectric materials},
+  journal = {Scientific Data},
+  volume  = {2},
+  pages   = {150053},
+  year    = {2015},
+  doi     = {10.1038/sdata.2015.53}
+}
+@article{togo2024spglib,
+  author  = {Togo, Atsushi and Shinohara, Kohei and Tanaka, Isao},
+  title   = {Spglib: a software library for crystal symmetry search},
+  journal = {Science and Technology of Advanced Materials: Methods},
+  volume  = {4},
+  pages   = {2384822},
+  year    = {2024},
+  doi     = {10.1080/27660400.2024.2384822}
+}
+@article{ong2013pymatgen,
+  author  = {Ong, Shyue Ping and Richards, William Davidson and Jain, Anubhav and Hautier, Geoffroy and Kocher, Michael and Cholia, Shreyas and Gunter, Dan and Chevrier, Vincent L. and Persson, Kristin A. and Ceder, Gerbrand},
+  title   = {Python {Materials} {Genomics} (pymatgen): A robust, open-source python library for materials analysis},
+  journal = {Computational Materials Science},
+  volume  = {68},
+  pages   = {314--319},
+  year    = {2013},
+  doi     = {10.1016/j.commatsci.2012.10.028}
+}
+@article{paszke2019pytorch,
+  author    = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and Desmaison, Alban and K{\"o}pf, Andreas and Yang, Edward and DeVito, Zachary and Raison, Martin and Tejani, Alykhan and Chilamkurthy, Sasank and Steiner, Benoit and Fang, Lu and Bai, Junjie and Chintala, Soumith},
+  title     = {{PyTorch}: An imperative style, high-performance deep learning library},
+  journal = {Advances in Neural Information Processing Systems},
+  volume    = {32},
+  year      = {2019},
+  url       = {https://arxiv.org/abs/1912.01703}
+}
+
+% ---------- audited architectures (main-text Table 1 / Supplementary Note 2) ----------
+@article{wen2024matten,
+  author  = {Wen, Mingjian and Horton, Matthew K. and Munro, Jason M. and Huck, Patrick and Persson, Kristin A.},
+  title   = {An equivariant graph neural network for the elasticity tensors of all seven crystal systems},
+  journal = {Digital Discovery},
+  volume  = {3},
+  pages   = {869--882},
+  year    = {2024},
+  doi     = {10.1039/D3DD00233K}
+}
+@article{zaverkin2024ictp,
+  author    = {Zaverkin, Viktor and Alesiani, Francesco and Maruyama, Takashi and Errica, Federico and Christiansen, Henrik and Takamoto, Makoto and Weber, Nicolas and Niepert, Mathias},
+  title     = {Higher-rank irreducible {Cartesian} tensors for equivariant message passing},
+  journal = {Advances in Neural Information Processing Systems},
+  volume    = {37},
+  year      = {2024},
+  url       = {https://arxiv.org/abs/2405.14253}
+}
+@article{aykent2025gotennet,
+  author    = {Aykent, Sarp and Xia, Tian},
+  title     = {{GotenNet}: Rethinking efficient {3D} equivariant graph neural networks},
+  journal = {International Conference on Learning Representations},
+  year      = {2025},
+  url       = {https://openreview.net/forum?id=5wxCQDtbMo}
+}
+@article{schutt2021painn,
+  author    = {Sch{\"u}tt, Kristof T. and Unke, Oliver T. and Gastegger, Michael},
+  title     = {Equivariant message passing for the prediction of tensorial properties and molecular spectra},
+  journal = {International Conference on Machine Learning},
+  volume    = {139},
+  pages     = {9377--9388},
+  year      = {2021},
+  url       = {https://arxiv.org/abs/2102.03150}
+}
+@article{tholke2022torchmdnet,
+  author    = {Th{\"o}lke, Philipp and De Fabritiis, Gianni},
+  title     = {{TorchMD-NET}: Equivariant transformers for neural network based molecular potentials},
+  journal = {International Conference on Learning Representations},
+  year      = {2022},
+  url       = {https://arxiv.org/abs/2202.02541}
+}
+@article{wang2024visnet,
+  author  = {Wang, Yusong and Wang, Tong and Li, Shaoning and He, Xinheng and Li, Mingyu and Wang, Zun and Zheng, Nanning and Shao, Bin and Liu, Tie-Yan},
+  title   = {Enhancing geometric representations for molecules with equivariant vector-scalar interactive message passing},
+  journal = {Nature Communications},
+  volume  = {15},
+  pages   = {313},
+  year    = {2024},
+  doi     = {10.1038/s41467-023-43720-2}
+}
+@article{schutt2017schnet,
+  author    = {Sch{\"u}tt, Kristof T. and Kindermans, Pieter-Jan and Sauceda, Huziel E. and Chmiela, Stefan and Tkatchenko, Alexandre and M{\"u}ller, Klaus-Robert},
+  title     = {{SchNet}: A continuous-filter convolutional neural network for modeling quantum interactions},
+  journal = {Advances in Neural Information Processing Systems},
+  volume    = {30},
+  pages     = {991--1001},
+  year      = {2017},
+  url       = {https://arxiv.org/abs/1706.08566}
+}
+@article{gasteiger2020dimenetpp,
+  author    = {Gasteiger, Johannes and Giri, Shankari and Margraf, Johannes T. and G{\"u}nnemann, Stephan},
+  title     = {Fast and uncertainty-aware directional message passing for non-equilibrium molecules},
+  journal = {Machine Learning for Molecules Workshop, NeurIPS},
+  year      = {2020},
+  url       = {https://arxiv.org/abs/2011.14115}
+}
+@article{duval2023faenet,
+  author    = {Duval, Alexandre and Schmidt, Victor and Hern{\'a}ndez-Garc{\'i}a, Alex and Miret, Santiago and Malliaros, Fragkiskos D. and Bengio, Yoshua and Rolnick, David},
+  title     = {{FAENet}: Frame averaging equivariant {GNN} for materials modeling},
+  journal = {International Conference on Machine Learning},
+  volume    = {202},
+  pages     = {9013--9033},
+  year      = {2023},
+  url       = {https://arxiv.org/abs/2305.05577}
+}
+
+% ---------- physics principles and optimizer ----------
+@book{nye1985crystals,
+  author    = {Nye, John Frederick},
+  title     = {Physical Properties of Crystals: Their Representation by Tensors and Matrices},
+  publisher = {Oxford University Press},
+  year      = {1985},
+  isbn      = {9780198511656}
+}
+@article{curie1894symmetry,
+  author  = {Curie, Pierre},
+  title   = {Sur la sym{\'e}trie dans les ph{\'e}nom{\`e}nes physiques, sym{\'e}trie d'un champ {\'e}lectrique et d'un champ magn{\'e}tique},
+  journal = {Journal de Physique Th{\'e}orique et Appliqu{\'e}e},
+  volume  = {3},
+  pages   = {393--415},
+  year    = {1894},
+  doi     = {10.1051/jphystap:018940030039300}
+}
+@article{kingma2015adam,
+  author    = {Kingma, Diederik P. and Ba, Jimmy},
+  title     = {Adam: A method for stochastic optimization},
+  journal = {International Conference on Learning Representations},
+  year      = {2015},
+  url       = {https://arxiv.org/abs/1412.6980}
+}
+@misc{polat2026cliffordstf,
+  author = {Polat, Can and Serpedin, Erchin and Kurban, Mustafa and Kurban, Hasan},
+  title  = {Geometric Algebra Meets {Cartesian} Tensors: Higher-Order Equivariance for Interatomic Potentials},
+  year   = {2026},
+  eprint = {2606.29584},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url    = {https://arxiv.org/abs/2606.29584}
+}
+
+% ---------- current-generation spherical-channel / eSCN-lineage models ----------
+@misc{fu2025esen,
+  author = {Fu, Xiang and Wood, Brandon M. and Barroso-Luque, Luis and Levine, Daniel S. and Gao, Meng and Dzamba, Misko and Zitnick, C. Lawrence},
+  title  = {Learning smooth and expressive interatomic potentials for physical property prediction},
+  year   = {2025},
+  eprint = {2502.12147},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2502.12147}
+}
+@misc{wood2025uma,
+  author = {Wood, Brandon M. and Dzamba, Misko and Fu, Xiang and Gao, Meng and Shuaibi, Muhammed and Barroso-Luque, Luis and Abdelmaqsoud, Kareem and Gharakhanyan, Vahe and Kitchin, John R. and Levine, Daniel S. and Michel, Kyle and Sriram, Anuroop and Cohen, Taco and Das, Abhishek and Rizvi, Ammar and Sahoo, Sushree Jagriti and Ulissi, Zachary W. and Zitnick, C. Lawrence},
+  title  = {{UMA}: A family of universal models for atoms},
+  year   = {2025},
+  eprint = {2506.23971},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2506.23971}
+}
+% ---------- parity and chirality in equivariant models ----------
+% VERIFY: a conference version appears to exist (OpenReview forum mXHTifc1Fn); confirm venue before submission.
+@misc{dumitrescu2024chirality,
+  author = {Dumitrescu, Alexandru and others},% VERIFY: complete the author list from arXiv:2402.15864 (7 authors); only the first is confirmed here
+  title  = {{E(3)}-equivariant models cannot learn chirality: field-based molecular generation},
+  year   = {2024},
+  eprint = {2402.15864},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2402.15864}
+}
+
+% ---------- the built-in-versus-learned-symmetry debate ----------
+@misc{brehmer2024scale,
+  author = {Brehmer, Johann and Behrends, S{\"o}nke and de Haan, Pim and Cohen, Taco},
+  title  = {Does equivariance matter at scale?},
+  year   = {2024},
+  eprint = {2410.23179},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2410.23179}
+}
+@inproceedings{bigi2025forces,
+  author    = {Bigi, Filippo and Langer, Marcel F. and Ceriotti, Michele},
+  title     = {The dark side of the forces: assessing non-conservative force models for atomistic machine learning},
+  booktitle = {Proceedings of the 42nd International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {267},
+  pages     = {4384--4414},
+  year      = {2025},
+  url       = {https://proceedings.mlr.press/v267/bigi25a.html}
+}
+@misc{bigi2026unconstrained,
+  author = {Bigi, Filippo and Pegolo, Paolo and Mazitov, Arslan and Schmidt, Jonathan and Ceriotti, Michele},
+  title  = {Pushing the limits of unconstrained machine-learned interatomic potentials},
+  year   = {2026},
+  eprint = {2601.16195},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2601.16195}
+}
+@misc{ngo2025scaling,
+  author = {Ngo, Khang and Ravanbakhsh, Siamak},
+  title  = {Scaling laws and symmetry, evidence from neural force fields},
+  year   = {2025},
+  eprint = {2510.09768},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2510.09768}
+}
+@misc{creed2026six,
+  author = {Creed, Isabel and Rein, Tim and Vitenburgs, Ingvars and Stark, Wojciech G. and others},% VERIFY: 24 authors; the first four and the senior authors (Ceriotti, Langer, Frost, Ganose, Kapil, Butler) are confirmed. Complete the list from arXiv:2606.07327.
+  title  = {Six open questions in machine-learned interatomic potential foundation models},
+  year   = {2026},
+  eprint = {2606.07327},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2606.07327}
+}
+@misc{parackal2026symmetry,
+  author = {Parackal, Abhijith S. and Armiento, Rickard and Trybel, Florian},
+  title  = {Symmetry-restricted energy landscapes as a benchmark for machine learned interatomic potentials},
+  year   = {2026},
+  eprint = {2602.02237},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2602.02237}
+}
+@article{optixnet2026,
+  author  = {{OptiXNet authors}},% VERIFY: the author list could not be resolved unambiguously (the Wiley landing page indexes the first author as Klimova; a citation string on the same page gives "W. Jin et al."). Complete it from doi:10.1002/adfm.202523683 before submission. Do not guess.
+  title   = {Symmetry-aware equivariant network for discovering {SHG}-active materials},
+  journal = {Advanced Functional Materials},
+  volume  = {36},
+  pages   = {e23683},
+  year    = {2026},
+  doi     = {10.1002/adfm.202523683}
+}

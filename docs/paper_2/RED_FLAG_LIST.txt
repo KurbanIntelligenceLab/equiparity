@@ -1,0 +1,137 @@
+RED-FLAG LIST and EXPERIMENT QUEUE
+Paper: "Not all symmetry can be learned: parity-blind equivariant networks predict
+        physically impossible material properties" (Nature Communications)
+Generated: 2026-07-14, after the deep experimental audit.
+
+Everything below prints in RED in the compiled PDFs. Nothing was guessed or invented.
+
+HOW TO CLEAR
+  Resolve, then set \finaltrue in main.tex (line 38), sn-supplementary.tex and
+  cover_letter.tex. Every flag vanishes, so anything you forgot shows up as a HOLE in the
+  sentence rather than as red ink you have stopped noticing. Then run:
+      python check_submission.py     python check_crossrefs.py
+      python audit_numbers.py        python parity_metrics.py
+
+================================================================================
+BLOCKING EXPERIMENTS. Full specifications in EXPERIMENTS_TO_RUN.md.
+These are not fillable. The paper is not competitive at this venue without them.
+================================================================================
+
+B-1. THE SOTA CRYSTAL-TENSOR PREDICTORS ARE NEVER TESTED, AND YOU CRITICIZE THEM.
+     There is an established benchmark for piezoelectric tensor prediction with published
+     baselines (Fnorm: ETGNN 0.873, GeoCTP 0.778, GMTNet 0.752, CEITNet 0.517). Your
+     Discussion calls this whole family "readout-level repairs" that "work only for the
+     quantity someone remembered to repair", and you never run one of them.
+     RUN: GMTNet, GoeCTP, EATGNN and CEITNet on your 2,000 centrosymmetric crystals. Report
+     their false-flag fractions AND the even-subspace fraction of their Jacobians.
+     You cannot lose. If they output zero, the field already solves the OUTPUT problem and
+     you renarrow, honestly, to the features underneath. If they output nonzero, your headline
+     extends to the dedicated symmetry-enforcing state of the art, which is a much bigger
+     result. Right now you are simply exposed to the first referee from that community.
+     THIS IS THE ONE THAT WILL KILL THE PAPER.
+
+B-2. THE MODELS YOU TEST ARE TWO TO FOUR YEARS OLD.
+     You train architectures from 2022-23. People deploy eSEN (2025), UMA (2025) and
+     EquiformerV3 (2026). Your headline claim is about DEPLOYED models. A referee will name
+     UMA. Theorem 1 holds at RANDOM INITIALIZATION, so this needs NO TRAINING: attach a rank-3
+     head to each at random init and evaluate on the 2,000. Hours of work. Then add the three
+     rows to Supplementary Table 1 and the audit becomes eighteen models.
+
+B-3. THE TITLE MAKES A LEARNABILITY CLAIM AND YOU HAVE ONE DATA POINT.
+     "Not all symmetry can be learned" is now the title. On the learning axis you have one
+     augmentation size and a loss-weight sweep on one architecture. Sweep N_zero over
+     {0, 250, 1000, 4000, 16000}, three seeds, and plot false-flag fraction and violation
+     median against N. If it plateaus, the title is bulletproof and this is your most-cited
+     panel. If it plummets, CHANGE THE TITLE, and be glad you found out first.
+
+B-4. THE CONTAMINATION CHECK YOU NEVER MADE.
+     Methods verifies the 1,000 augmentation crystals are disjoint from everything. It says
+     NOTHING about whether the 2,000 EVALUATION crystals are disjoint from the 3,312
+     piezoelectric train/val/test structures, and your training split contains 16 exactly-zero
+     rows, so it DOES contain centrosymmetric crystals. Intersect the identifier sets. One line
+     of set arithmetic. State the answer in Methods either way.
+
+B-5. INDEPENDENT HUMAN VERIFICATION OF THE PROOFS (Supplementary Note 1). AI-drafted.
+B-6. TWO TO THREE INDEPENDENT HUMAN MOCK REVIEWS.
+
+================================================================================
+RED FLAGS, BY SECTION
+================================================================================
+
+--- RESULTS ---
+ 1. [MISSING] sections/results.tex, line 149
+     the state-of-the-art crystal-tensor predictors that enforce symmetry at the readout (GMTNet, GoeCTP, EATGNN, CEITNet) are criticized in the Discussion and never tested. Run all four on the same 2,000 centrosymmetric crystals and report their false-flag fractions here, alongside the even-subspace energy fraction of their Jacobians. If they output exactly zero, the field already solves the output problem and the contribution must be renarrowed, honestly, to the features underneath. If they output nonzero, the headline extends to the dedicated symmetry-enforcing state of the art, which is a much larger result. Either outcome strengthens the paper; the current omission leaves it exposed to the first referee drawn from that community. See EXPERIMENTS\_TO\_RUN.md, B-1
+
+--- DISCUSSION ---
+ 2. [MISSING] sections/discussion.tex, line 5
+     the title now makes a learnability claim and the evidence for it is one augmentation size (1,000 zero-labelled crystals) plus a loss-weight sweep on one architecture. Sweep the augmentation size over N = 0, 250, 1,000, 4,000 and 16,000 zero-labelled crystals, three seeds each, and plot the false-flag fraction and violation median against N. If the curve plateaus well above zero, as the theory predicts, this becomes the most-cited panel in the paper. If it falls towards zero, change the title. See EXPERIMENTS\_TO\_RUN.md, B-3
+ 3. [MISSING] sections/discussion.tex, line 9
+     this is the paper's most consequential practical claim and it is not tested: every model here is trained from scratch. Fine-tune a piezoelectric head on two pretrained universal potentials, one parity-aware (MACE-MP-0) and one parity-blind (eSEN or UMA), with the backbone frozen, and report the false-flag fractions. That is the scenario practitioners are actually in. See EXPERIMENTS\_TO\_RUN.md, H-3
+ 4. [VERIFY] sections/discussion.tex, line 15
+     confirm this magnitude comparison against the calibrated coefficients reported by Aktas et al. and, if a numerical range is available, quote it
+ 5. [MISSING] sections/discussion.tex, line 19
+     either add eSEN, UMA, and EquiformerV3 to the audit under the same protocol, or state here that they are untested; see the red flag in Supplementary Note~2
+
+--- METHODS ---
+ 6. [VERIFY] sections/methods.tex, line 23
+     the manuscript states an underestimate of roughly 10--25\% with no source and no measurement. Either cite a reference for it, measure it on the QM9 reference dipoles you already have, or delete the range and say only that a point-charge dipole is biased. Nothing in the paper depends on the number
+ 7. [MISSING] sections/methods.tex, line 27
+     state whether the 2,000 evaluation crystals are disjoint from the 3,312 piezoelectric train, validation and test structures. Methods verifies disjointness for the 1,000 augmentation crystals but never for the evaluation population, and the training split contains 16 exactly-zero rows, so it does contain centrosymmetric crystals. Intersect the identifier sets, report the overlap, and if it is nonzero report the false-flag fractions with those crystals removed. The bias runs against the paper's claim, so this is very unlikely to hurt, but it is a standard leakage check and a referee will ask for it
+ 8. [MISSING] sections/methods.tex, line 31
+     report where the piezoelectric accuracy sits relative to the published state of the art. The crystal-tensor literature reports Frobenius-norm error (Fnorm) and error-within-threshold (EwT), not per-component MAE: on the standard piezoelectric benchmark, ETGNN 0.873, GeoCTP 0.778, GMTNet 0.752 and CEITNet 0.517 (Fnorm). Convert the predictions of the matched cores to those metrics and state where they land. Absolute accuracy is not what this paper claims, but a referee will ask whether the models are any good, and the answer should be in the paper rather than in a rebuttal
+ 9. [MISSING] sections/methods.tex, line 61
+     Nature Portfolio policy requires that any use of a large language model in preparing this manuscript be documented in the Methods (AI-assisted copy editing alone need not be declared, and an LLM cannot be an author). Complete or delete this subsection. If AI assistance was used for drafting text, for the statements and proofs in Supplementary Note~1, or for any analysis or figure code, state the tool, the version, the sections affected, and confirm that all authors verified the content and take full responsibility for it.
+
+--- BACK MATTER ---
+10. [MISSING] sections/backmatter.tex, line 3
+     persistent DOI of the archived data deposit (Zenodo or equivalent). Nature Communications requires a persistent identifier, not only a GitHub URL. Source Data for Figs.~2--5 and Supplementary Fig.~1 should be deposited in the same archive and referenced here
+11. [VERIFY] sections/backmatter.tex, line 7
+     state the licence (MIT was the intention). Confirm the repository is public at submission and carries the licence file, and that this statement matches the cover letter
+12. [MISSING] sections/backmatter.tex, line 7
+     persistent DOI of the archived code release
+13. [MISSING] sections/backmatter.tex, line 15
+     Acknowledgements and funding. Nature Communications requires all sources of funding to be declared, with grant numbers where applicable, for every author. State the funders and grant numbers, or state explicitly that the work received no specific funding. Acknowledge any computational resources or individuals who contributed but do not meet the authorship criteria, and do not thank anonymous referees or editors
+
+--- SUPPLEMENTARY INFORMATION ---
+14. [VERIFY] sections/supplementary.tex, line 10
+     this note was drafted with AI assistance during manuscript preparation. Every definition, statement and proof step must be independently re-derived and signed off by a human author before submission, and the AI-use disclosure in Methods completed accordingly
+15. [VERIFY] sections/supplementary.tex, line 46
+     a quantitative test of Proposition~1 and of the stability clause of Corollary~3 is available at low cost and would strengthen the theory: measure $\delta$ and $\eta$ directly, as absolute quantities, on the centrosymmetric evaluation population for every arm, and check that the observed residual floors lie below $(\delta+\eta)/2$ and that the m$\bar 3$m predictions lie below $\delta/(1-\epsilon)$. The run outputs already contain what is needed
+16. [VERIFY] sections/supplementary.tex, line 170
+     the reflection test that settled the ICTP and GotenNet rows was not applied to the three vector-only rows, and it should be. Their single Cartesian vector channel is built from edge vectors and is therefore implicitly polar, exactly as ICTP's Cartesian harmonics are, so a rank-3 head assembled from an odd number of vector factors would inherit the structural zero. The classification in this table is accurate as written, because it records the absence of typed representations and of a rank-3 path rather than the absence of parity; but the distinction between carrying no parity information at all (the SO(3)-only rows, which no readout can repair) and carrying parity implicitly while typing nothing (these rows, which a correctly built readout can) is load-bearing, and it should be measured rather than argued. Run the probe and record the result
+17. [MISSING] sections/supplementary.tex, line 172
+     run the same source-reading and reflection-test protocol on eSEN, UMA, and EquiformerV3 and either add three rows to Supplementary Table~1 (raising the audit to eighteen architectures and covering the current generation directly) or state explicitly in the main text that the audit predates them. Until that is done, no claim is made here about their parity structure beyond what their own documentation states.
+18. [MISSING] sections/supplementary.tex, line 465
+     plot the false-flag fraction of the SO(3) arms against training epoch. The metrics are already logged. If it plateaus near 0.90, the claim that training cannot buy the zero is nailed and the objection that the models are undertrained dies. If it is still falling at epoch 150, a referee will say so and they will be right. See EXPERIMENTS\_TO\_RUN.md, H-1
+19. [VERIFY] sections/supplementary.tex, line 499
+     these four means were transcribed from the source data behind Fig.~4a during manuscript preparation; confirm each against the augmentation run outputs, and supply the per-seed standard deviations requested below.}
+20. [MISSING] sections/supplementary.tex, line 507
+     s.d.
+21. [MISSING] sections/supplementary.tex, line 508
+     s.d.
+22. [MISSING] sections/supplementary.tex, line 509
+     s.d.
+23. [VERIFY] sections/supplementary.tex, line 514
+     the two quantities are computed on different crystal populations and with different model checkpoints, so the exact agreement to four decimal places is a coincidence rather than a shared value. Confirm from the run outputs that no value has been copied between the two experiments.
+24. [VERIFY] sections/supplementary.tex, line 548
+     the EquiformerV2 unsymmetrized false-flag fraction is given here as 0.9550, but as 0.9570 in Supplementary Tables~3 and~15 and throughout the main text; the three matched cores agree exactly across all three tables. Reconcile: either correct this cell, or state in the caption that EquiformerV2 was re-evaluated with fresh stochastic draws for this experiment and report the draw count.}
+
+--- COVER LETTER ---
+25. [VERIFY] cover_letter.tex, line 49
+     state the licence; confirm it matches the Code availability statement in the manuscript
+26. [MISSING] cover_letter.tex, line 49
+     persistent DOI of the archived release
+27. [MISSING] cover_letter.tex, line 51
+     preprint status: state whether the manuscript is or will be posted to arXiv, and give the identifier if so
+28. [MISSING] cover_letter.tex, line 53
+     suggested reviewers: Nature Communications invites the names and contact details of suitable independent referees, and allows authors to request the exclusion of specific referees. Supply them, or state that you have none to suggest
+
+--- REFERENCES (references.bib) ---
+Four entries carry incomplete author lists, each marked with a VERIFY comment. None was
+invented. `optixnet2026' PRINTS IN THE BIBLIOGRAPHY as "OptiXNet authors." Resolve it
+from doi:10.1002/adfm.202523683.
+
+================================================================================
+TOTAL: 28 in-text red flags + 4 bibliography flags, and 6 BLOCKING items.
+None was guessed, none was invented, none was silently filled.
+================================================================================
