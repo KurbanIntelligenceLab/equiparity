@@ -13,12 +13,12 @@ the row says `undetermined` rather than guessing.
 | category | n | consequence for a parity-odd tensor |
 |---|---|---|
 | `parity-aware` | 6 | odd-parity output is **structurally zero** on a centrosymmetric input |
-| `SO(3)-only` | 3 | **nothing** forces an odd-parity output to vanish |
+| `SO(3)-only` | 6 | **nothing** forces an odd-parity output to vanish |
 | `vector-only` | 3 | no typed irreps; a rank-3 head needs extra machinery |
 | `invariant` | 3 | cannot express an equivariant output at all |
 
-Of the 15 models surveyed, **6** carry parity
-labels on their features. **9** do not, and one is undetermined. The
+Of the 18 models surveyed, **6** carry parity
+labels on their features. **12** do not, and one is undetermined. The
 SO(3)-only group is not a fringe: it contains EquiformerV2 and the eSCN family, which are
 the current state of the art on large-scale catalysis and materials benchmarks, and
 Equiformer v1 as released.
@@ -55,6 +55,15 @@ Equiformer v1 as released.
 
 **eSCN** — vendored so3.py / so2_ops.py (Meta OCP eSCN lineage), `as vendored @ EquiformerV2 8fe8cba`  
 *Evidence* (`src/equiparity/models/equiformer_v2/so3.py`): eSCN is the SO(2)-reduced convolution EquiformerV2 is built on; its code IS the vendored `so3.py`/`so2_ops.py` (Meta OCP header). The `SO3_Embedding` is `lmax`/`mmax`-typed with **no parity label** -- deciding line, in-repo. (The `fairchem` clone carriesonly the newer UMA MoE eSCN variant, not the EquiformerV2 lineage.)
+
+**eSEN** — fairchem-core (PyPI), `1.10.0`  
+*Evidence* (`fairchem/core/models/esen/esen.py`): Node features are spherical coefficient arrays sized `(lmax+1)**2` (`sph_feature_size`, line 94), mixed by `SO3_Linear` over degree/order via `CoefficientMapping(lmax, mmax)` -- the eSCN SO(2)-convolution lineage its paper states (Sec. 4). Zero `parity` references anywhere in `models/esen/`; no odd/even typing, no rank-3 path.
+
+**UMA** — fairchem-core (PyPI), `2.21.0`  
+*Evidence* (`fairchem/core/models/uma/escn_md.py`): `eSCNMDBackbone` (line 263) builds on `uma.common.so3.CoefficientMapping`/`SO3_Grid` and `SO3_Linear` -- the same degree/order-only spherical typing as eSEN, which UMA's paper names as its central edgewise component (the MoE variant `escn_moe` wraps the same backbone). Zero `parity` references anywhere in `models/uma/`.
+
+**EquiformerV3** — atomicarchitects/equiformer_v3, `commit a7300c5`  
+*Evidence* (`experimental/models/equiformer_v3/so3.py`): The embedding is documented and indexed by 'Maximum degrees (l)' only (docstring line 75); `so3.py`/`wigner.py` carry no parity label and the model directory contains zero `parity` references. SE(3), not E(3), is in the paper's own title -- strict rotational equivariance is claimed, parity is never represented.
 
 ### `vector-only` — no typed irreps; a rank-3 head needs extra machinery
 

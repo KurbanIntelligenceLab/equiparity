@@ -230,6 +230,47 @@ ROWS: list[dict] = [
             "why the row was left undetermined until measured."
         ),
     },
+    # ---- Tier 2 (Checkpoint 10): the current deployed generation, audit -> 18 models ----
+    {
+        "model": "eSEN",
+        "source": "fairchem-core (PyPI)",
+        "version": "1.10.0",
+        "category": "SO(3)-only",
+        "evidence_file": "fairchem/core/models/esen/esen.py",
+        "evidence": (
+            "Node features are spherical coefficient arrays sized `(lmax+1)**2` "
+            "(`sph_feature_size`, line 94), mixed by `SO3_Linear` over degree/order via "
+            "`CoefficientMapping(lmax, mmax)` -- the eSCN SO(2)-convolution lineage its paper "
+            "states (Sec. 4). Zero `parity` references anywhere in `models/esen/`; no odd/even "
+            "typing, no rank-3 path."
+        ),
+    },
+    {
+        "model": "UMA",
+        "source": "fairchem-core (PyPI)",
+        "version": "2.21.0",
+        "category": "SO(3)-only",
+        "evidence_file": "fairchem/core/models/uma/escn_md.py",
+        "evidence": (
+            "`eSCNMDBackbone` (line 263) builds on `uma.common.so3.CoefficientMapping`/`SO3_Grid` "
+            "and `SO3_Linear` -- the same degree/order-only spherical typing as eSEN, which UMA's "
+            "paper names as its central edgewise component (the MoE variant `escn_moe` wraps the "
+            "same backbone). Zero `parity` references anywhere in `models/uma/`."
+        ),
+    },
+    {
+        "model": "EquiformerV3",
+        "source": "atomicarchitects/equiformer_v3",
+        "version": "commit a7300c5",
+        "category": "SO(3)-only",
+        "evidence_file": "experimental/models/equiformer_v3/so3.py",
+        "evidence": (
+            "The embedding is documented and indexed by 'Maximum degrees (l)' only (docstring "
+            "line 75); `so3.py`/`wigner.py` carry no parity label and the model directory "
+            "contains zero `parity` references. SE(3), not E(3), is in the paper's own title -- "
+            "strict rotational equivariance is claimed, parity is never represented."
+        ),
+    },
 ]
 
 CATEGORY_NOTE = {
