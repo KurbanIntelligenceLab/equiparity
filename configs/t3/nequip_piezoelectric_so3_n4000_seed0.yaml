@@ -1,0 +1,20 @@
+seed: 0
+core: nequip
+parity: so3
+target: piezoelectric
+dataset: mp_piezoelectric_augmented_n4000
+processed_npz: data/raw/mp/mp_piezoelectric_augmented_n4000_processed.npz
+split_npz: data/splits/mp_piezoelectric_augmented_n4000_split.npz
+output_dir: outputs
+model:
+  num_layers: 3
+  l_max: 3
+  num_features: 64
+  r_max: 5.0
+training:
+  batch_size: 16
+  epochs: 150
+  lr: 0.002
+  device: cuda
+  precision: float32
+  target_scale: 0.749134

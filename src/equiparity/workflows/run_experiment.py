@@ -158,8 +158,9 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
         value = getattr(result, field, None)
         if value is not None:
             metrics[field] = value
-    # Reviewer instrumentation: both-variant OOD curves/distributions + wall-clock timing.
-    for field in ("ood_variants", "timing"):
+    # Reviewer instrumentation: both-variant OOD curves/distributions, the H-1 per-epoch
+    # false-flag history, and wall-clock timing.
+    for field in ("ood_variants", "ood_false_flag_history", "timing"):
         value = getattr(result, field, None)
         if value is not None:
             metrics[field] = value

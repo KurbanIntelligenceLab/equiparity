@@ -104,6 +104,19 @@ def train_equiformer_tensor(
         preds = _predict(model, structs, r_max, batch_size, device) * scale
         return regression_metrics(preds, _irreps_targets(ds, config.target, kind))
 
+    # H-1 instrumentation: per-epoch false-flag fraction on the idealized OOD variant. The
+    # structure list is built once; each epoch's evaluation takes one fresh stochastic draw
+    # (EquiformerV2 redraws its per-edge frame every forward), matching the headline protocol.
+    epoch_ood_structs = None
+    if ood_npz is not None and kind == "piezoelectric":
+        ood_ds = CrystalDataset(load_crystal_dataset(ood_npz))
+        if config.training.max_eval_samples is not None:
+            cap = min(config.training.max_eval_samples, len(ood_ds))
+            ids = np.array([ood_ds[i].identifier for i in range(cap)])
+            ood_ds = CrystalDataset(load_crystal_dataset(ood_npz), ids)
+        epoch_ood_structs = [ood_ds[i].structure for i in range(len(ood_ds))]
+    ood_history: list[dict[str, float]] | None = None if epoch_ood_structs is None else []
+
     if device.type == "cuda":
         torch.cuda.reset_peak_memory_stats()
     t_train = time.perf_counter()
@@ -127,6 +140,17 @@ def train_equiformer_tensor(
                 checkpoint_best = {
                     k: v.detach().cpu().clone() for k, v in model.state_dict().items()
                 }
+        if epoch_ood_structs is not None and ood_history is not None:
+            v = violation_magnitudes(
+                _predict(model, epoch_ood_structs, r_max, batch_size, device) * scale
+            )
+            ood_history.append(
+                {
+                    "epoch": epoch + 1,
+                    "false_flag_at_0.01": float((v > 0.01).mean()),
+                    "median": float(np.median(v)),
+                }
+            )
     train_seconds = time.perf_counter() - t_train
 
     t_eval = time.perf_counter()
@@ -186,6 +210,7 @@ def train_equiformer_tensor(
         ood_false_flag_fraction=ood_ff,
         ood_variants=ood_variants,
         ood_vectors=ood_vectors,
+        ood_false_flag_history=ood_history,
         timing=timing,
         checkpoint_best=checkpoint_best,
         checkpoint_latest=checkpoint_latest,

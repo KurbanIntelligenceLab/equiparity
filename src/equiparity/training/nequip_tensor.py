@@ -111,6 +111,8 @@ class TensorRunResult:
     # per-structure vectors (offline histograms), wall-clock timing, and checkpoints.
     ood_variants: dict[str, object] | None = None  # {variant: violation_stats(...)}
     ood_vectors: dict[str, object] | None = None  # {variant: np.ndarray of magnitudes}
+    # H-1 instrumentation: idealized-variant false-flag fraction and violation median per epoch.
+    ood_false_flag_history: list[dict[str, float]] | None = None
     timing: dict[str, float] | None = None  # train/eval/ood seconds, throughput, peak mem
     checkpoint_best: dict[str, object] | None = None  # best-val model state_dict
     checkpoint_latest: dict[str, object] | None = None  # model+optimizer+epoch (resumable)
@@ -222,6 +224,17 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
         targets = _irreps_targets(ds, config.target, kind)
         return regression_metrics(preds, targets)
 
+    # H-1 instrumentation: per-epoch false-flag fraction on the idealized OOD variant. One
+    # forward pass over the evaluation population per epoch; piezoelectric runs only.
+    epoch_ood_ds = None
+    if ood_npz is not None and kind == "piezoelectric":
+        epoch_ood_ds = CrystalDataset(load_crystal_dataset(ood_npz))
+        if config.training.max_eval_samples is not None:
+            cap = min(config.training.max_eval_samples, len(epoch_ood_ds))
+            ids = np.array([epoch_ood_ds[i].identifier for i in range(cap)])
+            epoch_ood_ds = CrystalDataset(load_crystal_dataset(ood_npz), ids)
+    ood_history: list[dict[str, float]] | None = None if epoch_ood_ds is None else []
+
     # ---- train with timing + best-val checkpoint tracking ----
     if device.type == "cuda":
         torch.cuda.reset_peak_memory_stats()
@@ -247,6 +260,26 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
                 checkpoint_best = {
                     k: v.detach().cpu().clone() for k, v in model.state_dict().items()
                 }
+        if epoch_ood_ds is not None and ood_history is not None:
+            v = violation_magnitudes(
+                predict_tensors(
+                    model,
+                    epoch_ood_ds,
+                    z_map,
+                    r_max=r_max,
+                    device=device,
+                    dtype=dtype,
+                    batch_size=batch_size,
+                )
+                * scale
+            )
+            ood_history.append(
+                {
+                    "epoch": epoch + 1,
+                    "false_flag_at_0.01": float((v > 0.01).mean()),
+                    "median": float(np.median(v)),
+                }
+            )
     train_seconds = time.perf_counter() - t_train
 
     t_eval = time.perf_counter()
@@ -318,6 +351,7 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
         ood_false_flag_fraction=ood_ff,
         ood_variants=ood_variants,
         ood_vectors=ood_vectors,
+        ood_false_flag_history=ood_history,
         timing=timing,
         checkpoint_best=checkpoint_best,
         checkpoint_latest=checkpoint_latest,
