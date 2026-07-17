@@ -102,6 +102,16 @@ CLEARED (flag no. -> resolution; artifact):
      Creed 24 authors from arXiv:2606.07327; optixnet2026 authors from the
      Crossref record (Klimova et al.); VERIFY comments removed.
 
+Added 2026-07-17 (Tier 3 -- B-3 CLEARED, flag 2; TITLE VERDICT: SURVIVES):
+  2  discussion.tex L5: five-point N_zero sweep measured (0/250/1000/4000/
+     16000, 3 seeds each, nested sets, 16000 = availability in the 6 SEEN
+     SGs). Held-out ff 0.895 -> 0.858+-0.020 (64x data range); SEEN-SG flat
+     at 0.90; in-training control 0.88-0.90 for every N>=1000 (0.883+-0.011
+     at 16000) with trained-zeros median 0.12 -> 0.06 (6x threshold).
+     Prespecified rule applied: plateau well above zero -> "Not all symmetry
+     can be learned" STANDS. New Supp Table stab:t3.
+     results/t3_learning_curve.json, scripts/t3_learning_curve.py.
+
 Added 2026-07-17 (Tier 1 -- B-1 CLEARED, flag 1):
   1  results.tex L179: GMTNet + CEITNet run on the 2,000 through their own
      pipelines at released checkpoints (toy gates passed first: structural

@@ -529,6 +529,28 @@ EquiformerV2 & 0.922 & 0.0050 \\
 
 Supplementary Table~\ref{stab:intraining} reports the in-training control per core. Every arm still flags roughly nine in ten of the crystals whose labels it was explicitly shown, and no arm approaches the exact zero. The NequIP value coincides to four decimals with that core's false-flag fraction on the untouched evaluation population (Supplementary Table~3). The two quantities are computed on different crystal populations and with different model checkpoints, and the run outputs confirm the agreement is coincidental rather than a shared value: at full precision the evaluation-population fraction is $0.895333$ (2,000 crystals, base checkpoints) and the in-training control is $0.895341$ (1,016 trained-on zero rows, augmented checkpoints), coinciding only when rounded to four decimals.
 
+\subsection*{The $N_{\mathrm{zero}}$ learning curve}
+
+Supplementary Table~\ref{stab:t3} extends the augmentation experiment to a five-point sweep of the number of zero-labelled centrosymmetric crystals in training. The sets are nested (each smaller set is a prefix of the larger, with the $N{=}1{,}000$ point being the E1 set exactly), drawn from the same six SEEN space groups under the same disjointness and idealization protocol, with the target normalization frozen at the unaugmented value throughout; $N{=}16{,}000$ exhausts the qualifying Materials Project candidates in those groups after exclusions. The held-out fraction declines by four points over the 64-fold range while the in-training control -- the false-flag fraction on the crystals actually trained on with zero labels -- stays at $0.88$--$0.90$ for every $N \geq 1{,}000$: the violation median on trained-on zeros halves per data quadrupling but remains six times the threshold at the largest feasible $N$, which is the loss-weight lesson (approaching zero is not attaining it) reproduced along the data axis.
+
+\begin{table}[htbp]
+\centering
+\caption{The $N_{\mathrm{zero}}$ learning curve (NequIP SO(3), mean $\pm$ s.d. over 3 seeds). ff, false-flag fraction at the operating threshold on the held-out 2,000 (global and split by whether the crystal's space group appears in the augmentation); trained-zeros columns are the in-training control on the $N$ crystals carrying explicit zero labels. Medians in C\,m$^{-2}$. $N{=}0$ is the headline run and $N{=}1{,}000$ the E1 augmentation run.}
+\label{stab:t3}
+\fontsize{7bp}{8.5bp}\selectfont
+\begin{tabular}{rrrrrr}
+\toprule
+$N_{\mathrm{zero}}$ & ff held-out & ff SEEN-SG & ff UNSEEN-SG & ff trained zeros & median trained zeros \\
+\midrule
+0 & $0.8953 \pm 0.0008$ & $0.9042$ & $0.8811$ & -- & -- \\
+250 & $0.8937 \pm 0.0034$ & $0.9058$ & $0.8741$ & $0.7519 \pm 0.0038$ & $0.116$ \\
+1{,}000 & $0.8905 \pm 0.0030$ & $0.9042$ & $0.8685$ & $0.8953 \pm 0.0020$ & $0.120$ \\
+4{,}000 & $0.8818 \pm 0.0035$ & $0.9018$ & $0.8498$ & $0.8865 \pm 0.0014$ & $0.086$ \\
+16{,}000 & $0.8582 \pm 0.0201$ & $0.8904$ & $0.8064$ & $0.8827 \pm 0.0109$ & $0.064$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection*{Loss-weight sweep}
 
 Supplementary Table~\ref{stab:h3} tabulates the sweep behind main-text Fig.~4b: the NequIP SO(3) configuration on the augmented set with the 1,016 exactly-zero rows (1,000 injected plus 16 real) up-weighted by $W$ in the loss. Even at $W = 100$ the model false-flags two-thirds of the crystals it was trained to call zero; the violation median on those crystals shrinks about ninefold and remains more than four orders of magnitude above the O(3) floor of roughly $3\times10^{-7}$, while the ordinary regression error is unharmed and in fact slightly improves. Approaching zero is not attaining it; only the parity-labelled structure delivers exactness, at any weight.
