@@ -50,9 +50,7 @@ class CachedSet:
         self.features = torch.tensor(d["features"], dtype=torch.float32, device=device)
         n_atoms = torch.tensor(d["n_atoms"], dtype=torch.long, device=device)
         self.n = int(n_atoms.shape[0])
-        self.batch_index = torch.repeat_interleave(
-            torch.arange(self.n, device=device), n_atoms
-        )
+        self.batch_index = torch.repeat_interleave(torch.arange(self.n, device=device), n_atoms)
         self.offsets = torch.cat(
             [torch.zeros(1, dtype=torch.long, device=device), n_atoms.cumsum(0)]
         )
@@ -184,9 +182,7 @@ def main() -> None:
         "seeds": per_seed,
         "false_flag_mean": float(ff.mean()),
         "false_flag_std": float(ff.std()),
-        "ood_violation_median_mean": float(
-            np.mean([r["ood_violation_median"] for r in per_seed])
-        ),
+        "ood_violation_median_mean": float(np.mean([r["ood_violation_median"] for r in per_seed])),
         "test_mae_mean": float(np.mean([r["test_mae"] for r in per_seed])),
     }
     merged = json.loads(OUT_JSON.read_text()) if OUT_JSON.exists() else {}

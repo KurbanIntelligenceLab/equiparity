@@ -105,6 +105,15 @@ script docstring).
 ## Pending
 
 - Tier 3 learning curve (box A, in flight) — title verdict rule prespecified.
-- T4-1 frozen backbones: MACE-MP-0 (parity-labelled `128x0e+128x1o+128x2e+128x3o`, verified
-  loadable) vs eSEN. Declared: MACE-MP-0 head structurally zero; eSEN head false-flags ~0.9.
+- T4-1 frozen backbones — HALF MEASURED. MACE-MP-0 (parity-labelled
+  `128x0e+128x1o+128x2e+128x3o`) frozen + trained O(3) head: **false-flag 0.0000, OOD
+  violations exactly 0.0 for all 2,000 crystals, all 3 seeds** (declared structural zero
+  CONFIRMED); test MAE 0.158 with a stated expressivity ceiling (a linear head from these
+  irreps has no path to the 2o output component — noted honestly, does not affect the zero).
+  `results/t4_frozen_backbone.json`, `results/t4/mace_mp0_seed*_ood.npy`.
+  eSEN arm BLOCKED on a gated checkpoint: every released eSEN model lives in the gated
+  HF repo facebook/OMAT24 (401 anonymously). USER ACTION: accept the FAIR Chemistry License
+  at https://huggingface.co/facebook/OMAT24, create a read token, then
+  `HF_TOKEN=<token> third_party/venvs/fairchem1/bin/python scripts/t4_cache_esen_features.py`
+  and `uv run python scripts/t4_frozen_backbone.py --backbone esen`. Scripts ready.
 - H-1 full curves (nequip/allegro/EqV2 retrains, box A).
