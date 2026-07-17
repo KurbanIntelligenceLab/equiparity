@@ -1,0 +1,319 @@
+{
+ "arms": {
+  "allegro/o3": {
+   "ewt10_mean": 0.3048780487804878,
+   "ewt25_mean": 0.508130081300813,
+   "ewt5_mean": 0.1016260162601626,
+   "fnorm_nonzero_mean": 1.8327338879855877,
+   "fnorm_nonzero_std": 0.08681876588153344,
+   "n_seeds": 3
+  },
+  "allegro/so3": {
+   "ewt10_mean": 0.0,
+   "ewt25_mean": 0.3048780487804878,
+   "ewt5_mean": 0.0,
+   "fnorm_nonzero_mean": 2.063121797098878,
+   "fnorm_nonzero_std": 0.1553726185824783,
+   "n_seeds": 3
+  },
+  "equiformer_v2/so3": {
+   "ewt10_mean": 0.4065040650406504,
+   "ewt25_mean": 1.1178861788617886,
+   "ewt5_mean": 0.1016260162601626,
+   "fnorm_nonzero_mean": 1.6830590116302107,
+   "fnorm_nonzero_std": 0.0741424068115243,
+   "n_seeds": 3
+  },
+  "mace/o3": {
+   "ewt10_mean": 0.508130081300813,
+   "ewt25_mean": 1.3211382113821137,
+   "ewt5_mean": 0.1016260162601626,
+   "fnorm_nonzero_mean": 1.8583816774754152,
+   "fnorm_nonzero_std": 0.058324067942377475,
+   "n_seeds": 3
+  },
+  "mace/so3": {
+   "ewt10_mean": 0.4065040650406504,
+   "ewt25_mean": 1.524390243902439,
+   "ewt5_mean": 0.2032520325203252,
+   "fnorm_nonzero_mean": 1.9895611807694322,
+   "fnorm_nonzero_std": 0.06725967236376387,
+   "n_seeds": 3
+  },
+  "nequip/o3": {
+   "ewt10_mean": 0.1016260162601626,
+   "ewt25_mean": 1.0162601626016259,
+   "ewt5_mean": 0.1016260162601626,
+   "fnorm_nonzero_mean": 1.7250877739832136,
+   "fnorm_nonzero_std": 0.05266822880888862,
+   "n_seeds": 3
+  },
+  "nequip/so3": {
+   "ewt10_mean": 0.6097560975609756,
+   "ewt25_mean": 1.3211382113821137,
+   "ewt5_mean": 0.3048780487804878,
+   "fnorm_nonzero_mean": 1.898274776666417,
+   "fnorm_nonzero_std": 0.055179196241378736,
+   "n_seeds": 3
+  }
+ },
+ "benchmark_table5_arxiv2602_04323": {
+  "CEITNet": {
+   "ewt10": 5.8,
+   "ewt25": 21.98,
+   "ewt5": 2.72,
+   "fnorm": 0.517
+  },
+  "ETGNN": {
+   "ewt10": 0.0,
+   "ewt25": 0.0,
+   "ewt5": 0.0,
+   "fnorm": 0.873
+  },
+  "GMTNet": {
+   "ewt10": 1.48,
+   "ewt25": 6.29,
+   "ewt5": 1.11,
+   "fnorm": 0.752
+  },
+  "GoeCTP": {
+   "ewt10": 1.14,
+   "ewt25": 2.59,
+   "ewt5": 0.04,
+   "fnorm": 0.778
+  }
+ },
+ "runs": {
+  "allegro_o3_piezoelectric_seed0": {
+   "core": "allegro",
+   "ewt10": 0.3048780487804878,
+   "ewt25": 0.3048780487804878,
+   "ewt5": 0.0,
+   "fnorm_all": 1.7823265168569935,
+   "fnorm_nonzero": 1.8031201406667465,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "o3"
+  },
+  "allegro_o3_piezoelectric_seed1": {
+   "core": "allegro",
+   "ewt10": 0.3048780487804878,
+   "ewt25": 0.6097560975609756,
+   "ewt5": 0.0,
+   "fnorm_all": 1.9074090472607856,
+   "fnorm_nonzero": 1.9304851260496767,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "o3"
+  },
+  "allegro_o3_piezoelectric_seed2": {
+   "core": "allegro",
+   "ewt10": 0.3048780487804878,
+   "ewt25": 0.6097560975609756,
+   "ewt5": 0.3048780487804878,
+   "fnorm_all": 1.7445895617917895,
+   "fnorm_nonzero": 1.7645963972403405,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "o3"
+  },
+  "allegro_so3_piezoelectric_seed0": {
+   "core": "allegro",
+   "ewt10": 0.0,
+   "ewt25": 0.3048780487804878,
+   "ewt5": 0.0,
+   "fnorm_all": 1.9035200172832938,
+   "fnorm_nonzero": 1.925337605876308,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "so3"
+  },
+  "allegro_so3_piezoelectric_seed1": {
+   "core": "allegro",
+   "ewt10": 0.0,
+   "ewt25": 0.3048780487804878,
+   "ewt5": 0.0,
+   "fnorm_all": 2.206279229703329,
+   "fnorm_nonzero": 2.2315241338516305,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "so3"
+  },
+  "allegro_so3_piezoelectric_seed2": {
+   "core": "allegro",
+   "ewt10": 0.0,
+   "ewt25": 0.3048780487804878,
+   "ewt5": 0.0,
+   "fnorm_all": 2.008375266038733,
+   "fnorm_nonzero": 2.032503651568696,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "so3"
+  },
+  "equiformer_v2_so3_piezoelectric_seed0": {
+   "core": "equiformer_v2",
+   "ewt10": 0.0,
+   "ewt25": 0.9146341463414633,
+   "ewt5": 0.0,
+   "fnorm_all": 1.7474906356008608,
+   "fnorm_nonzero": 1.7674329186870477,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "so3"
+  },
+  "equiformer_v2_so3_piezoelectric_seed1": {
+   "core": "equiformer_v2",
+   "ewt10": 1.2195121951219512,
+   "ewt25": 2.1341463414634148,
+   "ewt5": 0.3048780487804878,
+   "fnorm_all": 1.6345021059295781,
+   "fnorm_nonzero": 1.6534370628283621,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "so3"
+  },
+  "equiformer_v2_so3_piezoelectric_seed2": {
+   "core": "equiformer_v2",
+   "ewt10": 0.0,
+   "ewt25": 0.3048780487804878,
+   "ewt5": 0.0,
+   "fnorm_all": 1.6099070007686784,
+   "fnorm_nonzero": 1.628307053375222,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "so3"
+  },
+  "mace_o3_piezoelectric_seed0": {
+   "core": "mace",
+   "ewt10": 0.3048780487804878,
+   "ewt25": 2.1341463414634148,
+   "ewt5": 0.3048780487804878,
+   "fnorm_all": 1.8196151726975156,
+   "fnorm_nonzero": 1.8403860861136772,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "o3"
+  },
+  "mace_o3_piezoelectric_seed1": {
+   "core": "mace",
+   "ewt10": 0.6097560975609756,
+   "ewt25": 1.2195121951219512,
+   "ewt5": 0.0,
+   "fnorm_all": 1.7928354498562367,
+   "fnorm_nonzero": 1.8111761287717807,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "o3"
+  },
+  "mace_o3_piezoelectric_seed2": {
+   "core": "mace",
+   "ewt10": 0.6097560975609756,
+   "ewt25": 0.6097560975609756,
+   "ewt5": 0.0,
+   "fnorm_all": 1.9009667613769674,
+   "fnorm_nonzero": 1.9235828175407872,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "o3"
+  },
+  "mace_so3_piezoelectric_seed0": {
+   "core": "mace",
+   "ewt10": 1.2195121951219512,
+   "ewt25": 3.353658536585366,
+   "ewt5": 0.6097560975609756,
+   "fnorm_all": 1.9782005225207646,
+   "fnorm_nonzero": 2.0009279497732044,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "so3"
+  },
+  "mace_so3_piezoelectric_seed1": {
+   "core": "mace",
+   "ewt10": 0.0,
+   "ewt25": 0.3048780487804878,
+   "ewt5": 0.0,
+   "fnorm_all": 2.026272713602229,
+   "fnorm_nonzero": 2.050413207503158,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "so3"
+  },
+  "mace_so3_piezoelectric_seed2": {
+   "core": "mace",
+   "ewt10": 0.0,
+   "ewt25": 0.9146341463414633,
+   "ewt5": 0.0,
+   "fnorm_all": 1.8950689289583107,
+   "fnorm_nonzero": 1.9173423850319338,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "so3"
+  },
+  "nequip_o3_piezoelectric_seed0": {
+   "core": "nequip",
+   "ewt10": 0.0,
+   "ewt25": 0.9146341463414633,
+   "ewt5": 0.0,
+   "fnorm_all": 1.7482180850180542,
+   "fnorm_nonzero": 1.7682628602731063,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "o3"
+  },
+  "nequip_o3_piezoelectric_seed1": {
+   "core": "nequip",
+   "ewt10": 0.0,
+   "ewt25": 1.8292682926829267,
+   "ewt5": 0.0,
+   "fnorm_all": 1.7241774991016277,
+   "fnorm_nonzero": 1.7405930369974223,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "o3"
+  },
+  "nequip_o3_piezoelectric_seed2": {
+   "core": "nequip",
+   "ewt10": 0.3048780487804878,
+   "ewt25": 0.3048780487804878,
+   "ewt5": 0.3048780487804878,
+   "fnorm_all": 1.64796442787933,
+   "fnorm_nonzero": 1.6664074246791116,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "o3"
+  },
+  "nequip_so3_piezoelectric_seed0": {
+   "core": "nequip",
+   "ewt10": 0.6097560975609756,
+   "ewt25": 0.9146341463414633,
+   "ewt5": 0.3048780487804878,
+   "fnorm_all": 1.9298664615392935,
+   "fnorm_nonzero": 1.9516506815421628,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "so3"
+  },
+  "nequip_so3_piezoelectric_seed1": {
+   "core": "nequip",
+   "ewt10": 0.3048780487804878,
+   "ewt25": 1.2195121951219512,
+   "ewt5": 0.0,
+   "fnorm_all": 1.8790668673301785,
+   "fnorm_nonzero": 1.9017199170314094,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "so3"
+  },
+  "nequip_so3_piezoelectric_seed2": {
+   "core": "nequip",
+   "ewt10": 0.9146341463414633,
+   "ewt25": 1.8292682926829267,
+   "ewt5": 0.6097560975609756,
+   "fnorm_all": 1.8219421480185796,
+   "fnorm_nonzero": 1.841453731425679,
+   "n_nonzero_label": 328,
+   "n_test": 332,
+   "parity": "so3"
+  }
+ }
+}

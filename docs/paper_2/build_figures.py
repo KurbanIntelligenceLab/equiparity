@@ -220,6 +220,31 @@ def load(name, cols):
     return {c: np.array([float(r[c]) for r in rows]) for c in cols}
 
 
+def load_rows(name: str) -> list[dict] | None:
+    """Load an author-supplied series as raw rows, identity columns intact."""
+    import csv
+    from pathlib import Path
+    p = Path(DATA) / name
+    if not p.exists() or p.stat().st_size < 40:
+        return None
+    with p.open() as f:
+        rows = list(csv.DictReader(f))
+    return rows or None
+
+
+def arm_curves(rows: list[dict], x_col: str) -> dict[tuple[str, str], dict[str, np.ndarray]]:
+    """Group rows by (core, arm) into float-column arrays sorted along x_col."""
+    grouped: dict[tuple[str, str], list[dict]] = {}
+    for r in rows:
+        grouped.setdefault((r["core"], r["arm"]), []).append(r)
+    curves = {}
+    for key, rr in grouped.items():
+        rr.sort(key=lambda r: float(r[x_col]))
+        curves[key] = {c: np.array([float(r[c]) for r in rr])
+                       for c in rr[0] if c not in ("core", "arm", "structure")}
+    return curves
+
+
 def needs_data(ax, fname, what):
     ax.set_facecolor("#FFF4F4")
     for s in ax.spines.values():
@@ -406,16 +431,24 @@ def fig2():
 
     # ---- b ---------------------------------------------------------------------------
     ax = fig.add_subplot(gs[1]); panel(ax, "b", dx=-0.17)
-    full = load("fig2b_thresholds.csv", ["tau"])   # optional 25-point version
+    full = load_rows("fig2b_thresholds.csv")   # optional 25-point version
+    curves = arm_curves(full, "tau") if full else None
     ax.set_xscale("log"); ax.set_xlim(7e-5, 1.6); ax.set_ylim(-0.04, 1.10)
     ax.axvspan(7e-5, TAU, color=FAINT, alpha=0.55, lw=0)
     ax.axvline(TAU, color=IMPOSS, lw=0.6, ls=(0, (3, 2)))
     for core in ["NequIP", "Allegro", "MACE", "EquiformerV2"]:
-        ax.plot(THR_TAU, THR[(core, "SO(3)")], color=SO3, lw=0.9,
-                marker=CORE_MK[core], ms=2.8, mfc="white", mew=0.7, zorder=3)
-        if (core, "O(3)") in THR:
-            ax.plot(THR_TAU, THR[(core, "O(3)")], color=O3, lw=0.9,
-                    marker=CORE_MK[core], ms=2.8, mfc="white", mew=0.7, zorder=3)
+        for arm, col in (("SO(3)", SO3), ("O(3)", O3)):
+            if curves is not None:
+                if (core, arm) not in curves:
+                    continue
+                c = curves[(core, arm)]
+                # marker on every 6th of the 25 log-spaced points = the 5 tabulated decades
+                ax.plot(c["tau"], c["false_flag_fraction"], color=col, lw=0.9,
+                        marker=CORE_MK[core], ms=2.8, mfc="white", mew=0.7,
+                        markevery=6, zorder=3)
+            elif (core, arm) in THR:
+                ax.plot(THR_TAU, THR[(core, arm)], color=col, lw=0.9,
+                        marker=CORE_MK[core], ms=2.8, mfc="white", mew=0.7, zorder=3)
     ax.text(1.15e-4, 0.83, "SO(3)", fontsize=6.4 * S, color=SO3, fontweight="bold",
             va="center", ha="left")
     ax.text(1.15e-4, 0.12, "O(3)", fontsize=6.4 * S, color=O3, fontweight="bold",
@@ -579,14 +612,16 @@ NAMED = [
     # formula, structure, class, rotation forbids?, O(3), NequIP, Allegro, MACE, EqV2
     ("Al$_2$O$_3$", "corundum",   "non-cubic", False, 2.7e-7, 1.128, 0.723, 0.837, 0.212),
     ("TiO$_2$",     "rutile",     "non-cubic", False, 2.8e-7, 0.260, 0.582, 0.245, 0.187),
-    ("C",           "diamond",    "m-3m",      True,  5.1e-7, 0.000, 0.000, 0.000, 0.033),
-    ("Si",          "diamond",    "m-3m",      True,  4.8e-8, 0.000, 0.000, 0.000, 0.004),
-    ("SrTiO$_3$",   "perovskite", "m-3m",      True,  1.4e-7, 0.000, 0.000, 0.000, 0.011),
-    ("CaF$_2$",     "fluorite",   "m-3m",      True,  4.0e-7, 0.000, 0.000, 0.000, 0.008),
-    ("MgO",         "rocksalt",   "m-3m",      True,  5.7e-8, 0.000, 0.000, 0.000, 0.000),
-    ("NaCl",        "rocksalt",   "m-3m",      True,  5.4e-8, 0.000, 0.000, 0.000, 0.000),
-    ("KCl",         "rocksalt",   "m-3m",      True,  3.0e-9, 0.000, 0.000, 0.000, 0.000),
-    ("CsCl",        "CsCl-type",  "m-3m",      True,  3.3e-9, 0.000, 0.000, 0.000, 0.000),
+    # m-3m SO(3) entries are the full-precision run outputs (Supplementary Table 14): the
+    # matched cores sit at the same machine floor as O(3) there, forced by rotation alone.
+    ("C",           "diamond",    "m-3m",      True,  5.1e-7, 5.9e-7, 1.3e-6, 1.5e-6, 0.033),
+    ("Si",          "diamond",    "m-3m",      True,  4.8e-8, 1.3e-8, 3.1e-8, 9.8e-8, 0.004),
+    ("SrTiO$_3$",   "perovskite", "m-3m",      True,  1.4e-7, 3.7e-7, 8.0e-7, 1.9e-7, 0.011),
+    ("CaF$_2$",     "fluorite",   "m-3m",      True,  4.0e-7, 1.7e-7, 2.0e-7, 1.3e-6, 0.008),
+    ("MgO",         "rocksalt",   "m-3m",      True,  5.7e-8, 4.9e-8, 2.4e-8, 1.3e-8, 1.9e-7),
+    ("NaCl",        "rocksalt",   "m-3m",      True,  5.4e-8, 2.5e-8, 3.5e-8, 2.1e-8, 2.5e-7),
+    ("KCl",         "rocksalt",   "m-3m",      True,  3.0e-9, 7.1e-9, 1.4e-9, 2.3e-9, 5.8e-8),
+    ("CsCl",        "CsCl-type",  "m-3m",      True,  3.3e-9, 9.2e-9, 2.4e-9, 1.1e-9, 6.2e-8),
 ]
 # main text / Supplementary Note 1: the measured even-subspace fraction of the Jacobian,
 # over 20 crystals x 3 seeds x each arm. The manuscript reports the RANGES, not the points.
@@ -597,7 +632,7 @@ def fig5():
     fig = plt.figure(figsize=(W2, 126 * MM))
     gs = fig.add_gridspec(2, 2, height_ratios=[1.0, 1.25], width_ratios=[1.35, 1.0],
                           wspace=0.42, hspace=0.52,
-                          left=0.105, right=0.982, top=0.92, bottom=0.085)
+                          left=0.135, right=0.982, top=0.92, bottom=0.085)
 
     # ---- a : the crystals SO(3) models get right are the ones the theory names ---------
     ax = fig.add_subplot(gs[0, 0]); panel(ax, "a", dx=-0.135)
@@ -634,11 +669,19 @@ def fig5():
     # ---- b : the guarantee is differentiable -------------------------------------------
     ax = fig.add_subplot(gs[0, 1]); panel(ax, "b", dx=-0.30)
     ax.set_yscale("log"); ax.set_ylim(4e-8, 4.0); ax.set_xlim(0.35, 1.65)
+    pts = load_rows("fig5b_jacobian_points.csv")
     for xpos, arm, col in [(0.75, "O(3)", O3), (1.25, "SO(3)", SO3)]:
         lo, hi = JAC[arm]
         ax.add_patch(Rectangle((xpos - 0.16, lo), 0.32, hi - lo, facecolor=col, alpha=0.40,
                                edgecolor=col, lw=0.8, zorder=3))
-        ax.plot([xpos], [(lo * hi) ** 0.5], marker="o", ms=3.2, color=col, zorder=4)
+        if pts is not None:
+            vals = np.array([float(r["value"]) for r in pts if r["arm"] == arm])
+            rng = np.random.default_rng(0)
+            jit = xpos + rng.uniform(-0.13, 0.13, size=vals.size)
+            ax.plot(jit, vals, ls="none", marker="o", ms=1.1, color=col, alpha=0.45,
+                    mec="none", zorder=4)
+        else:
+            ax.plot([xpos], [(lo * hi) ** 0.5], marker="o", ms=3.2, color=col, zorder=4)
         ax.text(xpos, hi * 1.9, f"{lo:.2g}\nto {hi:.2g}", ha="center", va="bottom",
                 fontsize=5.2 * S, color=col)
     ax.annotate("", xy=(0.52, 9.7e-7), xytext=(0.52, 0.42),
@@ -677,9 +720,10 @@ def fig5():
     ax.set_xlabel(r"predicted $\Vert e \Vert_F$  (C m$^{-2}$),  symmetric-log with a true zero")
     ax.text(1.4e-2, len(NAMED) - 0.40, "physically impossible", fontsize=5.8 * S, color=SO3,
             fontweight="bold", ha="left", va="center")
-    ax.text(2.0e-6, 3.5, "shaded rows, class m$\\bar{3}$m: rotation alone forbids a response, so\n"
-                         "the three exactly-equivariant SO(3) cores return a true zero.\n"
-                         "EquiformerV2, equivariant only approximately, still fails on two",
+    ax.text(1.2e-4, 2.0, "shaded rows, class m$\\bar{3}$m:\nrotation alone forbids a response, so\n"
+                         "the three exactly-equivariant SO(3)\n"
+                         "cores sit at the machine floor, like\n"
+                         "O(3). EquiformerV2, equivariant only\napproximately, fails on two",
             fontsize=5.2 * S, color=GREY, ha="center", va="center", linespacing=1.35,
             bbox=dict(boxstyle="square,pad=0.2", fc="white", ec="none"))
     ax.text(2.0e-6, 8.55, "the two non-cubic rows are the test:\n"
@@ -706,12 +750,42 @@ def figS1():
     """False-flag fraction vs threshold, RAW coordinate variant. Not tabulated anywhere."""
     fig, ax = plt.subplots(figsize=(W1, 74 * MM))
     fig.subplots_adjust(left=0.15, right=0.97, top=0.90, bottom=0.22)
-    d = load("figS1_raw_thresholds.csv", ["tau"])
-    if d is None:
+    rows = load_rows("figS1_raw_thresholds.csv")
+    if rows is None:
         needs_data(ax, "figS1_raw_thresholds.csv",
                    "false-flag fraction vs threshold,\nRAW coordinate variant\n"
                    "25 thresholds $\\times$ 7 arms\n"
                    "the manuscript tabulates only the\nidealized variant, and only 5 of the 25")
+        save(fig, "figS1_raw_thresholds")
+        return
+    curves = arm_curves(rows, "tau")
+    ax.set_xscale("log")
+    ax.set_xlim(7e-5, 1.6)
+    ax.set_ylim(-0.04, 1.10)
+    ax.axvspan(7e-5, TAU, color=FAINT, alpha=0.55, lw=0)
+    ax.axvline(TAU, color=IMPOSS, lw=0.6, ls=(0, (3, 2)))
+    for core in ["NequIP", "Allegro", "MACE", "EquiformerV2"]:
+        for arm, col in (("SO(3)", SO3), ("O(3)", O3)):
+            if (core, arm) not in curves:
+                continue
+            c = curves[(core, arm)]
+            y, sd = c["false_flag_fraction"], c["sd"]
+            ax.fill_between(c["tau"], y - sd, y + sd, color=col, alpha=0.18, lw=0)
+            ax.plot(c["tau"], y, color=col, lw=0.9, marker=CORE_MK[core], ms=2.8,
+                    mfc="white", mew=0.7, markevery=6, zorder=3)
+    ax.text(1.15e-4, 0.83, "SO(3)", fontsize=6.4 * S, color=SO3, fontweight="bold",
+            va="center", ha="left")
+    ax.text(1.15e-4, 0.12, "O(3)", fontsize=6.4 * S, color=O3, fontweight="bold",
+            va="center", ha="left")
+    ax.text(TAU * 1.25, 0.30, "operating\npoint", fontsize=5.6 * S, color=IMPOSS)
+    ax.set_xlabel(r"violation threshold $\tau$  (C m$^{-2}$)")
+    ax.set_ylabel("false-flag fraction")
+    despine(ax)
+    ax.legend(handles=[Line2D([], [], color=GREY, marker=CORE_MK[c], ms=2.8, lw=0.9,
+                              mfc="white", mew=0.7, label=c)
+                       for c in ["NequIP", "Allegro", "MACE", "EquiformerV2"]],
+              loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=4, handletextpad=0.5,
+              columnspacing=1.0)
     save(fig, "figS1_raw_thresholds")
 
 
@@ -719,19 +793,56 @@ def figS2():
     """The rutile polar-distortion sweep. Its 33-amplitude array is not in the manuscript."""
     fig, ax = plt.subplots(figsize=(W1, 74 * MM))
     fig.subplots_adjust(left=0.15, right=0.97, top=0.90, bottom=0.22)
-    d = load("fig5a_rutile_sweep.csv", ["delta"])
-    if d is None:
+    rows = load_rows("fig5a_rutile_sweep.csv")
+    if rows is None:
         needs_data(ax, "fig5a_rutile_sweep.csv",
                    "rutile TiO$_2$ polar-distortion sweep\n33 amplitudes $\\times$ 7 arms\n"
                    "verified endpoints at $\\delta = 0$:\nO(3) 1.9--9.1$\\times10^{-7}$, "
                    "SO(3) 0.09--0.28")
+        save(fig, "figS2_rutile_sweep")
+        return
+    curves = arm_curves(rows, "delta")
+    # the sweep is log-spaced up to delta = 0.05 and linear beyond: symlog shows both regimes,
+    # with a genuine 0 for the centrosymmetric parent
+    ax.set_yscale("log")
+    ax.set_ylim(5e-8, 30.0)
+    ax.set_xscale("symlog", linthresh=1e-3, linscale=0.35)
+    ax.set_xlim(-1.5e-4, 1.35)
+    ax.set_xticks([0, 1e-3, 1e-2, 1e-1, 1])
+    ax.set_xticklabels(["0", r"$10^{-3}$", r"$10^{-2}$", r"$10^{-1}$", "1"])
+    ax.axvline(1.0, color=GREY, lw=0.6, ls=(0, (3, 2)))
+    ax.text(1.0, 1.2e-7, "physical\ndistortion ", fontsize=5.2 * S, color=GREY,
+            ha="right", va="bottom")
+    for core in ["NequIP", "Allegro", "MACE", "EquiformerV2"]:
+        for arm, col in (("SO(3)", SO3), ("O(3)", O3)):
+            if (core, arm) not in curves:
+                continue
+            c = curves[(core, arm)]
+            ax.plot(c["delta"], c["magnitude"], color=col, lw=0.9, marker=CORE_MK[core],
+                    ms=2.4, mfc="white", mew=0.6, markevery=4, zorder=3)
+    ax.text(1.3e-3, 4.5, "SO(3): spurious floor, present at $\\delta = 0$",
+            fontsize=5.6 * S, color=SO3, fontweight="bold", va="bottom", ha="left")
+    ax.text(1.3e-3, 4e-7, "O(3): arithmetic floor,\nrises with the physics",
+            fontsize=5.6 * S, color=O3, fontweight="bold", va="bottom", ha="left")
+    ax.set_xlabel(r"polar distortion $\delta$  (fraction of the physical mode, symlog)")
+    ax.set_ylabel(r"predicted $\Vert e \Vert_F$  (C m$^{-2}$)")
+    despine(ax)
+    ax.legend(handles=[Line2D([], [], color=GREY, marker=CORE_MK[c], ms=2.8, lw=0.9,
+                              mfc="white", mew=0.7, label=c)
+                       for c in ["NequIP", "Allegro", "MACE", "EquiformerV2"]],
+              loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=4, handletextpad=0.5,
+              columnspacing=1.0)
     save(fig, "figS2_rutile_sweep")
 
 
 if __name__ == "__main__":
     print("Building figures to Nature specification (88 / 180 mm, Arial, Okabe-Ito)...")
     fig1(); fig2(); fig3(); fig4(); fig5(); figS1(); figS2()
-    print("\nEvery number above is traceable to a Supplementary Table. Nothing was invented.")
-    print("Three series are not in the manuscript and are marked AUTHOR DATA REQUIRED:")
-    print("  figdata/fig5a_rutile_sweep.csv, figdata/fig5b_jacobian_points.csv,"
-          " figdata/figS1_raw_thresholds.csv")
+    print("\nEvery number above is traceable to a Supplementary Table or a figdata/ export.")
+    missing = [f for f in ("fig5a_rutile_sweep.csv", "fig5b_jacobian_points.csv",
+                           "figS1_raw_thresholds.csv") if load_rows(f) is None]
+    if missing:
+        print("Series still marked AUTHOR DATA REQUIRED: " + ", ".join(missing))
+    else:
+        print("All three author-supplied series were found in figdata/ and drawn"
+              " (export via scripts/export_figdata.py).")

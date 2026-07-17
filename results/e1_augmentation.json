@@ -467,38 +467,182 @@
   "nequip": {
    "n_zero_labelled": 1016.0,
    "n_real_tensor": 2633.0,
-   "median_violation_on_trained_zeros": 0.12002161145210266,
+   "median_violation_on_trained_zeros": 0.12002160896857579,
    "false_flag_on_trained_zeros": 0.8953412073490813,
-   "train_mae_zero_rows": 0.018074356209674968,
-   "train_mae_real_rows": 0.08818765917051934,
-   "mean_abs_target_real_rows": 0.14541797965508613
+   "train_mae_zero_rows": 0.018074356940363228,
+   "train_mae_real_rows": 0.08818765957540779,
+   "mean_abs_target_real_rows": 0.14541797965508613,
+   "n_zero_labelled_std": 0.0,
+   "n_real_tensor_std": 0.0,
+   "median_violation_on_trained_zeros_std": 0.004682262653808973,
+   "false_flag_on_trained_zeros_std": 0.002048883857742253,
+   "train_mae_zero_rows_std": 0.0006800960390091099,
+   "train_mae_real_rows_std": 0.0026559069841476882,
+   "mean_abs_target_real_rows_std": 0.0,
+   "per_seed": [
+    {
+     "n_zero_labelled": 1016,
+     "n_real_tensor": 2633,
+     "median_violation_on_trained_zeros": 0.12212912738323212,
+     "false_flag_on_trained_zeros": 0.8946850393700787,
+     "train_mae_zero_rows": 0.018612290110562014,
+     "train_mae_real_rows": 0.09024998248025526,
+     "mean_abs_target_real_rows": 0.14541797965508613
+    },
+    {
+     "n_zero_labelled": 1016,
+     "n_real_tensor": 2633,
+     "median_violation_on_trained_zeros": 0.12327973544597626,
+     "false_flag_on_trained_zeros": 0.8976377952755905,
+     "train_mae_zero_rows": 0.018300871485657108,
+     "train_mae_real_rows": 0.0891221939503059,
+     "mean_abs_target_real_rows": 0.14541797965508613
+    },
+    {
+     "n_zero_labelled": 1016,
+     "n_real_tensor": 2633,
+     "median_violation_on_trained_zeros": 0.11465596407651901,
+     "false_flag_on_trained_zeros": 0.8937007874015748,
+     "train_mae_zero_rows": 0.017309909224870565,
+     "train_mae_real_rows": 0.08519080229566219,
+     "mean_abs_target_real_rows": 0.14541797965508613
+    }
+   ]
   },
   "allegro": {
    "n_zero_labelled": 1016.0,
    "n_real_tensor": 2633.0,
-   "median_violation_on_trained_zeros": 0.3291325569152832,
+   "median_violation_on_trained_zeros": 0.32913242777188617,
    "false_flag_on_trained_zeros": 0.8989501312335957,
-   "train_mae_zero_rows": 0.04451838666754895,
-   "train_mae_real_rows": 0.1283875603889274,
-   "mean_abs_target_real_rows": 0.14541797965508613
+   "train_mae_zero_rows": 0.04451838949878717,
+   "train_mae_real_rows": 0.12838755995510892,
+   "mean_abs_target_real_rows": 0.14541797965508613,
+   "n_zero_labelled_std": 0.0,
+   "n_real_tensor_std": 0.0,
+   "median_violation_on_trained_zeros_std": 0.010699788029219833,
+   "false_flag_on_trained_zeros_std": 0.000568258138966166,
+   "train_mae_zero_rows_std": 0.002314696817278087,
+   "train_mae_real_rows_std": 0.002524906232209814,
+   "mean_abs_target_real_rows_std": 0.0,
+   "per_seed": [
+    {
+     "n_zero_labelled": 1016,
+     "n_real_tensor": 2633,
+     "median_violation_on_trained_zeros": 0.3366512358188629,
+     "false_flag_on_trained_zeros": 0.8996062992125984,
+     "train_mae_zero_rows": 0.045903978752302434,
+     "train_mae_real_rows": 0.12884564096205667,
+     "mean_abs_target_real_rows": 0.14541797965508613
+    },
+    {
+     "n_zero_labelled": 1016,
+     "n_real_tensor": 2633,
+     "median_violation_on_trained_zeros": 0.3168826699256897,
+     "false_flag_on_trained_zeros": 0.8986220472440944,
+     "train_mae_zero_rows": 0.04184621916961108,
+     "train_mae_real_rows": 0.12566497321690082,
+     "mean_abs_target_real_rows": 0.14541797965508613
+    },
+    {
+     "n_zero_labelled": 1016,
+     "n_real_tensor": 2633,
+     "median_violation_on_trained_zeros": 0.33386337757110596,
+     "false_flag_on_trained_zeros": 0.8986220472440944,
+     "train_mae_zero_rows": 0.045804970574447997,
+     "train_mae_real_rows": 0.13065206568636928,
+     "mean_abs_target_real_rows": 0.14541797965508613
+    }
+   ]
   },
   "equiformer_v2": {
    "n_zero_labelled": 1016.0,
    "n_real_tensor": 2633.0,
-   "median_violation_on_trained_zeros": 0.11527590780283355,
+   "median_violation_on_trained_zeros": 0.11527590780283363,
    "false_flag_on_trained_zeros": 0.9219160104986877,
-   "train_mae_zero_rows": 0.02028061613781786,
+   "train_mae_zero_rows": 0.020280616137817856,
    "train_mae_real_rows": 0.11974430078277369,
-   "mean_abs_target_real_rows": 0.14541797965508613
+   "mean_abs_target_real_rows": 0.14541797965508613,
+   "n_zero_labelled_std": 0.0,
+   "n_real_tensor_std": 0.0,
+   "median_violation_on_trained_zeros_std": 0.018295831929040128,
+   "false_flag_on_trained_zeros_std": 0.004953959603196021,
+   "train_mae_zero_rows_std": 0.002616448235624005,
+   "train_mae_real_rows_std": 0.011876025023302735,
+   "mean_abs_target_real_rows_std": 0.0,
+   "per_seed": [
+    {
+     "n_zero_labelled": 1016,
+     "n_real_tensor": 2633,
+     "median_violation_on_trained_zeros": 0.13635124187787312,
+     "false_flag_on_trained_zeros": 0.9271653543307087,
+     "train_mae_zero_rows": 0.022992273003242428,
+     "train_mae_real_rows": 0.11684139055861606,
+     "mean_abs_target_real_rows": 0.14541797965508613
+    },
+    {
+     "n_zero_labelled": 1016,
+     "n_real_tensor": 2633,
+     "median_violation_on_trained_zeros": 0.1060071718882647,
+     "false_flag_on_trained_zeros": 0.9212598425196851,
+     "train_mae_zero_rows": 0.02007847273701281,
+     "train_mae_real_rows": 0.13280264197713026,
+     "mean_abs_target_real_rows": 0.14541797965508613
+    },
+    {
+     "n_zero_labelled": 1016,
+     "n_real_tensor": 2633,
+     "median_violation_on_trained_zeros": 0.10346930964236303,
+     "false_flag_on_trained_zeros": 0.9173228346456693,
+     "train_mae_zero_rows": 0.01777110267319833,
+     "train_mae_real_rows": 0.10958886981257471,
+     "mean_abs_target_real_rows": 0.14541797965508613
+    }
+   ]
   },
   "mace": {
    "n_zero_labelled": 1016.0,
    "n_real_tensor": 2633.0,
-   "median_violation_on_trained_zeros": 0.08695973952611287,
+   "median_violation_on_trained_zeros": 0.08695977181196213,
    "false_flag_on_trained_zeros": 0.895997375328084,
-   "train_mae_zero_rows": 0.013969207079453046,
-   "train_mae_real_rows": 0.0862829907002124,
-   "mean_abs_target_real_rows": 0.14541797933582198
+   "train_mae_zero_rows": 0.013969205905470516,
+   "train_mae_real_rows": 0.08628299039025773,
+   "mean_abs_target_real_rows": 0.14541797933582198,
+   "n_zero_labelled_std": 0.0,
+   "n_real_tensor_std": 0.0,
+   "median_violation_on_trained_zeros_std": 0.006120844455738503,
+   "false_flag_on_trained_zeros_std": 0.0024769798015980104,
+   "train_mae_zero_rows_std": 0.0012044877865330127,
+   "train_mae_real_rows_std": 0.006678473160647655,
+   "mean_abs_target_real_rows_std": 0.0,
+   "per_seed": [
+    {
+     "n_zero_labelled": 1016,
+     "n_real_tensor": 2633,
+     "median_violation_on_trained_zeros": 0.09024778008460999,
+     "false_flag_on_trained_zeros": 0.8937007874015748,
+     "train_mae_zero_rows": 0.013599194355150222,
+     "train_mae_real_rows": 0.09389568783525391,
+     "mean_abs_target_real_rows": 0.14541797933582198
+    },
+    {
+     "n_zero_labelled": 1016,
+     "n_real_tensor": 2633,
+     "median_violation_on_trained_zeros": 0.09073393046855927,
+     "false_flag_on_trained_zeros": 0.8986220472440944,
+     "train_mae_zero_rows": 0.015315292822230757,
+     "train_mae_real_rows": 0.0835430055670466,
+     "mean_abs_target_real_rows": 0.14541797933582198
+    },
+    {
+     "n_zero_labelled": 1016,
+     "n_real_tensor": 2633,
+     "median_violation_on_trained_zeros": 0.07989760488271713,
+     "false_flag_on_trained_zeros": 0.8956692913385826,
+     "train_mae_zero_rows": 0.01299313053903057,
+     "train_mae_real_rows": 0.08141027776847268,
+     "mean_abs_target_real_rows": 0.14541797933582198
+    }
+   ]
   }
  }
 }

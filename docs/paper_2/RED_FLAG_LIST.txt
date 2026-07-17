@@ -55,6 +55,82 @@ B-5. INDEPENDENT HUMAN VERIFICATION OF THE PROOFS (Supplementary Note 1). AI-dra
 B-6. TWO TO THREE INDEPENDENT HUMAN MOCK REVIEWS.
 
 ================================================================================
+RESOLUTION LOG — 2026-07-16 data-only clearing pass
+================================================================================
+Every flag answerable from existing run outputs was resolved, the verified text
+written into the .tex, and the red macro removed. Artifacts cited per flag.
+Note: this ledger's original inventory (28) missed four macros present in the
+sources: results.tex L170 + supplementary.tex L267/L332 ("figure cannot be
+drawn" placeholders) and results.tex L183 (m-3m exact-zero VERIFY). True total
+was 32; all four extras are cleared below. 15 in-text flags + 4 bibliography
+flags now resolved; 17 remain (BLOCKING experiments + owner items).
+
+CLEARED (flag no. -> resolution; artifact):
+  4  Aktas magnitudes quoted (~1 to 1e-5 pm/V, 0.5% to 2e-7% of poled PZT;
+     NaCl/CaF2 at the bottom) from PhysRevResearch 3, 043221 / arXiv:2109.12074.
+  6  Point-charge dipole bias MEASURED on all 130,831 kept QM9 molecules:
+     median underestimate 17%, IQR 5-27% (mu >= 0.5 D), 18% overestimated;
+     label construction cross-checked to 2e-6 D. results/dipole_bias.json.
+  7  Contamination check: eval/train-val-test identifier overlap = 0/0/0.
+     The 22 zero-norm rows (16 train) are all NON-centrosymmetric (mostly
+     class 432, rotation-forbidden) — the flag's premise was wrong there.
+     results/t0_contamination.json.
+  8  Fnorm/EwT computed for all arms on our test split; benchmark Table 5
+     transcribed from the arXiv:2602.04323 PDF (ETGNN 0.873, GMTNet 0.752,
+     GoeCTP 0.778, CEITNet 0.517 — flag's digits verified). results/fnorm_ewt.json.
+ 15  delta, eta, delta_plus, epsilon measured directly for every arm on the
+     full population; floors and m-3m bounds checked. results/theory_bounds.json.
+ 19-22  Fig 4a means re-derived from checkpoints (all four match); per-seed
+     s.d. filled: NequIP 0.0020, Allegro 0.0006, MACE 0.0025, EqV2 0.0050.
+     results/e1_augmentation.json (in_train_control.*_std).
+ 23  Four-decimal agreement confirmed coincidental: 0.895333 (eval population)
+     vs 0.895341 (in-training control). results/stats.json + e1_augmentation.json.
+ 24  0.9550 vs 0.9570 reconciled: fresh single seeded draw per training seed in
+     E4 (per-seed 0.9525/0.9600/0.9525); stated in the stab:e4 caption.
+     results/e4_inversion_averaging.json.
+ EXTRA results.tex L170, supp L267, supp L332: three figdata series exported
+     (fig5a_rutile_sweep.csv 231 rows, fig5b_jacobian_points.csv 360 rows,
+     figS1_raw_thresholds.csv 175 rows + optional fig2b_thresholds.csv);
+     build_figures.py extended to draw figS1/figS2/fig2b(25-pt)/fig5b points;
+     macros removed. scripts/export_figdata.py.
+ EXTRA results.tex L183: m-3m named-compound SO(3) entries are NOT exact zeros
+     but the machine floor (5.7e-10 to 3.2e-6 C/m^2, same as O(3)); Supp
+     Table 14 cells and fig5c now show full-precision values instead of 0.000.
+     results/e6_named_materials.json.
+ BONUS (T0-3/H-5): 95% bootstrap CIs added to stats.json and Supp Tables 3/15.
+ BIB  all four entries fixed: Dumitrescu -> ICLR 2025 @inproceedings, 7 authors;
+     Creed 24 authors from arXiv:2606.07327; optixnet2026 authors from the
+     Crossref record (Klimova et al.); VERIFY comments removed.
+
+Added 2026-07-17 (local eval-only batch):
+ 16  Vector-only reflection probe MEASURED, prediction confirmed: PaiNN
+     (schnetpack 2.2.0), TorchMD-ET (pinned 2a2c913), ViSNet (PyG 2.8.0) all
+     obey the polar law under improper ops to 6e-16..4e-15 and violate the
+     pseudovector law by O(1) -- the vector channel is an untyped 1o object.
+     VERIFY replaced with the measurement. results/h2_probes.json (vector_only),
+     scripts/h2_probe_vector_only.py.
+ T4-3 Two more polar paths measured with the released checkpoints: rutile-type
+     SnO2 (136->102) and anatase TiO2 (141->109), 33 frames each verified at
+     symprec 1e-8. O(3) arms at machine floor at delta=0 (1.2e-7..1.2e-6),
+     SO(3) arms on spurious floors 0.04..1.25 C/m^2 -- the rutile separation
+     is not material-specific. Added to the figS2 caption + one main-text
+     clause. results/t4_distortion_materials.json.
+
+CORRECTED PREMISE (flag stays open, partial evidence added 2026-07-17):
+ 18  "The metrics are already logged" is FALSE: metrics.json holds only
+     final scalars, OOD runs once post-training, only best/latest checkpoints
+     kept (grid_run.log stayed on the destroyed vast boxes; sync_grid.sh only
+     rsynced /workspace/outputs/). Needs re-instrumented retraining of the 12
+     SO(3) piezo runs for the full curve. PARTIAL: OOD false-flag evaluated at
+     the best-validation checkpoint vs the final epoch for all 12 runs -- the
+     fraction RISES with training in every run (e.g. NequIP 0.75-0.80 -> 0.895;
+     medians grow 3-20x); written into the SI above the flag.
+     results/h1_best_vs_final.json.
+
+STILL OPEN: 1 (B-1), 2 (B-3), 3 (H-3), 5 + 17 (B-2), 9-14, 16 (probe), 18,
+25-28 — the BLOCKING/owner set, per NEW_ADDITIONS.MD tiers.
+
+================================================================================
 RED FLAGS, BY SECTION
 ================================================================================
 
@@ -132,6 +208,9 @@ invented. `optixnet2026' PRINTS IN THE BIBLIOGRAPHY as "OptiXNet authors." Resol
 from doi:10.1002/adfm.202523683.
 
 ================================================================================
-TOTAL: 28 in-text red flags + 4 bibliography flags, and 6 BLOCKING items.
+TOTAL: 32 in-text red flags (28 listed above + 4 found by direct grep, see the
+resolution log) + 4 bibliography flags, and 6 BLOCKING items.
+After the 2026-07-16 pass: 15 in-text + 4 bibliography flags resolved from
+existing data; 17 in-text flags remain (BLOCKING experiments + owner items).
 None was guessed, none was invented, none was silently filled.
 ================================================================================

@@ -245,6 +245,59 @@ def variant_shift(runs_by_key) -> tuple[str, dict]:
     return "\n".join(lines), stats
 
 
+def bootstrap_stats(vecs, tau: float = 1e-2, n_boot: int = 2000, seed: int = 0) -> dict:
+    """Percentile-bootstrap 95% CIs for the false-flag fractions (T0-3 / audit item H-5).
+
+    Resamples the 2,000 structures with replacement and recomputes the seed-mean fraction on
+    each resample, so the CI is clustered by structure (the same resample is applied to every
+    seed's vector) and describes the quantity the tables report. Per parity_metrics.py's
+    ``bootstrap_ci``, but over the seed mean rather than a single run. Also emits per-family
+    CIs on the idealized variant for the point-group split of Supplementary Table 15.
+    """
+    records = json.loads((OUT / "ood_spacegroups.json").read_text())["records"]
+    family = np.asarray([r["family"] for r in records])
+    masks = {f: family == f for f in ("m-3m", "m-3", "non-cubic")}
+
+    rng = np.random.default_rng(seed)
+    out: dict[str, dict] = {}
+    for core in CORES:
+        for parity in ("o3", "so3"):
+            for variant in VARIANTS:
+                per_seed = [
+                    vecs[(core, parity, s, variant)]
+                    for s in SEEDS
+                    if (core, parity, s, variant) in vecs
+                ]
+                if not per_seed:
+                    continue
+                v = np.stack(per_seed)  # (n_seeds, n_structures)
+                n = v.shape[1]
+                idx = rng.integers(0, n, (n_boot, n))
+                boots = (v[:, idx] > tau).mean(axis=(0, 2))  # seed-mean ff per resample
+                lo, hi = (float(x) for x in np.quantile(boots, [0.025, 0.975]))
+                entry = dict(
+                    false_flag=float((v > tau).mean()),
+                    ci95=[lo, hi],
+                    n_boot=n_boot,
+                    tau=tau,
+                )
+                if variant == "idealized":
+                    # family CIs: resample within each family separately
+                    fams = {}
+                    for f, mask in masks.items():
+                        vf = v[:, mask]
+                        nf = vf.shape[1]
+                        idx_f = rng.integers(0, nf, (n_boot, nf))
+                        boots_f = (vf[:, idx_f] > tau).mean(axis=(0, 2))
+                        lo_f, hi_f = (float(x) for x in np.quantile(boots_f, [0.025, 0.975]))
+                        fams[f] = dict(
+                            false_flag=float((vf > tau).mean()), ci95=[lo_f, hi_f], n=int(nf)
+                        )
+                    entry["by_family"] = fams
+                out[f"{core}/{parity}/{variant}"] = entry
+    return out
+
+
 def structure_level_tests(vecs) -> dict:
     """Paired Wilcoxon over the 2000 OOD structures: O(3) vs SO(3) violation magnitude."""
     out = {}
@@ -819,6 +872,7 @@ def main() -> None:
     ood_md, ood_stats = ood_table(runs)
     shift_md, shift_stats = variant_shift(runs)
     struct = structure_level_tests(vecs)
+    boot = bootstrap_stats(vecs)
     tim_md = timing_table(runs)
 
     curves_csv_and_fig(runs)
@@ -843,6 +897,7 @@ def main() -> None:
                 ood=ood_stats,
                 variant_shift=shift_stats,
                 structure_level_wilcoxon=struct,
+                bootstrap=boot,
                 note=(
                     "seed-level Wilcoxon has n=3 -> two-sided p floor = 0.25; descriptive only. "
                     "Headline OOD claim tested at structure level (n=2000, paired)."

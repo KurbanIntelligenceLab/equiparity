@@ -185,9 +185,18 @@ def collect(cores: list[str]) -> dict:
                         if lbl in runs:
                             controls.append(in_train_control(runs[lbl]))
                     if controls:
-                        out.setdefault("in_train_control", {})[core] = {
+                        ctl: dict[str, object] = {
                             k: float(np.mean([c[k] for c in controls])) for k in controls[0]
                         }
+                        if len(controls) > 1:
+                            ctl.update(
+                                {
+                                    f"{k}_std": float(np.std([c[k] for c in controls], ddof=1))
+                                    for k in controls[0]
+                                }
+                            )
+                        ctl["per_seed"] = controls
+                        out.setdefault("in_train_control", {})[core] = ctl
                 out["arms"][f"{core}_{tag}"] = {
                     "core": core,
                     "arm": tag,

@@ -1,0 +1,515 @@
+{
+ "allegro_o3_piezoelectric_seed0": {
+  "core": "allegro",
+  "parity": "o3",
+  "proposition1": {
+   "delta_max": 0.0018585097277536988,
+   "delta_median": 7.301401296899712e-07,
+   "delta_p95": 3.331621655888739e-06,
+   "eta_max": 1.487412828282686e-05,
+   "eta_median": 7.279185751940531e-07,
+   "eta_p95": 3.2699060739105335e-06,
+   "floor_bound_median": 7.423414558616059e-07,
+   "floor_max_rel_excess": NaN,
+   "fraction_within_floor": 1.0,
+   "median_violation": 5.10986410517944e-07,
+   "n": 2000
+  }
+ },
+ "allegro_o3_piezoelectric_seed1": {
+  "core": "allegro",
+  "parity": "o3",
+  "proposition1": {
+   "delta_max": 0.0022641876712441444,
+   "delta_median": 7.829803507775068e-07,
+   "delta_p95": 3.405032657610718e-06,
+   "eta_max": 1.4936931620468386e-05,
+   "eta_median": 8.253638270616648e-07,
+   "eta_p95": 3.4315805805817945e-06,
+   "floor_bound_median": 8.185306228369882e-07,
+   "floor_max_rel_excess": NaN,
+   "fraction_within_floor": 1.0,
+   "median_violation": 5.621984087156306e-07,
+   "n": 2000
+  }
+ },
+ "allegro_o3_piezoelectric_seed2": {
+  "core": "allegro",
+  "parity": "o3",
+  "proposition1": {
+   "delta_max": 0.0017093821661546826,
+   "delta_median": 7.529006893491896e-07,
+   "delta_p95": 3.2948328225756995e-06,
+   "eta_max": 1.4573066437151283e-05,
+   "eta_median": 7.27428982827405e-07,
+   "eta_p95": 3.1914662486087764e-06,
+   "floor_bound_median": 7.546503866251442e-07,
+   "floor_max_rel_excess": NaN,
+   "fraction_within_floor": 1.0,
+   "median_violation": 5.221846777203609e-07,
+   "n": 2000
+  }
+ },
+ "allegro_so3_piezoelectric_seed0": {
+  "core": "allegro",
+  "corollary3_m3m": {
+   "delta_plus_max": 1.4502312296826858e-05,
+   "delta_plus_median": 3.7113761663931655e-07,
+   "epsilon_median": 1.8741520165643597,
+   "fraction_within_absolute_bound": 1.0,
+   "fraction_within_bound_where_applicable": NaN,
+   "g_abs_median": 3.410776198833381e-07,
+   "median_violation": 1.811401091345033e-07,
+   "n": 166,
+   "n_bound_applicable": 0,
+   "n_epsilon_ge_1": 166,
+   "n_rotations": "full proper subgroup per structure (23 for point group m-3m)"
+  },
+  "parity": "so3",
+  "proposition1": {
+   "delta_max": 0.001076926477253437,
+   "delta_median": 1.130000327975722e-06,
+   "delta_p95": 5.908570983592654e-06,
+   "eta_max": 34.657737731933594,
+   "eta_median": 1.7117812633514404,
+   "eta_p95": 7.829587936401367,
+   "floor_bound_median": 0.8558912873268127,
+   "floor_max_rel_excess": 8.54259454285966e-08,
+   "fraction_within_floor": 1.0,
+   "median_violation": 0.8558905124664307,
+   "n": 2000
+  }
+ },
+ "allegro_so3_piezoelectric_seed1": {
+  "core": "allegro",
+  "corollary3_m3m": {
+   "delta_plus_max": 9.01172370504355e-06,
+   "delta_plus_median": 5.469443351557857e-07,
+   "epsilon_median": 1.837457181981602,
+   "fraction_within_absolute_bound": 1.0,
+   "fraction_within_bound_where_applicable": NaN,
+   "g_abs_median": 5.673187835957878e-07,
+   "median_violation": 3.1067963845998747e-07,
+   "n": 166,
+   "n_bound_applicable": 0,
+   "n_epsilon_ge_1": 166,
+   "n_rotations": "full proper subgroup per structure (23 for point group m-3m)"
+  },
+  "parity": "so3",
+  "proposition1": {
+   "delta_max": 0.0025376263074576855,
+   "delta_median": 1.4535598893417045e-06,
+   "delta_p95": 7.711643775110133e-06,
+   "eta_max": 38.591026306152344,
+   "eta_median": 2.2062559127807617,
+   "eta_p95": 9.542281150817871,
+   "floor_bound_median": 1.1031289100646973,
+   "floor_max_rel_excess": 7.580166538900812e-08,
+   "fraction_within_floor": 1.0,
+   "median_violation": 1.1031279563903809,
+   "n": 2000
+  }
+ },
+ "allegro_so3_piezoelectric_seed2": {
+  "core": "allegro",
+  "corollary3_m3m": {
+   "delta_plus_max": 1.233433977176901e-05,
+   "delta_plus_median": 4.897388805602532e-07,
+   "epsilon_median": 1.8637516569819994,
+   "fraction_within_absolute_bound": 1.0,
+   "fraction_within_bound_where_applicable": NaN,
+   "g_abs_median": 4.647924500366446e-07,
+   "median_violation": 2.3389316083921585e-07,
+   "n": 166,
+   "n_bound_applicable": 0,
+   "n_epsilon_ge_1": 166,
+   "n_rotations": "full proper subgroup per structure (23 for point group m-3m)"
+  },
+  "parity": "so3",
+  "proposition1": {
+   "delta_max": 0.002198172500357032,
+   "delta_median": 1.191207729789312e-06,
+   "delta_p95": 5.92593369219685e-06,
+   "eta_max": 40.08539962768555,
+   "eta_median": 1.8400418758392334,
+   "eta_p95": 7.9239020347595215,
+   "floor_bound_median": 0.9200220108032227,
+   "floor_max_rel_excess": 7.961665460243239e-08,
+   "fraction_within_floor": 1.0,
+   "median_violation": 0.920020580291748,
+   "n": 2000
+  }
+ },
+ "equiformer_v2_so3_piezoelectric_seed0": {
+  "core": "equiformer_v2",
+  "corollary3_m3m": {
+   "delta_plus_max": 0.2809613349644184,
+   "delta_plus_median": 0.01780774887414295,
+   "epsilon_median": 1.853616636120174,
+   "fraction_within_absolute_bound": 1.0,
+   "fraction_within_bound_where_applicable": NaN,
+   "g_abs_median": 0.01814200139586527,
+   "median_violation": 0.008809830266404698,
+   "n": 166,
+   "n_bound_applicable": 0,
+   "n_epsilon_ge_1": 166,
+   "n_rotations": "full proper subgroup per structure (23 for point group m-3m)"
+  },
+  "parity": "so3",
+  "proposition1": {
+   "delta_max": 0.4349325027808383,
+   "delta_median": 0.05550511570598625,
+   "delta_p95": 0.1911725827019007,
+   "eta_max": 35.60610889207074,
+   "eta_median": 1.0760606707873364,
+   "eta_p95": 5.143473010881904,
+   "floor_bound_median": 0.5650419378190037,
+   "floor_max_rel_excess": -1.5757798065866943e-15,
+   "fraction_within_floor": 1.0,
+   "median_violation": 0.5397907982417309,
+   "n": 2000
+  }
+ },
+ "equiformer_v2_so3_piezoelectric_seed1": {
+  "core": "equiformer_v2",
+  "corollary3_m3m": {
+   "delta_plus_max": 0.5128758915132111,
+   "delta_plus_median": 0.030242343943773238,
+   "epsilon_median": 2.012608729582402,
+   "fraction_within_absolute_bound": 1.0,
+   "fraction_within_bound_where_applicable": NaN,
+   "g_abs_median": 0.03005054688298866,
+   "median_violation": 0.013764817525185304,
+   "n": 166,
+   "n_bound_applicable": 0,
+   "n_epsilon_ge_1": 166,
+   "n_rotations": "full proper subgroup per structure (23 for point group m-3m)"
+  },
+  "parity": "so3",
+  "proposition1": {
+   "delta_max": 0.5368282289335086,
+   "delta_median": 0.05488097867718987,
+   "delta_p95": 0.19759623411961463,
+   "eta_max": 26.751048587250562,
+   "eta_median": 0.8623709211051847,
+   "eta_p95": 4.793227471388487,
+   "floor_bound_median": 0.45615383587413494,
+   "floor_max_rel_excess": -2.164677994523371e-15,
+   "fraction_within_floor": 1.0,
+   "median_violation": 0.4305948829648288,
+   "n": 2000
+  }
+ },
+ "equiformer_v2_so3_piezoelectric_seed2": {
+  "core": "equiformer_v2",
+  "corollary3_m3m": {
+   "delta_plus_max": 0.20406390787012949,
+   "delta_plus_median": 0.022906769754231372,
+   "epsilon_median": 1.9646931010309976,
+   "fraction_within_absolute_bound": 1.0,
+   "fraction_within_bound_where_applicable": NaN,
+   "g_abs_median": 0.022368569585501374,
+   "median_violation": 0.011638724949174244,
+   "n": 166,
+   "n_bound_applicable": 0,
+   "n_epsilon_ge_1": 166,
+   "n_rotations": "full proper subgroup per structure (23 for point group m-3m)"
+  },
+  "parity": "so3",
+  "proposition1": {
+   "delta_max": 0.8064941406996322,
+   "delta_median": 0.058656367230407055,
+   "delta_p95": 0.2153487278663819,
+   "eta_max": 39.7493246079532,
+   "eta_median": 0.7256353385113039,
+   "eta_p95": 4.347894357866708,
+   "floor_bound_median": 0.4006296051824083,
+   "floor_max_rel_excess": -2.55417271345433e-15,
+   "fraction_within_floor": 1.0,
+   "median_violation": 0.3638840419613667,
+   "n": 2000
+  }
+ },
+ "mace_o3_piezoelectric_seed0": {
+  "core": "mace",
+  "parity": "o3",
+  "proposition1": {
+   "delta_max": 0.0021973983384668827,
+   "delta_median": 5.740310825785855e-06,
+   "delta_p95": 2.1091473172418773e-05,
+   "eta_max": 3.0553019314538687e-06,
+   "eta_median": 4.146728542764322e-07,
+   "eta_p95": 1.1520113503138418e-06,
+   "floor_bound_median": 3.103896688116947e-06,
+   "floor_max_rel_excess": NaN,
+   "fraction_within_floor": 1.0,
+   "median_violation": 2.870027401513653e-06,
+   "n": 2000
+  }
+ },
+ "mace_o3_piezoelectric_seed1": {
+  "core": "mace",
+  "parity": "o3",
+  "proposition1": {
+   "delta_max": 0.0026475812774151564,
+   "delta_median": 4.94446567245177e-06,
+   "delta_p95": 1.921248076541815e-05,
+   "eta_max": 3.6153578548692167e-06,
+   "eta_median": 3.5239673934484017e-07,
+   "eta_p95": 9.880183142740862e-07,
+   "floor_bound_median": 2.664655994522036e-06,
+   "floor_max_rel_excess": 0.0,
+   "fraction_within_floor": 1.0,
+   "median_violation": 2.5024078240676317e-06,
+   "n": 2000
+  }
+ },
+ "mace_o3_piezoelectric_seed2": {
+  "core": "mace",
+  "parity": "o3",
+  "proposition1": {
+   "delta_max": 0.0019856421276926994,
+   "delta_median": 5.829881956742611e-06,
+   "delta_p95": 2.212724029959645e-05,
+   "eta_max": 3.428184299991699e-06,
+   "eta_median": 4.3197354671065114e-07,
+   "eta_p95": 1.1485660706966883e-06,
+   "floor_bound_median": 3.151050577798742e-06,
+   "floor_max_rel_excess": 0.0,
+   "fraction_within_floor": 1.0,
+   "median_violation": 2.9302277653187048e-06,
+   "n": 2000
+  }
+ },
+ "mace_so3_piezoelectric_seed0": {
+  "core": "mace",
+  "corollary3_m3m": {
+   "delta_plus_max": 0.00010447132808621973,
+   "delta_plus_median": 2.240116941720771e-06,
+   "epsilon_median": 0.3527071518054732,
+   "fraction_within_absolute_bound": 1.0,
+   "fraction_within_bound_where_applicable": 1.0,
+   "g_abs_median": 3.1543682582181894e-07,
+   "median_violation": 1.1366505532350857e-06,
+   "n": 166,
+   "n_bound_applicable": 126,
+   "n_epsilon_ge_1": 40,
+   "n_rotations": "full proper subgroup per structure (23 for point group m-3m)"
+  },
+  "parity": "so3",
+  "proposition1": {
+   "delta_max": 0.0031419359147548676,
+   "delta_median": 4.893873665423598e-06,
+   "delta_p95": 1.9004019122803584e-05,
+   "eta_max": 30.290220260620117,
+   "eta_median": 1.9625439643859863,
+   "eta_p95": 7.015145778656006,
+   "floor_bound_median": 0.9812737703323364,
+   "floor_max_rel_excess": 0.0,
+   "fraction_within_floor": 1.0,
+   "median_violation": 0.9812720417976379,
+   "n": 2000
+  }
+ },
+ "mace_so3_piezoelectric_seed1": {
+  "core": "mace",
+  "corollary3_m3m": {
+   "delta_plus_max": 4.0541839553043246e-05,
+   "delta_plus_median": 1.852758259701659e-06,
+   "epsilon_median": 0.35906371615846455,
+   "fraction_within_absolute_bound": 1.0,
+   "fraction_within_bound_where_applicable": 1.0,
+   "g_abs_median": 2.6842920955698247e-07,
+   "median_violation": 9.535864080589818e-07,
+   "n": 166,
+   "n_bound_applicable": 122,
+   "n_epsilon_ge_1": 44,
+   "n_rotations": "full proper subgroup per structure (23 for point group m-3m)"
+  },
+  "parity": "so3",
+  "proposition1": {
+   "delta_max": 0.0027861101552844048,
+   "delta_median": 4.829815679840976e-06,
+   "delta_p95": 1.7796892279875465e-05,
+   "eta_max": 41.26923370361328,
+   "eta_median": 1.8419111967086792,
+   "eta_p95": 7.074858665466309,
+   "floor_bound_median": 0.9209576845169067,
+   "floor_max_rel_excess": 0.0,
+   "fraction_within_floor": 1.0,
+   "median_violation": 0.9209558963775635,
+   "n": 2000
+  }
+ },
+ "mace_so3_piezoelectric_seed2": {
+  "core": "mace",
+  "corollary3_m3m": {
+   "delta_plus_max": 4.443079888005741e-05,
+   "delta_plus_median": 2.0808203089472954e-06,
+   "epsilon_median": 0.2978282869753437,
+   "fraction_within_absolute_bound": 1.0,
+   "fraction_within_bound_where_applicable": 1.0,
+   "g_abs_median": 2.5072371160640224e-07,
+   "median_violation": 1.0590603096716222e-06,
+   "n": 166,
+   "n_bound_applicable": 127,
+   "n_epsilon_ge_1": 39,
+   "n_rotations": "full proper subgroup per structure (23 for point group m-3m)"
+  },
+  "parity": "so3",
+  "proposition1": {
+   "delta_max": 0.0021712062880396843,
+   "delta_median": 4.645311491913162e-06,
+   "delta_p95": 1.7543332432978787e-05,
+   "eta_max": 23.290294647216797,
+   "eta_median": 1.7448796033859253,
+   "eta_p95": 6.293456554412842,
+   "floor_bound_median": 0.8724435567855835,
+   "floor_max_rel_excess": 0.0,
+   "fraction_within_floor": 1.0,
+   "median_violation": 0.8724397420883179,
+   "n": 2000
+  }
+ },
+ "nequip_o3_piezoelectric_seed0": {
+  "core": "nequip",
+  "parity": "o3",
+  "proposition1": {
+   "delta_max": 0.0011049280874431133,
+   "delta_median": 5.040355972596444e-07,
+   "delta_p95": 1.7522403368275263e-06,
+   "eta_max": 9.103233423957136e-06,
+   "eta_median": 5.196897632231412e-07,
+   "eta_p95": 1.7182023839268368e-06,
+   "floor_bound_median": 5.277314585327986e-07,
+   "floor_max_rel_excess": NaN,
+   "fraction_within_floor": 1.0,
+   "median_violation": 3.642691126515274e-07,
+   "n": 2000
+  }
+ },
+ "nequip_o3_piezoelectric_seed1": {
+  "core": "nequip",
+  "parity": "o3",
+  "proposition1": {
+   "delta_max": 0.0007297395495697856,
+   "delta_median": 4.1039712073143164e-07,
+   "delta_p95": 1.4037112805453944e-06,
+   "eta_max": 8.025043825909961e-06,
+   "eta_median": 4.098770602922741e-07,
+   "eta_p95": 1.430384031664289e-06,
+   "floor_bound_median": 4.172312060291006e-07,
+   "floor_max_rel_excess": NaN,
+   "fraction_within_floor": 1.0,
+   "median_violation": 2.8985559197280963e-07,
+   "n": 2000
+  }
+ },
+ "nequip_o3_piezoelectric_seed2": {
+  "core": "nequip",
+  "parity": "o3",
+  "proposition1": {
+   "delta_max": 0.0009020965080708265,
+   "delta_median": 3.7553903098341834e-07,
+   "delta_p95": 1.3237649909569882e-06,
+   "eta_max": 7.197802915470675e-06,
+   "eta_median": 3.8236692034843145e-07,
+   "eta_p95": 1.2289692676858976e-06,
+   "floor_bound_median": 3.8015002701285994e-07,
+   "floor_max_rel_excess": NaN,
+   "fraction_within_floor": 1.0,
+   "median_violation": 2.640973093548382e-07,
+   "n": 2000
+  }
+ },
+ "nequip_so3_piezoelectric_seed0": {
+  "core": "nequip",
+  "corollary3_m3m": {
+   "delta_plus_max": 4.640963652491337e-06,
+   "delta_plus_median": 4.258228187836721e-07,
+   "epsilon_median": 1.70657162567142,
+   "fraction_within_absolute_bound": 1.0,
+   "fraction_within_bound_where_applicable": 1.0,
+   "g_abs_median": 3.405090543235563e-07,
+   "median_violation": 2.0374405096390547e-07,
+   "n": 166,
+   "n_bound_applicable": 1,
+   "n_epsilon_ge_1": 165,
+   "n_rotations": "full proper subgroup per structure (23 for point group m-3m)"
+  },
+  "parity": "so3",
+  "proposition1": {
+   "delta_max": 0.001123243710026145,
+   "delta_median": 6.605555427086074e-07,
+   "delta_p95": 2.130144821421709e-06,
+   "eta_max": 15.721271514892578,
+   "eta_median": 1.3857896327972412,
+   "eta_p95": 6.377697467803955,
+   "floor_bound_median": 0.6928950548171997,
+   "floor_max_rel_excess": 0.0,
+   "fraction_within_floor": 1.0,
+   "median_violation": 0.6928947567939758,
+   "n": 2000
+  }
+ },
+ "nequip_so3_piezoelectric_seed1": {
+  "core": "nequip",
+  "corollary3_m3m": {
+   "delta_plus_max": 4.6790269152552355e-06,
+   "delta_plus_median": 4.194819638314584e-07,
+   "epsilon_median": 1.7255959936453489,
+   "fraction_within_absolute_bound": 1.0,
+   "fraction_within_bound_where_applicable": NaN,
+   "g_abs_median": 3.679785008668662e-07,
+   "median_violation": 2.0520705135140815e-07,
+   "n": 166,
+   "n_bound_applicable": 0,
+   "n_epsilon_ge_1": 166,
+   "n_rotations": "full proper subgroup per structure (23 for point group m-3m)"
+  },
+  "parity": "so3",
+  "proposition1": {
+   "delta_max": 0.001621084869839251,
+   "delta_median": 6.271291113080224e-07,
+   "delta_p95": 2.0973984646843746e-06,
+   "eta_max": 23.70651626586914,
+   "eta_median": 1.4042552709579468,
+   "eta_p95": 6.434652805328369,
+   "floor_bound_median": 0.7021279335021973,
+   "floor_max_rel_excess": 0.0,
+   "fraction_within_floor": 1.0,
+   "median_violation": 0.7021275758743286,
+   "n": 2000
+  }
+ },
+ "nequip_so3_piezoelectric_seed2": {
+  "core": "nequip",
+  "corollary3_m3m": {
+   "delta_plus_max": 4.3620098040264565e-06,
+   "delta_plus_median": 3.5576854884311615e-07,
+   "epsilon_median": 1.7292404287330778,
+   "fraction_within_absolute_bound": 1.0,
+   "fraction_within_bound_where_applicable": 1.0,
+   "g_abs_median": 2.8412313880080457e-07,
+   "median_violation": 1.715262882839852e-07,
+   "n": 166,
+   "n_bound_applicable": 3,
+   "n_epsilon_ge_1": 163,
+   "n_rotations": "full proper subgroup per structure (23 for point group m-3m)"
+  },
+  "parity": "so3",
+  "proposition1": {
+   "delta_max": 0.002095315372571349,
+   "delta_median": 5.272791554489231e-07,
+   "delta_p95": 1.703423777144053e-06,
+   "eta_max": 18.11072540283203,
+   "eta_median": 1.2084476947784424,
+   "eta_p95": 4.998015880584717,
+   "floor_bound_median": 0.6042240262031555,
+   "floor_max_rel_excess": 7.084627640097096e-08,
+   "fraction_within_floor": 1.0,
+   "median_violation": 0.6042237281799316,
+   "n": 2000
+  }
+ }
+}

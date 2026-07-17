@@ -45,7 +45,24 @@ RUTILE = {"a": 4.5937, "c": 2.9587, "u": 0.3053, "Ti": 22, "O": 8}
 # units of c. The two Ti move opposite to the four O, which breaks the inversion centre.
 RUTILE_DISPLACEMENT_Z = 0.040
 
-MATERIALS = (*PEROVSKITES, "TiO2")
+# T4-3: additional rutile-type cell (same P4_2/mnm Wyckoff set as TiO2, its own cell parameters).
+# Cassiterite SnO2: a = 4.7374, c = 3.1864 A, u = 0.3056.
+RUTILE_TYPE: dict[str, dict[str, float | int]] = {
+    "TiO2": RUTILE,
+    "SnO2": {"a": 4.7374, "c": 3.1864, "u": 0.3056, "cation": 50, "O": 8},
+}
+
+# T4-3: anatase TiO2, I4_1/amd (141), conventional 12-atom cell. Point group 4/mmm, so the
+# proper-rotation subgroup is 422, which admits a rank-3 invariant: like rutile, only parity
+# forbids a response at delta = 0 (the 432 lesson from the perovskites). a = 3.7842,
+# c = 9.5146 A; O internal parameter u = 0.2081 (origin choice 1, Ti at the origin).
+ANATASE = {"a": 3.7842, "c": 9.5146, "u": 0.2081, "Ti": 22, "O": 8}
+
+# Anatase polar mode at delta = 1: Ti sublattice against O along [001], fractional units of c.
+# Chosen so the physical (delta = 1) cation displacement is ~0.12 A, matching the rutile sweep.
+ANATASE_DISPLACEMENT_Z = 0.0124
+
+MATERIALS = (*PEROVSKITES, "TiO2", "SnO2", "TiO2_anatase")
 
 
 def perovskite(name: str) -> AtomicStructure:
@@ -66,30 +83,71 @@ def perovskite(name: str) -> AtomicStructure:
     return AtomicStructure(atomic_numbers=z, positions=frac @ cell, cell=cell, pbc=True)
 
 
-def rutile() -> AtomicStructure:
-    """The rutile TiO2 cell (P4_2/mnm, 136): 2 Ti + 4 O, centrosymmetric, rotation subgroup 422."""
-    a, c, u = RUTILE["a"], RUTILE["c"], RUTILE["u"]
+def rutile(name: str = "TiO2") -> AtomicStructure:
+    """A rutile-type cell (P4_2/mnm, 136): 2 cations + 4 O, centrosymmetric, subgroup 422."""
+    spec = RUTILE_TYPE[name]
+    a, c, u = float(spec["a"]), float(spec["c"]), float(spec["u"])
+    cation = int(spec.get("cation", spec.get("Ti", 22)))
     frac = np.array(
         [
-            [0.0, 0.0, 0.0],  # Ti
-            [0.5, 0.5, 0.5],  # Ti
+            [0.0, 0.0, 0.0],  # cation
+            [0.5, 0.5, 0.5],  # cation
             [u, u, 0.0],  # O
             [1.0 - u, 1.0 - u, 0.0],  # O
             [0.5 + u, 0.5 - u, 0.5],  # O
             [0.5 - u, 0.5 + u, 0.5],  # O
         ]
     )
-    z = np.array([RUTILE["Ti"]] * 2 + [RUTILE["O"]] * 4, dtype=np.int64)
+    z = np.array([cation] * 2 + [int(spec["O"])] * 4, dtype=np.int64)
+    cell = np.diag([a, a, c]).astype(np.float64)
+    return AtomicStructure(atomic_numbers=z, positions=frac @ cell, cell=cell, pbc=True)
+
+
+def anatase() -> AtomicStructure:
+    """The anatase TiO2 conventional cell (I4_1/amd, 141): 4 Ti + 8 O, centrosymmetric.
+
+    Built from the origin-choice-1 Wyckoff positions (Ti 4a at (0,0,0), O 8e at (0,0,u)) with
+    the body-centring and 4_1-screw images written out explicitly; the assembled cell is
+    verified against spglib in the T4-3 sweep before any prediction is made.
+    """
+    a, c, u = float(ANATASE["a"]), float(ANATASE["c"]), float(ANATASE["u"])
+    ti = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [0.5, 0.5, 0.5],
+            [0.0, 0.5, 0.25],
+            [0.5, 0.0, 0.75],
+        ]
+    )
+    o = np.array(
+        [
+            [0.0, 0.0, u],
+            [0.0, 0.0, -u],
+            [0.5, 0.5, 0.5 + u],
+            [0.5, 0.5, 0.5 - u],
+            [0.0, 0.5, 0.25 + u],
+            [0.0, 0.5, 0.25 - u],
+            [0.5, 0.0, 0.75 + u],
+            [0.5, 0.0, 0.75 - u],
+        ]
+    )
+    frac = np.mod(np.vstack([ti, o]), 1.0)
+    z = np.array([int(ANATASE["Ti"])] * 4 + [int(ANATASE["O"])] * 8, dtype=np.int64)
     cell = np.diag([a, a, c]).astype(np.float64)
     return AtomicStructure(atomic_numbers=z, positions=frac @ cell, cell=cell, pbc=True)
 
 
 def _displacement(name: str) -> np.ndarray:
     """Fractional [001] polar displacement pattern at amplitude delta = 1."""
-    if name == "TiO2":
+    if name in RUTILE_TYPE:
         dz = np.zeros((6, 3))
-        dz[0:2, 2] = RUTILE_DISPLACEMENT_Z  # Ti up
+        dz[0:2, 2] = RUTILE_DISPLACEMENT_Z  # cations up
         dz[2:6, 2] = -RUTILE_DISPLACEMENT_Z / 2.0  # O down (keeps the centre of mass fixed)
+        return dz
+    if name == "TiO2_anatase":
+        dz = np.zeros((12, 3))
+        dz[0:4, 2] = ANATASE_DISPLACEMENT_Z  # Ti up
+        dz[4:12, 2] = -ANATASE_DISPLACEMENT_Z / 2.0  # O down (keeps the centre of mass fixed)
         return dz
     dz = np.zeros((5, 3))
     dz[1, 2] = DISPLACEMENT_Z["B"]
@@ -100,8 +158,12 @@ def _displacement(name: str) -> np.ndarray:
 
 
 def parent(name: str) -> AtomicStructure:
-    """The centrosymmetric parent structure (delta = 0) for any E2 material."""
-    return rutile() if name == "TiO2" else perovskite(name)
+    """The centrosymmetric parent structure (delta = 0) for any sweep material."""
+    if name in RUTILE_TYPE:
+        return rutile(name)
+    if name == "TiO2_anatase":
+        return anatase()
+    return perovskite(name)
 
 
 def tetragonal_distortion(name: str, delta: float) -> AtomicStructure:
@@ -117,7 +179,9 @@ def tetragonal_distortion(name: str, delta: float) -> AtomicStructure:
 
 def max_displacement_angstrom(name: str, delta: float) -> float:
     """Largest Cartesian atomic displacement (A) at ``delta``; compare against symprec."""
-    if name == "TiO2":
-        return delta * RUTILE_DISPLACEMENT_Z * float(RUTILE["c"])
+    if name in RUTILE_TYPE:
+        return delta * RUTILE_DISPLACEMENT_Z * float(RUTILE_TYPE[name]["c"])
+    if name == "TiO2_anatase":
+        return delta * ANATASE_DISPLACEMENT_Z * float(ANATASE["c"])
     a = float(PEROVSKITES[name]["a"])  # type: ignore[arg-type]
     return delta * max(abs(v) for v in DISPLACEMENT_Z.values()) * a

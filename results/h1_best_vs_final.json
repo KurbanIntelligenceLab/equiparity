@@ -1,0 +1,86 @@
+{
+ "allegro_so3_piezoelectric_seed0": {
+  "core": "allegro",
+  "ff_best_val": 0.873,
+  "ff_final": 0.9095,
+  "median_best_val": 0.1905694305896759,
+  "median_final": 0.8558905124664307
+ },
+ "allegro_so3_piezoelectric_seed1": {
+  "core": "allegro",
+  "ff_best_val": 0.8635,
+  "ff_final": 0.911,
+  "median_best_val": 0.1691928654909134,
+  "median_final": 1.1031280755996704
+ },
+ "allegro_so3_piezoelectric_seed2": {
+  "core": "allegro",
+  "ff_best_val": 0.8415,
+  "ff_final": 0.908,
+  "median_best_val": 0.14070893824100494,
+  "median_final": 0.9200208187103271
+ },
+ "equiformer_v2_so3_piezoelectric_seed0": {
+  "core": "equiformer_v2",
+  "ff_best_val": 0.839,
+  "ff_final": 0.9525,
+  "median_best_val": 0.042564955312791905,
+  "median_final": 0.539790798241731
+ },
+ "equiformer_v2_so3_piezoelectric_seed1": {
+  "core": "equiformer_v2",
+  "ff_best_val": 0.7885,
+  "ff_final": 0.96,
+  "median_best_val": 0.02497116977544195,
+  "median_final": 0.4305948829648287
+ },
+ "equiformer_v2_so3_piezoelectric_seed2": {
+  "core": "equiformer_v2",
+  "ff_best_val": 0.7345,
+  "ff_final": 0.9525,
+  "median_best_val": 0.020436563500415388,
+  "median_final": 0.3638840419613665
+ },
+ "mace_so3_piezoelectric_seed0": {
+  "core": "mace",
+  "ff_best_val": 0.905,
+  "ff_final": 0.9085,
+  "median_best_val": 0.7220956087112427,
+  "median_final": 0.9812721014022827
+ },
+ "mace_so3_piezoelectric_seed1": {
+  "core": "mace",
+  "ff_best_val": 0.9045,
+  "ff_final": 0.907,
+  "median_best_val": 0.7137436270713806,
+  "median_final": 0.9209557771682739
+ },
+ "mace_so3_piezoelectric_seed2": {
+  "core": "mace",
+  "ff_best_val": 0.9045,
+  "ff_final": 0.9075,
+  "median_best_val": 0.7639718055725098,
+  "median_final": 0.8724396228790283
+ },
+ "nequip_so3_piezoelectric_seed0": {
+  "core": "nequip",
+  "ff_best_val": 0.747,
+  "ff_final": 0.896,
+  "median_best_val": 0.13240590691566467,
+  "median_final": 0.6928948163986206
+ },
+ "nequip_so3_piezoelectric_seed1": {
+  "core": "nequip",
+  "ff_best_val": 0.803,
+  "ff_final": 0.8955,
+  "median_best_val": 0.20807567238807678,
+  "median_final": 0.7021276950836182
+ },
+ "nequip_so3_piezoelectric_seed2": {
+  "core": "nequip",
+  "ff_best_val": 0.7985,
+  "ff_final": 0.8945,
+  "median_best_val": 0.19800475239753723,
+  "median_final": 0.6042237281799316
+ }
+}
