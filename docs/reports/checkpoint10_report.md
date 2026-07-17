@@ -58,6 +58,50 @@ Protocol: both models on the 2,000 idealized AND raw variants, mask ON and OFF, 
 checkpoints; report false-flag @ 0.01 C/m^2 + 25-threshold curves + violation medians →
 `results/t1_sota_predictors.json`.
 
+### Tier 1 — MEASURED (2026-07-17; declared-vs-measured)
+
+Toy gate (exact centro inputs, mask off): GMTNet 1.3e-8/1.3e-7, CEITNet 9.6e-9/1.7e-7 on
+NaCl/rutile — structural zeros at float32 noise. Declaration (1) holds on exact inputs; the
+open GMTNet case (3) resolves the same way there.
+
+Full population (2,000; false-flag @ 0.01 C/m^2 | median | max):
+
+| config | ff | median | max |
+|---|---|---|---|
+| GMTNet idealized mask-off | **0.2345** | 9.9e-8 | 8.72 |
+| GMTNet idealized mask-on  | 0.0000 | 0 | 5.5e-4 |
+| GMTNet raw mask-off       | **0.2170** | 1.1e-7 | 10.64 |
+| GMTNet raw mask-on        | **0.0105** | 0 | 0.265 |
+| CEITNet idealized mask-off| **0.1195** | 6.2e-8 | 0.276 |
+| CEITNet idealized mask-on | 0.0915 | 5.5e-8 | 0.276 |
+| CEITNet raw mask-off      | **0.1100** | 7.4e-8 | 0.276 |
+| CEITNet raw mask-on       | 0.0935 | 6.7e-8 | 0.276 |
+
+Declared-vs-measured verdicts:
+- (1) CEITNet "structurally zero, no mask needed": PARTIALLY OVERTURNED. True on the toy
+  inputs and for ~68% of the population (norms < 1e-5), but 12.0% false-flag on exactly
+  symmetric idealized inputs — the head algebra does not extend to all symmetry classes.
+  Its own zero-mask barely helps (12.0% -> 9.2%): the mask is a no-op for fully-forbidden
+  point groups (their `infer_forced_zero_mask...` returns all-False when the group-average
+  projector is identically zero — released semantics, kept).
+- (2) GMTNet mask-on: CONFIRMED on idealized (0.0000) — but the repair leaks 1.05% (21
+  crystals, max 0.265 C/m^2) on raw coordinates, where spglib finds a subgroup: the
+  symmetry-database repair is only as reliable as the symmetry determination feeding it,
+  the manuscript's pre-filtering fragility point measured on the field's own mechanism.
+- (4) Invariant-backbone consequence, the sharpest finding: the family split INVERTS the
+  SO(3) pattern. CEITNet mask-off false-flags **68.7% of m-3m** crystals (28% of m-3, 6.6%
+  of non-cubic) — worst exactly where rotation-equivariant models are forced correct.
+  Cause: the benchmark protocol removes zero tensors from training, so the most-forbidden
+  classes are the classes these models never saw. Benchmark blindness, measured.
+- Flagged sets of the two models overlap only partially (469 vs 239 flagged on idealized,
+  137 shared): the failures are model-specific learned artifacts, not a shared physical
+  signal.
+
+Artifacts: `results/t1/*.npy` (norm vectors + full 3x6 tensors), summary json verified
+vector-by-vector (json_match=True for every config). Driver: `scripts/t1_sota_eval.py`
+(their pipelines, their checkpoints, their eval semantics; deviations documented in the
+script docstring).
+
 ## Pending
 
 - Tier 3 learning curve (box A, in flight) — title verdict rule prespecified.

@@ -1,0 +1,16 @@
+{
+ "backbone": "MACE-MP-0 small (ScaleShiftMACE)",
+ "model_path": "mace_mp small",
+ "probe_layer": "interactions.1.linear",
+ "feature_irreps": "128x0e+128x1o+128x2e+128x3o",
+ "r_max": 6.0,
+ "dtype": "float32",
+ "device": "cpu",
+ "dropped": {
+  "train": [],
+  "val": [],
+  "test": [],
+  "ood": []
+ },
+ "determinism_max_abs_diff": 0.0
+}
