@@ -102,6 +102,19 @@ CLEARED (flag no. -> resolution; artifact):
      Creed 24 authors from arXiv:2606.07327; optixnet2026 authors from the
      Crossref record (Klimova et al.); VERIFY comments removed.
 
+Added 2026-07-17 (Tier 2 -- B-2 CLEARED, flags 5 + 17):
+  5  discussion.tex L19 + 17 supplementary.tex L173: eSEN (fairchem-core
+     1.10.0), UMA (2.21.0), EquiformerV3 (a7300c5) source-read AND
+     reflection-measured at random init with the standard rank-3 head
+     (Theorem 1 needs no training). All three SO(3)-only: rotation law
+     2e-5..1e-4, deterministic, mirror law violated 1.8-2.0; rotation-ceiling
+     signature on the 2,000 (m-3m/non-cubic ratios 1.2e-6..1.9e-5). Audit ->
+     18 architectures; main Table 1 + Supp Table 1 + intro/discussion counts
+     updated (fifteen->eighteen, nine->twelve, rotation-only 3->6).
+     EquiformerV3 being rotation-exact AND deterministic removes the
+     approximate-equivariance confound. results/t2_random_init.json,
+     scripts/t2_backbone_probe.py, third_party/venvs/fairchem{,1}.
+
 Added 2026-07-17 (local eval-only batch):
  16  Vector-only reflection probe MEASURED, prediction confirmed: PaiNN
      (schnetpack 2.2.0), TorchMD-ET (pinned 2a2c913), ViSNet (PyG 2.8.0) all

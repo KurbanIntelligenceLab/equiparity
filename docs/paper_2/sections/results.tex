@@ -8,7 +8,7 @@ Two rows show why measurement, not reading, has to settle such classifications. 
 
 \begin{table}[t]
 \centering
-\caption{Feature parity across fifteen released architectures. Each model was classified by reading its released source at a pinned version or commit; two rows, ICTP and GotenNet, were settled instead by a numerical reflection test at random initialization, because the source did not decide them. Only the six architectures in the first group can make a parity-odd output vanish structurally on a centrosymmetric input. The three in the second group are the subject of this paper: their features contain no parity information at all, so the guarantee cannot be recovered from them. Versions, commits and the deciding source line for every row are given in Supplementary Table~1, and the classification does not extend to later releases.}
+\caption{Feature parity across eighteen released architectures. Each model was classified by reading its released source at a pinned version or commit; ICTP and GotenNet were settled instead by a numerical reflection test at random initialization, because the source did not decide them, and the three current-generation models (eSEN, UMA, EquiformerV3) were both source-read and reflection-measured. Only the six architectures in the first group can make a parity-odd output vanish structurally on a centrosymmetric input. The six in the second group are the subject of this paper: their features contain no parity information at all, so the guarantee cannot be recovered from them. Versions, commits and the deciding source line for every row are given in Supplementary Table~1, and the classification does not extend to later releases.}
 \label{tab:audit}
 \fontsize{8bp}{10bp}\selectfont
 \begin{tabular}{@{}l l c@{}}
@@ -23,10 +23,13 @@ MatTen\cite{wen2024matten}          & O(3) irreps, natural parity $(-1)^l$ & yes
 ICTP\cite{zaverkin2024ictp}         & Cartesian harmonics; parity implicit & yes\textsuperscript{$\ast$} \\
 GotenNet\cite{aykent2025gotennet}   & untyped attention; polar vector output & yes\textsuperscript{$\ast$} \\
 \addlinespace[3pt]
-\multicolumn{3}{@{}l}{\textbf{Rotation-only} (3). Nothing can force the output to vanish.} \\
+\multicolumn{3}{@{}l}{\textbf{Rotation-only} (6). Nothing can force the output to vanish.} \\
 Equiformer v1\cite{liao2023equiformer}   & SO(3) irreps, all declared even & no \\
 EquiformerV2\cite{liao2024equiformerv2}  & degree and order only; no parity flag & no \\
 eSCN\cite{passaro2023escn}               & degree and order only; no parity flag & no \\
+eSEN\cite{fu2025esen}                    & degree and order only; no parity flag & no\textsuperscript{$\ast$} \\
+UMA\cite{wood2025uma}                    & degree and order only; no parity flag & no\textsuperscript{$\ast$} \\
+EquiformerV3\cite{equiformerv3}          & degree and order only; no parity flag & no\textsuperscript{$\ast$} \\
 \addlinespace[3pt]
 \multicolumn{3}{@{}l}{\textbf{Vector-only} (3). Implicitly polar but untyped, and no rank-3 path.} \\
 PaiNN\cite{schutt2021painn}          & one Cartesian vector channel & untyped \\
@@ -42,7 +45,7 @@ FAENet\cite{duval2023faenet}             & not equivariant; frames applied exter
 
 \vspace{2pt}
 {\fontsize{7bp}{8.5bp}\selectfont
-\textsuperscript{$\ast$}Settled by measurement, not by reading the source. GotenNet's vector output obeys the polar-vector law under improper operations to $1.8\times10^{-15}$, against $1.9$ for the pseudovector law.\par}
+\textsuperscript{$\ast$}Confirmed by measurement at random initialization. GotenNet's vector output obeys the polar-vector law under improper operations to $1.8\times10^{-15}$, against $1.9$ for the pseudovector law; eSEN, UMA and EquiformerV3 satisfy the rotation law to $10^{-5}$--$10^{-4}$ yet violate the mirror law by order unity (Supplementary Note~2).\par}
 \end{table}
 
 \subsection*{What parity guarantees, and what rotation alone still guarantees}

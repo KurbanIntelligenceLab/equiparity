@@ -242,7 +242,9 @@ ROWS: list[dict] = [
             "(`sph_feature_size`, line 94), mixed by `SO3_Linear` over degree/order via "
             "`CoefficientMapping(lmax, mmax)` -- the eSCN SO(2)-convolution lineage its paper "
             "states (Sec. 4). Zero `parity` references anywhere in `models/esen/`; no odd/even "
-            "typing, no rank-3 path."
+            "typing, no rank-3 path. Measured (T2, random init, rank-3 head attached): rotation "
+            "law 4.2e-5, deterministic, mirror law violated 2.0; m-3m/non-cubic violation ratio "
+            "1.6e-5 on the 2,000-crystal population (`results/t2_random_init.json`)."
         ),
     },
     {
@@ -255,7 +257,9 @@ ROWS: list[dict] = [
             "`eSCNMDBackbone` (line 263) builds on `uma.common.so3.CoefficientMapping`/`SO3_Grid` "
             "and `SO3_Linear` -- the same degree/order-only spherical typing as eSEN, which UMA's "
             "paper names as its central edgewise component (the MoE variant `escn_moe` wraps the "
-            "same backbone). Zero `parity` references anywhere in `models/uma/`."
+            "same backbone). Zero `parity` references anywhere in `models/uma/`. Measured (T2, "
+            "random init): rotation law 1.0e-4, deterministic, mirror law violated 1.8; "
+            "m-3m/non-cubic ratio 1.9e-5 (`results/t2_random_init.json`)."
         ),
     },
     {
@@ -268,7 +272,10 @@ ROWS: list[dict] = [
             "The embedding is documented and indexed by 'Maximum degrees (l)' only (docstring "
             "line 75); `so3.py`/`wigner.py` carry no parity label and the model directory "
             "contains zero `parity` references. SE(3), not E(3), is in the paper's own title -- "
-            "strict rotational equivariance is claimed, parity is never represented."
+            "strict rotational equivariance is claimed, parity is never represented. Measured "
+            "(T2, random init): rotation-exact (2.2e-5) AND deterministic -- unlike EquiformerV2 "
+            "-- yet the mirror law is violated by 2.0; m-3m/non-cubic ratio 1.2e-6. This removes "
+            "the approximate-equivariance confound entirely (`results/t2_random_init.json`)."
         ),
     },
 ]
