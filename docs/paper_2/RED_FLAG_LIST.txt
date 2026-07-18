@@ -102,6 +102,15 @@ CLEARED (flag no. -> resolution; artifact):
      Creed 24 authors from arXiv:2606.07327; optixnet2026 authors from the
      Crossref record (Klimova et al.); VERIFY comments removed.
 
+Added 2026-07-18 (T4-1/H-3 -- flag 3 CLEARED; experimental program COMPLETE):
+  3  discussion.tex L9: frozen-backbone inheritance measured, both arms.
+     MACE-MP-0 (parity-aware) + trained O(3) head: 0.0000 exact on all 2,000,
+     all 3 seeds. eSEN-30M-OAM (parity-blind, gated ckpt via user's HF token)
+     + same construction: 0.8997+-0.0034, test MAE comparable (0.158 vs
+     0.170). Declared predictions confirmed on both sides. Every claim-bearing
+     red flag is now cleared; the remaining macros are owner items only.
+     results/t4_frozen_backbone.json, scripts/t4_*.py.
+
 Added 2026-07-18 (H-1 -- flag 18 CLEARED, the last experimental flag):
  18  supplementary.tex: full false-flag-vs-epoch curves measured from the 12
      re-instrumented SO(3) retrains (per-epoch idealized OOD eval). Every core

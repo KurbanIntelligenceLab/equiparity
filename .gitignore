@@ -221,3 +221,9 @@ __marimo__/
 
 # H1/H2 external source checkouts (pinned shas recorded in reports; code not committed)
 third_party/
+
+# frozen-backbone feature caches (regenerable via scripts/t4_cache_*.py; hundreds of MB)
+results/t4/*_train.npz
+results/t4/*_val.npz
+results/t4/*_test.npz
+results/t4/*_ood.npz

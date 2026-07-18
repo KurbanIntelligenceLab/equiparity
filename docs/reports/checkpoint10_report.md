@@ -102,6 +102,19 @@ vector-by-vector (json_match=True for every config). Driver: `scripts/t1_sota_ev
 (their pipelines, their checkpoints, their eval semantics; deviations documented in the
 script docstring).
 
+## T4-1 — COMPLETE (both arms measured; flag 3 cleared)
+
+| frozen pretrained backbone | declared | measured false-flag @ 0.01 | test MAE |
+|---|---|---|---|
+| MACE-MP-0 (parity-aware) | ~0 structural | **0.0000 ± 0.0000** (exact zeros, all crystals, all seeds) | 0.158 |
+| eSEN-30M-OAM (parity-blind) | ~0.9 | **0.8997 ± 0.0034** | 0.170 |
+
+Both declared predictions confirmed. Same head, same protocol; the parity typing fixed at
+pretraining time is the only difference and it decides everything. eSEN checkpoint:
+`esen_30m_oam.pt` from the gated facebook/OMAT24 HF repo (user-authorized token); its CPU
+forward carries single-ULP nondeterminism (1.2e-6 on scale-8 features), gated at the noise
+floor and documented. `results/t4_frozen_backbone.json`, `results/t4/{mace_mp0,esen}_seed*`.
+
 ## Tier 3 — MEASURED (title verdict: SURVIVES)
 
 Five points, three seeds each, nested sets: held-out ff 0.895 -> 0.858±0.020 over a 64x

@@ -79,6 +79,11 @@ def load_backbone(path: Path):
     calc = OCPCalculator(checkpoint_path=str(path), cpu=True, seed=0)
     model = calc.trainer._unwrapped_model
     backbone = getattr(model, "backbone", model).eval()
+    # The 30M config sets use_pbc_single=True (per-sample graph gen), which indexes
+    # `data[idx]` -- a Batch operation our dict shim lacks. The batched path builds the
+    # identical radius graph; single mode is only a memory optimization.
+    if hasattr(backbone, "use_pbc_single"):
+        backbone.use_pbc_single = False
     for p in backbone.parameters():
         p.requires_grad_(False)
     lmax = int(backbone.lmax if hasattr(backbone, "lmax") else backbone.lmax_list[0])
@@ -124,7 +129,8 @@ def extract(backbone, s: dict) -> np.ndarray:
     with torch.no_grad():
         emb = backbone(as_data(s))["node_embedding"]
     emb = emb.embedding if hasattr(emb, "embedding") else emb
-    return emb.reshape(emb.shape[0], -1).cpu().numpy().astype(np.float32)
+    # eSEN enables grad on pos internally even under no_grad (gradient-forces path)
+    return emb.detach().reshape(emb.shape[0], -1).cpu().numpy().astype(np.float32)
 
 
 def main() -> None:
@@ -139,11 +145,15 @@ def main() -> None:
     }
     sets["ood"] = load_structures(OOD_NPZ)
 
-    # Determinism check: same structure twice must be bit-identical (CPU forward).
+    # Determinism check. eSEN's CPU forward carries a reduction whose summation order is not
+    # fixed, leaving single-ULP float32 noise (measured 1.2e-6 absolute on features of scale
+    # ~8, thread-count independent) -- five orders below anything that could affect a
+    # 0.01 C/m^2 threshold decision. Gate at that noise floor rather than bit-exactness.
     twice = [extract(backbone, sets["train"][0]) for _ in range(2)]
     det = float(np.abs(twice[0] - twice[1]).max())
-    print(f"determinism check: max |diff| = {det:.3e}")
-    assert det == 0.0, "frozen backbone is not deterministic"
+    scale = float(np.abs(twice[0]).max())
+    print(f"determinism check: max |diff| = {det:.3e} (feature scale {scale:.2f})")
+    assert det <= 1e-5 * max(scale, 1.0), "frozen backbone deviates beyond float noise"
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     for part, structures in sets.items():
