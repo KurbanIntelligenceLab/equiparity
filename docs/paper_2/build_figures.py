@@ -835,9 +835,49 @@ def figS2():
     save(fig, "figS2_rutile_sweep")
 
 
+def figS3():
+    """False-flag fraction vs training epoch, the 12 re-instrumented SO(3) retrains."""
+    fig, ax = plt.subplots(figsize=(W1, 74 * MM))
+    fig.subplots_adjust(left=0.15, right=0.97, top=0.90, bottom=0.22)
+    rows = load_rows("figS3_epoch_curves.csv")
+    if rows is None:
+        needs_data(ax, "figS3_epoch_curves.csv",
+                   "false-flag fraction vs epoch\n12 SO(3) retrains, idealized variant")
+        save(fig, "figS3_epoch_curves")
+        return
+    core_name = {"nequip": "NequIP", "allegro": "Allegro", "mace": "MACE",
+                 "equiformer_v2": "EquiformerV2"}
+    by = {}
+    for r in rows:
+        by.setdefault((core_name[r["core"]], int(r["seed"])), []).append(
+            (int(r["epoch"]), float(r["false_flag"])))
+    ax.set_xlim(0, 152); ax.set_ylim(-0.02, 1.02)
+    ax.axhline(0.0, color=O3, lw=1.4, zorder=2)
+    ax.text(150, 0.035, "O(3): 0.0000 at any epoch (structural)", fontsize=5.6 * S,
+            color=O3, fontweight="bold", ha="right")
+    for core in ("NequIP", "Allegro", "MACE", "EquiformerV2"):
+        seeds = [np.array(sorted(by[(core, s)])) for s in (0, 1, 2)]
+        curves = np.stack([s[:, 1] for s in seeds])
+        epochs = seeds[0][:, 0]
+        ax.fill_between(epochs, curves.min(0), curves.max(0), color=SO3, alpha=0.15, lw=0)
+        ax.plot(epochs, curves.mean(0), color=SO3, lw=0.9, marker=CORE_MK[core], ms=2.6,
+                mfc="white", mew=0.6, markevery=25, zorder=3)
+    ax.text(85, 0.47, "SO(3): plateau at the headline\nvalue long before epoch 150",
+            fontsize=5.6 * S, color=SO3, fontweight="bold", ha="center", va="center")
+    ax.set_xlabel("training epoch")
+    ax.set_ylabel("false-flag fraction")
+    despine(ax)
+    ax.legend(handles=[Line2D([], [], color=SO3, marker=CORE_MK[c], ms=2.8, lw=0.9,
+                              mfc="white", mew=0.7, label=c)
+                       for c in ("NequIP", "Allegro", "MACE", "EquiformerV2")],
+              loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=4, handletextpad=0.5,
+              columnspacing=1.0)
+    save(fig, "figS3_epoch_curves")
+
+
 if __name__ == "__main__":
     print("Building figures to Nature specification (88 / 180 mm, Arial, Okabe-Ito)...")
-    fig1(); fig2(); fig3(); fig4(); fig5(); figS1(); figS2()
+    fig1(); fig2(); fig3(); fig4(); fig5(); figS1(); figS2(); figS3()
     print("\nEvery number above is traceable to a Supplementary Table or a figdata/ export.")
     missing = [f for f in ("fig5a_rutile_sweep.csv", "fig5b_jacobian_points.csv",
                            "figS1_raw_thresholds.csv") if load_rows(f) is None]

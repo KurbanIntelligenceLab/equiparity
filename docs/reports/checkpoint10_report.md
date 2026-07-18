@@ -102,6 +102,22 @@ vector-by-vector (json_match=True for every config). Driver: `scripts/t1_sota_ev
 (their pipelines, their checkpoints, their eval semantics; deviations documented in the
 script docstring).
 
+## Tier 3 — MEASURED (title verdict: SURVIVES)
+
+Five points, three seeds each, nested sets: held-out ff 0.895 -> 0.858±0.020 over a 64x
+range of zero-labelled data; SEEN-SG flat at 0.90; in-training control 0.88–0.90 for every
+N >= 1,000 (0.883±0.011 at N=16,000, trained-zeros median 0.12 -> 0.06 C/m^2, six times
+threshold). Prespecified rule applied neutrally: plateau well above zero -> "Not all symmetry
+can be learned" STANDS. `results/t3_learning_curve.json`, Supp Table stab:t3.
+
+## H-1 — MEASURED (flag 18 cleared; the last experimental red flag)
+
+All 12 SO(3) retrains under per-epoch instrumentation: every core >= 0.85 within its first
+third of training (Allegro epoch 1, MACE 4, EqV2 23, NequIP 34), flat at the headline value
+thereafter. Deterministic endpoints reproduce released values to ±0.003 (3 seeds exact to
+four decimals); EqV2 within its measured draw spread. All 21 grid runs passed the
+verification battery. `results/h1_epoch_curve.json`, Supp Fig sfig:epochcurves.
+
 ## Pending
 
 - Tier 3 learning curve (box A, in flight) — title verdict rule prespecified.

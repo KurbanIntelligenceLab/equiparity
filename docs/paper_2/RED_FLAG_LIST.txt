@@ -102,6 +102,17 @@ CLEARED (flag no. -> resolution; artifact):
      Creed 24 authors from arXiv:2606.07327; optixnet2026 authors from the
      Crossref record (Klimova et al.); VERIFY comments removed.
 
+Added 2026-07-18 (H-1 -- flag 18 CLEARED, the last experimental flag):
+ 18  supplementary.tex: full false-flag-vs-epoch curves measured from the 12
+     re-instrumented SO(3) retrains (per-epoch idealized OOD eval). Every core
+     >=0.85 within its first third of training (Allegro e1, MACE e4, EqV2 e23,
+     NequIP e34), flat at the headline value thereafter; deterministic-core
+     endpoints reproduce released values to +-0.003 (3 seeds exact to 4dp);
+     EqV2 within draw spread. New Supp Fig sfig:epochcurves (figS3) built
+     from figdata/figS3_epoch_curves.csv. All 21 grid runs passed the
+     verification battery (histories complete, vectors finite, endpoints
+     consistent). results/h1_epoch_curve.json, scripts/h1_epoch_curve.py.
+
 Added 2026-07-17 (Tier 3 -- B-3 CLEARED, flag 2; TITLE VERDICT: SURVIVES):
   2  discussion.tex L5: five-point N_zero sweep measured (0/250/1000/4000/
      16000, 3 seeds each, nested sets, 16000 = availability in the 6 SEEN
