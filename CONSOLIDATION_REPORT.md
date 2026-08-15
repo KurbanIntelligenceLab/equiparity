@@ -15,22 +15,36 @@ That is fixed: the generator now lives at `docs/draft/build_figures.py`, writes
 
 ## What was verified before anything moved
 
-1. **Figure reproduction.** The generator was run into an isolated scratch directory
-   holding only `build_figures.py` and `figdata/`, with the repository untouched. All eight
-   PDFs it produced matched the shipped `docs/draft/figures/`, `docs/figures/` and
-   `docs/paper_3/figures/` copies by decompressed PDF content stream — establishing both
-   that the figures reproduce and that build-input isolation holds: the generator needs
-   only those two paths.
-2. **The one exception.** `docs/paper_3/figures/fig5_mechanism.pdf` has a different content
-   stream from the submission's. It is the sole record of the earlier panel, which is why
-   `docs/paper_3` is retired rather than deleted.
-3. **Validator baseline.** The repository's five validators were recovered from
+1. **Figure reproduction and build-input isolation.** The generator was run into an
+   isolated scratch directory holding only `build_figures.py` and `figdata/`, with the
+   repository untouched. It produced all eight PDFs, which proves build-input isolation:
+   the generator needs only those two paths. A single comparison cell then computed
+   decompressed-PDF-content-stream digests for both sides — the freshly generated files and
+   the pre-edit rendered copies — and printed them side by side. Six of the seven panels the
+   submission retains match their pre-edit stream exactly, including `figS1_epoch_curves`,
+   whose stream is identical to the pre-edit `figS3_epoch_curves`: the panel was renamed,
+   not redrawn.
+2. **The one changed panel.** `fig5_mechanism.pdf` does **not** match, and that is
+   intended: it carries the MgO correction described below. It is the only figure whose
+   content changed in this work.
+3. **A separate pre-existing difference.** `docs/paper_3/figures/fig5_mechanism.pdf` also
+   differs from the submission's own copy, independently of the correction. It is the sole
+   record of the earlier panel, which is why `docs/paper_3` is retired rather than deleted.
+4. **Baseline caveat.** `docs/draft/figures/` was never git-tracked (zero files under that
+   path on `jp/dev`), so the pre-edit baseline is the staging copy now held in
+   the staging copy `docs/figures/`, not git history. Every figure comparison in this report is
+   against that baseline, which was captured by content-stream digest before the staging copy
+   was retired: `fig1` `6aeb4103987098bd`, `fig2` `b70019736261a939`, `fig3` `9a24807e13bc8fd6`,
+   `fig4` `cb606bc0099a5311`, `fig5` `48467cb31ebb6f25`, `figS3_epoch_curves`
+   `7eb2e7676bb09911`, `figS2` `435ac6a16bdb0a42`, `figS1_raw_thresholds` `f36dfb7d76d9d087`.
+   The digests are recorded here so the comparison remains checkable without the copy.
+5. **Validator baseline.** The repository's five validators were recovered from
    `HEAD:docs/paper_2/` (deleted from the worktree but present in git) and run against
    `docs/draft` before any change. Baseline: `audit_numbers` 48/48 consistent,
    `check_crossrefs` clean, `check_submission` crashed on a `SyntaxError`, `verify_figures`
    crashed on a missing label, `check_tables` silently reported "0 tables checked". The
    last three were pre-existing defects, not introduced here.
-4. **Manifest digests.** All five content hashes recorded in `data/manifests/*.yaml` were
+6. **Manifest digests.** All five content hashes recorded in `data/manifests/*.yaml` were
    verified against the archives on disk. All matched.
 
 ## Value-tracing
@@ -69,6 +83,7 @@ a file load-bearing, while its absence proves nothing.
 | Three MP manifests shipped `file_hashes: {}` against a data statement promising content hashes | Fixed: digests populated and `scripts/prepare_mp.py` now computes them |
 | `/data/raw/` directory-form ignore rule made every `!` exception inside it unreachable | Fixed to `/data/raw/**` |
 | `.DS_Store` files would have been committed to the submission branch | Fixed: OS-metadata rule added |
+| `fig4_training` was generated on every run but cited by no `\includegraphics`; the submission retired it into Supplementary Table `stab:t3` a/b | Gated behind `--include-retired`; the default run now writes exactly the set the manuscript includes |
 | `.gitignore` `!` exceptions still named `docs/paper` and `docs/paper_2` | Repointed at `docs/draft` |
 
 ## Accounting
@@ -79,26 +94,29 @@ decimal MB. Counts come from an `os.walk` that includes dotfiles, excluding `.gi
 | | Files | Size |
 |---|---|---|
 | Before | 134,933 | 351.56 MB |
-| Retired into `to_be_deleted/` | 57 | 7.89 MB |
-| Authored here | 9 | — |
-| Live tree after | 134,885 | 343.82 MB |
-| Whole tree after (holding dir included) | 134,943 | 351.71 MB |
+| Retired | 72 | 8.44 MB |
+| Authored or recovered into the tree | 10 | — |
+| Bytecode and OS-metadata by-products swept | 242 | 2.79 MB |
+| Tree now | 134,640 | 340.59 MB |
 
-Both reconciliations balance exactly:
+The reconciliation:
 
 ```
-live:  134,933 − 57 retired + 8 authored-in-live + 1 by-product = 134,885   observed 134,885
-whole: 134,885 live + 57 retired + 1 manifest                   = 134,943   observed 134,943
+134,933 − 72 retired − 242 by-products + 10 authored = 134,629   observed 134,640   (+11)
 ```
 
-The by-product is `docs/draft/__pycache__/build_figures.cpython-311.pyc`, created when the
-validators import the generator. Chasing that single-file gap is what surfaced it; it is a
-by-product, not cleanup, and is excluded from the retired total along with the 242
-`.DS_Store` and bytecode files left in place.
+The eleven are the author's own test and compile by-products, created while this work was in
+progress: ten `.pytest_cache` files under the repository root and `tests/`, plus one LaTeX
+build product. All are gitignored and none is staged.
 
-Note that 133,885 of the 134,885 live files are the QM9 `.xyz` set under `data/raw/qm9/`,
-which is gitignored and rebuilt by `scripts/prepare_qm9.py` from a tarball pinned by
-content hash. Excluding it, the live tree is about 1,000 files.
+Retirement was staged in a gitignored `to_be_deleted/` mirror of the repository layout, which
+the author has since moved to the system Trash. That is why the retired files no longer appear
+in the tree, and why the recovery paths in the next section point at git rather than at a
+holding directory.
+
+133,885 of the 134,640 files are the QM9 `.xyz` set under `data/raw/qm9/`, which is gitignored
+and rebuilt by `scripts/prepare_qm9.py` from a tarball pinned by content hash. Excluding it,
+the tree is about 750 files.
 
 ## Version control
 
@@ -110,8 +128,68 @@ QM9 is not; the holding directory never reaches the remote. The `*.log` rule was
 rather than assumed — it currently catches only pdfTeX output, and the file records what to
 do if a harvested log is ever added.
 
-**Not pushed.** The branch exists locally with one commit; pushing to a shared remote is
-the author's call.
+## Retired from the submission, and how to get it back
+
+Only material retired from `docs/draft` is recorded here. The superseded manuscript, the
+staging figure copy, the review screenshots, the drafting notes and the stale inventory were
+also retired; they are development history rather than part of the submission, and nothing in
+the manuscript or its build depends on them.
+
+| Retired from the submission | Recover with |
+|---|---|
+| `check_tables.py` | `git show d4270eb:docs/draft/check_tables.py > docs/draft/check_tables.py` |
+| `supplementary_data/Supplementary_Data_2_pooling_per_seed.csv` | `git show d4270eb:docs/draft/supplementary_data/Supplementary_Data_2_pooling_per_seed.csv > <path>` — though every value re-derives from `results/f5_pooling_arms.json` |
+| `figures/fig4_training.pdf` | `python build_figures.py --include-retired` (content stream `cb606bc0099a5311`) |
+| `figures/figS1_raw_thresholds.pdf` | same flag (content stream `f36dfb7d76d9d087`) |
+
+The two panels regenerate rather than needing a stored copy, which is the point of keeping the
+generator beside the manuscript. Move them out of `figures/` afterwards: the submission's figure
+set is the six the manuscript compiles, and the default run writes exactly those.
+
+**Not pushed.** The branch exists locally with three commits on top of `a3342ea`:
+`71587a8` commits the pooling arms, size-consistency and non-e3nn control work that was
+already sitting uncommitted in the worktree, unmodified, so that the consolidation is
+separately reviewable; `d4270eb` is the retarget; the third is the follow-up sweep recorded below
+(named by subject rather than hash, since the hash changes if the commit is amended). `git fetch origin` failed with a network error in this environment, so the
+branch is based on the local `jp/dev` tip, which was level with `origin/jp/dev` at the time.
+Pushing to a shared remote is the author's call.
+
+## Follow-up sweep
+
+A second pass over the whole tree, after the retarget commit, looking for references to
+retired paths and for material no decision had yet been made about.
+
+**It caught an error in the first pass.** Six probe files had been retired from
+`scratch_hotpp/` as duplicates of `results/noneN3/`, on the grounds that five of the six are
+byte-identical. That was wrong: `probe_escnn.py` does
+`sys.path.insert(0, os.path.join(os.path.dirname(__file__), "patched_pkgs"))` and
+`probe_hotpp.py` does `sys.path.insert(0, ".")`, so both resolve their imports **relative to
+their own directory**. `patched_pkgs/` and `hotpp/` live in `scratch_hotpp/`, not in
+`results/noneN3/`, which means the `scratch_hotpp/` copies are the runnable ones and the
+`results/noneN3/` copies are the archived record. All six were restored. This is why the
+one-way test matters: identical bytes did not make the file disposable, because what made it
+load-bearing was its location.
+
+The differing pair `hotpp_parity_probe.json` is now explained: `probe_hotpp.py` writes to its
+own cwd, so the file is the same script run twice from two directories, and the differences
+are last-bit float noise in quantities at machine epsilon (`max_abs_error` 1.39e-16 vs
+1.67e-16 on a norm of 1.0816652438). Neither copy is wrong and neither is authoritative over
+the other.
+
+Other findings, all fixed:
+
+| Finding | Resolution |
+|---|---|
+| `scripts/export_figdata.py` wrote to `docs/paper_2/figdata/` and would have recreated that directory, putting the generator's inputs where the manuscript does not read them | Repointed at `docs/draft/figdata/` |
+| `handoff/meanpool_readiness.md` was retired, but two tracked files cite it — `scripts/generate_grid_meanpool.py` for why the target scale must be refit, and `configs/mp_piezoelectric_meanpool_dryrun.yaml` for why the dry run uses the tiny subset | Promoted to `docs/results/f5_pooling_arms.md`, joining the other 20 appendices and matching `results/f5_pooling_arms.json`; both citations repointed |
+| 15 citations across `INTRO.md`, `METHODS.md`, `RESULTS.md`, six scripts, `src/equiparity/__init__.py`, `src/equiparity/models/nequip.py`, `tests/test_physics_claims.py` and `docs/results/e1_augmentation.md` pointed at checkpoint and work-plan documents deleted from the worktree before this work began | The 13 documents were recovered from `a3342ea` into the holding directory, so the retirement is reversible from one place, and the citations repointed at the surviving homes for that content |
+| `.DS_Store` was untracked but not ignored, so a Finder visit would add it | OS-metadata rule added (recorded above) |
+
+Three items were examined and deliberately left alone. `scratch_hotpp/patched_pkgs/` (232
+files, 3.4 MB) is the patched `escnn` that `probe_escnn.py` imports as a sibling; it is the
+only copy. `outputs/` holds two run directories with checkpoints and is gitignored by the
+repository's own rule, so it never reaches the remote and costs nothing to leave in place.
+`.mp_cache/` is empty.
 
 ## Unverified
 

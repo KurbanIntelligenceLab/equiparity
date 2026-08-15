@@ -1,6 +1,8 @@
 """Diagnostic probe: does a given NequIP construction actually break O(3) parity?
 
-Reproduces the Checkpoint-1 off-cycle finding (docs/reports/checkpoint1_offcycle_parity_toggle.md):
+Reproduces the Checkpoint-1 off-cycle finding (written up in the Supplementary Information,
+Supplementary Note "Prevalence audit of released architectures"; the original checkpoint note is
+retired; git show a3342ea:docs/reports/checkpoint1_offcycle_parity_toggle.md):
 flipping NequIP's ``parity`` boolean does NOT produce a parity-violating SO(3) model, while
 relabelling the edge spherical harmonics (and hidden features) as all-even does.
 

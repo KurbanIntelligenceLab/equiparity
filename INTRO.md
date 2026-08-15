@@ -61,8 +61,10 @@ on real data, whose coordinates satisfy inversion symmetry only to within a tole
 | [`METHODS.md`](METHODS.md) | data, models, parity toggle, metrics, training protocol, verification gate, reproducibility |
 | [`RESULTS.md`](RESULTS.md) | all measurements, as tables, with limitations |
 | [`docs/results/`](docs/results/) | appendices: per-run values, threshold curves, distributions, compute, symmetry audit |
-| [`docs/checkpoint7_report.md`](docs/checkpoint7_report.md) | review response; excluded models; corrections log |
-| [`docs/parity_work_plan.md`](docs/parity_work_plan.md) | the original scientific plan |
+| [`docs/draft/`](docs/draft/) | the manuscript: review response, excluded models and corrections are in its Supplementary Information |
+
+The original work plan and the development checkpoint reports are retired; recover any of them
+with `git show a3342ea:<path> > <path>`.
 
 Figures are not embedded in `RESULTS.md`; the underlying numbers are given as tables, and
 `results/threshold_curves.csv` holds the curve data in machine-readable form.

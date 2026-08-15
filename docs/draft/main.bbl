@@ -442,4 +442,20 @@
   Systems}} \textbf{\bibinfo{volume}{32}} (\bibinfo{year}{2019}).
 \newblock \urlprefix\url{https://arxiv.org/abs/1912.01703}.
 
+\bibitem{polat2026cliffordstf}
+\bibinfo{author}{Polat, C.}, \bibinfo{author}{Serpedin, E.},
+  \bibinfo{author}{Kurban, M.} \& \bibinfo{author}{Kurban, H.}
+\newblock \bibinfo{title}{Geometric algebra meets {Cartesian} tensors:
+  Higher-order equivariance for interatomic potentials} (\bibinfo{year}{2026}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2606.29584}.
+\newblock
+  \bibinfo{eprint}{{\href{https://arxiv.org/abs/2606.29584}{{arXiv:2606.29584}}}}.
+
+\bibitem{wang2024hotpp}
+\bibinfo{author}{Wang, J.} \emph{et~al.}
+\newblock \bibinfo{title}{{E(n)}-equivariant cartesian tensor message passing
+  interatomic potential}.
+\newblock \emph{\bibinfo{journal}{Nature Communications}}
+  \textbf{\bibinfo{volume}{15}}, \bibinfo{pages}{7607} (\bibinfo{year}{2024}).
+
 \end{thebibliography}

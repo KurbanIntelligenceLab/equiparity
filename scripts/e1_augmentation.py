@@ -343,7 +343,7 @@ def render() -> None:
         "(fix requires",
         "curated data), or they drop and UNSEEN-SG does not (learned zeros do not generalize). The",
         "measured outcome is the third one the plan flagged: **no drop even on SEEN-SG**, which",
-        "triggers the standing rule. See `docs/reports/checkpoint8_offcycle_e1.md`.",
+        "triggers the standing rule. See `docs/results/e1_augmentation.md`.",
     ]
     OUT_MD.parent.mkdir(parents=True, exist_ok=True)
     OUT_MD.write_text("\n".join(lines) + "\n")

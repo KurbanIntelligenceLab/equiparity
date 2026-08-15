@@ -1,6 +1,8 @@
 """V0 — every physics claim this study relies on, checked rather than asserted.
 
-Each test corresponds to a claim in ``docs/new_additions.md`` or a correction found while
+Each test corresponds to a claim in the manuscript's Supplementary Information (the original
+``docs/new_additions.md`` is retired; ``git show a3342ea:docs/new_additions.md``) or a
+correction found while
 validating it. Nothing here loads a trained checkpoint; these run on CPU in seconds.
 """
 

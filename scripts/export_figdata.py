@@ -1,8 +1,8 @@
 """Export the three figure series that are not tabulated in the manuscript.
 
-``docs/paper_2/build_figures.py`` rebuilds every figure from the Supplementary Tables; three
+``docs/draft/build_figures.py`` rebuilds every figure from the Supplementary Tables; three
 series exist only in the committed ``results/`` artifacts and must be exported to
-``docs/paper_2/figdata/`` before the corresponding panels can be drawn:
+``docs/draft/figdata/`` before the corresponding panels can be drawn:
 
 - ``fig5a_rutile_sweep.csv``   -- the 33-amplitude rutile polar-distortion sweep (from E2)
 - ``fig5b_jacobian_points.csv`` -- per-structure Jacobian even-fractions, 360 points (from E3)
@@ -24,7 +24,7 @@ from pathlib import Path
 import numpy as np
 
 REPO = Path(__file__).resolve().parent.parent
-FIGDATA = REPO / "docs" / "paper_2" / "figdata"
+FIGDATA = REPO / "docs" / "draft" / "figdata"
 CORE_LABEL = {
     "nequip": "NequIP",
     "allegro": "Allegro",

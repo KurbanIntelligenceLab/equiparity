@@ -115,7 +115,9 @@ def main():
           "author must complete it")
 
     # ---- build ----
-    for d in ["main", "sn-supplementary"]:
+    # The Supplementary Information is part of main.tex (input after the
+    # bibliography), so there is one document to build and one .log to check.
+    for d in ["main"]:
         log = ROOT / f"{d}.log"
         if not log.exists():
             check("Build", f"{d}.pdf", WARN, "not compiled in this run")

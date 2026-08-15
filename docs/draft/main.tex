@@ -65,23 +65,35 @@
   \leftlinenumbers}{}}
 \makeatother
 
-%% The Supplementary Information is a standalone document (sn-supplementary.tex,
-%% sharing sections/supplementary.tex). xr imports its label table, so every
-%% "Supplementary Note/Table/Fig." cross-reference below, and the references to
-%% the SI's Proposition/Corollaries, resolve through \ref to the numbers printed
-%% in that document -- reordering the SI renumbers them here automatically.
-%% Build with ./build.sh: it extracts each document's \newlabel lines into
-%% *-labels.aux before every pass, so xr imports labels only (importing the raw
-%% .aux would also import \bibcite lines and clash with this document's own
-%% citation numbering). No label prefix is needed because the SI namespaces
-%% (snote:/stab:/sfig:/sprop:/scor:) do not collide with the main labels.
-\usepackage{xr}
-\externaldocument{sn-supplementary-labels}
+%% The Supplementary Information is part of this document: it follows the
+%% bibliography via \input{sections/supplementary}, so every "Supplementary
+%% Note/Table/Fig." cross-reference below, and the references to the SI's
+%% Proposition/Corollaries, resolve through \ref within a single .aux -- no xr,
+%% no external label files, and a plain two-pass pdflatex/bibtex build suffices.
 %% Convenience macros keep the references reading naturally.
 \newcommand{\snote}[1]{Supplementary Note~\ref{#1}}
 \newcommand{\stab}[1]{Supplementary Table~\ref{#1}}
 \newcommand{\sfig}[1]{Supplementary Fig.~\ref{#1}}
 \newcommand{\stabs}[2]{Supplementary Tables~\ref{#1}--\ref{#2}}
+
+%% Auto-numbered Supplementary Notes. \suppnote{Title} prints
+%% "Supplementary Note N: Title" and is \label-able (the following \label picks up
+%% the note number through \refstepcounter), so \snote{...} resolves via \ref.
+\newcounter{suppnote}
+\newcommand{\suppnote}[1]{%
+  \refstepcounter{suppnote}%
+  \section*{Supplementary Note \thesuppnote: #1}%
+}
+
+%% Switches the float names and restarts the counters at the start of the
+%% Supplementary Information, so its floats number independently of the main text
+%% and print as "Supplementary Fig. N" / "Supplementary Table N".
+\newcommand{\beginsupplement}{%
+  \setcounter{figure}{0}\renewcommand{\thefigure}{\arabic{figure}}%
+  \setcounter{table}{0}\renewcommand{\thetable}{\arabic{table}}%
+  \renewcommand{\figurename}{Supplementary Fig.}%
+  \renewcommand{\tablename}{Supplementary Table}%
+}
 \raggedbottom
 
 \begin{document}
@@ -120,9 +132,23 @@
 
 \bibliography{references}
 
-%% The Supplementary Information is a standalone document: sn-supplementary.tex,
-%% which inputs sections/supplementary.tex and carries its own title page,
-%% S-numbering and reference list. Cross-references between the two documents
-%% resolve through xr (see the preamble).
+%% ===================== Supplementary Information =====================
+%% Placed after the bibliography so the SI's citations draw on the same
+%% reference list as the main text and render with the same numbering.
+%% \beginsupplement restarts the float counters and switches their names, so
+%% SI floats print as "Supplementary Fig. N" / "Supplementary Table N"
+%% independently of the main-text sequence.
+\newpage
+\beginsupplement
+
+\begin{center}
+{\LARGE\bfseries Supplementary Information\par}
+\vspace{6pt}
+{\large Parity-blind equivariant networks predict physically impossible
+material properties\par}
+\end{center}
+\vspace{12pt}
+
+\input{sections/supplementary}
 
 \end{document}

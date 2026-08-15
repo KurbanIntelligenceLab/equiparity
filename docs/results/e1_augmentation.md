@@ -108,4 +108,5 @@ The design anticipated two outcomes — SEEN-SG false-flags drop substantially
 (fix requires
 curated data), or they drop and UNSEEN-SG does not (learned zeros do not generalize). The
 measured outcome is the third one the plan flagged: **no drop even on SEEN-SG**, which
-triggers the standing rule. See `docs/reports/checkpoint8_offcycle_e1.md`.
+triggers the standing rule. The off-cycle checkpoint note behind this appendix is retired
+(`git show a3342ea:docs/reports/checkpoint8_offcycle_e1.md`).

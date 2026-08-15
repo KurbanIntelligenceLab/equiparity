@@ -22,7 +22,7 @@ The strengthening experiments of §12 draw on separate generators; their evidenc
 [`docs/results/e1_augmentation.md`](docs/results/e1_augmentation.md) …
 [`e7_rotation_subgroup.md`](docs/results/e7_rotation_subgroup.md),
 [`docs/results/f2_per_atom.md`](docs/results/f2_per_atom.md), and the consolidated
-[`docs/reports/checkpoint8_report.md`](docs/reports/checkpoint8_report.md). Methods for them are in
+the per-experiment appendices in [`docs/results/`](docs/results/). Methods for them are in
 [`METHODS.md`](METHODS.md) §8.
 
 Uncertainties are the standard deviation over 3 seeds unless stated otherwise.
@@ -383,7 +383,8 @@ expenditure but are not part of the 84-run grid.
 ## 11. Summary of measurements
 
 The prevalence of the distinction across released models is tabulated separately in **Table 1**
-([`docs/reports/checkpoint8_prevalence_audit.md`](docs/reports/checkpoint8_prevalence_audit.md)):
+(the Supplementary Information's prevalence-audit note, and
+[`results/prevalence_audit.json`](results/prevalence_audit.json)):
 of 15 surveyed architectures, 6 carry parity labels on their features, 3 are SO(3)-only, 3 are
 vector-only, and 3 are invariant. (Two rows — GotenNet and ICTP — were converted from source-reading
 to measurement in Checkpoint 9's H2; GotenNet, previously undetermined, measured **parity-aware** —
@@ -416,7 +417,7 @@ its l=1 output is a reflection-equivariant polar vector.)
 Seven experiments run on the trained models (no headline arm was retrained; `results/stats.json` is
 byte-identical). Each is summarised here with its decisive numbers and links its full appendix.
 Methods are in [`METHODS.md`](METHODS.md) §8; the consolidated write-up is
-[`docs/reports/checkpoint8_report.md`](docs/reports/checkpoint8_report.md).
+the per-experiment appendices in [`docs/results/`](docs/results/).
 
 ### 12.1 Augmentation does not buy the zero (E1)
 
@@ -445,7 +446,7 @@ The held-out false-flag rate barely moves — baseline → augmented, −0.000 t
 not retrained, remain at 0.0000. Augmentation does improve non-centrosymmetric test MAE for every core
 (e.g. EquiformerV2 0.2157 → 0.1774): better regressors that still predict impossible values. This
 outcome fell outside both anticipated results, so it carries an
-[off-cycle report](docs/reports/checkpoint8_offcycle_e1.md).
+[`docs/results/e1_augmentation.md`](docs/results/e1_augmentation.md).
 Full table: [E1](docs/results/e1_augmentation.md).
 
 ### 12.2 The symmetry-breaking curve (E2)
@@ -508,7 +509,7 @@ parity guarantees.** This is scoped as supplementary and does not change the hea
 ### 12.7 Prevalence, and the extensivity check (Table 1, F2)
 
 Across 14 released architectures classified by inspecting source (Table 1,
-[prevalence audit](docs/reports/checkpoint8_prevalence_audit.md)), 5 carry parity labels, 3 are
+[`results/prevalence_audit.json`](results/prevalence_audit.json)), 5 carry parity labels, 3 are
 SO(3)-only (including EquiformerV2 and the eSCN family), 3 are vector-only, 3 are invariant, and 1 is
 undetermined. Separately, because ‖e‖ is extensive (§9), the headline false-flag rate was recomputed
 with the size-normalised metric `‖e‖ / n_atoms` against a threshold rescaled by the median cell: every

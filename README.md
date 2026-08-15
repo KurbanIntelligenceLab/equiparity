@@ -87,7 +87,6 @@ results/          frozen measurement records the manuscript cites
 outputs/          per-experiment results and manifests (not committed)
 docs/draft/       the submission: sources, figures, figure generator, figdata, validators
 docs/results/     per-experiment appendices
-to_be_deleted/    material retired by consolidation (gitignored; see its MANIFEST.md)
 ```
 
 [`CONSOLIDATION_REPORT.md`](CONSOLIDATION_REPORT.md) records what was retired and why, what

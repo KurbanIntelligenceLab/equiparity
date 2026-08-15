@@ -962,14 +962,21 @@ if __name__ == "__main__":
     import sys
 
     print("Building figures to Nature specification (88 / 180 mm, Arial, Okabe-Ito)...")
-    fig1(); fig2(); fig3(); fig4(); fig5(); figS3(); figS2()
-    # figS1() draws the raw-coordinate-variant threshold curves. The submission retired
-    # that panel into prose (Supplementary Note "The raw coordinate variant and symmetry
-    # tolerance"), so it is not part of the default run and no \includegraphics cites it;
-    # its machine-readable series is still released as figdata/figS1_raw_thresholds.csv.
-    # Pass --include-retired to regenerate the panel itself.
+    fig1(); fig2(); fig3(); fig5(); figS3(); figS2()
+    # Two panels are retired: no \includegraphics in the submission cites either, so they are
+    # excluded from the default run and only the figures the manuscript compiles are written.
+    #
+    #   figS1() -- raw-coordinate-variant threshold curves. Retired into prose (Supplementary
+    #              Note "The raw coordinate variant and symmetry tolerance"); its series is
+    #              still released as figdata/figS1_raw_thresholds.csv.
+    #   fig4()  -- trained-on-zeros lollipop and loss-weight sweep. The submission retired it
+    #              into Supplementary Table stab:t3 a/b and the surrounding prose. Its values
+    #              are still audited by verify_figures.py against that table, so the numbers
+    #              remain under test even though the panel is not drawn.
+    #
+    # Pass --include-retired to regenerate both panels.
     if "--include-retired" in sys.argv:
-        figS1()
+        figS1(); fig4()
     print("\nEvery number above is traceable to a Supplementary Table or a figdata/ export.")
     missing = [f for f in ("fig5a_rutile_sweep.csv", "fig5b_jacobian_points.csv",
                            "figS1_raw_thresholds.csv") if load_rows(f) is None]

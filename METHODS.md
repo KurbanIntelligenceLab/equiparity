@@ -362,7 +362,8 @@ embedded in internal product-basis tensors with no clean linear readout.
 Consequently **all three O(3) arms in this study share the e3nn irrep implementation**, which is the
 study's principal limitation (`RESULTS.md` §13).
 
-Details: [`docs/checkpoint7_report.md`](docs/checkpoint7_report.md).
+Details: the Supplementary Information's note on cores considered and not used
+(`docs/draft/sections/supplementary.tex`).
 
 ---
 
@@ -372,7 +373,7 @@ Seven experiments probe the trained models beyond the headline OOD test. Six (E2
 inference-only and reuse the 21 committed piezoelectric checkpoints through one reload harness
 (`src/equiparity/inference/reload.py`); E1 is the only one that trains. Every physics claim they rely
 on is verified by a test (`tests/test_physics_claims.py`); the claim-by-claim table is
-[`docs/reports/checkpoint8_claims.md`](docs/reports/checkpoint8_claims.md).
+the Supplementary Information (`docs/draft/sections/supplementary.tex`).
 
 **Reload harness.** `load_trained()` rebuilds a run from its `config_snapshot.yaml` and
 `checkpoint_latest["model"]` — the **final-epoch** state dict, which is what `metrics.json` reports —

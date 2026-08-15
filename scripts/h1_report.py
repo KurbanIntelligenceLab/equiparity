@@ -2,7 +2,7 @@
 
 Reads ``results/h1_upstream.json`` (equivalence + pass-through + reruns, produced by
 ``h1_upstream_repro.py``), recomputes the AST-level diff manifest against the pinned upstream
-checkout, and writes ``docs/reports/checkpoint9_h1_equiformer_upstream.md``.
+checkout, and writes ``docs/results/h1_equiformer_upstream.md``.
 """
 
 from __future__ import annotations
@@ -16,7 +16,11 @@ UP = REPO / "third_party/equiformer_v2_upstream/nets/equiformer_v2"
 VEND = REPO / "src/equiparity/models/equiformer_v2"
 H1 = json.loads((REPO / "results/h1_upstream.json").read_text())
 E5 = json.loads((REPO / "results/e5_output_parity.json").read_text())
-OUT = REPO / "docs/reports/checkpoint9_h1_equiformer_upstream.md"
+# Writes into docs/results/ alongside the other per-experiment appendices. The former target,
+# docs/reports/, was retired with the development checkpoint notes, and this script did not
+# create its parent directory — so it would have failed on a clean checkout.
+OUT = REPO / "docs/results/h1_equiformer_upstream.md"
+OUT.parent.mkdir(parents=True, exist_ok=True)
 
 SHA = "8fe8cbaf8f3c27865b6e28c21db7867e75a107f7"
 

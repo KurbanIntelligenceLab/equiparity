@@ -357,7 +357,8 @@ def main() -> None:
         "not do what its name suggests (its own docstring shows `1o` features surviving",
         "`parity=False`). Our SO(3) arms are therefore built by relabelling irreps, not ",
         "by flipping",
-        "that flag — see `docs/reports/checkpoint1_offcycle_parity_toggle.md`.",
+        "that flag — see the Supplementary Information, Supplementary Note "
+        "\"Prevalence audit of released architectures\".",
         "",
         "## Notes (H2: two rows converted from reading to measurement)",
         "",

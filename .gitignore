@@ -227,7 +227,8 @@ Thumbs.db
 *.parquet
 !data/manifests/**
 !data/splits/**
-# The processed Materials Project archives ARE tracked (~9 MB total): they are the exact
+# The processed Materials Project archives ARE tracked (6.7 MB total across six files): they
+# are the exact
 # inputs the evaluation reads, their SHA-256 digests are recorded in the manifests above,
 # and no public endpoint returns these derived arrays. QM9 stays out: its 133,885 .xyz
 # files and the source tarball are a redistribution of a public CC0 dataset that
@@ -279,6 +280,13 @@ results/t4/*_ood.npz
 !docs/draft/figures/*.pdf
 !docs/draft/cover_letter.pdf
 
+# Two retired panels that no \includegraphics cites: fig4_training (retired into Supplementary
+# Table stab:t3 a/b) and figS1_raw_thresholds (retired into prose). build_figures.py writes them
+# only under --include-retired, but that run drops them into figures/ alongside the real set, so
+# they are named back out here rather than relying on remembering to move them.
+docs/draft/figures/fig4_training.pdf
+docs/draft/figures/figS1_raw_thresholds.pdf
+
 # Compiled manuscript PDFs stay on disk for submission and are never committed. Listed
 # explicitly so a future `!`-exception cannot readmit them by accident.
 docs/draft/main.pdf
@@ -288,6 +296,11 @@ docs/draft/sn-supplementary.pdf
 # for docs/draft/main.log and sn-supplementary.log (pdfTeX output). It would also silently
 # drop a harvested run log that is DATA rather than a build product. No such file exists in
 # the tree today; if one is added under results/, name it back with an explicit `!` rule.
+
+# Review screenshots. Screen captures taken while reading proofs: every value they depict is
+# read from results/ records by the validators, so they are never provenance. The directory
+# recurs naturally during revision, hence a rule rather than a one-time cleanup.
+/rev_check/
 
 # Retired material staged by a repo consolidation. Mirrors the repository layout, so any
 # group is restored by moving its path back; see to_be_deleted/MANIFEST.md. Never pushed.
