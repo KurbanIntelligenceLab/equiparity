@@ -13,7 +13,7 @@ cd docs/draft
 python build_figures.py
 ```
 
-Writes the seven PDFs in `figures/` that the manuscript includes. Reruns are
+Writes the six PDFs in `figures/` that the manuscript includes. Reruns are
 byte-identical: `save()` passes `metadata={"CreationDate": None}`, which omits
 matplotlib's timestamp, so an unchanged rerun leaves no diff in `git status`. Verified by
 running the target twice and comparing SHA-256.
@@ -67,7 +67,8 @@ exit 0, and the two run-per-target tools complete without findings.
 | `audit_fig1.py` | pixel-exact label-on-ink overlap audit, per figure | run per figure: `python audit_fig1.py fig1` |
 | `parity_metrics.py` | first-principles recomputation of the rank and false-flag statistics from the records | `python parity_metrics.py` |
 
-There were six validators. `check_tables.py` was **retired** rather than kept: it reported
+Seven validators were recovered from git; six remain. `check_tables.py` was **retired**
+rather than kept: it reported
 "0 tables checked   0 rule violations" on every run, because its regex looks for
 `\begin{tabular}` while every table in this manuscript uses `\begin{tabular*}` for
 full-width Nature tables. A validator that passes by matching nothing is worse than no

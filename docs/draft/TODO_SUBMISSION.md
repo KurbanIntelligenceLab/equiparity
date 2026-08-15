@@ -15,8 +15,9 @@ Split by who can settle them.
 - Fig. 5c MgO NequIP SO(3) corrected `4.9e-8` to `4.8e-8`. The seed mean in
   `results/e6_named_materials.json` is `4.8474e-8`. **This changed the figure**, so
   `fig5_mechanism.pdf` was regenerated and the manuscript needs recompiling to pick it up.
-- Six validators were recovered from git (`HEAD:docs/paper_2/`) into `docs/draft/`, and four
-  crash-level or silent-pass defects in them were fixed. Five run clean against this tree;
+- Seven validators were recovered from git (`HEAD:docs/paper_2/`) into `docs/draft/`, and four
+  crash-level or silent-pass defects in them were fixed. The six that were kept all run clean
+  against this tree;
   `check_tables.py` was retired (see below).
 - `data/manifests/mp_piezoelectric.yaml`, `mp_elastic.yaml` and
   `mp_ood_centrosymmetric.yaml` shipped `file_hashes: {}`, contradicting the data
