@@ -282,8 +282,10 @@ results/t4/*_ood.npz
 
 # Two retired panels that no \includegraphics cites: fig4_training (retired into Supplementary
 # Table stab:t3 a/b) and figS1_raw_thresholds (retired into prose). build_figures.py writes them
-# only under --include-retired, but that run drops them into figures/ alongside the real set, so
-# they are named back out here rather than relying on remembering to move them.
+# only under --include-retired, and into figures_retired/ so they cannot land in the submission's
+# figure set. That directory is a scratch output, and the two filenames stay named out of
+# figures/ as well, so an older checkout of the generator cannot reintroduce them.
+docs/draft/figures_retired/
 docs/draft/figures/fig4_training.pdf
 docs/draft/figures/figS1_raw_thresholds.pdf
 

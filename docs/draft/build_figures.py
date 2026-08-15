@@ -974,8 +974,12 @@ if __name__ == "__main__":
     #              are still audited by verify_figures.py against that table, so the numbers
     #              remain under test even though the panel is not drawn.
     #
-    # Pass --include-retired to regenerate both panels.
+    # Pass --include-retired to regenerate both panels. They are written to figures_retired/
+    # rather than figures/, so an --include-retired run cannot leave a panel the manuscript
+    # does not include sitting in the submission's figure directory.
     if "--include-retired" in sys.argv:
+        OUT = "figures_retired"
+        os.makedirs(OUT, exist_ok=True)
         figS1(); fig4()
     print("\nEvery number above is traceable to a Supplementary Table or a figdata/ export.")
     missing = [f for f in ("fig5a_rutile_sweep.csv", "fig5b_jacobian_points.csv",

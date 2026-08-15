@@ -50,8 +50,10 @@ To regenerate both:
 python build_figures.py --include-retired
 ```
 
-They are written into `figures/`; move them out before committing, since the submission's
-figure set is the six the manuscript compiles.
+They are written into `figures_retired/`, not `figures/`, so an `--include-retired` run cannot
+leave a panel the manuscript does not include sitting in the submission's figure set. That
+directory is gitignored, and the two filenames are named out of `figures/` as well, so an older
+checkout of the generator cannot reintroduce them either.
 
 ## Validators
 
