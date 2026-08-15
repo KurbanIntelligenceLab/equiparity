@@ -14,8 +14,8 @@ Target normalization needs no special handling here: ``target_scale`` is left un
 every generated config, so the trainer's ``scale = config.training.target_scale or
 float(train_targets.std())`` (nequip_tensor.py / mace_tensor.py / equiformer_tensor.py) refits
 automatically from the training split under the run's own pooling -- see
-docs/results/f5_pooling_arms.md §3 for why refitting (not reusing the sum-pooled scale) is
-required.
+results/f5_pooling_arms.json for the measured per-seed values; refitting rather than reusing the
+sum-pooled scale is required because the mean-pooled target distribution differs.
 
     python scripts/generate_grid_meanpool.py
 """

@@ -1,6 +1,6 @@
 # Mean-pooling dry run (task step 4): tiny NequIP O(3) piezoelectric run on CPU, pooling: mean.
 # Uses a hand-fetched tiny MP subset (data/raw/mp_dryrun/*), NOT the committed processed npz --
-# see docs/results/f5_pooling_arms.md for why (committed npz is absent from this checkout) and
+# because the committed processed npz is absent from a fresh checkout until prepare_mp.py runs, and
 # how a GPU run would point back at the real data/raw/mp/*.npz with these same model/training
 # fields plus pooling: mean.
 seed: 42

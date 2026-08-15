@@ -227,7 +227,8 @@ split.
 
 ### Estimated GPU-hours
 
-Computed from `docs/results/a1_per_seed.md`'s per-run `train_seconds` column (the sum-pooled
+Computed from the per-run `train_seconds` column of the a1 appendix that
+`scripts/analyze_results.py` regenerates (the sum-pooled
 headline's own measured wall-clock times), filtered to the 42 rows whose `target` is
 `piezoelectric` or `elastic` — the identical `{core, parity, target, seed}` combination set the
 mean-pooled grid reproduces:

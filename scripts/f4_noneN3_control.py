@@ -1,6 +1,6 @@
 """F4 -- non-e3nn O(3) control (HotPP / MiaoNet) on real periodic centrosymmetric crystals.
 
-Closes the gap left by the scouting probes in `results/noneN3/probe_hotpp*.py`: those probes
+Closes the gap left by the earlier scouting probes on a synthetic non-periodic cluster: those probes
 ran on a synthetic, non-periodic cluster. The manuscript's claim (Theorem 1) is about periodic
 crystals, and the CliffordSTF control that this script is meant to replace was withdrawn
 precisely because of a *conditioning* failure that only bites once the residual coordinate
@@ -27,11 +27,12 @@ symmetry-constructed structure. This script therefore:
      inversion operator), this script also displaces every crystal by a fixed random direction
      at epsilon in {1e-8, 1e-7, 1e-6, 1e-5} (relative to nearest-neighbour distance) and measures
      the amplification factor: (output violation / reference scale) / (epsilon / d_nn). This is
-     the SAME quantity that was 3,000-25,000x for CliffordSTF (METHODS.md S7,
+     the SAME quantity that was 3,000-25,000x for CliffordSTF (Supplementary Note
+     "Cores considered and not used, and a second non-e3nn O(3) control",
      docs/draft/sections/supplementary.tex ~line 600); an order-1 amplification factor here is
      the signature of a well-conditioned (linear) readout, in contrast to CliffordSTF's
      ill-conditioned cubic one.
-  5. Runs the mirror-law / rotation / improper-operation probe from `results/noneN3/probe_hotpp.py`
+  5. Runs the mirror-law / rotation / improper-operation probe of `scratch_hotpp/probe_hotpp.py`
      directly on one of the periodic crystals (rotating both the cell and the positions), so the
      equivariance gate is exercised on the same class of input as the structural test, not just
      the free-cluster probe.
@@ -415,7 +416,9 @@ def main() -> None:
                 if per_crystal[n]["epsilon_sweep"][e1]["informative"]
                 and per_crystal[n]["epsilon_sweep"][e2]["informative"]
             ),
-            "cliffordstf_amplification_range_for_comparison": "3,000-25,000x (METHODS.md S7)",
+            "cliffordstf_amplification_range_for_comparison": (
+                "3,000-25,000x (Supplementary Note: cores considered and not used)"
+            ),
             "hotpp_amplification_range": f"{min(all_amps_informative):.3f}-{max(all_amps_informative):.3f}x",
             "mirror_probe_informative_crystals": [n for n, p in mirror_probes.items() if p["informative"]],
             "mirror_probe_all_informative_pass": all(

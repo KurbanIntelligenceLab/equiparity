@@ -48,45 +48,35 @@ unresolved Supplementary Information citations, and the missing `build.sh`.
    `sections/methods.tex`. Only the author can complete it. This is the one item on this list
    that no amount of tooling can settle.
 
-## Resolved in the follow-up sweep
+## Repository state
 
-These were on the author's list and have been settled.
+The repository is scoped to the submission and what the availability statements promise.
+`docs/draft/` holds the manuscript with its generator, figdata and validators; `src/` and
+`tests/` hold the package and the parity verification gate; `scripts/`, `configs/` and
+`results/` hold the experiment drivers, their configs and the frozen measurement records the
+manuscript cites; `data/manifests/` and `data/splits/` carry the digests and split
+definitions, with the processed Materials Project archives tracked alongside them.
 
-- **`check_tables.py` retired.** It reported "0 tables checked   0 rule violations" on every
-  run, because its regex looks for `\begin{tabular}` while every table here uses
-  `\begin{tabular*}`. A validator that passes by matching nothing reads as evidence when it
-  is not, so it is retired rather than left in place
-  (`git show d4270eb:docs/draft/check_tables.py` recovers it). The 13 tables are consequently not machine-checked; `REPRODUCE.md` says so plainly.
-- **No table generator, and no claim of one.** Confirmed that no `.py` file in the repository
-  contains `tabular`, `toprule` or `booktabs`: the tables are hand-typed. `REPRODUCE.md` now
-  states this and points at the record files behind the values, so nothing in the repository
-  implies the tables regenerate.
-- **The duplicate probe question is answered, and the first pass had it backwards.** Six
-  probe files had been retired from `scratch_hotpp/` as duplicates of `results/noneN3/`. That
-  was wrong: `probe_escnn.py` inserts `os.path.dirname(__file__)/patched_pkgs` on the path and
-  `probe_hotpp.py` inserts `"."`, so both resolve imports relative to their own directory —
-  and `patched_pkgs/` and `hotpp/` live in `scratch_hotpp/`. The `scratch_hotpp/` copies are
-  the runnable ones and have been restored; the `results/noneN3/` copies are the archived
-  record. The differing `hotpp_parity_probe.json` is the same script run twice from two
-  directories, differing only in last-bit float noise on machine-epsilon quantities
-  (`max_abs_error` 1.39e-16 against 1.67e-16 on a norm of 1.0816652438). Neither is
-  authoritative over the other, and both are kept.
-- **`Supplementary_Data_2_pooling_per_seed.csv` retired.** No `.tex` file in the submission
-  references "Supplementary Data", and there was no Supplementary Data 1. Before retiring it,
-  all 21 rows were checked cell by cell against `results/f5_pooling_arms.json`: every value
-  re-derives within the precision the CSV prints, so it was a formatted view of the record,
-  not independent data. The Supplementary Information already promises the per-seed values
-  accompany the code release, which `results/f5_pooling_arms.json` satisfies.
-- **`handoff/piezo_raw.json` retired.** Nothing reads it. Retired rather than deleted because
-  its 3,322 records against the tracked archive's 3,312 remain unexplained. It was never
-  committed, so recovering it would mean going to the Trash before that is emptied.
-- **The pooling readiness note was promoted, not retired.** `handoff/meanpool_readiness.md`
-  was cited by two tracked files, so it was load-bearing. It is now
-  `docs/results/f5_pooling_arms.md`, alongside the other appendices and matching
-  `results/f5_pooling_arms.json`; both citations were repointed.
-- **`scripts/h1_report.py` would have crashed.** It wrote into `docs/reports/`, retired with
-  the checkpoint notes, without creating the parent directory. Repointed at
-  `docs/results/h1_equiformer_upstream.md` with an explicit `mkdir`.
-- **`scripts/export_figdata.py` wrote to the wrong tree.** It targeted
-  `docs/paper_2/figdata/` and would have recreated that directory. Repointed at
-  `docs/draft/figdata/`.
+Retired in the cleanup, and how to recover each: the study prose (`INTRO.md`, `METHODS.md`,
+`RESULTS.md`), superseded by the manuscript, which carries the Clifford withdrawal in full;
+the GPU-rental and container infrastructure, which no availability statement promises; the
+18 script-generated appendices under `docs/results/`, which regenerate from
+`scripts/analyze_results.py` and `scripts/analyze_ood_symmetry.py`; the patched `escnn`
+package and its probe, since `escnn` appears nowhere in the manuscript; the archived scouting
+probes under `results/noneN3/`, superseded by `scripts/f4_noneN3_control.py`, which is what
+the Supplementary Information cites; and two development plots superseded by
+`docs/draft/figures/`. Everything named here is in `to_be_deleted/`, mirroring the repository
+layout, so any group is restored by moving its path back.
+
+The three appendices with no generator — `f3_size_consistency.md`, `f4_noneN3_control.md` and
+`f5_pooling_arms.md` — were kept for that reason. `scratch_hotpp/hotpp/` was kept because
+`scripts/f4_noneN3_control.py` imports it and the Supplementary Information's no-e3nn claim is
+checkable only against it. The CliffordSTF implementation was kept: the Supplementary
+Information reports two measured quantities from it, and the code availability statement
+promises all code without carve-outs.
+
+## Packaging
+
+`pyproject.toml` plus `uv.lock`, `requires-python = "==3.12.*"`. There is no
+`requirements.txt` and no `pip install` path anywhere in the repository. The `nequip` and
+`mace` extras conflict and cannot co-install, which is why CI runs them as a matrix.

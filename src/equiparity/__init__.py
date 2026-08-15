@@ -1,6 +1,6 @@
 """equiparity: when parity matters in equivariant models for materials properties.
 
-See docs/draft/ for the manuscript and docs/results/ for the per-experiment appendices.
+See docs/draft/ for the manuscript, which is the source of truth for every claim.
 The original work plan is retired (git show a3342ea:docs/parity_work_plan.md). This package
 holds all
 importable code; scripts/ orchestrate it and carry no scientific logic.
