@@ -2,7 +2,8 @@ name: mp_piezoelectric
 source: Materials Project materials.piezoelectric
 version: Materials Project API; fetched 2026-07-04
 license: CC-BY-4.0 (Materials Project)
-file_hashes: {}
+file_hashes:
+  mp_piezoelectric_processed.npz: 92269792b8601886eb2e6501c5aa8acbc0246068fd1d7a36d1af604dd65eba38
 schema:
   piezoelectric: DFPT piezoelectric tensor, 3x6 flattened to 18 (parity-odd)
   positions: angstrom

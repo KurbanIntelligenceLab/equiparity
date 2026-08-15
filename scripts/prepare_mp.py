@@ -94,6 +94,27 @@ def _write_split(name: str, dataset: str, ids: list[str]) -> None:
     print(f"  wrote {name} split: {manifest.counts}")
 
 
+def _processed_hashes(name: str) -> dict[str, str]:
+    """SHA-256 of every processed archive this dataset writes.
+
+    The manuscript's data availability statement promises "dataset manifests with content
+    hashes", and DatasetManifest documents file_hashes as the digests loaders verify. The
+    processed archives are not committed, so the digest is the only way a reader who
+    re-derives them can confirm they reproduced the same bytes. Includes the idealized and
+    raw variants of the centrosymmetric population when present.
+    """
+    import hashlib
+
+    out: dict[str, str] = {}
+    for path in sorted(RAW_DIR.glob(f"{name}_processed*.npz")):
+        h = hashlib.sha256()
+        with path.open("rb") as fh:
+            for chunk in iter(lambda: fh.read(1 << 20), b""):
+                h.update(chunk)
+        out[path.name] = h.hexdigest()
+    return out
+
+
 def _write_manifest(
     name: str, source: str, schema: dict[str, str], n: int, extra: str = ""
 ) -> None:
@@ -102,7 +123,7 @@ def _write_manifest(
         source=source,
         version="Materials Project API; fetched 2026-07-04",
         license="CC-BY-4.0 (Materials Project)",
-        file_hashes={},
+        file_hashes=_processed_hashes(name),
         schema=schema,
         structure_format="pymatgen Structure (periodic)",
         query="scripts/prepare_mp.py",

@@ -1,0 +1,127 @@
+\documentclass[pdflatex,sn-nature]{sn-jnl}% Style for submissions to Nature Portfolio journals
+
+%%%% Standard Packages
+\usepackage{graphicx}%
+\usepackage{multirow}%
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage[title]{appendix}%
+\usepackage{xcolor}%
+\usepackage{textcomp}%
+\usepackage{manyfoot}%
+\usepackage{booktabs}
+\usepackage{longtable}        % multi-page supplementary tables
+\usepackage{siunitx}          % decimal-aligned numeric columns
+\sisetup{detect-all, table-align-text-before=false, table-align-text-after=false,
+         input-symbols={()[]}, table-number-alignment=center}%
+\usepackage{array}%
+\usepackage{colortbl}%
+\usepackage{amsthm}%
+%%%%
+
+\graphicspath{{figures/}}
+
+%% Theorem environments (SN-provided numbered styles)
+\theoremstyle{thmstyleone}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{thmstylethree}
+\newtheorem{definition}{Definition}
+\theoremstyle{thmstyleone}
+
+%% ---------------------------------------------------------------------------
+%% Red flags for author-supplied items. Every unresolved item in this manuscript
+%% is wrapped in one of these three and prints in red.
+%% TO PRODUCE THE FINAL SUBMISSION PDF: set \finaltrue below. Every flag then
+%% vanishes and any that is still unresolved will be obvious as a hole in the text.
+%% ---------------------------------------------------------------------------
+\newif\iffinal
+\finalfalse                     % <-- set to \finaltrue for the submission PDF
+\iffinal
+  \newcommand{\MISSING}[1]{}
+  \newcommand{\VERIFY}[1]{}
+  \newcommand{\BLOCKING}[1]{}
+  \long\def\REV#1{#1}
+\else
+  \newcommand{\MISSING}[1]{\textcolor{red}{[MISSING: #1]}}
+  \newcommand{\VERIFY}[1]{\textcolor{red}{[VERIFY: #1]}}
+  \newcommand{\BLOCKING}[1]{\textcolor{red}{[BLOCKING: #1]}}
+  %% \REV marks text added or changed in this revision round. Setting \finaltrue
+  %% above renders it as ordinary black text -- no unwrapping needed at submission.
+  %% Declared \long so a marked span may cross paragraph breaks (\textcolor is not).
+  \newcommand{\REVcolor}[1]{\textcolor{red}{#1}}
+  \long\def\REV#1{\begingroup\color{red}#1\endgroup}
+\fi
+
+%% Line numbers for peer review (Nature Portfolio asks for numbered lines in the
+%% review PDF). Comment out the \linenumbers line for the production version.
+\usepackage[mathlines]{lineno}
+\linenumbers
+\makeatletter
+\AtBeginDocument{\@ifpackageloaded{lineno}{%
+  \setlength{\linenumbersep}{8pt}%
+  \renewcommand\linenumberfont{\normalfont\scriptsize\color{gray}}%
+  \leftlinenumbers}{}}
+\makeatother
+
+%% Cross-document references. xr imports the label table of the main manuscript,
+%% so references from this SI to main-text items (e.g. Theorem \ref{thm:zero})
+%% resolve to the numbers printed there. Build with ./build.sh: it extracts
+%% main's \newlabel lines into main-labels.aux before every pass, so xr imports
+%% labels only (importing the raw .aux would also import \bibcite lines and
+%% clash with this document's own citation numbering). No prefix is needed
+%% because the SI label namespaces do not collide with the main-text ones.
+\usepackage{xr}
+\externaldocument{main-labels}
+
+%% Supplementary numbering: caption words "Supplementary Fig./Table",
+%% plain-arabic numbers to match the main text's "Supplementary Fig.~N" references.
+\renewcommand{\figurename}{Supplementary Fig.}
+\renewcommand{\tablename}{Supplementary Table}
+
+%% Convenience macros for naming SI items, mirroring main.tex so the shared
+%% section file sections/supplementary.tex compiles identically in both documents.
+\newcommand{\snote}[1]{Supplementary Note~\ref{#1}}
+\newcommand{\stab}[1]{Supplementary Table~\ref{#1}}
+\newcommand{\sfig}[1]{Supplementary Fig.~\ref{#1}}
+\newcommand{\stabs}[2]{Supplementary Tables~\ref{#1}--\ref{#2}}
+
+%% Auto-numbered Supplementary Notes so cross-references resolve via \ref.
+%% \suppnote{Title} prints "Supplementary Note N: Title" and is \label-able
+%% (the following \label picks up the note number through \refstepcounter).
+\newcounter{suppnote}
+\newcommand{\suppnote}[1]{%
+  \refstepcounter{suppnote}%
+  \section*{Supplementary Note \thesuppnote: #1}%
+}
+
+\raggedbottom
+
+\begin{document}
+
+\title[Supplementary Information]{Supplementary Information for\\ Parity-blind equivariant networks predict physically impossible material properties}
+
+\author[1]{\fnm{Can} \sur{Polat}}% ORCID: 0000-0002-1458-302X
+
+\author*[2,3]{\fnm{Mustafa} \sur{Kurban}}\email{kurbanm@ankara.edu.tr}% ORCID: 0000-0002-7263-0234
+
+\author[1]{\fnm{Erchin} \sur{Serpedin}}% ORCID: 0000-0001-9069-770X
+
+\author*[4]{\fnm{Hasan} \sur{Kurban}}\email{hkurban@hbku.edu.qa}% ORCID: 0000-0003-3142-2866
+
+\affil[1]{\orgdiv{Department of Electrical and Computer Engineering}, \orgname{Texas A\&M University}, \orgaddress{\city{College Station}, \state{Texas}, \country{USA}}}
+
+\affil[2]{\orgdiv{Department of Electrical and Computer Engineering}, \orgname{Texas A\&M University at Qatar}, \orgaddress{\city{Doha}, \country{Qatar}}}
+
+\affil[3]{\orgdiv{Department of Prosthetics and Orthotics}, \orgname{Ankara University}, \orgaddress{\city{Ankara}, \country{Turkey}}}
+
+\affil[4]{\orgdiv{College of Science and Engineering}, \orgname{Hamad Bin Khalifa University}, \orgaddress{\city{Doha}, \country{Qatar}}}
+
+\maketitle
+
+\input{sections/supplementary}
+
+\bibliography{references}
+
+\end{document}

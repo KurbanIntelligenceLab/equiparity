@@ -8,8 +8,20 @@ predicting nonzero tensors for cases that are zero by Neumann's principle. The p
 quantifies when parity matters (never for energies, somewhat for dipoles, categorically
 for odd-parity tensors) and turns it into a practitioner rule.
 
-The full scientific plan, scope, experiments, gates, and checkpoints live in
-[`docs/parity_work_plan.md`](docs/parity_work_plan.md).
+## The manuscript
+
+The submission is [`docs/draft/`](docs/draft/). Its figure generator, figure-data inputs and
+validators sit beside it, so the paper and the code that produces it move together.
+[`docs/draft/REPRODUCE.md`](docs/draft/REPRODUCE.md) maps each figure to its generator and
+its data source, gives the exact commands, and states what has not been verified.
+[`docs/draft/TODO_SUBMISSION.md`](docs/draft/TODO_SUBMISSION.md) lists the open items.
+
+```bash
+cd docs/draft
+python build_figures.py     # writes figures/, byte-identical on rerun
+python verify_figures.py    # every hard-coded figure number against its source
+python audit_numbers.py     # every quantity the manuscript reports twice
+```
 
 ## The study
 
@@ -18,9 +30,9 @@ The full scientific plan, scope, experiments, gates, and checkpoints live in
 | [`INTRO.md`](INTRO.md) | the physical constraint, the mechanism under test, the design |
 | [`METHODS.md`](METHODS.md) | data, models, parity toggle, metrics, training, verification gate |
 | [`RESULTS.md`](RESULTS.md) | all measurements as tables, with limitations |
-| [`docs/results/`](docs/results/) | appendices: per-run values, threshold curves, distributions, compute, symmetry audit |
+| [`docs/results/`](docs/results/) | 20 per-experiment appendices: per-run values, threshold curves, distributions, compute, symmetry audit |
 
-Regenerate every table and figure:
+Regenerate the study tables and appendix curves:
 
 ```bash
 python3 scripts/analyze_results.py                            # tables, curves, appendices A1–A4
@@ -43,10 +55,17 @@ for pinned versions and the correction to the work plan's stale pins.
 
 ## Data access
 
-Raw datasets are external and never committed; only manifests (`data/manifests/`) and
-split definitions (`data/splits/`) are versioned. Datasets: QM9 (MoleculeNet), MP Elastic
-and MP Piezoelectric (Materials Project API), a centrosymmetric OOD evaluation set derived
-from MP, and JARVIS-DFT as the piezoelectric fallback.
+Manifests (`data/manifests/`, with SHA-256 digests) and split definitions
+(`data/splits/`) are versioned. The processed Materials Project archives
+(`data/raw/mp/*.npz`, 6.7 MB) are also tracked: they are the exact arrays the evaluation
+reads and no public endpoint returns them. QM9 is not tracked — its source tarball is
+pinned by content hash in `data/manifests/qm9.yaml` and `scripts/prepare_qm9.py` rebuilds
+the 133,885 `.xyz` files from it. Datasets: QM9, MP Elastic and MP Piezoelectric
+(Materials Project API), a centrosymmetric OOD evaluation set derived from MP, and
+JARVIS-DFT for the SOTA-predictor comparison.
+
+`scratch_hotpp/` vendors HotPP, which has no PyPI release under that name;
+`scripts/f4_noneN3_control.py` imports it from there.
 
 ## Reproduce main results
 
@@ -64,9 +83,15 @@ configs/          versioned experiment configs (YAML)
 data/manifests/   dataset manifests (hashes, sources, licenses)
 data/splits/      split definitions (seed, method, counts)
 scripts/          orchestration only, no scientific logic
+results/          frozen measurement records the manuscript cites
 outputs/          per-experiment results and manifests (not committed)
-docs/             work plan and notes
+docs/draft/       the submission: sources, figures, figure generator, figdata, validators
+docs/results/     per-experiment appendices
+to_be_deleted/    material retired by consolidation (gitignored; see its MANIFEST.md)
 ```
+
+[`CONSOLIDATION_REPORT.md`](CONSOLIDATION_REPORT.md) records what was retired and why, what
+was verified before anything moved, and the before/after accounting.
 
 ## Citation
 
