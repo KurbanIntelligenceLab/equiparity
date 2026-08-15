@@ -17,6 +17,7 @@ import torch
 
 from equiparity.domain.parity import ParityMode
 from equiparity.models.irreps import degree_irreps, output_irreps
+from equiparity.models.pooling import pool_per_structure, validate_pooling
 
 
 @dataclass(frozen=True, slots=True)
@@ -36,6 +37,14 @@ class AllegroConfig:
     seed: int = 42
     model_dtype: str = "float32"
     do_derivatives: bool = False
+    # "sum" (default) reproduces every committed result bit-identically. "mean" divides the
+    # summed per-edge readout by the structure's EDGE count, not atom count -- Allegro is
+    # edge-centric (no per-atom message passing), so an intensive readout here means the
+    # per-edge contributions average out over edges, not atoms (see equiparity.models.pooling).
+    pooling: str = "sum"
+
+    def __post_init__(self) -> None:
+        validate_pooling(self.pooling)
 
 
 def _ensure_global_state() -> None:
@@ -150,6 +159,7 @@ class AllegroTensorModel(torch.nn.Module):
         from e3nn import o3
 
         self.backbone = build_allegro_matched(config, mode)
+        self.pooling = config.pooling
         self.output_irreps = o3.Irreps(output_irreps(o3_output_irreps, mode))
         # Deepest per-edge tensor-product layer (model.func.allegro.tps.<i>) that still carries
         # l>0 features. Allegro's FINAL tps collapses to scalars (1x0e) for the energy readout,
@@ -201,8 +211,9 @@ class AllegroTensorModel(torch.nn.Module):
         )
         edge_struct = batch_index[edge_index[0]]  # (n_edges,) edge -> structure
         n_graphs = int(batch_index.max().item()) + 1
-        out = torch.zeros(n_graphs, per_edge.shape[1], dtype=per_edge.dtype, device=per_edge.device)
-        return out.index_add_(0, edge_struct, per_edge)
+        # "mean" divides by the per-structure EDGE count (edge_struct), not atom count: Allegro's
+        # readout is per-edge, so an intensive average must be taken over edges (module docstring).
+        return pool_per_structure(per_edge, edge_struct, n_graphs, self.pooling)
 
 
 class AllegroDipoleModel(AllegroTensorModel):

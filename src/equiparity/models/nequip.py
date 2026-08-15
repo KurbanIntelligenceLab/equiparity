@@ -20,6 +20,7 @@ import torch
 
 from equiparity.domain.parity import ParityMode
 from equiparity.models.irreps import degree_irreps, output_irreps
+from equiparity.models.pooling import pool_per_structure
 
 
 @dataclass(frozen=True, slots=True)
@@ -44,6 +45,16 @@ class NequIPConfig:
     seed: int = 42
     model_dtype: str = "float32"
     do_derivatives: bool = False
+    # "sum" (default) reproduces every committed result bit-identically: it is exactly the
+    # original out.index_add_(...) readout, extensive in atom count. "mean" divides the summed
+    # per-atom readout by the structure's atom count -- an intensive control arm (reviewer ask;
+    # see equiparity.models.pooling).
+    pooling: str = "sum"
+
+    def __post_init__(self) -> None:
+        from equiparity.models.pooling import validate_pooling
+
+        validate_pooling(self.pooling)
 
 
 # e3nn stores Wigner constants via torch.load; torch 2.6+ needs `slice` allow-listed,
@@ -172,6 +183,7 @@ class NequIPTensorModel(torch.nn.Module):
         if config.num_layers < 2:
             raise ValueError("tensor head needs num_layers >= 2 (a non-scalar layer to read from)")
         self.backbone = build_nequip_matched(config, mode)
+        self.pooling = config.pooling
         self.output_irreps = o3.Irreps(output_irreps(o3_output_irreps, mode))
         self._probe_name = f"model.func.layer{config.num_layers - 2}_convnet"
         self._probe_module = self._find_probe(self._probe_name)
@@ -204,8 +216,7 @@ class NequIPTensorModel(torch.nn.Module):
         per_atom = self.readout(store["feat"])  # (n_atoms, output_dim)
         batch_index = batch[AtomicDataDict.BATCH_KEY]
         n_graphs = int(batch_index.max().item()) + 1
-        out = torch.zeros(n_graphs, per_atom.shape[1], dtype=per_atom.dtype, device=per_atom.device)
-        return out.index_add_(0, batch_index, per_atom)
+        return pool_per_structure(per_atom, batch_index, n_graphs, self.pooling)
 
 
 class NequIPDipoleModel(NequIPTensorModel):

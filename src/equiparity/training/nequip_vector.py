@@ -108,6 +108,7 @@ def train_dipole(config: ExperimentConfig) -> RunResult:
             avg_num_neighbors=avg_neigh,
             seed=config.seed,
             model_dtype=config.training.precision,
+            pooling=config.model.pooling,
         )
         model = AllegroDipoleModel(allegro_cfg, config.parity).to(device)
     else:
@@ -121,6 +122,7 @@ def train_dipole(config: ExperimentConfig) -> RunResult:
             avg_num_neighbors=avg_neigh,
             seed=config.seed,
             model_dtype=config.training.precision,
+            pooling=config.model.pooling,
         )
         model = NequIPDipoleModel(model_cfg, config.parity).to(device)
     n_params = sum(int(p.numel()) for p in model.parameters())

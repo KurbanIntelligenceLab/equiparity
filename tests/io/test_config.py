@@ -47,3 +47,19 @@ def test_missing_key_raises() -> None:
     incomplete = {k: v for k, v in _BASE.items() if k != "seed"}
     with pytest.raises(ConfigError, match="missing required config key"):
         parse_experiment_config(incomplete)
+
+
+def test_pooling_defaults_to_sum() -> None:
+    """Non-negotiable: an existing config with no `pooling` key must keep reproducing sum."""
+    cfg = parse_experiment_config(dict(_BASE))
+    assert cfg.model.pooling == "sum"
+
+
+def test_pooling_mean_loads_from_yaml() -> None:
+    cfg = parse_experiment_config({**_BASE, "model": {**_BASE["model"], "pooling": "mean"}})
+    assert cfg.model.pooling == "mean"
+
+
+def test_invalid_pooling_raises() -> None:
+    with pytest.raises(ConfigError, match="model.pooling must be"):
+        parse_experiment_config({**_BASE, "model": {**_BASE["model"], "pooling": "max"}})

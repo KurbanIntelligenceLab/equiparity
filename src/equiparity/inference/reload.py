@@ -247,6 +247,7 @@ def _build_mace(
         avg_num_neighbors=avg_neigh,
         seed=config.seed,
         model_dtype=config.training.precision,
+        pooling=config.model.pooling,
     )
     model = MACETensorModel(mace_cfg, config.parity, TARGETS[config.target].irreps).to(dev)
     dtype = torch.float32 if config.training.precision == "float32" else torch.float64

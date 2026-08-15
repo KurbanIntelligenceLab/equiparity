@@ -1,0 +1,226 @@
+{
+  "population": "QM9 test split (seed 42), the dipole evaluation population",
+  "split_file": "data/splits/qm9_split.npz",
+  "criterion": "Rank of the Reynolds projector (1/|G|) sum_R R over individually verified symmetry operations; rank 0 means symmetry forces the dipole to vanish. Inversion is sufficient but not necessary: Td gives rank 0 without it.",
+  "residual_tolerance_angstrom": 0.05,
+  "tolerances_angstrom": [
+    0.01,
+    0.1,
+    0.3
+  ],
+  "by_tolerance": {
+    "0.01": {
+      "n_molecules": 10831,
+      "n_dipole_forcing": 7,
+      "fraction_dipole_forcing": 0.000646293047733358,
+      "max_reference_dipole_among_forced_debye": 0.0003,
+      "point_group_counts": {
+        "C1": 9370,
+        "Cs": 1365,
+        "C2v": 43,
+        "C2": 38,
+        "C3v": 4,
+        "D2": 3,
+        "D2d": 2,
+        "C2h": 2,
+        "Td": 1,
+        "C*v": 1,
+        "D2h": 1,
+        "C3h": 1
+      },
+      "dipole_forcing_molecules": [
+        {
+          "qm9_index": 1,
+          "point_group": "Td",
+          "verified_ops": 24,
+          "analyser_ops": 24,
+          "reference_dipole_debye": 0.0
+        },
+        {
+          "qm9_index": 47,
+          "point_group": "D2d",
+          "verified_ops": 8,
+          "analyser_ops": 8,
+          "reference_dipole_debye": 0.0
+        },
+        {
+          "qm9_index": 695,
+          "point_group": "D2d",
+          "verified_ops": 8,
+          "analyser_ops": 8,
+          "reference_dipole_debye": 0.0
+        },
+        {
+          "qm9_index": 5661,
+          "point_group": "C2h",
+          "verified_ops": 4,
+          "analyser_ops": 4,
+          "reference_dipole_debye": 0.0
+        },
+        {
+          "qm9_index": 8720,
+          "point_group": "C2h",
+          "verified_ops": 4,
+          "analyser_ops": 4,
+          "reference_dipole_debye": 0.0001
+        },
+        {
+          "qm9_index": 18097,
+          "point_group": "D2h",
+          "verified_ops": 8,
+          "analyser_ops": 8,
+          "reference_dipole_debye": 0.0003
+        },
+        {
+          "qm9_index": 27872,
+          "point_group": "C3h",
+          "verified_ops": 6,
+          "analyser_ops": 6,
+          "reference_dipole_debye": 0.0001
+        }
+      ]
+    },
+    "0.1": {
+      "n_molecules": 10831,
+      "n_dipole_forcing": 7,
+      "fraction_dipole_forcing": 0.000646293047733358,
+      "max_reference_dipole_among_forced_debye": 0.0003,
+      "point_group_counts": {
+        "C1": 9278,
+        "Cs": 1452,
+        "C2v": 45,
+        "C2": 41,
+        "C3v": 4,
+        "D2": 3,
+        "D2d": 2,
+        "C2h": 2,
+        "Td": 1,
+        "C*v": 1,
+        "D2h": 1,
+        "C3h": 1
+      },
+      "dipole_forcing_molecules": [
+        {
+          "qm9_index": 1,
+          "point_group": "Td",
+          "verified_ops": 24,
+          "analyser_ops": 24,
+          "reference_dipole_debye": 0.0
+        },
+        {
+          "qm9_index": 47,
+          "point_group": "D2d",
+          "verified_ops": 8,
+          "analyser_ops": 8,
+          "reference_dipole_debye": 0.0
+        },
+        {
+          "qm9_index": 695,
+          "point_group": "D2d",
+          "verified_ops": 8,
+          "analyser_ops": 8,
+          "reference_dipole_debye": 0.0
+        },
+        {
+          "qm9_index": 5661,
+          "point_group": "C2h",
+          "verified_ops": 4,
+          "analyser_ops": 4,
+          "reference_dipole_debye": 0.0
+        },
+        {
+          "qm9_index": 8720,
+          "point_group": "C2h",
+          "verified_ops": 4,
+          "analyser_ops": 4,
+          "reference_dipole_debye": 0.0001
+        },
+        {
+          "qm9_index": 18097,
+          "point_group": "D2h",
+          "verified_ops": 8,
+          "analyser_ops": 8,
+          "reference_dipole_debye": 0.0003
+        },
+        {
+          "qm9_index": 27872,
+          "point_group": "C3h",
+          "verified_ops": 6,
+          "analyser_ops": 6,
+          "reference_dipole_debye": 0.0001
+        }
+      ]
+    },
+    "0.3": {
+      "n_molecules": 10831,
+      "n_dipole_forcing": 7,
+      "fraction_dipole_forcing": 0.000646293047733358,
+      "max_reference_dipole_among_forced_debye": 0.0003,
+      "point_group_counts": {
+        "C1": 9217,
+        "Cs": 1511,
+        "C2v": 46,
+        "C2": 41,
+        "C3v": 4,
+        "D2": 3,
+        "D2d": 2,
+        "C2h": 2,
+        "D2h": 2,
+        "Td": 1,
+        "C*v": 1,
+        "C3h": 1
+      },
+      "dipole_forcing_molecules": [
+        {
+          "qm9_index": 1,
+          "point_group": "Td",
+          "verified_ops": 24,
+          "analyser_ops": 24,
+          "reference_dipole_debye": 0.0
+        },
+        {
+          "qm9_index": 47,
+          "point_group": "D2d",
+          "verified_ops": 8,
+          "analyser_ops": 8,
+          "reference_dipole_debye": 0.0
+        },
+        {
+          "qm9_index": 695,
+          "point_group": "D2d",
+          "verified_ops": 8,
+          "analyser_ops": 8,
+          "reference_dipole_debye": 0.0
+        },
+        {
+          "qm9_index": 5661,
+          "point_group": "C2h",
+          "verified_ops": 4,
+          "analyser_ops": 4,
+          "reference_dipole_debye": 0.0
+        },
+        {
+          "qm9_index": 8720,
+          "point_group": "C2h",
+          "verified_ops": 4,
+          "analyser_ops": 4,
+          "reference_dipole_debye": 0.0001
+        },
+        {
+          "qm9_index": 18097,
+          "point_group": "D2h",
+          "verified_ops": 8,
+          "analyser_ops": 8,
+          "reference_dipole_debye": 0.0003
+        },
+        {
+          "qm9_index": 27872,
+          "point_group": "C3h",
+          "verified_ops": 6,
+          "analyser_ops": 6,
+          "reference_dipole_debye": 0.0001
+        }
+      ]
+    }
+  }
+}

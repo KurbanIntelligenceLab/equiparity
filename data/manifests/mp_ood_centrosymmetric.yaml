@@ -3,12 +3,14 @@ source: Materials Project materials.summary (centrosymmetric space groups, band_
   eV)
 version: Materials Project API; fetched 2026-07-04
 license: CC-BY-4.0 (Materials Project)
-file_hashes: {}
+file_hashes:
+  mp_ood_centrosymmetric_processed.npz: bf95111dc34e171436276eaf7200ace1df34b75275a609ba57a79598854f7dc4
+  mp_ood_centrosymmetric_processed_raw.npz: 4f680fa57509fa71aa5b07f1761cc711ee739cf813a6c54d52495bef632ab0d9
 schema:
   positions: angstrom
   target: "none \u2014 piezoelectric tensor is exactly zero by symmetry"
 structure_format: pymatgen Structure (periodic)
 query: scripts/prepare_mp.py
 cleaning: 2000 entries retained. spglib-verified centrosymmetric (symprec=0.001);
-  103 candidates rejected.
+  118 candidates rejected.
 limitations: MP DFPT tensors; provenance is the MP material_id + API fetch date.

@@ -28,6 +28,16 @@ class ModelHyperparams:
     l_max: int = 2
     num_features: int = 32
     r_max: float = 5.0
+    # "sum" (default) reproduces every existing result and checkpoint bit-identically: it is
+    # the readout's original out.index_add_(...) with no division. "mean" is the reviewer's
+    # intensive-readout control arm: divide the accumulated per-atom (or, for Allegro, per-edge)
+    # sum by the per-structure unit count. See equiparity.models.pooling for the shared helper
+    # and equiparity.models.allegro for the edge-vs-atom subtlety.
+    pooling: str = "sum"
+
+    def __post_init__(self) -> None:
+        if self.pooling not in ("sum", "mean"):
+            raise ConfigError(f"model.pooling must be 'sum' or 'mean', got {self.pooling!r}")
 
 
 @dataclass(frozen=True, slots=True)

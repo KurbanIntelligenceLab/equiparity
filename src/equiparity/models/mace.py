@@ -21,6 +21,7 @@ import torch
 
 from equiparity.domain.parity import ParityMode
 from equiparity.models.irreps import degree_irreps, output_irreps
+from equiparity.models.pooling import pool_per_structure, validate_pooling
 
 # MACE's reduced-precision internals: probe/classify MACE with these thresholds.
 MACE_GATE_DTYPE = "float32"
@@ -42,6 +43,12 @@ class MACEConfig:
     avg_num_neighbors: float = 8.0
     seed: int = 42
     model_dtype: str = "float64"
+    # "sum" (default) reproduces every committed result bit-identically. "mean" divides the
+    # summed per-atom readout by the structure's atom count (see equiparity.models.pooling).
+    pooling: str = "sum"
+
+    def __post_init__(self) -> None:
+        validate_pooling(self.pooling)
 
 
 def build_mace_matched(config: MACEConfig, mode: ParityMode):  # noqa: ANN201
@@ -157,6 +164,7 @@ class MACETensorModel(torch.nn.Module):
         from e3nn import o3
 
         self.backbone = build_mace_matched(config, mode)
+        self.pooling = config.pooling
         self.output_irreps = o3.Irreps(output_irreps(o3_output_irreps, mode))
         # The parity gate probes interactions.0 (any layer proves equivariance), but a tensor HEAD
         # needs learned angular features: probe the DEEPEST interaction whose linear still carries
@@ -207,8 +215,7 @@ class MACETensorModel(torch.nn.Module):
         per_atom = self.readout(store["feat"])  # (n_atoms, output_dim)
         batch_index = batch["batch"]  # (n_atoms,) node -> structure (torch_geometric)
         n_graphs = int(batch_index.max().item()) + 1
-        out = torch.zeros(n_graphs, per_atom.shape[1], dtype=per_atom.dtype, device=per_atom.device)
-        return out.index_add_(0, batch_index, per_atom)
+        return pool_per_structure(per_atom, batch_index, n_graphs, self.pooling)
 
 
 class MACEDipoleModel(MACETensorModel):

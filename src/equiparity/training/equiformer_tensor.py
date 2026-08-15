@@ -46,6 +46,7 @@ def _config(config: ExperimentConfig) -> EquiformerV2Config:
         num_heads=4,
         edge_channels=max(16, config.model.num_features // 2),
         seed=config.seed,
+        pooling=config.model.pooling,
     )
 
 

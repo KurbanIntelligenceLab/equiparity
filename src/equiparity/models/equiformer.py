@@ -21,6 +21,7 @@ import torch
 
 from equiparity.domain.parity import ParityMode
 from equiparity.models.irreps import output_irreps
+from equiparity.models.pooling import pool_per_structure, validate_pooling
 
 
 @dataclass(frozen=True, slots=True)
@@ -37,6 +38,12 @@ class EquiformerV2Config:
     edge_channels: int = 32
     max_num_elements: int = 100  # atomic-number embedding size; data has Z up to 92 (U)
     seed: int = 42
+    # "sum" (default) reproduces every committed result bit-identically. "mean" divides the
+    # summed per-atom readout by the structure's atom count (see equiparity.models.pooling).
+    pooling: str = "sum"
+
+    def __post_init__(self) -> None:
+        validate_pooling(self.pooling)
 
 
 def to_pyg_data(structure, r_max: float, dtype=torch.float32):  # noqa: ANN001, ANN201
@@ -106,6 +113,7 @@ class EquiformerV2TensorModel(torch.nn.Module):
         )
         # EquiformerV2 is SO(3): features are all-even. The output is relabeled per `mode` (odd
         # targets become all-even -> violate parity). Source irreps are all-even up to lmax.
+        self.pooling = config.pooling
         self.output_irreps = o3.Irreps(output_irreps(o3_output_irreps, mode))
         src = o3.Irreps("+".join(f"{self.channels}x{deg}e" for deg in range(self.lmax + 1)))
         self.readout = o3.Linear(src, self.output_irreps)
@@ -133,8 +141,7 @@ class EquiformerV2TensorModel(torch.nn.Module):
         per_atom = self.readout(self._so3_to_e3nn(store["f"]))  # (n_atoms, output_dim)
         batch_index = data.batch
         n_graphs = int(batch_index.max().item()) + 1
-        out = torch.zeros(n_graphs, per_atom.shape[1], dtype=per_atom.dtype, device=per_atom.device)
-        return out.index_add_(0, batch_index, per_atom)
+        return pool_per_structure(per_atom, batch_index, n_graphs, self.pooling)
 
 
 class EquiformerV2DipoleModel(EquiformerV2TensorModel):

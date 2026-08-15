@@ -48,6 +48,11 @@ def _config_snapshot(config: ExperimentConfig) -> dict[str, object]:
             "l_max": config.model.l_max,
             "num_features": config.model.num_features,
             "r_max": config.model.r_max,
+            # Load-bearing for reproducibility, same reason as target_scale below: omitting it
+            # from the snapshot would silently drop it from the config hash and provenance
+            # manifest, so a mean-pooled run's outputs directory would look identical to a
+            # sum-pooled one on disk.
+            "pooling": config.model.pooling,
         },
         "training": {
             "batch_size": config.training.batch_size,

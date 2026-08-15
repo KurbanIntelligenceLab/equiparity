@@ -1,0 +1,104 @@
+{
+  "irreps_by_frequency": {
+    "0": [
+      [
+        [
+          0,
+          0
+        ],
+        0
+      ],
+      [
+        [
+          1,
+          0
+        ],
+        1
+      ]
+    ],
+    "1": [
+      [
+        [
+          0,
+          1
+        ],
+        0
+      ],
+      [
+        [
+          1,
+          1
+        ],
+        1
+      ]
+    ],
+    "2": [
+      [
+        [
+          0,
+          2
+        ],
+        0
+      ],
+      [
+        [
+          1,
+          2
+        ],
+        1
+      ]
+    ],
+    "3": [
+      [
+        [
+          0,
+          3
+        ],
+        0
+      ],
+      [
+        [
+          1,
+          3
+        ],
+        1
+      ]
+    ]
+  },
+  "l3_odd_irrep_ids": [
+    [
+      1,
+      3
+    ]
+  ],
+  "l3_even_irrep_ids": [
+    [
+      0,
+      3
+    ]
+  ],
+  "linear_layer_basis_size": 4,
+  "mirror_law_probe": {
+    "rotation": {
+      "det_standard_rep": 0.9999999999999999,
+      "max_abs_error": 8.881784197001252e-16,
+      "relative": 3.217417499726539e-16
+    },
+    "improper": {
+      "det_standard_rep": -1.0,
+      "max_abs_error": 4.440892098500626e-16,
+      "relative": 1.6087087498632695e-16
+    }
+  },
+  "schur_lemma_caveat": "enn.Linear(l=1 standard -> odd-l=3) has an EMPTY equivariant basis (0 free parameters); Schur's lemma forbids linear maps between non-isomorphic irreps for any correct O(3) implementation. The probe above instead verifies the correct construction: linear mixing among channels that already carry the l=3 odd label.",
+  "verdict": {
+    "rotation_passes": true,
+    "improper_passes": true,
+    "linear_readout_among_native_odd_l3_channels": true,
+    "direct_l1_to_l3_linear_map_exists": false
+  },
+  "config": {
+    "escnn_version": "1.0.11",
+    "dtype": "float64"
+  }
+}

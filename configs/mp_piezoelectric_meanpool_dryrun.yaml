@@ -1,0 +1,25 @@
+# Mean-pooling dry run (task step 4): tiny NequIP O(3) piezoelectric run on CPU, pooling: mean.
+# Uses a hand-fetched tiny MP subset (data/raw/mp_dryrun/*), NOT the committed processed npz --
+# see handoff/meanpool_readiness.md for why (committed npz is absent from this checkout) and
+# how a GPU run would point back at the real data/raw/mp/*.npz with these same model/training
+# fields plus pooling: mean.
+seed: 42
+core: nequip
+parity: o3
+target: piezoelectric
+dataset: mp_piezoelectric
+processed_npz: data/raw/mp_dryrun/mp_piezoelectric_dryrun_processed.npz
+split_npz: data/splits/mp_piezoelectric_dryrun_split.npz
+output_dir: outputs
+model:
+  num_layers: 3
+  l_max: 3
+  num_features: 16
+  r_max: 5.0
+  pooling: mean
+training:
+  batch_size: 4
+  epochs: 3
+  lr: 0.003
+  device: cpu
+  precision: float32
