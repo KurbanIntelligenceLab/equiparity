@@ -311,3 +311,5 @@ docs/draft/sn-supplementary.pdf
 # Interim-material archives produced by repo cleanups
 archive_interim_*.zip
 archive_interim_*_manifest.txt
+
+/docs/draft_new/
