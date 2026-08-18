@@ -146,6 +146,11 @@ outputs/            per-run results and provenance manifests (not committed)
 Set `$PARITY_RUNS` to the raw training-run tree if you want to re-run a driver end to end; it
 defaults to `~/Desktop/parity_work` and is not part of this release.
 
+## Citing this work
+
+The archived release is deposited at Zenodo under DOI [10.5281/zenodo.22003285](https://doi.org/10.5281/zenodo.22003285). Machine-readable metadata is in
+[CITATION.cff](CITATION.cff).
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
