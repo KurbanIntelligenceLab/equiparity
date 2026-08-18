@@ -12,12 +12,13 @@ headline false-flag fractions.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import numpy as np
 
 REPO = Path(__file__).resolve().parent.parent
-MIRROR = Path.home() / "Desktop" / "parity_work"
+MIRROR = Path(os.environ.get("PARITY_RUNS", Path.home() / "Desktop" / "parity_work"))
 OUT_JSON = REPO / "results" / "h1_epoch_curve.json"
 OUT_MD = REPO / "docs" / "results" / "h1_epoch_curve.md"
 

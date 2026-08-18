@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -37,7 +38,7 @@ from equiparity.inference import find_piezo_runs, load_trained, seeded_predict
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 REPO = Path(__file__).resolve().parent.parent
-MIRROR = Path.home() / "Desktop" / "parity_work"
+MIRROR = Path(os.environ.get("PARITY_RUNS", Path.home() / "Desktop" / "parity_work"))
 SPACEGROUPS = REPO / "results" / "ood_spacegroups.json"
 CACHE = REPO / "results" / "e6_named_structures.json"
 OUT_JSON = REPO / "results" / "e6_named_materials.json"

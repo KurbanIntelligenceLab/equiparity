@@ -295,4 +295,8 @@ archive_interim_*_manifest.txt
 
 /docs/draft/
 /docs/draft_new/
+# Seventeen scripts write per-experiment Markdown reports here (analyze_results.py, the e*,
+# f*, h* and t* drivers). Every number in them is read from a results/ record, so they are
+# regenerated output, not provenance.
+/docs/results/
 /.claude/

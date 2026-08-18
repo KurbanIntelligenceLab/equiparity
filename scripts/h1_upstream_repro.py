@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -282,7 +283,10 @@ def _reruns(cfg, irreps) -> dict:
     from equiparity.io.mp_dataset import CrystalDataset, load_crystal_dataset, load_split
 
     dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    runs = find_piezo_runs(Path.home() / "Desktop" / "parity_work", dataset="mp_piezoelectric")
+    runs = find_piezo_runs(
+        Path(os.environ.get("PARITY_RUNS", Path.home() / "Desktop" / "parity_work")),
+        dataset="mp_piezoelectric",
+    )
     eq_runs = sorted(k for k in runs if k.startswith("equiformer_v2"))
 
     data = load_crystal_dataset(

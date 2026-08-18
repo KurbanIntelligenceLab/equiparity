@@ -32,6 +32,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -45,7 +46,7 @@ from equiparity.inference.structures import (
 )
 
 REPO = Path(__file__).resolve().parent.parent
-MIRROR = Path.home() / "Desktop" / "parity_work"
+MIRROR = Path(os.environ.get("PARITY_RUNS", Path.home() / "Desktop" / "parity_work"))
 OUT_CSV = REPO / "results" / "e2_symmetry_breaking.csv"
 OUT_JSON = REPO / "results" / "e2_symmetry_breaking.json"
 OUT_MD = REPO / "docs" / "results" / "e2_symmetry_breaking.md"

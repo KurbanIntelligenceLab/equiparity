@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -38,7 +39,7 @@ from equiparity.domain.structure import AtomicStructure
 from equiparity.inference import find_piezo_runs, load_trained, seeded_predict
 
 REPO = Path(__file__).resolve().parent.parent
-MIRROR = Path.home() / "Desktop" / "parity_work"
+MIRROR = Path(os.environ.get("PARITY_RUNS", Path.home() / "Desktop" / "parity_work"))
 OUT_JSON = REPO / "results" / "e5_output_parity.json"
 OUT_MD = REPO / "docs" / "results" / "e5_output_parity.md"
 

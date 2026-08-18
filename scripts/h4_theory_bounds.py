@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -42,7 +43,7 @@ from e4_inversion_averaging import _invert, _norms
 from e5_output_parity import _transform, _wigner
 
 REPO = Path(__file__).resolve().parent.parent
-MIRROR = Path.home() / "Desktop" / "parity_work"
+MIRROR = Path(os.environ.get("PARITY_RUNS", Path.home() / "Desktop" / "parity_work"))
 IDEALIZED_NPZ = REPO / "data" / "raw" / "mp" / "mp_ood_centrosymmetric_processed.npz"
 SPACEGROUPS = REPO / "results" / "ood_spacegroups.json"
 OUT_JSON = REPO / "results" / "theory_bounds.json"

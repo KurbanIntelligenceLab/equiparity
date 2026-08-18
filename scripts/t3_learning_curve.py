@@ -20,12 +20,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 import numpy as np
 
 REPO = Path(__file__).resolve().parent.parent
-MIRROR = Path.home() / "Desktop" / "parity_work"
+MIRROR = Path(os.environ.get("PARITY_RUNS", Path.home() / "Desktop" / "parity_work"))
 EVAL_SPLIT = REPO / "results" / "e1_eval_split.json"
 OUT_JSON = REPO / "results" / "t3_learning_curve.json"
 OUT_MD = REPO / "docs" / "results" / "t3_learning_curve.md"

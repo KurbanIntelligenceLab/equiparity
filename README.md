@@ -116,7 +116,9 @@ granularity. Per-run summary records cover the matched-pair grid: test error wit
 spread and paired test per core and target, false-flag fractions and violation medians per
 arm and coordinate variant, per-seed values for the augmentation, loss-reweighting and
 readout-pooling experiments, the threshold sweep, and the symmetry metadata of all 2,000
-evaluation crystals.
+evaluation crystals. Every record names the script that produced it in
+[`results/README.md`](results/README.md), so a claim traces to a record and a record traces to
+code.
 
 For the measurements on released models the per-structure vectors are given in full:
 `results/t1/` carries the predicted rank-3 tensor and its Frobenius norm for both dedicated
@@ -134,19 +136,22 @@ tests/              mirrors src/equiparity/, plus the parity verification gate
 verification/       claim and theorem checkers that read only results/
 configs/            experiment configs (YAML), including the 84-run grid
 scripts/            orchestration and experiment drivers, no scientific logic
-results/            frozen measurement records
+results/            frozen measurement records, with README.md naming each producer
 data/               manifests, splits, processed archives, figure series
-docs/results/       hand-written appendices with no generator
 vendor/hotpp/       vendored HotPP (MIT, arXiv:2402.15286), no PyPI release
+docs/results/       per-experiment Markdown reports (regenerated, not committed)
 outputs/            per-run results and provenance manifests (not committed)
 ```
 
-Appendices produced by a script are not committed; they regenerate:
+`docs/results/` is a script output directory: seventeen drivers write a per-experiment Markdown
+report there, so nothing in it is committed.
 
-```bash
-uv run python scripts/analyze_results.py                        # a1-a4
-uv run --extra data python scripts/analyze_ood_symmetry.py      # a5
-```
+Fifteen of those drivers read the raw training-run tree — every checkpoint and metrics file from
+the 84-run grid, hundreds of gigabytes — from `$PARITY_RUNS`, defaulting to
+`~/Desktop/parity_work`. That tree is not part of this release. The frozen records in `results/`
+are what those drivers distilled from it, which is why `verification/` asserts the reported
+values against the records rather than re-deriving them from runs. Point `$PARITY_RUNS` at your
+own grid output to re-run a driver end to end.
 
 `vendor/hotpp/` is load-bearing: `scripts/f4_noneN3_control.py` imports it, and the claim
 that it carries no e3nn dependency is checkable against that tree.

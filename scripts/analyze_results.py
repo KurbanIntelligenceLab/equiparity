@@ -17,12 +17,13 @@ reported as descriptive only; the headline OOD claim is tested at the structure 
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import numpy as np
 from scipy.stats import wilcoxon
 
-MIRROR = Path.home() / "Desktop" / "parity_work"
+MIRROR = Path(os.environ.get("PARITY_RUNS", Path.home() / "Desktop" / "parity_work"))
 OUT = Path(__file__).resolve().parent.parent / "results"
 
 CORES = ["nequip", "allegro", "mace", "equiformer_v2"]
