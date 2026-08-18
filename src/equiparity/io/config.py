@@ -1,7 +1,7 @@
 """Load and validate an experiment configuration from YAML (I/O boundary).
 
 The untyped YAML mapping is converted immediately into the frozen
-:class:`~equiparity.domain.experiment.ExperimentConfig` (CODING_RULES.md Section D).
+:class:`~equiparity.domain.experiment.ExperimentConfig`.
 """
 
 from __future__ import annotations

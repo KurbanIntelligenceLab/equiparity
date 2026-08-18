@@ -1,8 +1,8 @@
 """Experiment configuration: the single typed contract for one training run.
 
-Loaded once at the entrypoint and validated into this frozen dataclass (CODING_RULES.md
-Section D). A run differs from its matched-pair partner only in ``parity``; the config
-generator expands the {core x parity x dataset x seed} grid from a template.
+Loaded once at the entrypoint and validated into this frozen dataclass. A run differs from its
+matched-pair partner only in ``parity``; the config generator expands the
+{core x parity x dataset x seed} grid from a template.
 """
 
 from __future__ import annotations

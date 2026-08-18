@@ -1,6 +1,6 @@
 """Run provenance: the per-experiment manifest that is the source of truth for reproducibility.
 
-See CODING_RULES.md Section E.2. Every experiment directory in ``outputs/`` carries a
+Every experiment directory in ``outputs/`` carries a
 ``manifest.json`` built from :class:`RunManifest`.
 """
 
@@ -13,7 +13,7 @@ from dataclasses import asdict, dataclass
 class RunManifest:
     """Provenance record for a single experiment run.
 
-    Field set matches CODING_RULES.md Section E.2. All fields are required; collection
+    All fields are required; collection
     of the environment-dependent fields lives in :mod:`equiparity.reproducibility`.
     """
 

@@ -1,6 +1,6 @@
 """Dataset and split manifests: the committed provenance for external data.
 
-Raw data is never committed; only these manifests are (CODING_RULES.md Section F.1, F.3). A
+Raw data is never committed; only these manifests are. A
 loader verifies file hashes against :class:`DatasetManifest` before use; a split is an artifact
 described by :class:`SplitManifest`.
 """
@@ -12,7 +12,7 @@ from dataclasses import asdict, dataclass, field
 
 @dataclass(frozen=True, slots=True)
 class DatasetManifest:
-    """Provenance for an external dataset (CODING_RULES.md Section F.1).
+    """Provenance for an external dataset.
 
     Attributes:
         name: Dataset identifier.
@@ -45,7 +45,7 @@ class DatasetManifest:
 
 @dataclass(frozen=True, slots=True)
 class SplitManifest:
-    """Provenance for a train/val/test split (CODING_RULES.md Section F.3).
+    """Provenance for a train/val/test split.
 
     Attributes:
         split_id: Stable identifier referenced in every result table.

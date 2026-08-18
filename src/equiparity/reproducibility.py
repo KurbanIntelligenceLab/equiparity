@@ -1,4 +1,4 @@
-"""Seed control and provenance collection (CODING_RULES.md Section E).
+"""Seed control and provenance collection.
 
 Every executable experiment calls :func:`seed_everything` exactly once near startup and
 writes a :class:`~equiparity.domain.provenance.RunManifest` into its output directory via
@@ -163,7 +163,7 @@ def write_manifest(manifest: RunManifest, output_dir: Path, *, allow_dirty: bool
         manifest: The provenance record to serialize.
         output_dir: Experiment output directory (created if missing).
         allow_dirty: When False, a dirty git tree raises to protect final-result runs
-            (CODING_RULES.md Section E.2). Set True only for debug runs.
+            Set True only for debug runs.
 
     Raises:
         RuntimeError: If ``manifest.git_dirty`` is True and ``allow_dirty`` is False.

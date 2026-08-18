@@ -1,7 +1,7 @@
 """Atomic structure: the typed geometry representation shared across datasets and cores.
 
 Raw files and APIs are untyped; they are converted into :class:`AtomicStructure` at the I/O
-boundary (CODING_RULES.md Section 5 / F.2), where invariants are checked once. Molecular data
+boundary, where invariants are checked once. Molecular data
 (QM9) is non-periodic (``pbc=False``, ``cell=None``); crystal data (Materials Project) is periodic.
 """
 
@@ -43,7 +43,7 @@ def validate_structure(structure: AtomicStructure) -> AtomicStructure:
     """Check structure invariants and return it unchanged, or raise.
 
     Validates array shapes, atomic-number range, coordinate finiteness, and the cell/pbc
-    contract. Never silently repairs or drops data (CODING_RULES.md Section F.2).
+    contract. Never silently repairs or drops data.
 
     Raises:
         StructureValidationError: If any invariant is violated.

@@ -1,6 +1,6 @@
 """Logging configuration. Called only at entrypoints; library code never configures handlers.
 
-See CODING_RULES.md Section H. Final-result runs use JSON logs; interactive runs use a
+Final-result runs use JSON logs; interactive runs use a
 plain human-readable format.
 """
 

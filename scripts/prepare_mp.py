@@ -28,7 +28,7 @@ SPLIT_DIR = Path("data/splits")
 SPLIT_SEED = 42
 OOD_MAX = 2000
 OOD_SYMPREC = 1e-3
-# Domain sanity bounds (CODING_RULES F.2): MP holds some failed-DFT tensors with
+# Domain sanity bounds: MP holds some failed-DFT tensors with
 # physically impossible magnitudes. Exclude and report them; never silently keep them.
 MAX_ELASTIC_ABS_GPA = 2000.0  # hardest materials (diamond) reach ~1000 GPa
 MAX_PIEZO_ABS = 50.0  # strong piezoelectrics (PZT) reach ~25 C/m^2

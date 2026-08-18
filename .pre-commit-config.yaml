@@ -1,4 +1,4 @@
-# Pre-commit runs ruff check, ruff format, and mypy (CODING_RULES.md §B).
+# Pre-commit runs ruff check, ruff format, and mypy.
 repos:
   - repo: local
     hooks:

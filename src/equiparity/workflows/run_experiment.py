@@ -1,6 +1,6 @@
 """Run one experiment from a config: train, evaluate, and write provenance + metrics.
 
-Composes seeding, the core-specific trainer, and provenance writing (CODING_RULES.md Section E).
+Composes seeding, the core-specific trainer, and provenance writing.
 Every run produces an ``outputs/<experiment_id>/`` directory with a manifest, a config snapshot,
 and metrics.
 """
