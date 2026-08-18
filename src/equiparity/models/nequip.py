@@ -1,6 +1,6 @@
 """NequIP core: build the O(3)/SO(3) matched pair from a typed config.
 
-The correct O(3)/SO(3) toggle (Checkpoint-1 decision, see
+The correct O(3)/SO(3) toggle (see
 Supplementary Information, Supplementary Note "Prevalence audit of released
 architectures") is NOT the preset ``parity`` boolean:
 ``parity=False`` keeps honest natural-parity irreps and stays fully O(3)-equivariant. The
@@ -48,7 +48,7 @@ class NequIPConfig:
     do_derivatives: bool = False
     # "sum" (default) reproduces every committed result bit-identically: it is exactly the
     # original out.index_add_(...) readout, extensive in atom count. "mean" divides the summed
-    # per-atom readout by the structure's atom count -- an intensive control arm (reviewer ask;
+    # per-atom readout by the structure's atom count -- an intensive control arm
     # see equiparity.models.pooling).
     pooling: str = "sum"
 

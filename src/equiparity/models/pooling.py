@@ -56,6 +56,8 @@ def pool_per_structure(
         return out
     if pooling == "mean":
         counts = torch.bincount(unit_to_graph, minlength=n_graphs).to(out.dtype)
-        counts = counts.clamp(min=1).unsqueeze(-1)  # guard an empty structure, never hit in practice
+        counts = counts.clamp(min=1).unsqueeze(
+            -1
+        )  # guard an empty structure, never hit in practice
         return out / counts
     raise ValueError(f"pooling must be one of {POOLING_MODES}, got {pooling!r}")

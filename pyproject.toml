@@ -82,6 +82,7 @@ extend-exclude = [
   "src/equiparity/models/equiformer_v2",
   "src/equiparity/models/clifford_stf",
   "src/equiparity/models/clifford",
+  "vendor/hotpp",
 ]
 
 [tool.ruff.lint]
@@ -93,6 +94,15 @@ select = ["E", "F", "I", "N", "UP", "B", "ANN", "RUF", "SIM", "PTH", "RET"]
 # They also emit Markdown reports containing typographic characters (en dash, minus sign, U+2016
 # for the tensor norm, and the overbar in point-group names like m-3m), which RUF001 flags.
 "scripts/*" = ["ANN", "RUF001"]
+# Claim checkers assert against published values and use the notation those values are
+# published in: single-capital group and tensor symbols (N803, N806), and one assertion per
+# line where the source table has one row per line (E701, E702, E731).
+"verification/*" = [
+  "ANN", "RUF001", "N802", "N803", "N806", "N816", "E701", "E702", "E731", "E741",
+  "PTH", "SIM115", "RET503",
+]
+# The verification gate wraps untyped third-party model constructors.
+"tests/verification/*" = ["ANN"]
 
 [tool.ruff.format]
 docstring-code-format = true

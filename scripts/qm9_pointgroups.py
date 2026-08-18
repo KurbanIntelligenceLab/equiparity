@@ -169,8 +169,10 @@ def main() -> None:
         )
     )
     for tol, res in per_tol.items():
-        print(f"tol={tol}: {res['n_dipole_forcing']}/{res['n_molecules']} "
-              f"({100 * res['fraction_dipole_forcing']:.3f}%) dipole-forcing")
+        print(
+            f"tol={tol}: {res['n_dipole_forcing']}/{res['n_molecules']} "
+            f"({100 * res['fraction_dipole_forcing']:.3f}%) dipole-forcing"
+        )
 
 
 if __name__ == "__main__":

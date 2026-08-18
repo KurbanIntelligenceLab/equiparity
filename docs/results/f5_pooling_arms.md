@@ -2,7 +2,7 @@
 
 This is the code-and-verification half of the reviewer's pooling critique (piezoelectric and
 elastic tensors are intensive properties, but every readout sums with an unnormalized
-`index_add_`). No GPU was rented and no training grid was launched, per the task's rules; a CPU
+`index_add_`). No GPU was used and no training grid was launched; a CPU
 dry run proves the path trains end to end.
 
 ## 1. What changed (file:line)
@@ -265,5 +265,3 @@ no pooling question) or any additional seeds/ablations beyond the existing 3-see
 - `data/raw/mp_dryrun/*.npz`, `data/splits/mp_piezoelectric_dryrun_split.npz` (new, dry-run only
   — real MP data fetched via `MP_API_KEY`, isolated from the canonical `data/raw/mp/` path)
 - `docs/results/f5_pooling_arms.md` (this file)
-
-`docs/draft/sections/*.tex` was not touched, per the task's rules.

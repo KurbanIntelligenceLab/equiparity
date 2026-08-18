@@ -54,41 +54,67 @@ CENTROSYMMETRIC_SPACE_GROUPS = frozenset(
 def build_crystals() -> dict[str, dict]:
     specs = {
         "NaCl_rocksalt": dict(
-            symbols=["Na", "Cl"], basis=[[0, 0, 0], [0.5, 0.5, 0.5]], spacegroup=225,
-            cellpar=[5.6402, 5.6402, 5.6402, 90, 90, 90], family="m-3m",
+            symbols=["Na", "Cl"],
+            basis=[[0, 0, 0], [0.5, 0.5, 0.5]],
+            spacegroup=225,
+            cellpar=[5.6402, 5.6402, 5.6402, 90, 90, 90],
+            family="m-3m",
         ),
         "MgO_rocksalt": dict(
-            symbols=["Mg", "O"], basis=[[0, 0, 0], [0.5, 0.5, 0.5]], spacegroup=225,
-            cellpar=[4.212, 4.212, 4.212, 90, 90, 90], family="m-3m",
+            symbols=["Mg", "O"],
+            basis=[[0, 0, 0], [0.5, 0.5, 0.5]],
+            spacegroup=225,
+            cellpar=[4.212, 4.212, 4.212, 90, 90, 90],
+            family="m-3m",
         ),
         "CsCl": dict(
-            symbols=["Cs", "Cl"], basis=[[0, 0, 0], [0.5, 0.5, 0.5]], spacegroup=221,
-            cellpar=[4.123, 4.123, 4.123, 90, 90, 90], family="m-3m",
+            symbols=["Cs", "Cl"],
+            basis=[[0, 0, 0], [0.5, 0.5, 0.5]],
+            spacegroup=221,
+            cellpar=[4.123, 4.123, 4.123, 90, 90, 90],
+            family="m-3m",
         ),
         "SrTiO3_perovskite": dict(
             symbols=["Sr", "Ti", "O"],
             basis=[[0, 0, 0], [0.5, 0.5, 0.5], [0.5, 0.5, 0.0]],
-            spacegroup=221, cellpar=[3.905, 3.905, 3.905, 90, 90, 90], family="m-3m",
+            spacegroup=221,
+            cellpar=[3.905, 3.905, 3.905, 90, 90, 90],
+            family="m-3m",
         ),
         "Si_diamond": dict(
-            symbols=["Si"], basis=[[0, 0, 0]], spacegroup=227,
-            cellpar=[5.431, 5.431, 5.431, 90, 90, 90], family="m-3m",
+            symbols=["Si"],
+            basis=[[0, 0, 0]],
+            spacegroup=227,
+            cellpar=[5.431, 5.431, 5.431, 90, 90, 90],
+            family="m-3m",
         ),
         "CaF2_fluorite": dict(
-            symbols=["Ca", "F"], basis=[[0, 0, 0], [0.25, 0.25, 0.25]], spacegroup=225,
-            cellpar=[5.463, 5.463, 5.463, 90, 90, 90], family="m-3m",
+            symbols=["Ca", "F"],
+            basis=[[0, 0, 0], [0.25, 0.25, 0.25]],
+            spacegroup=225,
+            cellpar=[5.463, 5.463, 5.463, 90, 90, 90],
+            family="m-3m",
         ),
         "TiO2_rutile": dict(
-            symbols=["Ti", "O"], basis=[[0, 0, 0], [0.3053, 0.3053, 0.0]], spacegroup=136,
-            cellpar=[4.5937, 4.5937, 2.9587, 90, 90, 90], family="non-cubic",
+            symbols=["Ti", "O"],
+            basis=[[0, 0, 0], [0.3053, 0.3053, 0.0]],
+            spacegroup=136,
+            cellpar=[4.5937, 4.5937, 2.9587, 90, 90, 90],
+            family="non-cubic",
         ),
         "TiO2_anatase": dict(
-            symbols=["Ti", "O"], basis=[[0, 0, 0], [0, 0, 0.2081]], spacegroup=141,
-            cellpar=[3.785, 3.785, 9.514, 90, 90, 90], family="non-cubic",
+            symbols=["Ti", "O"],
+            basis=[[0, 0, 0], [0, 0, 0.2081]],
+            spacegroup=141,
+            cellpar=[3.785, 3.785, 9.514, 90, 90, 90],
+            family="non-cubic",
         ),
         "Al2O3_corundum": dict(
-            symbols=["Al", "O"], basis=[[0, 0, 0.3522], [0.3062, 0, 0.25]], spacegroup=167,
-            cellpar=[4.7602, 4.7602, 12.9933, 90, 90, 120], family="non-cubic",
+            symbols=["Al", "O"],
+            basis=[[0, 0, 0.3522], [0.3062, 0, 0.25]],
+            spacegroup=167,
+            cellpar=[4.7602, 4.7602, 12.9933, 90, 90, 120],
+            family="non-cubic",
         ),
     }
     out = {}
@@ -205,7 +231,7 @@ def run_mace(crystals: dict[str, dict]) -> dict:
             }
 
         prim = per_mult["1x1x1"]
-        for mult_name, rec_m in per_mult.items():
+        for rec_m in per_mult.values():
             rec_m["so3_sum_ratio"] = (
                 rec_m["so3_sum_norm"] / prim["so3_sum_norm"] if prim["so3_sum_norm"] > 0 else None
             )

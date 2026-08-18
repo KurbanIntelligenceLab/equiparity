@@ -1,4 +1,4 @@
-"""Shared timing + checkpoint helpers for every trainer (reviewer Checkpoint 7 instrumentation).
+"""Shared timing + checkpoint helpers for every trainer.
 
 Keeps the scalar/vector trainers (U0, dipole) consistent with the tensor trainers: wall-clock
 timing + throughput + peak GPU memory, and best-val / latest (resumable) checkpoints -- without

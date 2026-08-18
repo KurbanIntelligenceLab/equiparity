@@ -107,7 +107,7 @@ class TensorRunResult:
     ood_violation_median: float | None = None
     ood_violation_max: float | None = None
     ood_false_flag_fraction: float | None = None
-    # Reviewer instrumentation (Checkpoint 7): both OOD variants w/ threshold curves + distros,
+    # Run instrumentation: both OOD variants w/ threshold curves + distros,
     # per-structure vectors (offline histograms), wall-clock timing, and checkpoints.
     ood_variants: dict[str, object] | None = None  # {variant: violation_stats(...)}
     ood_vectors: dict[str, object] | None = None  # {variant: np.ndarray of magnitudes}

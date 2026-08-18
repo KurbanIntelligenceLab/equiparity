@@ -1,4 +1,4 @@
-"""The mean-pooling control arm (reviewer ask): EquiformerV2's atom-pooled tensor readout.
+"""The mean-pooling control arm: EquiformerV2's atom-pooled tensor readout.
 
 EquiformerV2 is documented as "a fixed SO(3) representative" (module docstring in
 ``equiparity.models.equiformer``): its backbone features are always all-even, so it has no
@@ -23,15 +23,15 @@ import torch
 
 pytest.importorskip("torch_geometric")
 
-from e3nn import o3  # noqa: E402
+from e3nn import o3
 
-from equiparity.domain.parity import ParityMode  # noqa: E402
-from equiparity.models.equiformer import (  # noqa: E402
+from equiparity.domain.parity import ParityMode
+from equiparity.models.equiformer import (
     EquiformerV2Config,
     EquiformerV2TensorModel,
     to_pyg_data,
 )
-from equiparity.verification.equivariance import _random_orthogonal  # noqa: E402
+from equiparity.verification.equivariance import _random_orthogonal
 
 pytestmark = pytest.mark.integration
 
@@ -68,7 +68,9 @@ def _build_model(pooling: str) -> EquiformerV2TensorModel:
     return EquiformerV2TensorModel(_cfg(pooling), ParityMode.SO3, O3_IRREPS).eval()
 
 
-def _predict(model: EquiformerV2TensorModel, positions: np.ndarray, seed: int = 9000) -> torch.Tensor:
+def _predict(
+    model: EquiformerV2TensorModel, positions: np.ndarray, seed: int = 9000
+) -> torch.Tensor:
     """One forward pass, reseeded first.
 
     EquiformerV2 draws a fresh random per-edge frame on every forward call (module docstring in
@@ -104,9 +106,7 @@ def test_sum_pooling_is_bit_identical_to_index_add() -> None:
     batch = Batch.from_data_list([g])
 
     store: dict[str, torch.Tensor] = {}
-    handle = model.readout.register_forward_hook(
-        lambda _m, _i, o: store.__setitem__("per_atom", o)
-    )
+    handle = model.readout.register_forward_hook(lambda _m, _i, o: store.__setitem__("per_atom", o))
     try:
         with torch.no_grad():
             actual = model(batch)

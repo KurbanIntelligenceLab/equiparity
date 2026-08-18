@@ -1,4 +1,4 @@
-"""The mean-pooling control arm (reviewer ask): MACE's atom-pooled tensor readout.
+"""The mean-pooling control arm: MACE's atom-pooled tensor readout.
 
 Same three guarantees as ``tests/verification/test_nequip_pooling.py``, for the MACE core:
 
@@ -132,7 +132,7 @@ def test_mean_pooling_preserves_the_mirror_law() -> None:
 
 def test_o3_arm_predicts_exact_zero_on_centrosymmetric_crystal_under_mean_pooling() -> None:
     structure = rutile("TiO2")  # P4_2/mnm (136), centrosymmetric, subgroup 422 (E7-safe control)
-    _, symbol_to_type = element_type_map(structure.atomic_numbers)
+    _, _symbol_to_type = element_type_map(structure.atomic_numbers)
     elements = tuple(sorted(int(z) for z in np.unique(structure.atomic_numbers)))
     z_table = tools.AtomicNumberTable(list(elements))
 

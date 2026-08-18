@@ -158,9 +158,7 @@ def corollary3(trained) -> dict:
         ),
         # the absolute form of the stability clause, ||f|| <= delta_plus + max_R ||g_R||,
         # needs no epsilon < 1 and is checkable on every structure
-        "fraction_within_absolute_bound": float(
-            (mags_arr <= dp_arr + ga_arr + 1e-12).mean()
-        ),
+        "fraction_within_absolute_bound": float((mags_arr <= dp_arr + ga_arr + 1e-12).mean()),
     }
 
 

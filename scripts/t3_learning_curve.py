@@ -175,8 +175,8 @@ def main() -> None:
         )
     lines += [
         "",
-        "Title rule: plateau well above zero -> the learnability title stands; falling towards",
-        "zero -> revert. The verdict is stated in the Checkpoint-10 report once N=16000 lands.",
+        "Reading: a plateau well above zero means the deficit does not close with data;",
+        "a fall towards zero would mean it does.",
     ]
     OUT_MD.parent.mkdir(parents=True, exist_ok=True)
     OUT_MD.write_text("\n".join(lines) + "\n")

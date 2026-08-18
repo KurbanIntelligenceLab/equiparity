@@ -29,9 +29,7 @@ def test_sum_pooling_matches_original_index_add() -> None:
     unit_to_graph = torch.tensor([0, 0, 0, 1, 1, 2, 2], dtype=torch.long)
     n_graphs = 3
 
-    original = torch.zeros(n_graphs, 4, dtype=torch.float64).index_add_(
-        0, unit_to_graph, per_unit
-    )
+    original = torch.zeros(n_graphs, 4, dtype=torch.float64).index_add_(0, unit_to_graph, per_unit)
     pooled = pool_per_structure(per_unit, unit_to_graph, n_graphs, "sum")
     assert torch.equal(pooled, original)  # bit-identical, not just close
 

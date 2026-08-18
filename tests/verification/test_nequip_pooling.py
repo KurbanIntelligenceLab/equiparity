@@ -1,4 +1,4 @@
-"""The mean-pooling control arm (reviewer ask): NequIP and Allegro readouts.
+"""The mean-pooling control arm: NequIP and Allegro readouts.
 
 Locks in three properties of ``model.pooling`` for the two nequip-framework cores:
 
@@ -22,14 +22,14 @@ import torch
 
 pytest.importorskip("nequip")
 
-from e3nn import o3  # noqa: E402
+from e3nn import o3
 
-from equiparity.domain.parity import ParityMode  # noqa: E402
-from equiparity.inference.structures import rutile  # noqa: E402
-from equiparity.models.allegro import AllegroConfig, AllegroTensorModel  # noqa: E402
-from equiparity.models.nequip import NequIPConfig, NequIPTensorModel  # noqa: E402
-from equiparity.training.nequip_data import element_type_map, to_atomic_data  # noqa: E402
-from equiparity.verification.equivariance import _random_orthogonal  # noqa: E402
+from equiparity.domain.parity import ParityMode
+from equiparity.inference.structures import rutile
+from equiparity.models.allegro import AllegroConfig, AllegroTensorModel
+from equiparity.models.nequip import NequIPConfig, NequIPTensorModel
+from equiparity.training.nequip_data import element_type_map, to_atomic_data
+from equiparity.verification.equivariance import _random_orthogonal
 
 pytestmark = pytest.mark.integration
 
@@ -38,7 +38,7 @@ ATOMIC_NUMBERS = np.array([1, 1, 6, 8])
 O3_IRREPS = "2x1o+1x2o+1x3o"  # the piezoelectric tensor (domain/target.py PIEZOELECTRIC)
 
 
-def _batch_data(positions: np.ndarray, r_max: float):  # noqa: ANN201
+def _batch_data(positions: np.ndarray, r_max: float):
     from nequip.data import AtomicDataDict
 
     type_names, symbol_to_type = element_type_map(ATOMIC_NUMBERS)
@@ -57,11 +57,11 @@ def _batch_data(positions: np.ndarray, r_max: float):  # noqa: ANN201
 
 
 @pytest.fixture(params=["nequip", "allegro"])
-def core(request) -> str:  # noqa: ANN001
+def core(request) -> str:
     return request.param
 
 
-def _build_model(core: str, mode: ParityMode, pooling: str, avg_num_neighbors: float = 3.0):  # noqa: ANN201
+def _build_model(core: str, mode: ParityMode, pooling: str, avg_num_neighbors: float = 3.0):
     _, type_names = _batch_data(POSITIONS, 4.0)
     if core == "allegro":
         pytest.importorskip("allegro")
@@ -125,7 +125,7 @@ def test_sum_pooling_is_bit_identical_to_index_add(core: str) -> None:
 
     store: dict[str, torch.Tensor] = {}
 
-    def _hook(_m, _i, o):  # noqa: ANN001, ANN202
+    def _hook(_m, _i, o):
         if isinstance(o, dict) and AtomicDataDict.NODE_FEATURES_KEY in o:
             store["feat"] = o[AtomicDataDict.NODE_FEATURES_KEY]
         else:

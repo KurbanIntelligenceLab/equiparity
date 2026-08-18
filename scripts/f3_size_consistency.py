@@ -1,4 +1,4 @@
-"""F3 -- the size-consistency (supercell) control the reviewer asked for.
+"""F3 -- the size-consistency (supercell) control.
 
 A reviewer noted that the readout sums per-atom/per-edge contributions (index_add_ in every
 core, see the module docstrings in equiparity.models.{nequip,allegro}), so the predicted tensor
@@ -300,7 +300,6 @@ def run_core(core: str, crystals: dict[str, dict]) -> dict:
         n_params = sum(int(p.numel()) for p in o3_model.parameters())
 
         per_mult = {}
-        replicas_ref = None
         eff_neigh = {}
         for mult_name, mult in MULTIPLICITIES.items():
             super_atoms = atoms * mult
@@ -320,12 +319,10 @@ def run_core(core: str, crystals: dict[str, dict]) -> dict:
                 "o3_mean_norm": float(np.linalg.norm(o3_mean)),
                 "so3_mean_norm": float(np.linalg.norm(so3_mean)),
             }
-            if mult_name == "1x1x1":
-                replicas_ref = per_mult[mult_name]
 
         # ratios relative to the primitive cell (1x1x1)
         prim = per_mult["1x1x1"]
-        for mult_name, rec_m in per_mult.items():
+        for rec_m in per_mult.values():
             rec_m["so3_sum_ratio"] = (
                 rec_m["so3_sum_norm"] / prim["so3_sum_norm"] if prim["so3_sum_norm"] > 0 else None
             )
@@ -372,7 +369,10 @@ def main() -> None:
     verify_centrosymmetric(crystals)
     print(f"built {len(crystals)} idealized centrosymmetric crystals, spglib-verified:")
     for name, rec in crystals.items():
-        print(f"  {name:20s} sg={rec['spglib_number']:4d} {rec['spglib_symbol']:10s} family={rec['family']}")
+        print(
+            f"  {name:20s} sg={rec['spglib_number']:4d} "
+            f"{rec['spglib_symbol']:10s} family={rec['family']}"
+        )
 
     t0 = time.time()
     prior = json.loads(OUT_JSON.read_text()) if OUT_JSON.exists() else None
@@ -442,10 +442,14 @@ def main() -> None:
             default=None,
         )
         max_o3_sum_norm = max(
-            m["o3_sum_norm"] for n in per_crystal for m in per_crystal[n]["by_multiplicity"].values()
+            m["o3_sum_norm"]
+            for n in per_crystal
+            for m in per_crystal[n]["by_multiplicity"].values()
         )
         max_o3_mean_norm = max(
-            m["o3_mean_norm"] for n in per_crystal for m in per_crystal[n]["by_multiplicity"].values()
+            m["o3_mean_norm"]
+            for n in per_crystal
+            for m in per_crystal[n]["by_multiplicity"].values()
         )
         summary[core] = {
             "resolved_crystals": resolved,
@@ -465,7 +469,8 @@ def main() -> None:
         print(
             f"{core}: resolved={len(s['resolved_crystals'])} "
             f"unresolved={len(s['unresolved_crystals_noise_floor'])} "
-            f"max|so3_sum_dev|={s['max_abs_so3_sum_ratio_deviation_from_replicas_on_resolved']:.3e} "
+            "max|so3_sum_dev|="
+            f"{s['max_abs_so3_sum_ratio_deviation_from_replicas_on_resolved']:.3e} "
             f"max|so3_mean_dev|={s['max_abs_so3_mean_ratio_deviation_from_1_on_resolved']:.3e} "
             f"max_o3_sum={s['max_o3_sum_norm_over_all_crystals_and_multiplicities']:.3e} "
             f"max_o3_mean={s['max_o3_mean_norm_over_all_crystals_and_multiplicities']:.3e}"

@@ -1,0 +1,35 @@
+{
+  "title": "equiparity: matched-pair parity ablation for equivariant materials models",
+  "upload_type": "software",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Polat, Can",
+      "orcid": "0000-0002-1458-302X",
+      "affiliation": "Texas A&M University"
+    },
+    {
+      "name": "Kurban, Mustafa",
+      "orcid": "0000-0002-7263-0234",
+      "affiliation": "Ankara University"
+    },
+    {
+      "name": "Serpedin, Erchin",
+      "orcid": "0000-0001-9069-770X",
+      "affiliation": "Texas A&M University"
+    },
+    {
+      "name": "Kurban, Hasan",
+      "orcid": "0000-0003-3142-2866",
+      "affiliation": "Hamad Bin Khalifa University"
+    }
+  ],
+  "keywords": [
+    "equivariant neural networks",
+    "materials property prediction",
+    "crystal symmetry",
+    "piezoelectric tensor",
+    "machine-learned interatomic potentials"
+  ],
+  "access_right": "open"
+}

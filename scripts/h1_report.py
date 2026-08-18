@@ -113,8 +113,8 @@ def main() -> None:
         "",
         "Upstream `equiformer_v2_oc20.py` does **not** define `generate_graph`; it *inherits* it from "  # noqa: E501
         "the OCP `BaseModel`, which lives in the external `ocpmodels` package, not in `nets/`. The "
-        "vendored copy added a reimplementation when it removed the OCP dependency. Per the "
-        "Checkpoint-9 ruling this was **relocated out of the model file into the shim** "
+        "vendored copy added a reimplementation when it removed the OCP dependency. This was "
+        "**relocated out of the model file into the shim** "
         "(`scripts/h1_build_shimmed.py`): the reconstructed `equiformer_v2_oc20.py` is upstream + the "  # noqa: E501
         "10 documented OCP-removal edits and contains no `generate_graph` (bucket-b); the shim "
         "subclass provides it, guarded to enforce `otf_graph == False` and a precomputed "

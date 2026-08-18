@@ -1,6 +1,6 @@
 """Parity audit: run the equivariance gate on each core's O(3)/SO(3) matched pair.
 
-Executes Checkpoint-1 steps 1-2: build both arms via the raw-irreps route and classify each
+Builds both arms via the raw-irreps route and classifies each
 with the reflection/rotation probe. Prints a result table with parameter counts per arm.
 
 Run: ``uv run --extra nequip python scripts/parity_audit.py``

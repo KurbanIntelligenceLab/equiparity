@@ -9,7 +9,7 @@ the recomputed features deviate from the parity-aware prediction ``features @ D(
 - reflection error small => O(3) (parity respected),
 - reflection error large => genuine SO(3) (parity violated).
 
-Thresholds follow the Checkpoint-1 decision: float64 O(3) < 1e-12, SO(3) > 1e-4; float32
+Thresholds: float64 O(3) < 1e-12, SO(3) > 1e-4; float32
 O(3) < 1e-5, SO(3) > 1e-2. Anything between the two reflection bounds, or a failed rotation
 check, is a FAIL requiring investigation.
 """

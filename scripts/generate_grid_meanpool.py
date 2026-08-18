@@ -26,7 +26,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from generate_grid import CORE_PARITY, FEATURES, PROFILE, SEEDS, TARGET  # noqa: E402
+from generate_grid import CORE_PARITY, FEATURES, PROFILE, SEEDS, TARGET
 
 MEANPOOL_TARGETS = ("elastic", "piezoelectric")
 

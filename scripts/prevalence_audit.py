@@ -113,7 +113,7 @@ ROWS: list[dict] = [
         "evidence": (
             "`parity: bool = True` (line 120). Its own docstring (line 138) shows that with "
             "`parity=False` and `l_max=2` the features are still `5x0e, 2x1o, 7x2e` -- i.e. the "
-            "flag does not strip parity labels. This corroborates our Checkpoint-1 finding that "
+            "flag does not strip parity labels. This corroborates the finding that "
             "the boolean is NOT the SO(3) toggle; we build the SO(3) arm by relabelling irreps."
         ),
     },
@@ -230,7 +230,7 @@ ROWS: list[dict] = [
             "why the row was left undetermined until measured."
         ),
     },
-    # ---- Tier 2 (Checkpoint 10): the current deployed generation, audit -> 18 models ----
+    # ---- Tier 2: the current deployed generation, audit -> 18 models ----
     {
         "model": "eSEN",
         "source": "fairchem-core (PyPI)",
@@ -358,7 +358,7 @@ def main() -> None:
         "`parity=False`). Our SO(3) arms are therefore built by relabelling irreps, not ",
         "by flipping",
         "that flag — see the Supplementary Information, Supplementary Note "
-        "\"Prevalence audit of released architectures\".",
+        '"Prevalence audit of released architectures".',
         "",
         "## Notes (H2: two rows converted from reading to measurement)",
         "",

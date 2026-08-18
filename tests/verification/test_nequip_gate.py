@@ -1,6 +1,6 @@
 """Integration test: the NequIP O(3)/SO(3) matched pair passes the parity gate.
 
-Requires the ``nequip`` extra; skipped otherwise. Locks in the Checkpoint-1 result that the
+Requires the ``nequip`` extra; skipped otherwise. Locks in the result that the
 matched pair differs only in edge-SH parity labeling: both stay rotation-equivariant, and
 only the SO(3) arm breaks reflections.
 """

@@ -29,17 +29,17 @@ symmetry-constructed structure. This script therefore:
      the amplification factor: (output violation / reference scale) / (epsilon / d_nn). This is
      the SAME quantity that was 3,000-25,000x for CliffordSTF (Supplementary Note
      "Cores considered and not used, and a second non-e3nn O(3) control",
-     docs/draft/sections/supplementary.tex ~line 600); an order-1 amplification factor here is
+     the Supplementary Information); an order-1 amplification factor here is
      the signature of a well-conditioned (linear) readout, in contrast to CliffordSTF's
      ill-conditioned cubic one.
-  5. Runs the mirror-law / rotation / improper-operation probe of `scratch_hotpp/probe_hotpp.py`
+  5. Runs the mirror-law / rotation / improper-operation probe of `vendor/hotpp/probe_hotpp.py`
      directly on one of the periodic crystals (rotating both the cell and the positions), so the
      equivariance gate is exercised on the same class of input as the structural test, not just
      the free-cluster probe.
 
 Standalone by design: runs in the `hotpp-control` conda env (numpy/scipy/pyyaml/pytorch-cpu/ase/
 spglib/pytorch-lightning/tensorboard + a local copy of the HotPP package tree, vendored at
-`scratch_hotpp/hotpp/` because HotPP is not pip-installable from PyPI under this name). Imports
+`vendor/hotpp/hotpp/` because HotPP is not pip-installable from PyPI under this name). Imports
 nothing from `equiparity`.
 
     python scripts/f4_noneN3_control.py
@@ -58,20 +58,19 @@ from ase import Atoms
 from ase.neighborlist import neighbor_list
 
 REPO = Path(__file__).resolve().parent.parent
-HOTPP_SRC = REPO / "scratch_hotpp"  # vendored HotPP package tree (github.com/yongwongxx/Hotpp)
+HOTPP_SRC = REPO / "vendor/hotpp"  # vendored HotPP package tree (github.com/yongwongxx/Hotpp)
 sys.path.insert(0, str(HOTPP_SRC))
 sys.path.insert(0, str(REPO / "scripts"))
 
 import f3_size_consistency as f3  # noqa: E402  (reuses the 9-crystal population; no equiparity import at module scope)
-
 from hotpp.utils import EnvPara  # noqa: E402
 
 EnvPara.FLOAT_PRECISION = torch.float64
 torch.set_default_dtype(torch.float64)
 
 from hotpp.layer.cutoff import CosineCutoff  # noqa: E402
-from hotpp.layer.radial import BesselPoly  # noqa: E402
 from hotpp.layer.embedding import AtomicEmbedding  # noqa: E402
+from hotpp.layer.radial import BesselPoly  # noqa: E402
 from hotpp.model.miao import MiaoNet  # noqa: E402
 
 OUT_JSON = REPO / "results" / "f4_noneN3_control.json"
@@ -89,7 +88,7 @@ NOISE_FLOOR_MULTIPLE = 10.0  # a perturbed-crystal pooled_norm below this multip
 # (crystal, epsilon), not discarded.
 HOTPP_COMMIT_NOTE = (
     "github.com/yongwongxx/Hotpp @ main branch tarball (fetched 2026-08-09), no pip release; "
-    "vendored at scratch_hotpp/hotpp/. arXiv:2402.15286, Nature Communications 15 (2024). "
+    "vendored at vendor/hotpp/hotpp/. arXiv:2402.15286, Nature Communications 15 (2024). "
     "MIT license. Zero e3nn dependency (grep-verified over the full package tree)."
 )
 
@@ -106,19 +105,22 @@ def build_model(seed: int = MODEL_SEED) -> MiaoNet:
     # atomic_number range wide enough to cover every element in the 9-crystal population plus
     # the reference probe cluster (Na, Cl, Mg, O, Cs, Sr, Ti, Si, Ca, F, Al -> max Z well below 100)
     embedding_layer = AtomicEmbedding(atomic_number=list(range(1, 100)), n_channel=8)
-    model = MiaoNet(
-        embedding_layer=embedding_layer,
-        radial_fn=radial_fn,
-        n_layers=N_LAYERS,
-        max_r_way=[MAX_R_WAY] * N_LAYERS,
-        max_out_way=MAX_OUT_WAY,
-        output_dim=OUTPUT_DIM,
-        activate_fn="silu",
-        target_way={"site_energy": 0},
-        conv_mode="node_j",
-        update_edge=False,
-    ).double().eval()
-    return model
+    return (
+        MiaoNet(
+            embedding_layer=embedding_layer,
+            radial_fn=radial_fn,
+            n_layers=N_LAYERS,
+            max_r_way=[MAX_R_WAY] * N_LAYERS,
+            max_out_way=MAX_OUT_WAY,
+            output_dim=OUTPUT_DIM,
+            activate_fn="silu",
+            target_way={"site_energy": 0},
+            conv_mode="node_j",
+            update_edge=False,
+        )
+        .double()
+        .eval()
+    )
 
 
 def make_batch(atoms: Atoms, r_max: float = R_MAX) -> dict:
@@ -166,7 +168,9 @@ def inversion_residual(atoms: Atoms) -> tuple[float, float]:
     cell_tuple = (atoms.get_cell()[:], atoms.get_scaled_positions(), atoms.get_atomic_numbers())
     ds = spglib.get_symmetry_dataset(cell_tuple, symprec=1e-3)
     inv_idx = next((i for i, rot in enumerate(ds.rotations) if np.allclose(rot, -np.eye(3))), None)
-    assert inv_idx is not None, "no inversion operator found by spglib -- crystal is not centrosymmetric"
+    assert inv_idx is not None, (
+        "no inversion operator found by spglib -- crystal is not centrosymmetric"
+    )
     rot, trans = ds.rotations[inv_idx], ds.translations[inv_idx]
     frac = atoms.get_scaled_positions()
     numbers = atoms.get_atomic_numbers()
@@ -217,7 +221,9 @@ def periodic_mirror_probe(model: MiaoNet, atoms0: Atoms, seed: int = 5) -> dict:
     for name, g in [("rotation", random_rotation(rng)), ("improper", -random_rotation(rng))]:
         new_cell = atoms0.get_cell()[:] @ g.T
         new_pos = atoms0.get_positions() @ g.T
-        atoms_g = Atoms(numbers=atoms0.get_atomic_numbers(), positions=new_pos, cell=new_cell, pbc=True)
+        atoms_g = Atoms(
+            numbers=atoms0.get_atomic_numbers(), positions=new_pos, cell=new_cell, pbc=True
+        )
         t_g, _ = get_node_feature(model, atoms_g, way=3)
         t_expected = transform_rank3(t0, g)
         err = np.abs(t_g - t_expected)
@@ -229,7 +235,10 @@ def periodic_mirror_probe(model: MiaoNet, atoms0: Atoms, seed: int = 5) -> dict:
     out["verdict"] = {
         "rotation_passes": informative and out["rotation"]["relative_to_norm"] < 1e-8,
         "improper_passes": informative and out["improper"]["relative_to_norm"] < 1e-8,
-        "note": "" if informative else "uninformative: per-atom feature at machine-zero noise floor (local site symmetry forces it to vanish); see max_abs_error instead, which is itself at 1e-16 scale",
+        "note": ""
+        if informative
+        else "uninformative: per-atom feature at machine-zero noise floor (local site symmetry "
+        "forces it to vanish); see max_abs_error instead, which is itself at 1e-16 scale",
     }
     return out
 
@@ -243,7 +252,9 @@ def periodic_mirror_probe(model: MiaoNet, atoms0: Atoms, seed: int = 5) -> dict:
 
 def reference_scale(model: MiaoNet) -> float:
     rng = np.random.default_rng(999)
-    numbers = np.array([11, 17, 20, 8, 22, 13])  # Na, Cl, Ca, O, Ti, Al -- covers the test population
+    numbers = np.array(
+        [11, 17, 20, 8, 22, 13]
+    )  # Na, Cl, Ca, O, Ti, Al -- covers the test population
     coords = rng.normal(scale=1.8, size=(len(numbers), 3))
     probe = Atoms(numbers=numbers, positions=coords, pbc=False)
     t_probe, _ = get_node_feature(model, probe, way=3)
@@ -261,7 +272,9 @@ def main() -> None:
     ref_scale = reference_scale(model)
 
     crystals = f3.build_crystals()
-    f3.verify_centrosymmetric(crystals)  # asserts every crystal's spglib space group is centrosymmetric
+    f3.verify_centrosymmetric(
+        crystals
+    )  # asserts every crystal's spglib space group is centrosymmetric
 
     per_crystal = {}
     for name, rec in crystals.items():
@@ -322,10 +335,10 @@ def main() -> None:
     # local site point group, -43m, forces the leading-order term to vanish), not a conditioning
     # artifact. It is excluded from the pooled "amplification factor" statistic, which is only
     # meaningful for a linear (order-1) response, and reported on its own.
-    LINEAR_CRYSTALS = [n for n in per_crystal if n != "Si_diamond"]
+    linear_crystals = [n for n in per_crystal if n != "Si_diamond"]
     all_amps_informative = [
         per_crystal[n]["epsilon_sweep"][f"{eps:.0e}"]["amplification_factor"]
-        for n in LINEAR_CRYSTALS
+        for n in linear_crystals
         for eps in EPSILONS
         if per_crystal[n]["epsilon_sweep"][f"{eps:.0e}"]["informative"]
     ]
@@ -339,10 +352,16 @@ def main() -> None:
         [per_crystal["Si_diamond"]["epsilon_sweep"][f"{eps:.0e}"]["epsilon"] for eps in EPSILONS]
     )
     si_pooled = np.array(
-        [per_crystal["Si_diamond"]["epsilon_sweep"][f"{eps:.0e}"]["pooled_norm"] for eps in EPSILONS]
+        [
+            per_crystal["Si_diamond"]["epsilon_sweep"][f"{eps:.0e}"]["pooled_norm"]
+            for eps in EPSILONS
+        ]
     )
     si_informative = np.array(
-        [per_crystal["Si_diamond"]["epsilon_sweep"][f"{eps:.0e}"]["informative"] for eps in EPSILONS]
+        [
+            per_crystal["Si_diamond"]["epsilon_sweep"][f"{eps:.0e}"]["informative"]
+            for eps in EPSILONS
+        ]
     )
     si_scaling_exponent = float(
         np.polyfit(np.log(si_eps[si_informative]), np.log(si_pooled[si_informative]), 1)[0]
@@ -359,11 +378,16 @@ def main() -> None:
             "dtype": "float64",
             "model_seed": MODEL_SEED,
             "n_params": n_params,
-            "reference_scale_probe": "6-atom non-symmetric free cluster (Na,Cl,Ca,O,Ti,Al), fixed seed 999",
+            "reference_scale_probe": (
+                "6-atom non-symmetric free cluster (Na,Cl,Ca,O,Ti,Al), fixed seed 999"
+            ),
             "reference_scale_value": ref_scale,
             "epsilons": EPSILONS,
             "n_crystals": len(crystals),
-            "crystal_source": "scripts/f3_size_consistency.py:build_crystals (9 crystals, 6 space groups, ase.spacegroup.crystal, spglib-verified centrosymmetric)",
+            "crystal_source": (
+                "scripts/f3_size_consistency.py:build_crystals (9 crystals, 6 space groups, "
+                "ase.spacegroup.crystal, spglib-verified centrosymmetric)"
+            ),
         },
         "per_crystal": per_crystal,
         "mirror_probe": mirror_probes,
@@ -377,9 +401,11 @@ def main() -> None:
             ),
             "n_epsilon_points_below_noise_floor": n_uninformative,
             "noise_floor_note": (
-                f"a (crystal, epsilon) point is flagged uninformative when the perturbed pooled_norm "
+                "a (crystal, epsilon) point is flagged uninformative when the perturbed "
+                "pooled_norm "
                 f"is below {NOISE_FLOOR_MULTIPLE}x the SAME crystal's exact (eps=0) pooled_norm -- "
-                "float64 noise dividing noise, same convention as f3_size_consistency.py's NOISE_FLOOR. "
+                "float64 noise dividing noise, same convention as "
+                "f3_size_consistency.py's NOISE_FLOOR. "
                 "Excluded from the amplification-factor statistics below."
             ),
             "amplification_factor_min": min(all_amps_informative),
@@ -389,7 +415,7 @@ def main() -> None:
             # decades of epsilon (1e-8 to 1e-3) for every linear-response crystal -- the largest
             # measured deviation is TiO2_rutile at 1.1e-4 relative, from higher-order nonlinear
             # terms starting to contribute at the largest epsilon (1e-3), not from noise.
-            # Restricted to LINEAR_CRYSTALS (excludes Si_diamond, whose amplification factor is
+            # Restricted to linear_crystals (excludes Si_diamond, whose amplification factor is
             # not epsilon-invariant by construction -- its violation scales as epsilon^2, so
             # violation/epsilon grows linearly with epsilon; see si_diamond_scaling_exponent).
             "amplification_epsilon_invariant_on_informative_points": all(
@@ -398,7 +424,7 @@ def main() -> None:
                     - per_crystal[n]["epsilon_sweep"][e2]["amplification_factor"]
                 )
                 < 5e-3 * abs(per_crystal[n]["epsilon_sweep"][e1]["amplification_factor"]) + 1e-12
-                for n in LINEAR_CRYSTALS
+                for n in linear_crystals
                 for e1 in [f"{eps:.0e}" for eps in EPSILONS]
                 for e2 in [f"{eps:.0e}" for eps in EPSILONS]
                 if per_crystal[n]["epsilon_sweep"][e1]["informative"]
@@ -410,7 +436,7 @@ def main() -> None:
                     - per_crystal[n]["epsilon_sweep"][e2]["amplification_factor"]
                 )
                 / (abs(per_crystal[n]["epsilon_sweep"][e1]["amplification_factor"]) + 1e-300)
-                for n in LINEAR_CRYSTALS
+                for n in linear_crystals
                 for e1 in [f"{eps:.0e}" for eps in EPSILONS]
                 for e2 in [f"{eps:.0e}" for eps in EPSILONS]
                 if per_crystal[n]["epsilon_sweep"][e1]["informative"]
@@ -419,21 +445,25 @@ def main() -> None:
             "cliffordstf_amplification_range_for_comparison": (
                 "3,000-25,000x (Supplementary Note: cores considered and not used)"
             ),
-            "hotpp_amplification_range": f"{min(all_amps_informative):.3f}-{max(all_amps_informative):.3f}x",
-            "mirror_probe_informative_crystals": [n for n, p in mirror_probes.items() if p["informative"]],
+            "hotpp_amplification_range": (
+                f"{min(all_amps_informative):.3f}-{max(all_amps_informative):.3f}x"
+            ),
+            "mirror_probe_informative_crystals": [
+                n for n, p in mirror_probes.items() if p["informative"]
+            ],
             "mirror_probe_all_informative_pass": all(
                 p["verdict"]["rotation_passes"] and p["verdict"]["improper_passes"]
                 for p in mirror_probes.values()
                 if p["informative"]
             ),
-            "amplification_factor_computed_over": LINEAR_CRYSTALS,
+            "amplification_factor_computed_over": linear_crystals,
             "si_diamond_excluded_reason": (
-                "Si_diamond's violation scales as epsilon^%.3f (log-log fit over the informative "
-                "epsilon points), not epsilon^1 like every other crystal -- a favourable symmetry "
-                "cancellation from the diamond lattice's local site point group, not conditioning. "
-                "Reported separately, not pooled into the linear amplification-factor statistic."
-            )
-            % si_scaling_exponent,
+                f"Si_diamond's violation scales as epsilon^{si_scaling_exponent:.3f} (log-log fit "
+                "over the informative epsilon points), not epsilon^1 like every other crystal -- "
+                "a favourable symmetry cancellation from the diamond lattice's local site point "
+                "group, not conditioning. Reported separately, not pooled into the linear "
+                "amplification-factor statistic."
+            ),
             "si_diamond_scaling_exponent": si_scaling_exponent,
         },
     }
@@ -470,9 +500,18 @@ def main() -> None:
             f"improper_rel={probe['improper']['relative_to_norm']:.3e}{flag}"
         )
 
-    print(f"\namplification_factor range (linear-response crystals, n={len(LINEAR_CRYSTALS)}): {results['summary']['hotpp_amplification_range']}")
-    print(f"Si_diamond scaling exponent (excluded from above): {si_scaling_exponent:.3f} (quadratic, favourable)")
-    print(f"CliffordSTF comparison: {results['summary']['cliffordstf_amplification_range_for_comparison']}")
+    print(
+        f"\namplification_factor range (linear-response crystals, "
+        f"n={len(linear_crystals)}): {results['summary']['hotpp_amplification_range']}"
+    )
+    print(
+        f"Si_diamond scaling exponent (excluded from above): "
+        f"{si_scaling_exponent:.3f} (quadratic, favourable)"
+    )
+    print(
+        "CliffordSTF comparison: "
+        f"{results['summary']['cliffordstf_amplification_range_for_comparison']}"
+    )
 
 
 if __name__ == "__main__":

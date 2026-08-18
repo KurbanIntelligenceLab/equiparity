@@ -313,3 +313,4 @@ archive_interim_*.zip
 archive_interim_*_manifest.txt
 
 /docs/draft_new/
+/.claude/

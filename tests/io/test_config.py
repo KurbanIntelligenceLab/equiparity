@@ -61,5 +61,5 @@ def test_pooling_mean_loads_from_yaml() -> None:
 
 
 def test_invalid_pooling_raises() -> None:
-    with pytest.raises(ConfigError, match="model.pooling must be"):
+    with pytest.raises(ConfigError, match=r"model\.pooling must be"):
         parse_experiment_config({**_BASE, "model": {**_BASE["model"], "pooling": "max"}})

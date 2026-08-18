@@ -68,7 +68,7 @@ class RunResult:
     test: MetricSummary
     n_params: int
     epochs_run: int
-    # Reviewer instrumentation (Checkpoint 7): wall-clock timing + resumable/best checkpoints.
+    # Run instrumentation: wall-clock timing + resumable/best checkpoints.
     timing: dict[str, float] | None = None
     checkpoint_best: dict[str, object] | None = None
     checkpoint_latest: dict[str, object] | None = None
