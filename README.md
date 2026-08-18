@@ -47,7 +47,7 @@ uv sync --extra data    # + pymatgen, mp-api, spglib for dataset preparation
 uv run <command>        # run anything inside the locked environment
 ```
 
-The `nequip` and `mace` extras cannot co-install, which is why CI runs them as a matrix.
+The `nequip` and `mace` extras cannot co-install; CI runs them as a matrix.
 
 ## Verifying the claims
 
@@ -143,18 +143,8 @@ docs/results/       per-experiment Markdown reports (regenerated, not committed)
 outputs/            per-run results and provenance manifests (not committed)
 ```
 
-`docs/results/` is a script output directory: seventeen drivers write a per-experiment Markdown
-report there, so nothing in it is committed.
-
-Fifteen of those drivers read the raw training-run tree — every checkpoint and metrics file from
-the 84-run grid, hundreds of gigabytes — from `$PARITY_RUNS`, defaulting to
-`~/Desktop/parity_work`. That tree is not part of this release. The frozen records in `results/`
-are what those drivers distilled from it, which is why `verification/` asserts the reported
-values against the records rather than re-deriving them from runs. Point `$PARITY_RUNS` at your
-own grid output to re-run a driver end to end.
-
-`vendor/hotpp/` is load-bearing: `scripts/f4_noneN3_control.py` imports it, and the claim
-that it carries no e3nn dependency is checkable against that tree.
+Set `$PARITY_RUNS` to the raw training-run tree if you want to re-run a driver end to end; it
+defaults to `~/Desktop/parity_work` and is not part of this release.
 
 ## License
 

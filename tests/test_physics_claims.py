@@ -156,7 +156,7 @@ def test_spglib_symprec_is_a_distance_tolerance_not_a_symmetry_test() -> None:
 class _ToyTensorNet(torch.nn.Module):
     """Minimal equivariant net with a parity-odd tensor output, in matched O(3)/SO(3) arms.
 
-    Three properties are load-bearing, and each was found the hard way:
+    Three properties are required:
 
     1. **Directed edges** (messages accumulate at the receiver only). With undirected edges the
        message is symmetric under ``i <-> j`` and every odd irrep cancels identically.

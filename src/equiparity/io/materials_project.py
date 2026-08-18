@@ -48,8 +48,8 @@ def tensor_sample(
 def space_group_number(structure: Any, symprec: float = 1e-3) -> int:  # noqa: ANN401
     """Return the spglib space-group number of a pymatgen structure.
 
-    Uses pymatgen's :class:`SpacegroupAnalyzer` (spglib-backed). This is the load-bearing check
-    for the OOD set: only structures whose number is centrosymmetric are kept.
+    Uses pymatgen's :class:`SpacegroupAnalyzer` (spglib-backed). Only structures whose number is
+    centrosymmetric are kept in the OOD set.
     """
     from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
 

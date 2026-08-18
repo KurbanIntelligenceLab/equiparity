@@ -16,9 +16,6 @@ UP = REPO / "third_party/equiformer_v2_upstream/nets/equiformer_v2"
 VEND = REPO / "src/equiparity/models/equiformer_v2"
 H1 = json.loads((REPO / "results/h1_upstream.json").read_text())
 E5 = json.loads((REPO / "results/e5_output_parity.json").read_text())
-# Writes into docs/results/ alongside the other per-experiment appendices. The former target,
-# docs/reports/, was retired with the development checkpoint notes, and this script did not
-# create its parent directory — so it would have failed on a clean checkout.
 OUT = REPO / "docs/results/h1_equiformer_upstream.md"
 OUT.parent.mkdir(parents=True, exist_ok=True)
 
@@ -103,7 +100,7 @@ def main() -> None:
         "",
         f"**{n_ast} AST-identical (formatting/import-order only), {n_doc} documented edits, 0 "
         "substantive (bucket-c).** The vendored copy is uniformly ruff-reformatted, so byte "
-        "comparison is not the axis; AST identity is. The two load-bearing files are "
+        "comparison is not the axis; AST identity is. The two files that matter are "
         "`edge_rot_mat.py` (the random per-edge frame) and `so3.py` (the detached Wigner-D "
         "matrices) — both AST-identical to upstream (edge_rot_mat differs in nothing but line "
         "wrapping; so3 in nothing but import order). In the shimmed tree used for the reruns, all "

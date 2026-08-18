@@ -1,11 +1,11 @@
 # Result records
 
-Every quantity the study reports is derived from a file in this directory. Each record names
-the script that produced it, so a claim traces to a record and a record traces to code.
+Every quantity the study reports is derived from a file in this directory, and each record below
+names the script that produced it.
 
-`verification/verify_claims.py` re-derives every reported quantity from these files and asserts
-it against the published value; `python verification/verify_claims.py` reports 184 passing
-checks against this tree and needs no GPU and no data beyond what is here.
+```bash
+uv run python verification/verify_claims.py
+```
 
 ## Matched-pair grid
 

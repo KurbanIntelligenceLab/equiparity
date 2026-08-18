@@ -1,4 +1,4 @@
-"""T4-3 -- two more polar distortion paths, so rutile TiO2 is not load-bearing alone.
+"""T4-3 -- two more polar distortion paths, so rutile TiO2 does not carry the result alone.
 
 Both parents were chosen for the 432 lesson from E2: their point group is 4/mmm, whose
 proper-rotation subgroup 422 admits a rank-3 invariant, so at delta = 0 only parity forbids a

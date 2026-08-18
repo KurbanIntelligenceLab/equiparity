@@ -1,4 +1,4 @@
-"""Centrosymmetric space groups — the load-bearing filter for the piezoelectric OOD set.
+"""Centrosymmetric space groups — the selection filter for the piezoelectric OOD set.
 
 A crystal is centrosymmetric iff its space group contains an inversion center. By Neumann's
 principle every odd-parity property (piezoelectric tensor) is then exactly zero. The OOD

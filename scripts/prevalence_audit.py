@@ -347,7 +347,7 @@ def main() -> None:
         "",
         "The introduction claims that the parity distinction is (a) invisible in most ",
         "model cards and",
-        "(b) load-bearing for tensor properties. This table supports (a) by showing that ",
+        "(b) decisive for tensor properties. This table supports (a) by showing that ",
         "the two most",
         "widely deployed equivariant transformers in this list are SO(3)-only, and that the",
         "distinction is nowhere in their configuration surface — EquiformerV2 exposes ",

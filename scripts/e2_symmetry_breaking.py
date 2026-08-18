@@ -8,8 +8,7 @@ every ``delta > 0`` it is polar and a response is allowed.
 textbook perovskites revealed the trap:
 
 * **TiO2 (rutile, P4_2/mnm 136 -> P4_2nm 102).** Rotation subgroup **422**, which admits a rank-3
-  invariant. Only *parity* forbids a response at delta = 0, so O(3) and SO(3) separate here. This is
-  the load-bearing panel.
+  invariant. Only *parity* forbids a response at delta = 0, so O(3) and SO(3) separate here.
 * **BaTiO3 / PbTiO3 (Pm-3m 221 -> P4mm 99).** Rotation subgroup **432**, which admits *no* rank-3
   invariant. An exactly SO(3)-equivariant model is forced to zero at delta = 0 by rotation alone
   (E7), so both arms start at machine zero and the parity effect is invisible. Reported as the
@@ -51,7 +50,7 @@ OUT_CSV = REPO / "results" / "e2_symmetry_breaking.csv"
 OUT_JSON = REPO / "results" / "e2_symmetry_breaking.json"
 OUT_MD = REPO / "docs" / "results" / "e2_symmetry_breaking.md"
 
-# TiO2 is the load-bearing material: its rotation subgroup 422 permits a rank-3 invariant, so only
+# TiO2 carries the comparison: its rotation subgroup 422 permits a rank-3 invariant, so only
 # parity forbids a response at delta = 0. The perovskites' 432 forbids one by rotation alone, which
 # makes both arms start at machine zero there and masks the parity effect entirely (E7).
 MATERIALS = ["TiO2", "BaTiO3", "PbTiO3"]
