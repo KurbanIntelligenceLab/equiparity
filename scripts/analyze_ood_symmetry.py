@@ -1,0 +1,182 @@
+"""Symmetry audit of the OOD centrosymmetric set, at several spglib tolerances.
+
+The OOD set was selected with ``symprec=1e-3``. This script asks how that tolerance interacts with
+the raw DFT-relaxed coordinates: at a tighter tolerance, some raw structures no longer carry an
+inversion centre, so a piezoelectric tensor is not in fact symmetry-forbidden for them. It also
+traces the individual structures that the O(3) models assign a nonzero tensor on the raw variant.
+
+Requires spglib, i.e. run under a model profile:
+
+    uv run --extra nequip python scripts/analyze_ood_symmetry.py
+
+Writes results/ood_symmetry.json and docs/results/a5_ood_symmetry.md.
+"""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import numpy as np
+import spglib
+
+from equiparity.domain.spacegroup import is_centrosymmetric
+
+ROOT = Path(__file__).resolve().parent.parent
+OUT_JSON = ROOT / "results" / "ood_symmetry.json"
+OUT_MD = ROOT / "docs" / "results" / "a5_ood_symmetry.md"
+IDEAL = ROOT / "data" / "raw" / "mp" / "mp_ood_centrosymmetric_processed.npz"
+RAW = ROOT / "data" / "raw" / "mp" / "mp_ood_centrosymmetric_processed_raw.npz"
+
+SYMPRECS = [1e-5, 1e-4, 1e-3, 1e-2]
+SELECTION_SYMPREC = 1e-3  # the tolerance the OOD set was built with
+
+
+def _cell(data, index: int):
+    """spglib cell tuple (lattice, fractional coords, atomic numbers) for one structure."""
+    n_atoms = data["n_atoms"]
+    start = int(np.sum(n_atoms[:index]))
+    count = int(n_atoms[index])
+    positions = np.asarray(data["positions"][start : start + count], dtype=float)
+    lattice = np.asarray(data["cells"][index], dtype=float)
+    numbers = np.asarray(data["z"][start : start + count], dtype=int)
+    return (lattice, positions @ np.linalg.inv(lattice), numbers)
+
+
+def _spacegroup(cell, symprec: float) -> int | None:
+    dataset = spglib.get_symmetry_dataset(cell, symprec=symprec)
+    return int(dataset.number) if dataset is not None else None
+
+
+def survey(data, symprecs: list[float]) -> dict[str, int]:
+    """How many structures are verified centrosymmetric at each tolerance."""
+    counts = {}
+    for symprec in symprecs:
+        n_centro = 0
+        for index in range(len(data["n_atoms"])):
+            number = _spacegroup(_cell(data, index), symprec)
+            if number is not None and is_centrosymmetric(number):
+                n_centro += 1
+        counts[f"{symprec:g}"] = n_centro
+    return counts
+
+
+def trace(data, index: int, symprecs: list[float]) -> dict[str, object]:
+    """Space group vs tolerance for one structure."""
+    cell = _cell(data, index)
+    rows = {}
+    for symprec in symprecs:
+        number = _spacegroup(cell, symprec)
+        rows[f"{symprec:g}"] = {
+            "space_group": number,
+            "centrosymmetric": bool(number is not None and is_centrosymmetric(number)),
+        }
+    return {"n_atoms": int(cell[2].size), "by_symprec": rows}
+
+
+def main() -> None:
+    ideal, raw = np.load(IDEAL, allow_pickle=True), np.load(RAW, allow_pickle=True)
+    ids = [str(x) for x in ideal["ids"]]
+    if ids != [str(x) for x in raw["ids"]]:
+        raise SystemExit(
+            "idealized and raw OOD sets are not aligned; per-structure joins are invalid"
+        )
+
+    # Structures the O(3) models assign a nonzero tensor on the raw variant (from the run vectors).
+    flagged = sorted(_raw_o3_flagged())
+    report: dict[str, object] = {
+        "n_structures": len(ids),
+        "selection_symprec": SELECTION_SYMPREC,
+        "counts_centrosymmetric": {
+            "idealized": survey(ideal, SYMPRECS),
+            "raw": survey(raw, SYMPRECS),
+        },
+        "o3_raw_flagged": {
+            ids[i]: {
+                "index": i,
+                "idealized": trace(ideal, i, SYMPRECS),
+                "raw": trace(raw, i, SYMPRECS),
+            }
+            for i in flagged
+        },
+    }
+    OUT_JSON.parent.mkdir(exist_ok=True)
+    OUT_JSON.write_text(json.dumps(report, indent=2))
+    OUT_MD.parent.mkdir(parents=True, exist_ok=True)
+    OUT_MD.write_text(_markdown(report))
+    print(json.dumps(report["counts_centrosymmetric"], indent=2))
+    print("o3 raw-flagged:", [ids[i] for i in flagged])
+
+
+def _raw_o3_flagged() -> set[int]:
+    """Indices of OOD structures given |T| > 0.01 by any O(3) run on the raw variant."""
+    import sys
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from analyze_results import SEEDS, load_vectors
+
+    vectors = load_vectors()
+    out: set[int] = set()
+    for core in ("nequip", "allegro", "mace"):
+        for seed in SEEDS:
+            mags = vectors.get((core, "o3", seed, "raw"))
+            if mags is not None:
+                out.update(np.where(mags > 0.01)[0].tolist())
+    return out
+
+
+def _markdown(report: dict) -> str:
+    n = report["n_structures"]
+    lines = [
+        "# A5 — Symmetry audit of the OOD set",
+        "",
+        "Generated by `scripts/analyze_ood_symmetry.py`. The OOD set was selected with spglib "
+        f"`symprec = {report['selection_symprec']:g}`.",
+        "",
+        "## Structures verified centrosymmetric, by tolerance",
+        "",
+        "| symprec | idealized | raw |",
+        "|---|---|---|",
+    ]
+    ideal_counts = report["counts_centrosymmetric"]["idealized"]
+    raw_counts = report["counts_centrosymmetric"]["raw"]
+    for symprec in ideal_counts:
+        i, r = ideal_counts[symprec], raw_counts[symprec]
+        lines.append(
+            f"| {symprec} | {i}/{n} ({100 * i / n:.2f} %) | {r}/{n} ({100 * r / n:.2f} %) |"
+        )
+    lines += [
+        "",
+        "Both variants are centrosymmetric for all 2000 structures at the selection tolerance. "
+        "Below it they diverge. The raw DFT-relaxed coordinates lose the inversion centre for a "
+        "growing fraction of structures as the tolerance tightens; for those structures the "
+        "piezoelectric tensor is not, strictly, symmetry-forbidden. The idealized coordinates "
+        "retain it for all but one structure (mp-2923562, index 1802, space group 1 at symprec "
+        "<= 1e-4), which `standardize_cell` did not resolve to within that tolerance. No O(3) run "
+        "assigns that structure a tensor above the 0.01 threshold, so its residual asymmetry is "
+        "below the level that produces a measurable response.",
+        "",
+        "## Structures assigned a nonzero tensor by an O(3) model on the raw variant",
+        "",
+    ]
+    flagged = report["o3_raw_flagged"]
+    if not flagged:
+        lines.append("None.")
+        return "\n".join(lines) + "\n"
+    lines += [
+        "| material | index | variant | " + " | ".join(f"sg @ {s}" for s in SYMPRECS) + " |",
+        "|---|---|---|" + "---|" * len(SYMPRECS),
+    ]
+    for mid, rec in flagged.items():
+        for variant in ("idealized", "raw"):
+            cells = []
+            for symprec in SYMPRECS:
+                row = rec[variant]["by_symprec"][f"{symprec:g}"]
+                mark = "" if row["centrosymmetric"] else " (non-centro)"
+                cells.append(f"{row['space_group']}{mark}")
+            lines.append(f"| {mid} | {rec['index']} | {variant} | " + " | ".join(cells) + " |")
+    return "\n".join(lines) + "\n"
+
+
+if __name__ == "__main__":
+    main()

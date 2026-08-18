@@ -1,0 +1,44 @@
+{
+ "n_molecules": 130831,
+ "crosscheck_max_abs_diff_debye": 1.7368995806066323e-06,
+ "note": "underestimate = (mu_ref - |sum q_i r_i|) / mu_ref, per molecule; mu_ref from the .xyz comment line, charges are the reference Mulliken charges",
+ "cutoff_0.1": {
+  "n": 129910,
+  "median": 0.1676081064335361,
+  "iqr": [
+   0.03928401039065804,
+   0.2681995515518401
+  ],
+  "p5_p95": [
+   -0.3485622289903216,
+   0.43870596561909575
+  ],
+  "fraction_overestimated": 0.20147794627049495
+ },
+ "cutoff_0.5": {
+  "n": 125600,
+  "median": 0.17279268501987494,
+  "iqr": [
+   0.053258497667429315,
+   0.27068035833629095
+  ],
+  "p5_p95": [
+   -0.225269891137738,
+   0.4389877393217869
+  ],
+  "fraction_overestimated": 0.17953821656050956
+ },
+ "cutoff_1.0": {
+  "n": 118590,
+  "median": 0.17747759505674204,
+  "iqr": [
+   0.06580626473183886,
+   0.2713554167623799
+  ],
+  "p5_p95": [
+   -0.16481211081885339,
+   0.4307802818972692
+  ],
+  "fraction_overestimated": 0.1577451724428704
+ }
+}

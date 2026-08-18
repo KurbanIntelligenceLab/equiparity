@@ -1,0 +1,16 @@
+name: QM9
+source: https://ndownloader.figshare.com/files/3195389 (dsgdb9nsd, figshare 978904)
+version: 2014 release; downloaded 2026-07-04
+license: CC0 (public domain)
+file_hashes:
+  dsgdb9nsd.xyz.tar.bz2: 3a63848ac80691bdb8d41834b575afad345b9300d7a2db0c38adb7f6eaa8360c
+schema:
+  U0: internal energy at 0 K, converted Hartree -> eV (parity-even scalar)
+  dipole: sum q_mulliken * r, converted to Debye (parity-odd vector target)
+  positions: angstrom
+structure_format: xyz (non-periodic molecules, elements H C N O F)
+query: scripts/prepare_qm9.py; exclude 3054 uncharacterized (figshare 3195404)
+cleaning: kept 130831 of 133885 molecules after uncharacterized exclusion
+limitations: Dipole target from Mulliken charges underestimates the reference DFT
+  |mu| by ~10-25%; direction and parity are exact, which is what the parity experiment
+  tests.

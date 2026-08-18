@@ -1,0 +1,803 @@
+{
+  "config": {
+    "crystal_source": "scripts/f3_size_consistency.py:build_crystals (9 crystals, 6 space groups, ase.spacegroup.crystal, spglib-verified centrosymmetric)",
+    "dtype": "float64",
+    "epsilons": [
+      1e-08,
+      1e-07,
+      1e-06,
+      1e-05,
+      0.0001,
+      0.001
+    ],
+    "hotpp_source": "github.com/yongwongxx/Hotpp @ main branch tarball (fetched 2026-08-09), no pip release; vendored at scratch_hotpp/hotpp/. arXiv:2402.15286, Nature Communications 15 (2024). MIT license. Zero e3nn dependency (grep-verified over the full package tree).",
+    "max_out_way": [
+      3,
+      3
+    ],
+    "max_r_way": 3,
+    "model_seed": 1,
+    "n_crystals": 9,
+    "n_layers": 2,
+    "n_params": 2489,
+    "r_max": 5.0,
+    "reference_scale_probe": "6-atom non-symmetric free cluster (Na,Cl,Ca,O,Ti,Al), fixed seed 999",
+    "reference_scale_value": 0.23267299536532443
+  },
+  "mirror_probe": {
+    "Al2O3_corundum": {
+      "improper": {
+        "det_G": -1.0,
+        "max_abs_error": 5.134781488891349e-16,
+        "relative_to_norm": 2.3980603258093256e-16
+      },
+      "informative": true,
+      "norm_T_way3": 2.1412228181367383,
+      "rotation": {
+        "det_G": 1.0,
+        "max_abs_error": 5.828670879282072e-16,
+        "relative_to_norm": 2.722122531999775e-16
+      },
+      "verdict": {
+        "improper_passes": true,
+        "note": "",
+        "rotation_passes": true
+      }
+    },
+    "CaF2_fluorite": {
+      "improper": {
+        "det_G": -1.0,
+        "max_abs_error": 3.823981062356374e-16,
+        "relative_to_norm": 1.6112694735120771e-15
+      },
+      "informative": true,
+      "norm_T_way3": 0.23732722087890482,
+      "rotation": {
+        "det_G": 1.0,
+        "max_abs_error": 4.952647668261453e-16,
+        "relative_to_norm": 2.086843493940596e-15
+      },
+      "verdict": {
+        "improper_passes": true,
+        "note": "",
+        "rotation_passes": true
+      }
+    },
+    "CsCl": {
+      "improper": {
+        "det_G": -1.0,
+        "max_abs_error": 1.0847224445938643e-16,
+        "relative_to_norm": 1.522731305947677
+      },
+      "informative": false,
+      "norm_T_way3": 7.123531514437366e-17,
+      "rotation": {
+        "det_G": 1.0,
+        "max_abs_error": 6.487029910935477e-17,
+        "relative_to_norm": 0.9106480258826845
+      },
+      "verdict": {
+        "improper_passes": false,
+        "note": "uninformative: per-atom feature at machine-zero noise floor (local site symmetry forces it to vanish); see max_abs_error instead, which is itself at 1e-16 scale",
+        "rotation_passes": false
+      }
+    },
+    "MgO_rocksalt": {
+      "improper": {
+        "det_G": -1.0,
+        "max_abs_error": 5.912465864048488e-16,
+        "relative_to_norm": 0.4775125826542293
+      },
+      "informative": false,
+      "norm_T_way3": 1.2381801189791374e-15,
+      "rotation": {
+        "det_G": 1.0,
+        "max_abs_error": 4.2612664082965403e-16,
+        "relative_to_norm": 0.34415561540512346
+      },
+      "verdict": {
+        "improper_passes": false,
+        "note": "uninformative: per-atom feature at machine-zero noise floor (local site symmetry forces it to vanish); see max_abs_error instead, which is itself at 1e-16 scale",
+        "rotation_passes": false
+      }
+    },
+    "NaCl_rocksalt": {
+      "improper": {
+        "det_G": -1.0,
+        "max_abs_error": 3.509453801402187e-16,
+        "relative_to_norm": 1.140731545518359
+      },
+      "informative": false,
+      "norm_T_way3": 3.076494040328707e-16,
+      "rotation": {
+        "det_G": 1.0,
+        "max_abs_error": 2.1842765714601902e-16,
+        "relative_to_norm": 0.7099888843687835
+      },
+      "verdict": {
+        "improper_passes": false,
+        "note": "uninformative: per-atom feature at machine-zero noise floor (local site symmetry forces it to vanish); see max_abs_error instead, which is itself at 1e-16 scale",
+        "rotation_passes": false
+      }
+    },
+    "Si_diamond": {
+      "improper": {
+        "det_G": -1.0,
+        "max_abs_error": 1.3167635384836451e-16,
+        "relative_to_norm": 4.781610191668582e-16
+      },
+      "informative": true,
+      "norm_T_way3": 0.27538077879663997,
+      "rotation": {
+        "det_G": 1.0,
+        "max_abs_error": 2.0068582212706687e-16,
+        "relative_to_norm": 7.287575516491186e-16
+      },
+      "verdict": {
+        "improper_passes": true,
+        "note": "",
+        "rotation_passes": true
+      }
+    },
+    "SrTiO3_perovskite": {
+      "improper": {
+        "det_G": -1.0,
+        "max_abs_error": 2.0812072834541763e-16,
+        "relative_to_norm": 0.2392490481046766
+      },
+      "informative": false,
+      "norm_T_way3": 8.698915627633358e-16,
+      "rotation": {
+        "det_G": 1.0,
+        "max_abs_error": 2.2182575791182804e-16,
+        "relative_to_norm": 0.255003919347334
+      },
+      "verdict": {
+        "improper_passes": false,
+        "note": "uninformative: per-atom feature at machine-zero noise floor (local site symmetry forces it to vanish); see max_abs_error instead, which is itself at 1e-16 scale",
+        "rotation_passes": false
+      }
+    },
+    "TiO2_anatase": {
+      "improper": {
+        "det_G": -1.0,
+        "max_abs_error": 4.718447854656915e-16,
+        "relative_to_norm": 2.461012000486304e-16
+      },
+      "informative": true,
+      "norm_T_way3": 1.9172794987283828,
+      "rotation": {
+        "det_G": 1.0,
+        "max_abs_error": 2.949029909160572e-16,
+        "relative_to_norm": 1.53813250030394e-16
+      },
+      "verdict": {
+        "improper_passes": true,
+        "note": "",
+        "rotation_passes": true
+      }
+    },
+    "TiO2_rutile": {
+      "improper": {
+        "det_G": -1.0,
+        "max_abs_error": 3.0531133177191805e-16,
+        "relative_to_norm": 2.6824066482276063e-16
+      },
+      "informative": true,
+      "norm_T_way3": 1.1381992807602523,
+      "rotation": {
+        "det_G": 1.0,
+        "max_abs_error": 3.608224830031759e-16,
+        "relative_to_norm": 3.170116947905353e-16
+      },
+      "verdict": {
+        "improper_passes": true,
+        "note": "",
+        "rotation_passes": true
+      }
+    }
+  },
+  "per_crystal": {
+    "Al2O3_corundum": {
+      "epsilon_sweep": {
+        "1e-03": {
+          "amplification_factor": 17.09817542109166,
+          "epsilon": 0.001,
+          "informative": true,
+          "pooled_norm": 0.002144641479405941,
+          "relative_input_asymmetry": 0.0005390871155125026,
+          "relative_output_violation": 0.009217406068283073
+        },
+        "1e-04": {
+          "amplification_factor": 17.098245432946985,
+          "epsilon": 0.0001,
+          "informative": true,
+          "pooled_norm": 0.00021446502610639412,
+          "relative_input_asymmetry": 5.390871155125026e-05,
+          "relative_output_violation": 0.0009217443810772212
+        },
+        "1e-05": {
+          "amplification_factor": 17.098252464702885,
+          "epsilon": 1e-05,
+          "informative": true,
+          "pooled_norm": 2.1446511430642134e-05,
+          "relative_input_asymmetry": 5.390871155125026e-06,
+          "relative_output_violation": 9.217447601501217e-05
+        },
+        "1e-06": {
+          "amplification_factor": 17.098253142177956,
+          "epsilon": 1e-06,
+          "informative": true,
+          "pooled_norm": 2.1446512280405984e-06,
+          "relative_input_asymmetry": 5.390871155125026e-07,
+          "relative_output_violation": 9.217447966719298e-06
+        },
+        "1e-07": {
+          "amplification_factor": 17.098252882511538,
+          "epsilon": 1e-07,
+          "informative": true,
+          "pooled_norm": 2.144651195470376e-07,
+          "relative_input_asymmetry": 5.3908711551250253e-08,
+          "relative_output_violation": 9.217447826736478e-07
+        },
+        "1e-08": {
+          "amplification_factor": 17.098251307367608,
+          "epsilon": 1e-08,
+          "informative": true,
+          "pooled_norm": 2.1446509978984765e-08,
+          "relative_input_asymmetry": 5.390871155125026e-09,
+          "relative_output_violation": 9.217446977596681e-08
+        }
+      },
+      "family": "non-cubic",
+      "inversion_residual_max_A": 2.921169588511783e-15,
+      "inversion_residual_mean_A": 1.3396729240309512e-15,
+      "n_atoms": 30,
+      "n_edges": 1788,
+      "nearest_neighbor_distance_A": 1.8549877584243764,
+      "per_atom_max_abs_way3": 0.19655274976412282,
+      "spacegroup": 167,
+      "spacegroup_symbol": "R-3c",
+      "sum_pooled_norm_way3": 9.401413064157236e-15,
+      "sum_pooled_relative_to_reference_scale": 4.0406120398269226e-14
+    },
+    "CaF2_fluorite": {
+      "epsilon_sweep": {
+        "1e-03": {
+          "amplification_factor": 2.2186257809284187,
+          "epsilon": 0.001,
+          "informative": true,
+          "pooled_norm": 0.00021822183309805048,
+          "relative_input_asymmetry": 0.0004227349582204839,
+          "relative_output_violation": 0.0009378906768076634
+        },
+        "1e-04": {
+          "amplification_factor": 2.218649842396381,
+          "epsilon": 0.0001,
+          "informative": true,
+          "pooled_norm": 2.1822419976019377e-05,
+          "relative_input_asymmetry": 4.227349582204839e-05,
+          "relative_output_violation": 9.379008484313174e-05
+        },
+        "1e-05": {
+          "amplification_factor": 2.2186522952401266,
+          "epsilon": 1e-05,
+          "informative": true,
+          "pooled_norm": 2.1822444101947375e-06,
+          "relative_input_asymmetry": 4.2273495822048395e-06,
+          "relative_output_violation": 9.379018853341158e-06
+        },
+        "1e-06": {
+          "amplification_factor": 2.218652537777649,
+          "epsilon": 1e-06,
+          "informative": true,
+          "pooled_norm": 2.1822446487522405e-07,
+          "relative_input_asymmetry": 4.2273495822048385e-07,
+          "relative_output_violation": 9.37901987863205e-07
+        },
+        "1e-07": {
+          "amplification_factor": 2.2186525021540513,
+          "epsilon": 1e-07,
+          "informative": true,
+          "pooled_norm": 2.182244613713223e-08,
+          "relative_input_asymmetry": 4.227349582204839e-08,
+          "relative_output_violation": 9.37901972803865e-08
+        },
+        "1e-08": {
+          "amplification_factor": 2.218652440322363,
+          "epsilon": 1e-08,
+          "informative": true,
+          "pooled_norm": 2.182244552896187e-09,
+          "relative_input_asymmetry": 4.227349582204839e-09,
+          "relative_output_violation": 9.379019466654487e-09
+        }
+      },
+      "family": "m-3m",
+      "inversion_residual_max_A": 0.0,
+      "inversion_residual_mean_A": 0.0,
+      "n_atoms": 12,
+      "n_edges": 512,
+      "nearest_neighbor_distance_A": 2.3655483904371937,
+      "per_atom_max_abs_way3": 0.021889006348011792,
+      "spacegroup": 225,
+      "spacegroup_symbol": "Fm-3m",
+      "sum_pooled_norm_way3": 9.72968481413864e-16,
+      "sum_pooled_relative_to_reference_scale": 4.1816992121762434e-15
+    },
+    "CsCl": {
+      "epsilon_sweep": {
+        "1e-03": {
+          "amplification_factor": 10.820892694266604,
+          "epsilon": 0.001,
+          "informative": true,
+          "pooled_norm": 0.0007051233633941697,
+          "relative_input_asymmetry": 0.00028006319145749487,
+          "relative_output_violation": 0.0030305337423753953
+        },
+        "1e-04": {
+          "amplification_factor": 10.820891950622135,
+          "epsilon": 0.0001,
+          "informative": true,
+          "pooled_norm": 7.051233149359599e-05,
+          "relative_input_asymmetry": 2.800631914574949e-05,
+          "relative_output_violation": 0.00030305335341079527
+        },
+        "1e-05": {
+          "amplification_factor": 10.82089194305784,
+          "epsilon": 1e-05,
+          "informative": true,
+          "pooled_norm": 7.051233144430466e-06,
+          "relative_input_asymmetry": 2.800631914574949e-06,
+          "relative_output_violation": 3.0305335319894717e-05
+        },
+        "1e-06": {
+          "amplification_factor": 10.820891944127947,
+          "epsilon": 1e-06,
+          "informative": true,
+          "pooled_norm": 7.05123314512778e-07,
+          "relative_input_asymmetry": 2.8006319145749485e-07,
+          "relative_output_violation": 3.0305335322891687e-06
+        },
+        "1e-07": {
+          "amplification_factor": 10.820891923795244,
+          "epsilon": 1e-07,
+          "informative": true,
+          "pooled_norm": 7.051233131878354e-08,
+          "relative_input_asymmetry": 2.8006319145749487e-08,
+          "relative_output_violation": 3.0305335265947273e-07
+        },
+        "1e-08": {
+          "amplification_factor": 10.820891971871406,
+          "epsilon": 1e-08,
+          "informative": true,
+          "pooled_norm": 7.051233163206291e-09,
+          "relative_input_asymmetry": 2.8006319145749487e-09,
+          "relative_output_violation": 3.030533540059091e-08
+        }
+      },
+      "family": "m-3m",
+      "inversion_residual_max_A": 0.0,
+      "inversion_residual_mean_A": 0.0,
+      "n_atoms": 2,
+      "n_edges": 28,
+      "nearest_neighbor_distance_A": 3.570622739803241,
+      "per_atom_max_abs_way3": 1.9826250312549452e-17,
+      "spacegroup": 221,
+      "spacegroup_symbol": "Pm-3m",
+      "sum_pooled_norm_way3": 7.990004746862264e-17,
+      "sum_pooled_relative_to_reference_scale": 3.4340060539973713e-16
+    },
+    "MgO_rocksalt": {
+      "epsilon_sweep": {
+        "1e-03": {
+          "amplification_factor": 12.202318352056785,
+          "epsilon": 0.001,
+          "informative": true,
+          "pooled_norm": 0.001348124388116962,
+          "relative_input_asymmetry": 0.0004748338081671415,
+          "relative_output_violation": 0.0057940732915749225
+        },
+        "1e-04": {
+          "amplification_factor": 12.202313112369785,
+          "epsilon": 0.0001,
+          "informative": true,
+          "pooled_norm": 0.0001348123809231079,
+          "relative_input_asymmetry": 4.7483380816714154e-05,
+          "relative_output_violation": 0.000579407080359439
+        },
+        "1e-05": {
+          "amplification_factor": 12.202313059662673,
+          "epsilon": 1e-05,
+          "informative": true,
+          "pooled_norm": 1.3481238034079445e-05,
+          "relative_input_asymmetry": 4.748338081671415e-06,
+          "relative_output_violation": 5.794070778567272e-05
+        },
+        "1e-06": {
+          "amplification_factor": 12.202313052917788,
+          "epsilon": 1e-06,
+          "informative": true,
+          "pooled_norm": 1.3481238026627626e-06,
+          "relative_input_asymmetry": 4.748338081671415e-07,
+          "relative_output_violation": 5.794070775364571e-06
+        },
+        "1e-07": {
+          "amplification_factor": 12.202313140786567,
+          "epsilon": 1e-07,
+          "informative": true,
+          "pooled_norm": 1.3481238123705936e-07,
+          "relative_input_asymmetry": 4.748338081671415e-08,
+          "relative_output_violation": 5.794070817087638e-07
+        },
+        "1e-08": {
+          "amplification_factor": 12.20231140112611,
+          "epsilon": 1e-08,
+          "informative": true,
+          "pooled_norm": 1.3481236201711591e-08,
+          "relative_input_asymmetry": 4.7483380816714155e-09,
+          "relative_output_violation": 5.794069991038039e-08
+        }
+      },
+      "family": "m-3m",
+      "inversion_residual_max_A": 0.0,
+      "inversion_residual_mean_A": 0.0,
+      "n_atoms": 8,
+      "n_edges": 448,
+      "nearest_neighbor_distance_A": 2.106,
+      "per_atom_max_abs_way3": 2.393834339008264e-16,
+      "spacegroup": 225,
+      "spacegroup_symbol": "Fm-3m",
+      "sum_pooled_norm_way3": 1.1889367943084574e-15,
+      "sum_pooled_relative_to_reference_scale": 5.109904535512101e-15
+    },
+    "NaCl_rocksalt": {
+      "epsilon_sweep": {
+        "1e-03": {
+          "amplification_factor": 4.041972832303361,
+          "epsilon": 0.001,
+          "informative": true,
+          "pooled_norm": 0.00033348389279716576,
+          "relative_input_asymmetry": 0.0003545973547037339,
+          "relative_output_violation": 0.0014332728741191308
+        },
+        "1e-04": {
+          "amplification_factor": 4.041972759793467,
+          "epsilon": 0.0001,
+          "informative": true,
+          "pooled_norm": 3.334838868147203e-05,
+          "relative_input_asymmetry": 3.545973547037339e-05,
+          "relative_output_violation": 0.0001433272848407314
+        },
+        "1e-05": {
+          "amplification_factor": 4.041972759118794,
+          "epsilon": 1e-05,
+          "informative": true,
+          "pooled_norm": 3.3348388675905635e-06,
+          "relative_input_asymmetry": 3.545973547037339e-06,
+          "relative_output_violation": 1.4332728481680772e-05
+        },
+        "1e-06": {
+          "amplification_factor": 4.041972764140975,
+          "epsilon": 1e-06,
+          "informative": true,
+          "pooled_norm": 3.334838871734125e-07,
+          "relative_input_asymmetry": 3.5459735470373387e-07,
+          "relative_output_violation": 1.4332728499489289e-06
+        },
+        "1e-07": {
+          "amplification_factor": 4.041972720157013,
+          "epsilon": 1e-07,
+          "informative": true,
+          "pooled_norm": 3.3348388354450565e-08,
+          "relative_input_asymmetry": 3.545973547037339e-08,
+          "relative_output_violation": 1.4332728343523323e-07
+        },
+        "1e-08": {
+          "amplification_factor": 4.041972746489871,
+          "epsilon": 1e-08,
+          "informative": true,
+          "pooled_norm": 3.3348388571710414e-09,
+          "relative_input_asymmetry": 3.545973547037339e-09,
+          "relative_output_violation": 1.4332728436898943e-08
+        }
+      },
+      "family": "m-3m",
+      "inversion_residual_max_A": 5.422947071870288e-16,
+      "inversion_residual_mean_A": 3.5124025194136053e-16,
+      "n_atoms": 8,
+      "n_edges": 208,
+      "nearest_neighbor_distance_A": 2.8201,
+      "per_atom_max_abs_way3": 6.113763431083219e-17,
+      "spacegroup": 225,
+      "spacegroup_symbol": "Fm-3m",
+      "sum_pooled_norm_way3": 2.962608620493678e-16,
+      "sum_pooled_relative_to_reference_scale": 1.273292852847847e-15
+    },
+    "Si_diamond": {
+      "epsilon_sweep": {
+        "1e-03": {
+          "amplification_factor": 0.0001483754622227435,
+          "epsilon": 0.001,
+          "informative": true,
+          "pooled_norm": 1.468005311465277e-08,
+          "relative_input_asymmetry": 0.00042522575524921803,
+          "relative_output_violation": 6.309306798411792e-08
+        },
+        "1e-04": {
+          "amplification_factor": 1.4838187486466227e-05,
+          "epsilon": 0.0001,
+          "informative": true,
+          "pooled_norm": 1.468068757214704e-10,
+          "relative_input_asymmetry": 4.2522575524921805e-05,
+          "relative_output_violation": 6.309579480462098e-10
+        },
+        "1e-05": {
+          "amplification_factor": 1.4837834511868615e-06,
+          "epsilon": 1e-05,
+          "informative": true,
+          "pooled_norm": 1.4680338344197655e-12,
+          "relative_input_asymmetry": 4.2522575524921805e-06,
+          "relative_output_violation": 6.309429386572244e-12
+        },
+        "1e-06": {
+          "amplification_factor": 1.4863709833532229e-07,
+          "epsilon": 1e-06,
+          "informative": true,
+          "pooled_norm": 1.4705939012306126e-14,
+          "relative_input_asymmetry": 4.25225755249218e-07,
+          "relative_output_violation": 6.32043223976897e-14
+        },
+        "1e-07": {
+          "amplification_factor": 6.902567068890363e-08,
+          "epsilon": 1e-07,
+          "informative": false,
+          "pooled_norm": 6.829299783184188e-16,
+          "relative_input_asymmetry": 4.25225755249218e-08,
+          "relative_output_violation": 2.9351492950272852e-15
+        },
+        "1e-08": {
+          "amplification_factor": 4.590017263835662e-07,
+          "epsilon": 1e-08,
+          "informative": false,
+          "pooled_norm": 4.541296533865301e-16,
+          "relative_input_asymmetry": 4.25225755249218e-09,
+          "relative_output_violation": 1.9517935576214687e-15
+        }
+      },
+      "family": "m-3m",
+      "inversion_residual_max_A": 1.2790758214667372e-15,
+      "inversion_residual_mean_A": 7.851976693967902e-16,
+      "n_atoms": 8,
+      "n_edges": 224,
+      "nearest_neighbor_distance_A": 2.351691983976643,
+      "per_atom_max_abs_way3": 0.02710920239515775,
+      "spacegroup": 227,
+      "spacegroup_symbol": "Fd-3m",
+      "sum_pooled_norm_way3": 3.4574793986010733e-16,
+      "sum_pooled_relative_to_reference_scale": 1.4859822443822572e-15
+    },
+    "SrTiO3_perovskite": {
+      "epsilon_sweep": {
+        "1e-03": {
+          "amplification_factor": 10.21355726079773,
+          "epsilon": 0.001,
+          "informative": true,
+          "pooled_norm": 0.0012171159852522745,
+          "relative_input_asymmetry": 0.0005121638924455827,
+          "relative_output_violation": 0.005231015242406008
+        },
+        "1e-04": {
+          "amplification_factor": 10.213557001803272,
+          "epsilon": 0.0001,
+          "informative": true,
+          "pooled_norm": 0.00012171159543887579,
+          "relative_input_asymmetry": 5.121638924455826e-05,
+          "relative_output_violation": 0.0005231015109758399
+        },
+        "1e-05": {
+          "amplification_factor": 10.213556999323021,
+          "epsilon": 1e-05,
+          "informative": true,
+          "pooled_norm": 1.2171159540931948e-05,
+          "relative_input_asymmetry": 5.121638924455827e-06,
+          "relative_output_violation": 5.231015108488104e-05
+        },
+        "1e-06": {
+          "amplification_factor": 10.213556993394715,
+          "epsilon": 1e-06,
+          "informative": true,
+          "pooled_norm": 1.2171159533867376e-06,
+          "relative_input_asymmetry": 5.121638924455826e-07,
+          "relative_output_violation": 5.231015105451838e-06
+        },
+        "1e-07": {
+          "amplification_factor": 10.213557007991378,
+          "epsilon": 1e-07,
+          "informative": true,
+          "pooled_norm": 1.2171159551261742e-07,
+          "relative_input_asymmetry": 5.121638924455826e-08,
+          "relative_output_violation": 5.231015112927723e-07
+        },
+        "1e-08": {
+          "amplification_factor": 10.21355720835758,
+          "epsilon": 1e-08,
+          "informative": true,
+          "pooled_norm": 1.2171159790031545e-08,
+          "relative_input_asymmetry": 5.121638924455827e-09,
+          "relative_output_violation": 5.2310152155480566e-08
+        }
+      },
+      "family": "m-3m",
+      "inversion_residual_max_A": 3.754584645163908e-16,
+      "inversion_residual_mean_A": 2.590280244380824e-16,
+      "n_atoms": 5,
+      "n_edges": 250,
+      "nearest_neighbor_distance_A": 1.9525,
+      "per_atom_max_abs_way3": 2.1174062604726085e-16,
+      "spacegroup": 221,
+      "spacegroup_symbol": "Pm-3m",
+      "sum_pooled_norm_way3": 1.2009382586004634e-15,
+      "sum_pooled_relative_to_reference_scale": 5.161485357227841e-15
+    },
+    "TiO2_anatase": {
+      "epsilon_sweep": {
+        "1e-03": {
+          "amplification_factor": 21.513549891053074,
+          "epsilon": 0.001,
+          "informative": true,
+          "pooled_norm": 0.0025881838476403936,
+          "relative_input_asymmetry": 0.000517055382725518,
+          "relative_output_violation": 0.011123696772702975
+        },
+        "1e-04": {
+          "amplification_factor": 21.51348098289133,
+          "epsilon": 0.0001,
+          "informative": true,
+          "pooled_norm": 0.0002588175557656077,
+          "relative_input_asymmetry": 5.170553827255181e-05,
+          "relative_output_violation": 0.0011123661143367031
+        },
+        "1e-05": {
+          "amplification_factor": 21.513474137520117,
+          "epsilon": 1e-05,
+          "informative": true,
+          "pooled_norm": 2.5881747341248932e-05,
+          "relative_input_asymmetry": 5.170553827255181e-06,
+          "relative_output_violation": 0.00011123657603930999
+        },
+        "1e-06": {
+          "amplification_factor": 21.51347345422613,
+          "epsilon": 1e-06,
+          "informative": true,
+          "pooled_norm": 2.5881746519213297e-06,
+          "relative_input_asymmetry": 5.170553827255181e-07,
+          "relative_output_violation": 1.1123657250630165e-05
+        },
+        "1e-07": {
+          "amplification_factor": 21.513473412172385,
+          "epsilon": 1e-07,
+          "informative": true,
+          "pooled_norm": 2.588174646862061e-07,
+          "relative_input_asymmetry": 5.17055382725518e-08,
+          "relative_output_violation": 1.1123657228886048e-06
+        },
+        "1e-08": {
+          "amplification_factor": 21.51347418628204,
+          "epsilon": 1e-08,
+          "informative": true,
+          "pooled_norm": 2.5881747399911874e-08,
+          "relative_input_asymmetry": 5.170553827255181e-09,
+          "relative_output_violation": 1.1123657629143613e-07
+        }
+      },
+      "family": "non-cubic",
+      "inversion_residual_max_A": 6.059841103705373e-16,
+      "inversion_residual_mean_A": 3.561803656771285e-16,
+      "n_atoms": 12,
+      "n_edges": 568,
+      "nearest_neighbor_distance_A": 1.9340287973190988,
+      "per_atom_max_abs_way3": 0.34493256524026983,
+      "spacegroup": 141,
+      "spacegroup_symbol": "I4_1/amd",
+      "sum_pooled_norm_way3": 1.5533431381978675e-15,
+      "sum_pooled_relative_to_reference_scale": 6.67607831222069e-15
+    },
+    "TiO2_rutile": {
+      "epsilon_sweep": {
+        "1e-03": {
+          "amplification_factor": 12.153572082570989,
+          "epsilon": 0.001,
+          "informative": true,
+          "pooled_norm": 0.0014528626496871147,
+          "relative_input_asymmetry": 0.0005137769745965469,
+          "relative_output_violation": 0.006244225495124376
+        },
+        "1e-04": {
+          "amplification_factor": 12.15477256591047,
+          "epsilon": 0.0001,
+          "informative": true,
+          "pooled_norm": 0.00014530061578996514,
+          "relative_input_asymmetry": 5.137769745965469e-05,
+          "relative_output_violation": 0.0006244842275822589
+        },
+        "1e-05": {
+          "amplification_factor": 12.154892626536178,
+          "epsilon": 1e-05,
+          "informative": true,
+          "pooled_norm": 1.453020510190287e-05,
+          "relative_input_asymmetry": 5.137769745965469e-06,
+          "relative_output_violation": 6.244903960207634e-05
+        },
+        "1e-06": {
+          "amplification_factor": 12.15490463390559,
+          "epsilon": 1e-06,
+          "informative": true,
+          "pooled_norm": 1.4530219455755726e-06,
+          "relative_input_asymmetry": 5.137769745965468e-07,
+          "relative_output_violation": 6.244910129317562e-06
+        },
+        "1e-07": {
+          "amplification_factor": 12.154905847682008,
+          "epsilon": 1e-07,
+          "informative": true,
+          "pooled_norm": 1.4530220906728669e-07,
+          "relative_input_asymmetry": 5.137769745965469e-08,
+          "relative_output_violation": 6.244910752927938e-07
+        },
+        "1e-08": {
+          "amplification_factor": 12.154905636877759,
+          "epsilon": 1e-08,
+          "informative": true,
+          "pooled_norm": 1.4530220654728997e-08,
+          "relative_input_asymmetry": 5.137769745965469e-09,
+          "relative_output_violation": 6.244910644621569e-08
+        }
+      },
+      "family": "non-cubic",
+      "inversion_residual_max_A": 7.212533727455657e-16,
+      "inversion_residual_mean_A": 3.005222386439857e-16,
+      "n_atoms": 6,
+      "n_edges": 308,
+      "nearest_neighbor_distance_A": 1.9463698247381929,
+      "per_atom_max_abs_way3": 0.1447115324952674,
+      "spacegroup": 136,
+      "spacegroup_symbol": "P4_2/mnm",
+      "sum_pooled_norm_way3": 1.166355783188912e-15,
+      "sum_pooled_relative_to_reference_scale": 5.012854118964661e-15
+    }
+  },
+  "summary": {
+    "all_exact_crystals_inversion_residual_below_1e-10": true,
+    "amplification_epsilon_invariant_max_relative_deviation": 0.0001097426420773443,
+    "amplification_epsilon_invariant_on_informative_points": true,
+    "amplification_factor_computed_over": [
+      "NaCl_rocksalt",
+      "MgO_rocksalt",
+      "CsCl",
+      "SrTiO3_perovskite",
+      "CaF2_fluorite",
+      "TiO2_rutile",
+      "TiO2_anatase",
+      "Al2O3_corundum"
+    ],
+    "amplification_factor_max": 21.513549891053074,
+    "amplification_factor_median": 11.487232388418796,
+    "amplification_factor_min": 2.2186257809284187,
+    "cliffordstf_amplification_range_for_comparison": "3,000-25,000x (Supplementary Note: cores considered and not used)",
+    "hotpp_amplification_range": "2.219-21.514x",
+    "max_sum_pooled_norm_exact_crystal": 9.401413064157236e-15,
+    "max_sum_pooled_relative_to_reference_scale": 4.0406120398269226e-14,
+    "mirror_probe_all_informative_pass": true,
+    "mirror_probe_informative_crystals": [
+      "Si_diamond",
+      "CaF2_fluorite",
+      "TiO2_rutile",
+      "TiO2_anatase",
+      "Al2O3_corundum"
+    ],
+    "n_epsilon_points_below_noise_floor": 2,
+    "noise_floor_note": "a (crystal, epsilon) point is flagged uninformative when the perturbed pooled_norm is below 10.0x the SAME crystal's exact (eps=0) pooled_norm -- float64 noise dividing noise, same convention as f3_size_consistency.py's NOISE_FLOOR. Excluded from the amplification-factor statistics below.",
+    "si_diamond_excluded_reason": "Si_diamond's violation scales as epsilon^2.000 (log-log fit over the informative epsilon points), not epsilon^1 like every other crystal -- a favourable symmetry cancellation from the diamond lattice's local site point group, not conditioning. Reported separately, not pooled into the linear amplification-factor statistic.",
+    "si_diamond_scaling_exponent": 1.999771493034022
+  }
+}

@@ -1,0 +1,20 @@
+seed: 1
+core: equiformer_v2
+parity: so3
+target: piezoelectric
+dataset: mp_piezoelectric
+processed_npz: data/raw/mp/mp_piezoelectric_processed.npz
+split_npz: data/splits/mp_piezoelectric_split.npz
+output_dir: outputs
+model:
+  num_layers: 3
+  l_max: 3
+  num_features: 64
+  r_max: 5.0
+  pooling: mean
+training:
+  batch_size: 16
+  epochs: 150
+  lr: 0.002
+  device: cuda
+  precision: float32

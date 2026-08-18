@@ -1,0 +1,107 @@
+{
+ "eqv3": {
+  "channels": 64,
+  "lmax": 2,
+  "n_params": 2197633,
+  "output_probe": {
+   "determinism_spread": 5.289912223815918e-07,
+   "mirror_rel_error": 1.9973440720484588,
+   "n_structures": 25,
+   "rotation_rel_error": 2.246316097558288e-05
+  },
+  "random_init": true,
+  "structural_test": {
+   "fraction_above_1pct_of_noncubic_median": 0.9055,
+   "m-3": {
+    "max": 1.6035175576689653e-05,
+    "median": 2.5471563276369125e-06,
+    "median_over_noncubic_median": 7.11145989201081e-06,
+    "n": 18
+   },
+   "m-3m": {
+    "max": 1.2399308616295457e-05,
+    "median": 4.259727575117722e-07,
+    "median_over_noncubic_median": 1.1892823959276158e-06,
+    "n": 166
+   },
+   "n": 2000,
+   "non-cubic": {
+    "max": 3.9364514350891113,
+    "median": 0.3581762909889221,
+    "median_over_noncubic_median": 1.0,
+    "n": 1816
+   }
+  },
+  "version": "atomicarchitects/equiformer_v3 a7300c5"
+ },
+ "esen": {
+  "channels": 64,
+  "lmax": 2,
+  "n_params": 1701888,
+  "output_probe": {
+   "determinism_spread": 3.214925527572632e-06,
+   "mirror_rel_error": 1.9954693622754713,
+   "n_structures": 25,
+   "rotation_rel_error": 4.185947670870126e-05
+  },
+  "random_init": true,
+  "structural_test": {
+   "fraction_above_1pct_of_noncubic_median": 0.9065,
+   "m-3": {
+    "max": 0.0008743947255425155,
+    "median": 7.279595592990518e-05,
+    "median_over_noncubic_median": 2.3900352784384836e-05,
+    "n": 18
+   },
+   "m-3m": {
+    "max": 0.0005993525264784694,
+    "median": 4.7357563744299114e-05,
+    "median_over_noncubic_median": 1.5548425266749788e-05,
+    "n": 166
+   },
+   "n": 2000,
+   "non-cubic": {
+    "max": 27.635623931884766,
+    "median": 3.0458109378814697,
+    "median_over_noncubic_median": 1.0,
+    "n": 1816
+   }
+  },
+  "version": "fairchem-core 1.10.0"
+ },
+ "uma": {
+  "channels": 64,
+  "lmax": 2,
+  "n_params": 1812928,
+  "output_probe": {
+   "determinism_spread": 1.7508864402770996e-06,
+   "mirror_rel_error": 1.8046085434482273,
+   "n_structures": 25,
+   "rotation_rel_error": 0.00010029164509457302
+  },
+  "random_init": true,
+  "structural_test": {
+   "fraction_above_1pct_of_noncubic_median": 0.904,
+   "m-3": {
+    "max": 0.000594599696341902,
+    "median": 0.00022924895165488124,
+    "median_over_noncubic_median": 0.00010456568270456046,
+    "n": 18
+   },
+   "m-3m": {
+    "max": 0.0006408832268789411,
+    "median": 4.2074119846802205e-05,
+    "median_over_noncubic_median": 1.9190967577742413e-05,
+    "n": 166
+   },
+   "n": 2000,
+   "non-cubic": {
+    "max": 32.70505142211914,
+    "median": 2.192391872406006,
+    "median_over_noncubic_median": 1.0,
+    "n": 1816
+   }
+  },
+  "version": "fairchem-core 2.21.0"
+ }
+}

@@ -1,0 +1,33 @@
+{
+  "rotation": {
+    "det_G": 0.9999999999999994,
+    "max_abs_error": 1.3877787807814457e-16,
+    "max_rel_error_eps_denom": 1.2906217709078145e-11,
+    "norm_T_way3": 1.08166524381456,
+    "relative_to_norm": 1.283002101358156e-16
+  },
+  "improper": {
+    "det_G": -1.0000000000000004,
+    "max_abs_error": 1.942890293094024e-16,
+    "max_rel_error_eps_denom": 1.3182247623508638e-13,
+    "norm_T_way3": 1.08166524381456,
+    "relative_to_norm": 1.7962029419014183e-16
+  },
+  "verdict": {
+    "rotation_passes": true,
+    "improper_passes": true
+  },
+  "config": {
+    "n_layers": 2,
+    "max_out_way": [
+      3,
+      3
+    ],
+    "max_r_way": 3,
+    "r_max": 5.0,
+    "dtype": "float64",
+    "n_atoms": 6,
+    "seed": 42,
+    "hotpp_source": "github.com/yongwongxx/Hotpp @ main branch tarball, no e3nn dependency"
+  }
+}

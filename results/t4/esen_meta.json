@@ -1,0 +1,12 @@
+{
+ "backbone": "eSEN-30M-OAM (frozen, pretrained)",
+ "checkpoint_repo": "facebook/OMAT24",
+ "checkpoint_file": "esen_30m_oam.pt",
+ "checkpoint_path": "/home/can.polat/ParityInMS/third_party/checkpoints/esen_30m_oam.pt",
+ "lmax": 3,
+ "channels": 128,
+ "layout": "coeff-(l,m)-major (n, (lmax+1)^2 * channels); remap in t4_frozen_backbone",
+ "dtype": "float32",
+ "device": "cpu",
+ "determinism_max_abs_diff": 1.1920928955078125e-06
+}

@@ -1,0 +1,158 @@
+[project]
+name = "equiparity"
+version = "0.1.0"
+description = "When Parity Matters: can SO(3)-equivariant models predict physically impossible material properties?"
+requires-python = "==3.12.*"
+readme = "README.md"
+license = { file = "LICENSE" }
+# Shared base: only what training + data-loading need (numpy, torch, ase). The e3nn version
+# is pinned by the model extras below (MACE e3nn==0.4.4 vs NequIP/Allegro e3nn>=0.6 conflict).
+# Data-prep libraries (pymatgen/mp-api/spglib) live in the `data` extra so the training/cloud
+# image stays lean — data loading at train time reads only committed npz via numpy.
+dependencies = [
+  "numpy>=2.0",
+  "torch>=2.11.0",
+  "ase>=3.23",
+]
+
+[project.optional-dependencies]
+# NequIP + Allegro family (e3nn 0.6.x). Install with: uv sync --extra nequip
+nequip = [
+  "nequip>=0.18.0",
+  "nequip-allegro>=0.4",
+  "torch-geometric>=2.5",
+]
+# MACE family (e3nn 0.4.4). Install with: uv sync --extra mace
+mace = [
+  "mace-torch>=0.3.16",
+]
+# Data preparation only (fetching/building datasets); not needed for training or the cloud image.
+data = [
+  "spglib>=2.5",
+  "pymatgen>=2025.1.1",
+  "mp-api>=0.45",
+]
+# JARVIS-DFT fallback source for the piezoelectric dataset.
+jarvis = [
+  "jarvis-tools>=2024.10.30",
+]
+
+[project.scripts]
+equiparity = "equiparity.cli:main"
+
+# MACE and NequIP/Allegro pin mutually-incompatible e3nn versions; declare the
+# extras as conflicting so uv locks both and installs exactly one at a time.
+[tool.uv]
+conflicts = [
+  [{ extra = "nequip" }, { extra = "mace" }],
+]
+
+# PyTorch from the CUDA 12.8 index: required for RTX 5090 (Blackwell, sm_120).
+# Training targets A100; the cu128 build also serves A100.
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/equiparity"]
+
+[dependency-groups]
+dev = [
+  "ruff>=0.8",
+  "mypy>=1.13",
+  "pytest>=8.0",
+  "pytest-cov",
+  "hypothesis",
+  "pre-commit>=3.0",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+# Vendored third-party model snapshots (fixed commits) — kept as-is, not linted to our style.
+extend-exclude = [
+  "src/equiparity/models/equiformer_v2",
+  "src/equiparity/models/clifford_stf",
+  "src/equiparity/models/clifford",
+  "vendor/hotpp",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "ANN", "RUF", "SIM", "PTH", "RET"]
+# ANN101/ANN102 were removed in ruff and are omitted.
+
+[tool.ruff.lint.per-file-ignores]
+# Diagnostic/orchestration scripts wrap untyped third-party models; don't force annotations.
+# They also emit Markdown reports containing typographic characters (en dash, minus sign, U+2016
+# for the tensor norm, and the overbar in point-group names like m-3m), which RUF001 flags.
+"scripts/*" = ["ANN", "RUF001"]
+# Claim checkers assert against published values and use the notation those values are
+# published in: single-capital group and tensor symbols (N803, N806), and one assertion per
+# line where the source table has one row per line (E701, E702, E731).
+"verification/*" = [
+  "ANN", "RUF001", "N802", "N803", "N806", "N816", "E701", "E702", "E731", "E741",
+  "PTH", "SIM115", "RET503",
+]
+# The verification gate wraps untyped third-party model constructors.
+"tests/verification/*" = ["ANN"]
+
+[tool.ruff.format]
+docstring-code-format = true
+quote-style = "double"
+
+# Strict typing for boundary and contract code.
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unreachable = true
+warn_redundant_casts = true
+
+# Relaxed typing for numerical, featurization, and plotting code built on
+# libraries with weak or missing stubs.
+[[tool.mypy.overrides]]
+module = [
+  "equiparity.features.*",
+  "equiparity.plotting.*",
+  "equiparity.models.*",
+  "equiparity.verification.*",
+  "equiparity.training.*",
+]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_calls = false
+warn_return_any = false
+
+# Third-party ML/materials libraries: absent from the type-check env or shipping
+# weak stubs. Treat their imports as untyped so boundary code stays install-agnostic.
+[[tool.mypy.overrides]]
+module = [
+  "torch.*",
+  "e3nn.*",
+  "nequip.*",
+  "allegro.*",
+  "mace.*",
+  "ase.*",
+  "pymatgen.*",
+  "spglib.*",
+  "mp_api.*",
+  "yaml",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --cov=src/equiparity"
+markers = [
+  "integration: integration tests",
+  "smoke: end-to-end smoke tests",
+  "gpu: requires GPU",
+  "slow: slow tests",
+]

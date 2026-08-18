@@ -1,0 +1,33 @@
+{
+  "trials": [
+    {
+      "seed": 1,
+      "inversion_verified_exact": true,
+      "per_atom_max_abs_way3": 0.1844530489713525,
+      "sum_pooled_norm_way3": 2.3540603442222307e-16,
+      "sum_pooled_max_abs_way3": 7.632783294297951e-17,
+      "sum_pooled_relative_to_per_atom_scale": 1.2762382391346868e-15
+    },
+    {
+      "seed": 2,
+      "inversion_verified_exact": true,
+      "per_atom_max_abs_way3": 0.1034372805688349,
+      "sum_pooled_norm_way3": 6.527122199516192e-17,
+      "sum_pooled_max_abs_way3": 2.0816681711721685e-17,
+      "sum_pooled_relative_to_per_atom_scale": 6.310222159381459e-16
+    },
+    {
+      "seed": 3,
+      "inversion_verified_exact": true,
+      "per_atom_max_abs_way3": 0.210626522618435,
+      "sum_pooled_norm_way3": 2.4048535369295e-16,
+      "sum_pooled_max_abs_way3": 6.245004513516506e-17,
+      "sum_pooled_relative_to_per_atom_scale": 1.1417619713952473e-15
+    }
+  ],
+  "verdict": {
+    "all_inversion_verified": true,
+    "all_pooled_norm_below_1e-10": true,
+    "note": "Theorem-1-style prediction: sum-pooled rank-3 (odd-parity) output must vanish structurally on a centrosymmetric cluster, at ANY parameter values, for a genuinely O(3)-equivariant network. Per-atom values need not vanish (measured for context only)."
+  }
+}

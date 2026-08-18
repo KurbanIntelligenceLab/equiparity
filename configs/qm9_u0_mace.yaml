@@ -1,0 +1,26 @@
+# PRODUCTION config: QM9 U0 (parity-even scalar control) with the MACE core.
+# MACE is wired for the U0 scalar target only (tensor/dipole heads are nequip-only). This run
+# confirms the null result — SO(3) ≈ O(3) for a parity-even scalar — for MACE too. Run in both
+# parity modes across seeds. Uses a 20k subset (the null result needs no more; the full 110k
+# comes with the grid generator).
+seed: 0
+core: mace
+parity: o3
+target: U0
+dataset: qm9
+processed_npz: data/raw/qm9/qm9_processed.npz
+split_npz: data/splits/qm9_split.npz
+output_dir: outputs
+model:
+  num_layers: 2
+  l_max: 2
+  num_features: 128
+  r_max: 5.0
+training:
+  batch_size: 32
+  epochs: 60
+  lr: 0.002
+  device: cuda
+  precision: float32
+  max_train_samples: 20000
+  max_eval_samples: 2000

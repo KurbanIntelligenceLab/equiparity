@@ -1,0 +1,16 @@
+dataset: mp_piezoelectric_augmented
+source: MP piezoelectric (DFPT) + centrosymmetric insulators labelled zero
+n_total: 4312
+n_real_tensors: 3312
+n_zero_labelled: 1000
+augmentation_spacegroups:
+- 2
+- 12
+- 14
+- 15
+- 62
+- 225
+augmentation_symprec: 0.001
+idealized: spglib standardize_cell(to_primitive=True, no_idealize=False)
+seed: 42
+contamination_checked: augmentation ids disjoint from the OOD 2000

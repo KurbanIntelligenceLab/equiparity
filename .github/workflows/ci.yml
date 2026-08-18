@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "jp/**"]
+  pull_request:
+
+jobs:
+  lint-type:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Sync (base + nequip)
+        run: uv sync --extra nequip
+      - name: Ruff check
+        run: uv run ruff check .
+      - name: Ruff format check
+        run: uv run ruff format --check .
+      - name: Mypy (boundary + contract code)
+        run: uv run mypy src/equiparity/domain src/equiparity/io src/equiparity/data src/equiparity/reproducibility.py
+
+  test:
+    # Runs unit tests plus the parity verification gate for each model profile.
+    # The conflicting extras (nequip xor mace) cannot co-install, so they run as a matrix.
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        extra: [nequip, mace]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Sync (base + ${{ matrix.extra }})
+        run: uv sync --extra ${{ matrix.extra }}
+      - name: Pytest (unit + parity gate)
+        # The parity gate (tests/verification) is the Task 0.3 Go/No-Go: no config may
+        # train unless both arms of every core in this profile pass it.
+        run: uv run pytest -q

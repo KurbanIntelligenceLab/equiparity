@@ -1,0 +1,210 @@
+{
+  "capacity": {
+    "nequip/U0": {
+      "o3": 1775488,
+      "so3": 1808256,
+      "ratio": 1.0184557710330906
+    },
+    "nequip/dipole": {
+      "o3": 1775552,
+      "so3": 1808320,
+      "ratio": 1.0184551057924522
+    },
+    "nequip/elastic": {
+      "o3": 1781824,
+      "so3": 1814592,
+      "ratio": 1.0183901440321828
+    },
+    "nequip/piezoelectric": {
+      "o3": 2457600,
+      "so3": 2547776,
+      "ratio": 1.0366927083333333
+    },
+    "allegro/U0": {
+      "o3": 89728,
+      "so3": 89984,
+      "ratio": 1.0028530670470757
+    },
+    "allegro/dipole": {
+      "o3": 73969,
+      "so3": 74097,
+      "ratio": 1.0017304546499208
+    },
+    "allegro/elastic": {
+      "o3": 80052,
+      "so3": 80180,
+      "ratio": 1.0015989606755609
+    },
+    "allegro/piezoelectric": {
+      "o3": 84547,
+      "so3": 84900,
+      "ratio": 1.0041751924964812
+    },
+    "mace/U0": {
+      "o3": 444224,
+      "so3": 536640,
+      "ratio": 1.2080391874369687
+    },
+    "mace/dipole": {
+      "o3": 444288,
+      "so3": 536704,
+      "ratio": 1.2080092192451743
+    },
+    "mace/elastic": {
+      "o3": 2992704,
+      "so3": 3536704,
+      "ratio": 1.1817754111332093
+    },
+    "mace/piezoelectric": {
+      "o3": 5329920,
+      "so3": 7453120,
+      "ratio": 1.3983549471661865
+    }
+  },
+  "target_calibration": {
+    "train split": {
+      "n": 2649,
+      "p5": 0.045418277242833996,
+      "median": 0.5085590051311647,
+      "p95": 3.7308079594606873,
+      "max": 65.06460531311768,
+      "fraction_above_0p01": 0.9852774631936579
+    },
+    "all labelled": {
+      "n": 3312,
+      "p5": 0.04520215454074065,
+      "median": 0.5044874969704636,
+      "p95": 3.6512172186887004,
+      "max": 65.06460531311768,
+      "fraction_above_0p01": 0.9849033816425121
+    }
+  },
+  "violation_agreement": {
+    "seed_rho/nequip": {
+      "mean": 0.8156084299021075,
+      "min": 0.8038363769590943
+    },
+    "seed_rho/allegro": {
+      "mean": 0.8253109153277287,
+      "min": 0.813098624274656
+    },
+    "seed_rho/mace": {
+      "mean": 0.8290969062742265,
+      "min": 0.8247047391761848
+    },
+    "seed_rho/equiformer_v2": {
+      "mean": 0.7728093407023352,
+      "min": 0.761028299757075
+    },
+    "cross/nequip-allegro": {
+      "rho_mean": 0.7548165627041407,
+      "jaccard_mean": 0.977901494063512,
+      "jaccard_min": 0.976464148877942
+    },
+    "cross/nequip-mace": {
+      "rho_mean": 0.765168135792034,
+      "jaccard_mean": 0.9758909063752772,
+      "jaccard_min": 0.9737130339539978
+    },
+    "cross/nequip-equiformer_v2": {
+      "rho_mean": 0.6428089957022488,
+      "jaccard_mean": 0.929188621558659,
+      "jaccard_min": 0.9260031266284523
+    },
+    "cross/allegro-mace": {
+      "rho_mean": 0.7879403714850929,
+      "jaccard_mean": 0.9874241192930633,
+      "jaccard_min": 0.9841530054644809
+    },
+    "cross/allegro-equiformer_v2": {
+      "rho_mean": 0.7069311942327986,
+      "jaccard_mean": 0.9439378313518653,
+      "jaccard_min": 0.9410844629822732
+    },
+    "cross/mace-equiformer_v2": {
+      "rho_mean": 0.6722253395563348,
+      "jaccard_mean": 0.943047739899709,
+      "jaccard_min": 0.9388284085018144
+    }
+  },
+  "o3_floor": {
+    "nequip": {
+      "median": 3.1274308298634423e-07,
+      "p95": 1.064500958136705e-06,
+      "max": 0.0005534413503482938
+    },
+    "allegro": {
+      "median": 3.825596195383696e-07,
+      "p95": 1.4110400968547773e-06,
+      "max": 0.001132116187363863
+    },
+    "mace": {
+      "median": 2.7343110104993684e-06,
+      "p95": 1.0522607180973863e-05,
+      "max": 0.001323880162090063
+    }
+  },
+  "size_dependence": {
+    "nequip/o3": 0.5009897595435279,
+    "nequip/so3": 0.5189880546849753,
+    "allegro/o3": 0.5973170833432423,
+    "allegro/so3": 0.5533252849386684,
+    "mace/o3": 0.691860821665618,
+    "mace/so3": 0.6059076882694657,
+    "equiformer_v2/so3": 0.4861771945369027
+  },
+  "compute": {
+    "total_train_seconds": 260779.16507728054,
+    "total_train_hours": 72.43865696591126,
+    "total_eval_seconds": 644.3259915146336,
+    "total_ood_seconds": 320.449531221675,
+    "per_core": {
+      "nequip": {
+        "gpu": "RTX 5090",
+        "runs": 24,
+        "train_hours": 7.621098192994145,
+        "s_per_epoch": 10.308907176998991,
+        "throughput": 1603.4298377554412,
+        "peak_gpu_mb": 1225.250688,
+        "eval_seconds": 2.863114961244719,
+        "ood_seconds": 1.439521115947476
+      },
+      "allegro": {
+        "gpu": "RTX 5090",
+        "runs": 24,
+        "train_hours": 5.057714940793594,
+        "s_per_epoch": 6.681313295526216,
+        "throughput": 2345.7776020126917,
+        "peak_gpu_mb": 5495.289984,
+        "eval_seconds": 2.1135127941439955,
+        "ood_seconds": 1.9516256108812133
+      },
+      "mace": {
+        "gpu": "RTX PRO 6000 Blackwell WS",
+        "runs": 24,
+        "train_hours": 40.64355775251907,
+        "s_per_epoch": 55.492754306871085,
+        "throughput": 252.13459975928376,
+        "peak_gpu_mb": 2020.4618240000002,
+        "eval_seconds": 12.665273126447573,
+        "ood_seconds": 4.404843488029049
+      },
+      "equiformer_v2": {
+        "gpu": "RTX 5090",
+        "runs": 12,
+        "train_hours": 19.116286079604453,
+        "s_per_epoch": 50.31118281689351,
+        "throughput": 354.38224588229565,
+        "peak_gpu_mb": 2253.318784,
+        "eval_seconds": 18.410030862546893,
+        "ood_seconds": 11.112147172090772
+      }
+    },
+    "train_hours_by_gpu": {
+      "RTX 5090": 31.79509921339219,
+      "RTX PRO 6000 Blackwell WS": 40.64355775251907
+    },
+    "cost_upper_bound_usd": 72.43865696591126,
+    "cost_note": "price actually paid was not recorded; launch_grid.sh selects the cheapest offer with dph < $1.00/hr, so this is an upper bound, not an estimate"
+  }
+}

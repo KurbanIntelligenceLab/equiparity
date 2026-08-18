@@ -1,0 +1,217 @@
+{
+ "n_eval": 2000,
+ "n_split": {
+  "train": 2649,
+  "val": 331,
+  "test": 332
+ },
+ "overlap_count": {
+  "train": 0,
+  "val": 0,
+  "test": 0
+ },
+ "overlap_any": [],
+ "n_zero_norm_rows": 22,
+ "n_zero_norm_train": 16,
+ "n_zero_norm_centrosymmetric": 0,
+ "zero_norm_rows": [
+  {
+   "material_id": "mp-28146",
+   "split": "train",
+   "spacegroup": 212,
+   "international": "P4_332",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-774833",
+   "split": "train",
+   "spacegroup": 212,
+   "international": "P4_332",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-27192",
+   "split": "train",
+   "spacegroup": 213,
+   "international": "P4_132",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-766692",
+   "split": "train",
+   "spacegroup": 212,
+   "international": "P4_332",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-27843",
+   "split": "train",
+   "spacegroup": 212,
+   "international": "P4_332",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-774361",
+   "split": "train",
+   "spacegroup": 212,
+   "international": "P4_332",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-771112",
+   "split": "train",
+   "spacegroup": 212,
+   "international": "P4_332",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-760364",
+   "split": "train",
+   "spacegroup": 212,
+   "international": "P4_332",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-154",
+   "split": "train",
+   "spacegroup": 198,
+   "international": "P2_13",
+   "point_group": "23",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-5710",
+   "split": "train",
+   "spacegroup": 214,
+   "international": "I4_132",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-29104",
+   "split": "train",
+   "spacegroup": 212,
+   "international": "P4_332",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-775164",
+   "split": "train",
+   "spacegroup": 212,
+   "international": "P4_332",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-1550",
+   "split": "train",
+   "spacegroup": 216,
+   "international": "F-43m",
+   "point_group": "-43m",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-672234",
+   "split": "train",
+   "spacegroup": 198,
+   "international": "P2_13",
+   "point_group": "23",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-1214087",
+   "split": "train",
+   "spacegroup": 214,
+   "international": "I4_132",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-1214080",
+   "split": "train",
+   "spacegroup": 1,
+   "international": "P1",
+   "point_group": "1",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-1208807",
+   "split": "val",
+   "spacegroup": 5,
+   "international": "C2",
+   "point_group": "2",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-770865",
+   "split": "val",
+   "spacegroup": 212,
+   "international": "P4_332",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-530399",
+   "split": "test",
+   "spacegroup": 212,
+   "international": "P4_332",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-775810",
+   "split": "test",
+   "spacegroup": 212,
+   "international": "P4_332",
+   "point_group": "432",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-27272",
+   "split": "test",
+   "spacegroup": 5,
+   "international": "C2",
+   "point_group": "2",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  },
+  {
+   "material_id": "mp-569030",
+   "split": "test",
+   "spacegroup": 145,
+   "international": "P3_2",
+   "point_group": "3",
+   "centrosymmetric": false,
+   "in_eval_population": false
+  }
+ ]
+}

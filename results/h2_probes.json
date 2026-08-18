@@ -1,0 +1,52 @@
+{
+ "ictp": {
+  "model": "ICTP",
+  "sha": "f40592a",
+  "verdict": "parity-aware",
+  "rank3_odd_residual": 0.0,
+  "rank2_even_residual": 0.0,
+  "method": "direct rank-l Cartesian-harmonic parity: f(-x) vs (-1)^l f(x), random init"
+ },
+ "gotennet": {
+  "model": "GotenNet",
+  "sha": "44c945b",
+  "verdict": "parity-aware (vector output is a polar 1o vector, reflection-equivariant)",
+  "measured": true,
+  "rotation_polar_rel": 1.1736301203470044e-15,
+  "rotation_pseudo_rel": 1.1147742840612792e-15,
+  "improper_polar_rel": 1.811232538430694e-15,
+  "improper_pseudo_rel": 1.923620745371204
+ },
+ "vector_only": {
+  "torchmd_et": {
+   "model": "TorchMD-Net (ET)",
+   "sha": "2a2c913",
+   "measured": true,
+   "verdict": "vector channel is implicitly polar (1o); parity carried, untyped",
+   "rotation_polar_rel": 6.769177481761626e-16,
+   "rotation_pseudo_rel": 6.543538232369572e-16,
+   "improper_polar_rel": 8.123012978113952e-16,
+   "improper_pseudo_rel": 1.7051688842439927
+  },
+  "visnet": {
+   "model": "ViSNet",
+   "source": "torch_geometric 2.8.0",
+   "measured": true,
+   "verdict": "vector channel is implicitly polar (1o); parity carried, untyped",
+   "rotation_polar_rel": 3.953490170034984e-15,
+   "rotation_pseudo_rel": 4.099915731888131e-15,
+   "improper_polar_rel": 4.2463412937412786e-15,
+   "improper_pseudo_rel": 1.9808297499172505
+  },
+  "painn": {
+   "model": "PaiNN",
+   "source": "schnetpack 2.2.0",
+   "measured": true,
+   "verdict": "vector channel is implicitly polar (1o); parity carried, untyped",
+   "rotation_polar_rel": 7.140918459531224e-16,
+   "rotation_pseudo_rel": 6.24830365208982e-16,
+   "improper_polar_rel": 6.471457353950171e-16,
+   "improper_pseudo_rel": 1.7913839631215056
+  }
+ }
+}
