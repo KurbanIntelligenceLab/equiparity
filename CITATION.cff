@@ -1,6 +1,8 @@
 cff-version: 1.2.0
 message: If you use this software, please cite it using these metadata.
-title: "equiparity: matched-pair parity ablation for equivariant materials models"
+title: >-
+  equiparity: code and measurement records for "Feature parity, not training,
+  decides whether materials models predict physically impossible properties"
 abstract: >-
   Matched-pair model builders, verification gate, and evaluation pipelines for
   quantifying when parity labelling matters in equivariant machine-learned models
@@ -18,7 +20,9 @@ authors:
   - given-names: Mustafa
     family-names: Kurban
     orcid: https://orcid.org/0000-0002-7263-0234
-    affiliation: Department of Prosthetics and Orthotics, Ankara University
+    affiliation: >-
+      Department of Electrical and Computer Engineering, Texas A&M University at
+      Qatar; Department of Prosthetics and Orthotics, Ankara University
     email: kurbanm@ankara.edu.tr
   - given-names: Erchin
     family-names: Serpedin

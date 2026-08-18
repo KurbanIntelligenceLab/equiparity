@@ -1,13 +1,37 @@
-# equiparity — When Parity Matters
+# equiparity
 
-Can SO(3)-equivariant models predict physically impossible material properties?
+Code, configurations and measurement records for:
 
-O(3)-equivariant models, whose features carry parity labels, produce symmetry-forced zeros
-for the piezoelectric tensor of centrosymmetric crystals by construction. SO(3)-equivariant
-models, which have no parity labels, fail: they predict nonzero tensors for cases that are
-zero by Neumann's principle. This repository holds the study that quantifies when parity
-matters — never for energies, marginally for dipoles, categorically for odd-parity tensors —
-and turns it into a practitioner rule.
+**Feature parity, not training, decides whether materials models predict physically impossible
+properties**
+
+Can Polat<sup>1</sup>, Mustafa Kurban<sup>2,3</sup>, Erchin Serpedin<sup>1</sup>,
+Hasan Kurban<sup>4</sup>
+
+1. Department of Electrical and Computer Engineering, Texas A&M University, College Station, Texas, USA
+2. Department of Electrical and Computer Engineering, Texas A&M University at Qatar, Doha, Qatar
+3. Department of Prosthetics and Orthotics, Ankara University, Ankara, Turkey
+4. College of Science and Engineering, Hamad Bin Khalifa University, Doha, Qatar
+
+Corresponding authors: Mustafa Kurban ([kurbanm@ankara.edu.tr](mailto:kurbanm@ankara.edu.tr)),
+Hasan Kurban ([hkurban@hbku.edu.qa](mailto:hkurban@hbku.edu.qa))
+
+## Abstract
+
+Physical symmetry is the central guarantee built into machine-learned models of materials, and
+how much to hard-wire rather than learn is a live dispute. It has run almost entirely on
+rotations, where a symmetry error is an approximation error. A second class behaves
+differently: symmetry forces some property tensors to one exact value, zero, so an
+approximation is not a small error but a prediction of a response that cannot exist. Whether a
+network satisfies them is fixed before training by one design bit, whether its features carry
+parity labels, and a criterion we call the parity gap identifies which properties and crystals
+are exposed. Across matched pairs of architectures differing only in parity labelling, the
+parity-labelled arms never exceed an operating threshold on 2,000 idealized centrosymmetric
+crystals, sitting at the floating-point floor, while the rotation-only arms exceed it for
+90–96%, separating by six orders of magnitude with no accuracy penalty detected. Training on
+the exact zeros and up-weighting them a hundredfold still leaves two-thirds flagged. The bit is
+inherited, not learned: a head on a frozen universal potential takes its backbone's symmetry
+group, and half the audited architectures able to emit a rank-3 tensor do not type parity.
 
 ## Installation
 

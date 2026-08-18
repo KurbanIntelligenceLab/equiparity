@@ -1,5 +1,5 @@
 {
-  "title": "equiparity: matched-pair parity ablation for equivariant materials models",
+  "title": "equiparity: code and measurement records for \"Feature parity, not training, decides whether materials models predict physically impossible properties\"",
   "upload_type": "software",
   "license": "MIT",
   "creators": [
@@ -11,7 +11,7 @@
     {
       "name": "Kurban, Mustafa",
       "orcid": "0000-0002-7263-0234",
-      "affiliation": "Ankara University"
+      "affiliation": "Texas A&M University at Qatar; Ankara University"
     },
     {
       "name": "Serpedin, Erchin",
