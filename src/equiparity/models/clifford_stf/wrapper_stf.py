@@ -1,8 +1,8 @@
 """
 CliffordSTF Clifford Wrapper — Ablation-Ready.
 
-Backward compatible: ABLATION_CONFIGS["baseline"] = original CliffordWrapper.
-All training utilities (optimizer, scheduler, loss) unchanged.
+Backward compatible: ABLATION_CONFIGS["baseline"] = original CliffordWrapper. All training
+utilities (optimizer, scheduler, loss) unchanged.
 """
 
 import copy

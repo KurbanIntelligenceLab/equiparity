@@ -16,8 +16,8 @@ Layout of CliffordSTF multivector (per channel):
     13D mode: stf_mode="stf2"    (+ L=2)
     20D mode: stf_mode="stf2+stf3" (+ L=2 + L=3)
 
-STF₂ storage: [S_xx, S_xy, S_xz, S_yy, S_yz]  (S_zz = -S_xx - S_yy)
-STF₃ storage: [T_xxx, T_xxy, T_xxz, T_xyy, T_xyz, T_yyy, T_yyz]
+STF₂ storage: [S_xx, S_xy, S_xz, S_yy, S_yz]  (S_zz = -S_xx - S_yy) STF₃ storage: [T_xxx, T_xxy,
+T_xxz, T_xyy, T_xyz, T_yyy, T_yyz]
               (T_xzz = -T_xxx - T_xyy, T_yzz = -T_xxy - T_yyy,
                T_zzz = -T_xxz - T_yyz)
 """

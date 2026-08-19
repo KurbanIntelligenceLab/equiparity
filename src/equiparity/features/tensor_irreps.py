@@ -1,7 +1,7 @@
 """Convert materials tensors between Voigt/Cartesian form and the e3nn irreps basis.
 
-Training a tensor head needs the target in the same irreps basis the model outputs. The change
-of basis comes from :class:`e3nn.o3.ReducedTensorProducts`, which encodes the index symmetries:
+Training a tensor head needs the target in the same irreps basis the model outputs. The change of
+basis comes from :class:`e3nn.o3.ReducedTensorProducts`, which encodes the index symmetries:
 
 - Piezoelectric ``d`` (rank 3, symmetric in the strain pair) -> ``2x1o+1x2o+1x3o`` (18, odd).
 - Elastic ``C`` (rank 4, Voigt symmetries) -> ``2x0e+2x2e+1x4e`` (21, even).

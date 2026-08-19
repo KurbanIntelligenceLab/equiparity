@@ -105,7 +105,7 @@ def train_equiformer_tensor(
         preds = _predict(model, structs, r_max, batch_size, device) * scale
         return regression_metrics(preds, _irreps_targets(ds, config.target, kind))
 
-    # H-1 instrumentation: per-epoch false-flag fraction on the idealized OOD variant. The
+    # Epoch-curve instrumentation: per-epoch false-flag fraction on the idealized OOD variant. The
     # structure list is built once; each epoch's evaluation takes one fresh stochastic draw
     # (EquiformerV2 redraws its per-edge frame every forward), matching the headline protocol.
     epoch_ood_structs = None

@@ -1,7 +1,6 @@
 """Logging configuration. Called only at entrypoints; library code never configures handlers.
 
-Final-result runs use JSON logs; interactive runs use a
-plain human-readable format.
+Final-result runs use JSON logs; interactive runs use a plain human-readable format.
 """
 
 from __future__ import annotations

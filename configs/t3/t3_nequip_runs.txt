@@ -1,9 +1,0 @@
-configs/t3/nequip_piezoelectric_so3_n250_seed0.yaml
-configs/t3/nequip_piezoelectric_so3_n250_seed1.yaml
-configs/t3/nequip_piezoelectric_so3_n250_seed2.yaml
-configs/t3/nequip_piezoelectric_so3_n4000_seed0.yaml
-configs/t3/nequip_piezoelectric_so3_n4000_seed1.yaml
-configs/t3/nequip_piezoelectric_so3_n4000_seed2.yaml
-configs/t3/nequip_piezoelectric_so3_n16000_seed0.yaml
-configs/t3/nequip_piezoelectric_so3_n16000_seed1.yaml
-configs/t3/nequip_piezoelectric_so3_n16000_seed2.yaml

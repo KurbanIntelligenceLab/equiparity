@@ -1,10 +1,10 @@
 """Prediction targets and their parity character — the scientific spine of the study.
 
-Each target has a physical parity (how it transforms under spatial inversion) and an e3nn
-irreps decomposition for the model's output head. The paper's thesis is a spectrum ordered by
-parity character, not tensor rank: even scalar (U0) -> odd vector (dipole) -> even tensor
-(elastic) -> odd tensor (piezoelectric). O(3) models reproduce the symmetry-forced zeros of the
-odd targets; SO(3) models do not.
+Each target has a physical parity (how it transforms under spatial inversion) and an e3nn irreps
+decomposition for the model's output head. The paper's thesis is a spectrum ordered by parity
+character, not tensor rank: even scalar (U0) -> odd vector (dipole) -> even tensor (elastic) ->
+odd tensor (piezoelectric). O(3) models reproduce the symmetry-forced zeros of the odd targets;
+SO(3) models do not.
 """
 
 from __future__ import annotations
@@ -41,7 +41,7 @@ class TargetSpec:
     description: str
 
 
-# The four study targets, in parity-spectrum order (work plan Task 1, Fig 2).
+# The four study targets, in parity-spectrum order.
 U0 = TargetSpec(
     name="U0",
     irreps="1x0e",

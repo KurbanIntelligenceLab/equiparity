@@ -1,8 +1,8 @@
 """The parity mode: the single experimental variable of the study.
 
-O(3) features carry parity labels (even/odd irreps); SO(3) features do not. The
-whole paper turns on whether a model built with SO(3) features fails to reproduce
-symmetry-forced zeros that O(3) features guarantee by construction.
+O(3) features carry parity labels (even/odd irreps); SO(3) features do not. The whole paper turns
+on whether a model built with SO(3) features fails to reproduce symmetry-forced zeros that O(3)
+features guarantee by construction.
 """
 
 from __future__ import annotations

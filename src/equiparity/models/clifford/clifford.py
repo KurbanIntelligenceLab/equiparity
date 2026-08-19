@@ -233,8 +233,8 @@ class CliffordAlgebra(nn.Module):
 def compute_l2_features(direction: torch.Tensor) -> torch.Tensor:
     """DEPRECATED shim — use GeometricAlgebra.compute_l2_features.
 
-    Keeps Cl(3,0) behavior for any straggler call site until Task 4 updates
-    interaction.py to use the algebra method directly.
+    Keeps Cl(3,0) behavior for any call site that has not yet moved to the algebra
+    method directly.
     """
     dx, dy, dz = direction.unbind(-1)
     third = 1.0 / 3.0

@@ -1,6 +1,5 @@
 """
-Add `extra_repr` into DropPath implemented by timm
-for displaying more info.
+Add `extra_repr` into DropPath implemented by timm for displaying more info.
 """
 
 import torch

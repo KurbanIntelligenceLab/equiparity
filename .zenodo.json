@@ -1,5 +1,6 @@
 {
-  "title": "equiparity: code and measurement records for \"Feature parity, not training, decides whether materials models predict physically impossible properties\"",
+  "title": "equiparity: code and measurement records for \"A single design choice determines whether machine learning models of materials make physically impossible predictions\"",
+  "description": "Matched-pair model builders and a parity verification gate for equivariant machine-learned models of materials. Each core is built twice from one typed configuration, differing only in whether its features carry parity labels, so the parity gap is measured rather than inferred. Ships the frozen measurement records and two checkers that re-derive every reported quantity from them.",
   "upload_type": "software",
   "license": "MIT",
   "creators": [
@@ -26,9 +27,16 @@
   ],
   "keywords": [
     "equivariant neural networks",
+    "parity",
+    "parity gap",
+    "exact versus approximate symmetry constraints",
+    "learned versus built-in symmetry",
+    "O(3) versus SO(3) equivariance",
     "materials property prediction",
     "crystal symmetry",
     "piezoelectric tensor",
+    "centrosymmetric crystals",
+    "Neumann's principle",
     "machine-learned interatomic potentials"
   ],
   "access_right": "open"

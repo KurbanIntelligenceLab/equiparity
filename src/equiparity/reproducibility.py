@@ -1,7 +1,7 @@
 """Seed control and provenance collection.
 
-Every executable experiment calls :func:`seed_everything` exactly once near startup and
-writes a :class:`~equiparity.domain.provenance.RunManifest` into its output directory via
+Every executable experiment calls :func:`seed_everything` exactly once near startup and writes a
+:class:`~equiparity.domain.provenance.RunManifest` into its output directory via
 :func:`write_manifest`. Torch is seeded when present but is not required to import this module.
 """
 

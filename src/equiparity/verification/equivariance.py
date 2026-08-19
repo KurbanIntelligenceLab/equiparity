@@ -1,17 +1,16 @@
 """Core-agnostic equivariance probe and parity classification.
 
-A model is probed through a ``Featurizer``: a callable that maps atomic positions to the
-model's internal equivariant node features plus their e3nn irreps. The gate transforms the
-input by a random proper rotation and a random improper reflection, then measures how far
-the recomputed features deviate from the parity-aware prediction ``features @ D(g).T``.
+A model is probed through a ``Featurizer``: a callable that maps atomic positions to the model's
+internal equivariant node features plus their e3nn irreps. The gate transforms the input by a
+random proper rotation and a random improper reflection, then measures how far the recomputed
+features deviate from the parity-aware prediction ``features @ D(g).T``.
 
 - rotation error small in BOTH arms (every model must be rotation-equivariant),
 - reflection error small => O(3) (parity respected),
 - reflection error large => genuine SO(3) (parity violated).
 
-Thresholds: float64 O(3) < 1e-12, SO(3) > 1e-4; float32
-O(3) < 1e-5, SO(3) > 1e-2. Anything between the two reflection bounds, or a failed rotation
-check, is a FAIL requiring investigation.
+Thresholds: float64 O(3) < 1e-12, SO(3) > 1e-4; float32 O(3) < 1e-5, SO(3) > 1e-2. Anything
+between the two reflection bounds, or a failed rotation check, is a FAIL requiring investigation.
 """
 
 from __future__ import annotations

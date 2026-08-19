@@ -3,8 +3,8 @@
 Converts each QM9 molecule file into a validated :class:`LabeledStructure` at the I/O boundary.
 Two targets are produced: ``U0`` (parity-even scalar, converted Hartree -> eV) and ``dipole``
 (parity-odd vector, formed as sum q_i r_i from the reference Mulliken charges, converted to
-Debye). The model predicts the dipole via a direct L=1 head; the charge-based construction is
-used only for the training target (work plan Task 1).
+Debye). The model predicts the dipole via a direct L=1 head; the charge-based construction is used
+only to form the training target.
 
 QM9 uses Fortran ``*^`` exponent notation (e.g. ``2.1938*^-6``); it is normalized before parsing.
 """

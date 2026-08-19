@@ -1,7 +1,7 @@
 """Run provenance: the per-experiment manifest that is the source of truth for reproducibility.
 
-Every experiment directory in ``outputs/`` carries a
-``manifest.json`` built from :class:`RunManifest`.
+Every experiment directory in ``outputs/`` carries a ``manifest.json`` built from
+:class:`RunManifest`.
 """
 
 from __future__ import annotations

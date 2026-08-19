@@ -1,9 +1,9 @@
 """CliffordSTF head: train the fixed O(3) geometric-algebra representative on piezoelectric.
 
-CliffordSTF is O(3)-correct via graded geometric algebra (not e3nn). NOTE: it requires **float64** —
-its geometric-product + STF chains accumulate float32 error that spoils the parity cancellation on
-centrosymmetric crystals (float64 violation ~1e-9 vs float32 ~1e-1), unlike the e3nn cores which are
-clean in float32. So the config should set ``precision: float64``.
+CliffordSTF is O(3)-correct via graded geometric algebra (not e3nn). NOTE: it requires **float64**
+— its geometric-product + STF chains accumulate float32 error that spoils the parity cancellation
+on centrosymmetric crystals (float64 violation ~1e-9 vs float32 ~1e-1), unlike the e3nn cores
+which are clean in float32. So the config should set ``precision: float64``.
 """
 
 from __future__ import annotations

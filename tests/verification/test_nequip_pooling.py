@@ -188,7 +188,8 @@ def test_o3_arm_predicts_exact_zero_on_centrosymmetric_crystal_under_mean_poolin
     core: str,
 ) -> None:
     """Theorem 1 holds for any equivariant pooling: mean must still give an exact zero."""
-    structure = rutile("TiO2")  # P4_2/mnm (136), centrosymmetric, subgroup 422 (E7-safe control)
+    # P4_2/mnm (136), centrosymmetric, subgroup 422 (rotation-subgroup-safe control)
+    structure = rutile("TiO2")
     type_names, symbol_to_type = element_type_map(structure.atomic_numbers)
 
     if core == "allegro":

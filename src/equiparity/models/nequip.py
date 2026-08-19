@@ -1,13 +1,11 @@
 """NequIP core: build the O(3)/SO(3) matched pair from a typed config.
 
-The correct O(3)/SO(3) toggle (see
-Supplementary Information, Supplementary Note "Prevalence audit of released
-architectures") is NOT the preset ``parity`` boolean:
-``parity=False`` keeps honest natural-parity irreps and stays fully O(3)-equivariant. The
-genuine SO(3) arm relabels the edge spherical harmonics (and hidden irreps) as all-even,
-which removes parity as an e3nn selection rule. Both arms are built through the raw-irreps
-route (``FullNequIPGNNModel``) with identical multiplicities, ``l_max``, and layer count so
-the ONLY difference is the parity labeling:
+The correct O(3)/SO(3) toggle (see Supplementary Information, Supplementary Note "Prevalence audit
+of released architectures") is NOT the preset ``parity`` boolean: ``parity=False`` keeps honest
+natural-parity irreps and stays fully O(3)-equivariant. The genuine SO(3) arm relabels the edge
+spherical harmonics (and hidden irreps) as all-even, which removes parity as an e3nn selection
+rule. Both arms are built through the raw-irreps route (``FullNequIPGNNModel``) with identical
+multiplicities, ``l_max``, and layer count so the ONLY difference is the parity labeling:
 
 - ``O3``  -> natural-parity SH ``0e+1o+2e``, hidden ``Nx0e+Nx1o+Nx2e``.
 - ``SO3`` -> all-even SH ``0e+1e+2e``,      hidden ``Nx0e+Nx1e+Nx2e`` (same values, mislabeled).

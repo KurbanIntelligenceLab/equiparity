@@ -56,8 +56,9 @@ def test_mean_pooling_recovers_sum_when_every_structure_has_one_unit() -> None:
 
 def test_mean_pooling_is_size_invariant_under_replication() -> None:
     """K identical units all mapped to the same structure: mean of K copies == the unit value,
-    matching the supercell size-consistency property scripts/f3_size_consistency.py measures
-    end-to-end (this is the same algebraic fact restated as a pure-tensor unit test)."""
+    matching the supercell size-consistency property that
+    scripts/experiments/size_consistency.py measures end-to-end (this is the same
+    algebraic fact restated as a pure-tensor unit test)."""
     unit_value = torch.tensor([2.0, -1.0, 5.0], dtype=torch.float64)
     for k in (1, 2, 3, 8):
         per_unit = unit_value.unsqueeze(0).repeat(k, 1)

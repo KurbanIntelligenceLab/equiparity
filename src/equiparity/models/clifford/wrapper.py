@@ -142,7 +142,7 @@ class CliffordWrapper(nn.Module):
         self.vector_embedding = vector_embedding
 
         # Guard: DeNS requires Cl(3,0) because forward_with_dens compares
-        # (N, grade_dims[1]) against (N, 3) noise. See Task 4 review C1.
+        # (N, grade_dims[1]) against (N, 3) noise.
         if use_dens and self.signature != (3, 0):
             raise NotImplementedError(
                 f"DeNS auxiliary loss is only supported for signature=(3,0); got {self.signature}"
