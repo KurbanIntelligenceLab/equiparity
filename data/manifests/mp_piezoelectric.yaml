@@ -8,6 +8,6 @@ schema:
   piezoelectric: DFPT piezoelectric tensor, 3x6 flattened to 18 (parity-odd)
   positions: angstrom
 structure_format: pymatgen Structure (periodic)
-query: scripts/prepare_mp.py
+query: scripts/data/prepare_mp.py
 cleaning: 3312 entries retained. Non-centrosymmetric; excluded 4 with |e| > 50.0 C/m^2.
 limitations: MP DFPT tensors; provenance is the MP material_id + API fetch date.

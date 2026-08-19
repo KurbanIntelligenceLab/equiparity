@@ -409,8 +409,8 @@ def section_reconcile():
     import statistics as _st
 
     _root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "results")
-    _f5 = _json.load(open(os.path.join(_root, "f5_pooling_arms.json")))
-    _e1 = _json.load(open(os.path.join(_root, "e1_augmentation.json")))
+    _f5 = _json.load(open(os.path.join(_root, "pooling_arms.json")))
+    _e1 = _json.load(open(os.path.join(_root, "augmentation.json")))
     _ns, _nu = _e1["n_seen"], _e1["n_unseen"]
     _stated_pool = {
         "nequip": (0.8872, 0.0014),
@@ -422,13 +422,13 @@ def section_reconcile():
     _gaps = []
     for _c, (_m, _s) in _stated_pool.items():
         _arm = [p["ff_sum"] for p in _f5["pairs"] if p["core"] == _c and p["parity"] == "so3"]
-        chk(f"pooling summed arm mean, {_c}", _st.mean(_arm), _m, 5e-5, "f5_pooling_arms.json")
-        chk(f"pooling summed arm s.d., {_c}", _st.stdev(_arm), _s, 5e-5, "f5_pooling_arms.json")
+        chk(f"pooling summed arm mean, {_c}", _st.mean(_arm), _m, 5e-5, "pooling_arms.json")
+        chk(f"pooling summed arm s.d., {_c}", _st.stdev(_arm), _s, 5e-5, "pooling_arms.json")
         _head = [
             (x["ff_seen"] * _ns + x["ff_unseen"] * _nu) / (_ns + _nu)
             for x in _e1["arms"][_c + "_baseline_so3"]["per_seed"]
         ]
-        chk(f"headline ff, {_c}", _st.mean(_head), _stated_head[_c], 5e-5, "e1_augmentation.json")
+        chk(f"headline ff, {_c}", _st.mean(_head), _stated_head[_c], 5e-5, "augmentation.json")
         _gaps.append(_st.mean(_head) - _st.mean(_arm))
     chk(
         "all four pooling-to-headline gaps positive",
@@ -457,12 +457,12 @@ def section_reconcile():
         r["index"]: r
         for r in _json.load(open(os.path.join(_root, "ood_spacegroups.json")))["records"]
     }
-    _seen = _json.load(open(os.path.join(_root, "e1_eval_split.json")))["seen_indices"]
+    _seen = _json.load(open(os.path.join(_root, "augmentation_eval_split.json")))["seen_indices"]
     _nc = sum(1 for i in _seen if _sg[i]["family"] == "non-cubic")
-    chk("seen group size", len(_seen), 1232, 0, "e1_eval_split.json")
+    chk("seen group size", len(_seen), 1232, 0, "augmentation_eval_split.json")
     chk("seen non-cubic count", _nc, 1119, 0, "joined to ood_spacegroups")
     chk("seen m-3m count", len(_seen) - _nc, 113, 0, "joined to ood_spacegroups")
-    _e7 = _json.load(open(os.path.join(_root, "e7_rotation_subgroup.json")))["by_family"]
+    _e7 = _json.load(open(os.path.join(_root, "rotation_subgroup.json")))["by_family"]
     for _a in ("allegro_so3", "mace_so3"):
         _counts = [
             round(x["ff_seen"] * len(_seen))
@@ -487,7 +487,7 @@ def section_reconcile():
             _e7[_a]["m-3m"]["false_flag_max"],
             0.0,
             0,
-            "e7_rotation_subgroup.json",
+            "rotation_subgroup.json",
         )
 
 

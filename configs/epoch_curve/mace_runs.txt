@@ -1,0 +1,3 @@
+configs/epoch_curve/mace_piezoelectric_so3_epochcurve_seed0.yaml
+configs/epoch_curve/mace_piezoelectric_so3_epochcurve_seed1.yaml
+configs/epoch_curve/mace_piezoelectric_so3_epochcurve_seed2.yaml

@@ -1,11 +1,12 @@
 """OOD piezoelectric-violation evaluation: both eval variants + full threshold curve.
 
-The headline used a single 0.01 C/m^2 threshold on the idealized (exact space group) OOD set.
-Reviewers require (a) both eval variants side by side -- idealized (tests the structural guarantee)
-and raw DFT-relaxed (tests robustness on real data) -- and (b) the full false-flag-fraction vs
-threshold curve plus the violation-magnitude distribution, not one operating point. This computes
-both from the per-structure violation magnitudes ``||predicted tensor||`` (exactly zero, up to model
-error, for a truly centrosymmetric crystal).
+The headline quotes a single 0.01 C/m^2 threshold on the idealized (exact space group) OOD set. A
+single operating point on a single coordinate variant is not enough to stand on, so this reports
+both variants side by side -- idealized (tests the structural guarantee) and raw DFT-relaxed
+(tests robustness on real data) -- together with the full false-flag-fraction vs threshold curve
+and the violation-magnitude distribution. All of it is computed from the per-structure violation
+magnitudes ``||predicted tensor||`` (exactly zero, up to model error, for a truly centrosymmetric
+crystal).
 """
 
 from __future__ import annotations
@@ -14,7 +15,8 @@ from collections.abc import Callable
 
 import numpy as np
 
-# Log-spaced thresholds 1e-4 .. 1 C/m^2 (reviewer spec) for the false-flag-fraction curve.
+# Log-spaced thresholds 1e-4 .. 1 C/m^2 for the false-flag-fraction curve, so the reported
+# separation does not depend on the choice of operating point.
 THRESHOLDS = np.logspace(-4, 0, 25)
 
 

@@ -1,15 +1,15 @@
 """MACE core: build the O(3)/SO(3) matched pair from a typed config.
 
-Unlike NequIP/Allegro, MACE exposes a correct native SO(3) toggle: ``use_so3=True`` builds
-the edge spherical harmonics as all-even (``p=1``), removing parity as an e3nn selection
-rule (mace ``modules/models.py``). The matched pair is therefore:
+Unlike NequIP/Allegro, MACE exposes a correct native SO(3) toggle: ``use_so3=True`` builds the
+edge spherical harmonics as all-even (``p=1``), removing parity as an e3nn selection rule (mace
+``modules/models.py``). The matched pair is therefore:
 
 - O(3):  ``use_so3=False`` + natural-parity hidden ``Nx0e+Nx1o+Nx2e``.
 - SO(3): ``use_so3=True``  + all-even hidden     ``Nx0e+Nx1e+Nx2e``.
 
-Numerical note: MACE's symmetric-contraction tensors stay float32 even when the model is
-cast to float64, so its equivariance error floors around 1e-7. The verification gate uses the
-float32 thresholds for MACE (``dtype="float32"``), not the float64 ones.
+Numerical note: MACE's symmetric-contraction tensors stay float32 even when the model is cast to
+float64, so its equivariance error floors around 1e-7. The verification gate uses the float32
+thresholds for MACE (``dtype="float32"``), not the float64 ones.
 """
 
 from __future__ import annotations

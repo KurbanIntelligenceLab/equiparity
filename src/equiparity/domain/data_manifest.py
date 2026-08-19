@@ -1,8 +1,7 @@
 """Dataset and split manifests: the committed provenance for external data.
 
-Raw data is never committed; only these manifests are. A
-loader verifies file hashes against :class:`DatasetManifest` before use; a split is an artifact
-described by :class:`SplitManifest`.
+Raw data is never committed; only these manifests are. A loader verifies file hashes against
+:class:`DatasetManifest` before use; a split is an artifact described by :class:`SplitManifest`.
 """
 
 from __future__ import annotations

@@ -1,21 +1,21 @@
 """Shared per-structure pooling for readout heads: sum (extensive, default) or mean (intensive).
 
-Every core's tensor head accumulates a per-atom (NequIP, MACE, EquiformerV2) or per-edge
-(Allegro) contribution into a per-structure total via ``index_add_``. That sum is the repo's
-committed behaviour, and it is extensive: ``scripts/f3_size_consistency.py`` shows the
-prediction on a K-replica supercell of a periodic crystal is exactly K times the primitive-cell
-prediction (max deviation < 7e-14 across the sweep in ``results/f3_size_consistency.json``).
-Piezoelectric and elastic tensors are physically intensive properties, so a mean-pooled readout
-is offered as an explicit, opt-in alternative (``pooling: mean``): the same accumulated total
-divided by the per-structure unit count -- atoms for NequIP/MACE/EquiformerV2, but EDGES for
-Allegro, whose readout is edge-centric (no per-atom message passing; see
-``equiparity.models.allegro``). ``pool_per_structure`` is unit-agnostic: the caller passes
-whichever ``unit_to_graph`` mapping matches its readout (``batch_index`` for atom-pooled cores,
-``edge_struct`` for Allegro), so "mean" always divides by the correct denominator for that core.
+Every core's tensor head accumulates a per-atom (NequIP, MACE, EquiformerV2) or per-edge (Allegro)
+contribution into a per-structure total via ``index_add_``. That sum is the repo's committed
+behaviour, and it is extensive: ``scripts/experiments/size_consistency.py`` shows the prediction
+on a K-replica supercell of a periodic crystal is exactly K times the primitive-cell prediction
+(max deviation < 7e-14 across the sweep in ``results/size_consistency.json``). Piezoelectric and
+elastic tensors are physically intensive properties, so a mean-pooled readout is offered as an
+explicit, opt-in alternative (``pooling: mean``): the same accumulated total divided by the
+per-structure unit count -- atoms for NequIP/MACE/EquiformerV2, but EDGES for Allegro, whose
+readout is edge-centric (no per-atom message passing; see ``equiparity.models.allegro``).
+``pool_per_structure`` is unit-agnostic: the caller passes whichever ``unit_to_graph`` mapping
+matches its readout (``batch_index`` for atom-pooled cores, ``edge_struct`` for Allegro), so
+"mean" always divides by the correct denominator for that core.
 
 ``pooling: sum`` is the default and reproduces every existing committed result and checkpoint
-bit-identically: the sum branch below is exactly the original
-``out.index_add_(0, unit_to_graph, per_unit)`` with no extra division.
+bit-identically: the sum branch below is exactly the original ``out.index_add_(0, unit_to_graph,
+per_unit)`` with no extra division.
 """
 
 from __future__ import annotations

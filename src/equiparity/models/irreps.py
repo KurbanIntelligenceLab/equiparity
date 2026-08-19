@@ -2,8 +2,8 @@
 
 The matched pair differs only in how degrees are parity-labelled: O(3) uses natural
 spherical-harmonic parity ``(-1)**l`` (``0e,1o,2e,...``); SO(3) labels every degree even
-(``0e,1e,2e,...``), the same geometric content with parity stripped out so e3nn stops
-enforcing it. Both the edge spherical harmonics and hidden features use these.
+(``0e,1e,2e,...``), the same geometric content with parity stripped out so e3nn stops enforcing
+it. Both the edge spherical harmonics and hidden features use these.
 """
 
 from __future__ import annotations

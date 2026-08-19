@@ -1,12 +1,13 @@
 """Allegro core: build the O(3)/SO(3) matched pair from a typed config.
 
 Allegro (nequip-allegro) has the same parity mechanism as NequIP: its preset ``AllegroModel``
-always builds natural-parity edge spherical harmonics, so the ``parity`` boolean does NOT
-produce an SO(3) model. The genuine SO(3) arm relabels the edge SH (and the allowed tensor
-irreps) as all-even, reached through the raw-irreps route ``FullAllegroModel``. Both arms
-share every hyperparameter and differ only in that parity labeling.
+always builds natural-parity edge spherical harmonics, so the ``parity`` boolean does NOT produce
+an SO(3) model. The genuine SO(3) arm relabels the edge SH (and the allowed tensor irreps) as
+all-even, reached through the raw-irreps route ``FullAllegroModel``. Both arms share every
+hyperparameter and differ only in that parity labeling.
 
-Allegro is edge-centric: the probe reads its per-edge tensor features (:func:`allegro_featurizer`).
+Allegro is edge-centric: the probe reads its per-edge tensor features
+(:func:`allegro_featurizer`).
 """
 
 from __future__ import annotations

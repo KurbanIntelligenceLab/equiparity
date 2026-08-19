@@ -1,7 +1,7 @@
 """Command-line entrypoint for equiparity.
 
-Thin dispatch layer: parses arguments, configures logging, and calls into workflows. It
-carries no scientific logic.
+Thin dispatch layer: parses arguments, configures logging, and calls into workflows. It carries no
+scientific logic.
 """
 
 from __future__ import annotations

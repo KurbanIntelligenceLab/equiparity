@@ -1,5 +1,5 @@
-"""Pure-Python torch_scatter replacements (torch_geometric.utils), so the vendored Clifford code
-runs without the compiled ``torch_scatter`` extension (no cu128 wheels). ``scatter`` is a drop-in;
+"""Pure-Python torch_scatter replacements (torch_geometric.utils), so the vendored Clifford code runs
+without the compiled ``torch_scatter`` extension (no cu128 wheels). ``scatter`` is a drop-in;
 ``scatter_softmax(src, index, dim)`` maps to ``softmax(src, index, dim=dim)``."""
 
 from __future__ import annotations

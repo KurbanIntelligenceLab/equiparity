@@ -1,29 +1,30 @@
-THREE SERIES ARE MISSING, AND ONLY YOU HAVE THEM
-================================================
-build_figures.py rebuilds every figure from the numbers in the Supplementary Tables. Three
-series are not tabulated anywhere in the manuscript, so the script cannot draw them and will
-NOT guess. Export them from the released run outputs, drop them here, and rerun.
+Figure series
+=============
 
-  fig5a_rutile_sweep.csv
-      columns: delta, arm, core, magnitude
-      33 distortion amplitudes x 7 arms.  (main-text Fig. 5a)
+The machine-readable series behind the published figures. Each file is exported from a record in
+results/ by scripts/analysis/export_figure_series.py, so every plotted point can be traced to a
+measurement without retraining anything.
 
-  fig5b_jacobian_points.csv
-      columns: core, arm, structure, seed, value
-      20 crystals x 3 seeds x 6 arms = 360 rows.  (main-text Fig. 5b)
+  fig2b_thresholds.csv            Figure 2b
+      False-flag fraction at 25 log-spaced thresholds, idealized coordinate variant.
+      Columns: tau, core, arm, false_flag_fraction, sd.            175 rows (25 x 7 arms)
 
-  figS1_raw_thresholds.csv
-      columns: tau, core, arm, false_flag_fraction, sd
-      25 thresholds x 7 arms, RAW coordinate variant.  (Supplementary Fig. 1)
+  fig4b_jacobian_points.csv       Figure 4b
+      Even-subspace fraction of the input-output Jacobian, per structure and seed.
+      Columns: core, arm, structure, seed, value.        360 rows (20 crystals x 3 seeds x 6 arms)
 
-OPTIONAL, and worth doing:
-  fig2b_thresholds.csv
-      columns: tau, core, arm, false_flag_fraction, sd
-      All 25 thresholds for the IDEALIZED variant. The manuscript tabulates only five of
-      them (Supplementary Table 3), so Fig. 2b currently shows five points where the
-      original showed a full curve.
+  figS1_epoch_curves.csv          Supplementary Figure 1
+      False-flag fraction against training epoch.
+      Columns: epoch, core, seed, false_flag.                                        1800 rows
 
-Until these land, figures/fig5_mechanism.pdf and figures/figS1_raw_thresholds.pdf keep their
-ORIGINAL artwork, which carries real data. Style was never worth trading data for. The
-restyled versions, with the missing panels marked in red, are in figures_nature_pending/ so
-you can see what you will get.
+  figS2_rutile_sweep.csv          Supplementary Figure 2
+      Predicted tensor norm against polar-distortion amplitude for rutile TiO2.
+      Columns: delta, arm, core, magnitude.                 231 rows (33 amplitudes x 7 arms)
+
+  raw_coordinate_thresholds.csv   Supplementary table, raw coordinate variant
+      False-flag fraction at the same 25 thresholds on raw DFT-relaxed coordinates rather than
+      idealized ones. Columns: tau, core, arm, false_flag_fraction, sd.   175 rows (25 x 7 arms)
+
+Regenerate all five with:
+
+    uv run python scripts/analysis/export_figure_series.py

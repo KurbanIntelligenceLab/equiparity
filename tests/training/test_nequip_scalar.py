@@ -13,7 +13,7 @@ _QM9 = Path("data/raw/qm9/qm9_processed.npz")
 _SPLIT = Path("data/splits/qm9_split.npz")
 if not (_QM9.exists() and _SPLIT.exists()):
     pytest.skip(
-        "QM9 processed data not present; run scripts/prepare_qm9.py", allow_module_level=True
+        "QM9 processed data not present; run scripts/data/prepare_qm9.py", allow_module_level=True
     )
 
 from equiparity.domain.experiment import (  # noqa: E402

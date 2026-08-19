@@ -1,6 +1,6 @@
 """Tensor-head prediction and the piezoelectric OOD violation metric.
 
-The headline (Task 2.3): a model trained on non-centrosymmetric piezoelectric crystals is
+The headline measurement: a model trained on non-centrosymmetric piezoelectric crystals is
 evaluated on centrosymmetric ones, whose true tensor is exactly zero by symmetry. An O(3) model
 with an odd-parity head predicts exact zero there (by construction); an SO(3) model predicts a
 spurious nonzero tensor. The violation magnitude is ``||predicted tensor||`` per structure.
@@ -111,7 +111,8 @@ class TensorRunResult:
     # per-structure vectors (offline histograms), wall-clock timing, and checkpoints.
     ood_variants: dict[str, object] | None = None  # {variant: violation_stats(...)}
     ood_vectors: dict[str, object] | None = None  # {variant: np.ndarray of magnitudes}
-    # H-1 instrumentation: idealized-variant false-flag fraction and violation median per epoch.
+    # Epoch-curve instrumentation: idealized-variant false-flag fraction and violation
+    # median per epoch.
     ood_false_flag_history: list[dict[str, float]] | None = None
     timing: dict[str, float] | None = None  # train/eval/ood seconds, throughput, peak mem
     checkpoint_best: dict[str, object] | None = None  # best-val model state_dict
@@ -208,7 +209,8 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
         model.parameters(), lr=config.training.lr, weight_decay=config.training.weight_decay
     )
     # Per-row loss weight: exactly-zero-target rows get zero_row_loss_weight, all others 1. At the
-    # default weight 1.0 this is identical to torch.nn.MSELoss (verified in tests). H3 raises it.
+    # default weight 1.0 this is identical to torch.nn.MSELoss (verified in tests).
+    # The loss-weight sweep raises it.
     zero_mask = np.abs(train_targets).max(axis=1) == 0.0
     row_weight = torch.ones(len(train_targets), dtype=target_dtype, device=device)
     row_weight[torch.tensor(zero_mask, device=device)] = config.training.zero_row_loss_weight
@@ -226,7 +228,7 @@ def train_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -> Ten
         targets = _irreps_targets(ds, config.target, kind)
         return regression_metrics(preds, targets)
 
-    # H-1 instrumentation: per-epoch false-flag fraction on the idealized OOD variant. One
+    # Epoch-curve instrumentation: per-epoch false-flag fraction on the idealized OOD variant. One
     # forward pass over the evaluation population per epoch; piezoelectric runs only.
     epoch_ood_ds = None
     if ood_npz is not None and kind == "piezoelectric":

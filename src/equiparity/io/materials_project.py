@@ -1,8 +1,9 @@
 """Materials Project boundary: convert pymatgen structures/tensors into typed domain objects.
 
-Fetching (network, MPRester queries) lives in ``scripts/prepare_mp.py``; this module holds the
-pure conversions that turn untyped pymatgen objects into validated :class:`AtomicStructure` /
-:class:`LabeledStructure`, and the spglib space-group check that gates the centrosymmetric OOD set.
+Fetching (network, MPRester queries) lives in ``scripts/data/prepare_mp.py``; this module holds
+the pure conversions that turn untyped pymatgen objects into validated :class:`AtomicStructure` /
+:class:`LabeledStructure`, and the spglib space-group check that gates the centrosymmetric OOD
+set.
 """
 
 from __future__ import annotations

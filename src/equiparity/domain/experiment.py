@@ -1,8 +1,8 @@
 """Experiment configuration: the single typed contract for one training run.
 
 Loaded once at the entrypoint and validated into this frozen dataclass. A run differs from its
-matched-pair partner only in ``parity``; the config generator expands the
-{core x parity x dataset x seed} grid from a template.
+matched-pair partner only in ``parity``; the config generator expands the {core x parity x dataset
+x seed} grid from a template.
 """
 
 from __future__ import annotations
@@ -29,8 +29,9 @@ class ModelHyperparams:
     num_features: int = 32
     r_max: float = 5.0
     # "sum" (default) reproduces every existing result and checkpoint bit-identically: it is
-    # the readout's original out.index_add_(...) with no division. "mean" is the reviewer's
-    # intensive-readout control arm: divide the accumulated per-atom (or, for Allegro, per-edge)
+    # the readout's original out.index_add_(...) with no division. "mean" is the intensive-readout
+    # control arm, which rules out extensive pooling as the source of the separation: divide the
+    # accumulated per-atom (or, for Allegro, per-edge)
     # sum by the per-structure unit count. See equiparity.models.pooling for the shared helper
     # and equiparity.models.allegro for the edge-vs-atom subtlety.
     pooling: str = "sum"
@@ -56,12 +57,12 @@ class TrainingParams:
     max_train_samples: int | None = None  # cap for smoke runs; None uses the full split
     max_eval_samples: int | None = None
     # Override the target normalization scale instead of recomputing it from the training split.
-    # Needed by the E1 augmentation study: adding zero-labelled crystals shrinks the recomputed
+    # Needed by the augmentation study: adding zero-labelled crystals shrinks the recomputed
     # std (0.749 -> 0.638), and freezing it keeps augmented violations directly comparable to the
     # main runs. None (the default) recomputes, which is what every headline run did.
     target_scale: float | None = None
     # Up-weight the exactly-zero-target training rows in the MSE by this factor. 1.0 (default) is a
-    # numeric no-op == plain MSELoss. The H3 loss-weight sweep raises it to probe whether a large
+    # numeric no-op == plain MSELoss. The loss-weight sweep raises it to probe whether a large
     # enough weight can force an SO(3) model's centrosymmetric violation to zero.
     zero_row_loss_weight: float = 1.0
 
@@ -76,7 +77,7 @@ class TrainingParams:
             )
 
 
-# The datasets the headline grid uses. Anything else (e.g. the E1 augmented piezoelectric set) is
+# The datasets the headline grid uses. Anything else (e.g. the augmented piezoelectric set) is
 # a side study and must never overwrite a headline run's flattened metrics.
 CANONICAL_DATASETS = frozenset({"qm9", "mp_elastic", "mp_piezoelectric"})
 

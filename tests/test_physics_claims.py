@@ -46,7 +46,7 @@ def test_so3_output_head_relabels_odd_irreps_even() -> None:
     assert degree_irreps(2, 4, ParityMode.SO3) == "4x0e + 4x1e + 4x2e"
 
 
-# --------------------------------------------------------------------------- claim 2 (E7 gate)
+# ----------------------------------------------------------------- claim 2 (rotation-subgroup gate)
 def _reynolds(rotations: np.ndarray, irreps_str: str) -> np.ndarray:
     """Projector onto the subspace of tensors invariant under a group of proper rotations."""
     from e3nn import o3
@@ -95,7 +95,7 @@ def test_rotation_subgroup_432_forbids_any_rank_three_tensor() -> None:
 
     m-3m's proper-rotation subgroup is 432 (order 24). No rank-3 tensor is invariant under it, so
     an exactly SO(3)-equivariant model must predict exactly zero -- no parity label needed. This
-    is why the SO(3) arms get the m-3m crystals right (E7).
+    is why the SO(3) arms get the m-3m crystals right (the rotation-subgroup analysis).
     """
     o = _rotation_group([_rot("z", 1), _rot("x", 1)])
     assert len(o) == 24, f"432 has order 24, built {len(o)}"
@@ -115,7 +115,7 @@ def test_rotation_subgroup_23_permits_a_rank_three_tensor() -> None:
     assert _reynolds_rank(_rotation_group([_rot("z", 1), _rot("x", 1)]), PIEZO_IRREPS) == 0
 
 
-# --------------------------------------------------------------------------- claim 3 (E2 protocol)
+# ------------------------------------------------------------- claim 3 (symmetry-breaking protocol)
 def _spacegroup(structure, symprec: float) -> int:  # noqa: ANN001
     cell = (
         structure.cell,
@@ -139,7 +139,7 @@ def test_polar_distortion_is_p4mm_at_tight_tolerance(name: str) -> None:
 
 
 def test_spglib_symprec_is_a_distance_tolerance_not_a_symmetry_test() -> None:
-    """Regression guard for the E2 protocol amendment.
+    """Regression guard for the symmetry-breaking sweep protocol amendment.
 
     At symprec 1e-3, small-delta polar frames are *wrongly* reported centrosymmetric, because the
     maximum atomic displacement falls below the tolerance. The crossover is near delta ~ 0.006.
@@ -152,7 +152,7 @@ def test_spglib_symprec_is_a_distance_tolerance_not_a_symmetry_test() -> None:
     assert max_displacement_angstrom("BaTiO3", 6e-3) > 7e-4
 
 
-# --------------------------------------------------------------------------- claim 4 (E3 basis)
+# ------------------------------------------------------------------------- claim 4 (Jacobian basis)
 class _ToyTensorNet(torch.nn.Module):
     """Minimal equivariant net with a parity-odd tensor output, in matched O(3)/SO(3) arms.
 
@@ -304,7 +304,7 @@ def test_o3_jacobian_is_purely_inversion_odd(seed: int) -> None:
 
 @pytest.mark.parametrize("seed", [0, 1])
 def test_even_subspace_energy_fraction_separates_the_arms(seed: int) -> None:
-    """E3's primary statistic: ``||J . P_even||_F / ||J||_F``.
+    """the Jacobian analysis's primary statistic: ``||J . P_even||_F / ||J||_F``.
 
     Exactly 0 for O(3) by the theorem above. Basis-independent, and unlike per-vector parity
     scores it needs no singular-vector truncation. (On *trained* models the SO(3) arm turns out to
@@ -324,12 +324,12 @@ def test_even_subspace_energy_fraction_separates_the_arms(seed: int) -> None:
     assert fractions[ParityMode.SO3] > 1e-2
 
 
-# --------------------------------------------------------------------------- claim 5 (E4 identity)
+# ----------------------------------------------------------- claim 5 (inversion-averaging identity)
 @pytest.mark.parametrize("mode", [ParityMode.O3, ParityMode.SO3])
 def test_inversion_averaging_is_trivially_zero_on_an_exactly_centrosymmetric_input(
     mode: ParityMode,
 ) -> None:
-    """E4's idealized column carries no parity information -- for *either* arm.
+    """The inversion-averaging idealized column carries no parity information -- for *either* arm.
 
     If ``x`` is exactly centrosymmetric then ``I.x`` is the same structure up to a permutation of
     atoms, so any permutation-invariant model gives ``T(I.x) == T(x)`` and the odd projection
@@ -347,7 +347,7 @@ def test_inversion_averaging_is_trivially_zero_on_an_exactly_centrosymmetric_inp
 def test_run_label_collides_across_datasets_but_run_key_does_not() -> None:
     """Regression guard for a real contamination incident.
 
-    ``run_label`` is ``(core, parity, target, seed)`` and omits the dataset, so the E1 augmented
+    ``run_label`` is ``(core, parity, target, seed)`` and omits the dataset, so the augmented
     piezoelectric runs produced labels identical to the headline runs. Flattening then overwrote
     the headline ``metrics/`` files with side-study numbers and ``results/stats.json`` moved.
     ``run_key`` is the dataset-qualified identifier that must be used wherever runs from different
@@ -375,14 +375,15 @@ def test_run_label_collides_across_datasets_but_run_key_does_not() -> None:
     assert "mp_piezoelectric_augmented" not in CANONICAL_DATASETS
 
 
-# --------------------------------------------------- H2 : rank-3 Cartesian tensor is parity-odd
+# ---------------------------------------- inheritance probes: rank-3 Cartesian tensor is parity-odd
 def test_rank_three_cartesian_tensor_is_parity_odd() -> None:
     """The math ICTP relies on, self-contained (no external checkout).
 
     A rank-l irreducible Cartesian tensor built from a displacement vector is a homogeneous
     degree-l polynomial in that vector, so under inversion x -> -x it scales by (-1)^l. For l=3
     (the piezoelectric-relevant odd rank) that is -1: an odd tensor. This is why a model whose
-    features carry this parity (ICTP's Cartesian harmonics; measured in H2) produces a structural
+    features carry this parity (ICTP's Cartesian harmonics; measured by the inheritance
+    probes) produces a structural
     zero for an odd tensor on centrosymmetric input, exactly as an e3nn O(3) model does.
     """
     rng = np.random.default_rng(0)
@@ -416,10 +417,10 @@ def test_rank_three_cartesian_tensor_is_parity_odd() -> None:
     assert even < 1e-12, even
 
 
-# --------------------------------------------------- H3 : weighted-MSE mechanism
+# --------------------------------------------------- the loss-weight sweep : weighted-MSE mechanism
 def test_zero_row_weighted_mse_is_a_noop_at_weight_one() -> None:
     """At W=1 the per-row weighted MSE is bit-identical to torch.nn.MSELoss; the mask picks the
-    exactly-zero-target rows. Guards the H3 loss-weight sweep's control column."""
+    exactly-zero-target rows. Guards the loss-weight sweep loss-weight sweep's control column."""
     torch.manual_seed(0)
     pred = torch.randn(16, 18, dtype=torch.float64)
     target = torch.randn(16, 18, dtype=torch.float64)

@@ -1,7 +1,7 @@
 [project]
 name = "equiparity"
 version = "0.1.0"
-description = "When Parity Matters: can SO(3)-equivariant models predict physically impossible material properties?"
+description = "A single design choice determines whether machine learning models of materials make physically impossible predictions"
 requires-python = "==3.12.*"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -32,6 +32,11 @@ data = [
   "pymatgen>=2025.1.1",
   "mp-api>=0.45",
 ]
+# Claim and theorem checkers only. Installs on any platform, needs no GPU and no torch.
+verify = [
+  "numpy>=2.0",
+  "sympy>=1.13",
+]
 # JARVIS-DFT fallback source for the piezoelectric dataset.
 jarvis = [
   "jarvis-tools>=2024.10.30",
@@ -47,10 +52,14 @@ conflicts = [
   [{ extra = "nequip" }, { extra = "mace" }],
 ]
 
-# PyTorch from the CUDA 12.8 index: required for RTX 5090 (Blackwell, sm_120).
-# Training targets A100; the cu128 build also serves A100.
+# PyTorch from the CUDA 12.8 index on the platforms that index serves: required for
+# RTX 5090 (Blackwell, sm_120). Training targets A100; the cu128 build also serves A100.
+# macOS has no wheel there, so it resolves torch from the default index instead — which
+# keeps `uv sync` and the verification extra working on a laptop.
 [tool.uv.sources]
-torch = { index = "pytorch-cu128" }
+torch = [
+  { index = "pytorch-cu128", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+]
 
 [[tool.uv.index]]
 name = "pytorch-cu128"

@@ -1,8 +1,8 @@
 """Atomic structure: the typed geometry representation shared across datasets and cores.
 
 Raw files and APIs are untyped; they are converted into :class:`AtomicStructure` at the I/O
-boundary, where invariants are checked once. Molecular data
-(QM9) is non-periodic (``pbc=False``, ``cell=None``); crystal data (Materials Project) is periodic.
+boundary, where invariants are checked once. Molecular data (QM9) is non-periodic (``pbc=False``,
+``cell=None``); crystal data (Materials Project) is periodic.
 """
 
 from __future__ import annotations

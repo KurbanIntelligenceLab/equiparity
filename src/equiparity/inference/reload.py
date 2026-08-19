@@ -1,6 +1,7 @@
 """Rebuild a trained run from its output directory and predict on arbitrary structures.
 
-The single reload entry point for every post-training experiment (E2-E7). Nothing here trains.
+The single reload entry point for every post-training experiment (the symmetry-breaking sweep-the
+rotation-subgroup analysis). Nothing here trains.
 
 Two facts drive the design, both measured rather than assumed:
 
@@ -81,7 +82,7 @@ class TrainedModel:
 def find_piezo_runs(mirror: Path, *, dataset: str = "mp_piezoelectric") -> dict[str, Path]:
     """Map ``<core>_<parity>_piezoelectric_seed<N>`` to its latest run directory for ``dataset``.
 
-    ``run_label`` omits the dataset, so the E1 augmented runs share labels with the headline runs.
+    ``run_label`` omits the dataset, so the augmented runs share labels with the headline runs.
     Filtering on the dataset (read from config_snapshot.yaml, which every run writes) is what keeps
     a side study from silently shadowing the headline.
     """
@@ -127,7 +128,7 @@ def load_trained(
 ) -> TrainedModel:
     """Rebuild the trained model recorded in ``run_dir`` from its final-epoch checkpoint.
 
-    ``scale`` overrides the target normalisation. Needed for the E1 augmented runs: they were
+    ``scale`` overrides the target normalisation. Needed for the augmented runs: they were
     trained with ``training.target_scale = 0.749134`` frozen, but ``_config_snapshot`` did not
     serialise that field at the time, so it cannot be recovered from the snapshot. That the frozen
     value was the one actually used is verified empirically -- reloading with 0.749134 reproduces

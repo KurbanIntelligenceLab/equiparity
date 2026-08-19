@@ -9,9 +9,9 @@ One `GeometricAlgebra` instance owns everything signature-dependent:
 - L=2 feature formula (branches by n_basis)
 - Direction embedding (branches by signature and mode)
 
-Cl(3,0) retains the existing unrolled fast-path in models/clifford/clifford.py
-via a dispatch in `geometric_product` — used for bit-exact regression with
-pre-refactor code. Other signatures use einsum on the Cayley table.
+Cl(3,0) retains the existing unrolled fast-path in models/clifford/clifford.py via a dispatch in
+`geometric_product` — used for bit-exact regression with pre-refactor code. Other signatures use
+einsum on the Cayley table.
 """
 
 from __future__ import annotations

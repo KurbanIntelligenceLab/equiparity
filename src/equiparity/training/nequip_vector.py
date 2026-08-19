@@ -1,9 +1,9 @@
 """Train a NequIP model with a direct L=1 head to predict the QM9 dipole vector.
 
-This is the first parity signal: the dipole is parity-odd. The O(3) arm reads out a ``1o``
-polar vector; the SO(3) arm reads out a ``1e`` (even-labelled) vector that cannot honour the
-odd-parity structure. Targets are scaled (not mean-shifted) by their component std so the
-normalization stays equivariant. Metric is the component MAE in Debye.
+This is the first parity signal: the dipole is parity-odd. The O(3) arm reads out a ``1o`` polar
+vector; the SO(3) arm reads out a ``1e`` (even-labelled) vector that cannot honour the odd-parity
+structure. Targets are scaled (not mean-shifted) by their component std so the normalization stays
+equivariant. Metric is the component MAE in Debye.
 """
 
 from __future__ import annotations

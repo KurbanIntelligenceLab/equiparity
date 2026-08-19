@@ -1,14 +1,15 @@
 cff-version: 1.2.0
 message: If you use this software, please cite it using these metadata.
 title: >-
-  equiparity: code and measurement records for "Feature parity, not training,
-  decides whether materials models predict physically impossible properties"
+  equiparity: code and measurement records for "A single design choice determines
+  whether machine learning models of materials make physically impossible
+  predictions"
 abstract: >-
-  Matched-pair model builders, verification gate, and evaluation pipelines for
-  quantifying when parity labelling matters in equivariant machine-learned models
-  of materials. Each core is built twice from one typed configuration, differing
-  only in whether its features carry parity labels, so the parity gap is measured
-  rather than inferred.
+  Matched-pair model builders and a parity verification gate for equivariant
+  machine-learned models of materials. Each core is built twice from one typed
+  configuration, differing only in whether its features carry parity labels, so
+  the parity gap is measured rather than inferred. Ships the frozen measurement
+  records and two checkers that re-derive every reported quantity from them.
 type: software
 license: MIT
 repository-code: https://github.com/KurbanIntelligenceLab/equiparity
@@ -37,7 +38,14 @@ authors:
     email: hkurban@hbku.edu.qa
 keywords:
   - equivariant neural networks
+  - parity
+  - parity gap
+  - exact versus approximate symmetry constraints
+  - learned versus built-in symmetry
+  - O(3) versus SO(3) equivariance
   - materials property prediction
   - crystal symmetry
   - piezoelectric tensor
+  - centrosymmetric crystals
+  - Neumann's principle
   - machine-learned interatomic potentials

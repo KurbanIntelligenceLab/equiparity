@@ -118,7 +118,8 @@ def train_mace_tensor(config: ExperimentConfig, *, ood_npz: str | None = None) -
         preds = _predict(model, graphs_of(ds), batch_size, dtype, device) * scale
         return regression_metrics(preds, _irreps_targets(ds, config.target, kind))
 
-    # H-1 instrumentation: per-epoch false-flag fraction on the idealized OOD variant. Graphs
+    # Epoch-curve instrumentation: per-epoch false-flag fraction on the idealized OOD
+    # variant. Graphs
     # are built once and reused; one forward pass over the population per epoch.
     epoch_ood_graphs = None
     if ood_npz is not None and kind == "piezoelectric":

@@ -1,8 +1,7 @@
 """Run one experiment from a config: train, evaluate, and write provenance + metrics.
 
-Composes seeding, the core-specific trainer, and provenance writing.
-Every run produces an ``outputs/<experiment_id>/`` directory with a manifest, a config snapshot,
-and metrics.
+Composes seeding, the core-specific trainer, and provenance writing. Every run produces an
+``outputs/<experiment_id>/`` directory with a manifest, a config snapshot, and metrics.
 """
 
 from __future__ import annotations
@@ -148,7 +147,7 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
     metrics = {
         "run_label": config.run_label,
         # `run_label` is (core, parity, target, seed) and does NOT include the dataset, so two
-        # datasets sharing a target (e.g. the E1 augmented piezoelectric set) collide. Record the
+        # datasets sharing a target (e.g. the augmented piezoelectric set) collide. Record the
         # dataset so downstream flattening and analysis can tell them apart.
         "dataset": config.dataset,
         "target": config.target,

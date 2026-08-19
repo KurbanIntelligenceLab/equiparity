@@ -1,0 +1,6 @@
+configs/loss_weight/nequip_so3_piezoelectric_aug_w10_seed0.yaml
+configs/loss_weight/nequip_so3_piezoelectric_aug_w10_seed1.yaml
+configs/loss_weight/nequip_so3_piezoelectric_aug_w10_seed2.yaml
+configs/loss_weight/nequip_so3_piezoelectric_aug_w100_seed0.yaml
+configs/loss_weight/nequip_so3_piezoelectric_aug_w100_seed1.yaml
+configs/loss_weight/nequip_so3_piezoelectric_aug_w100_seed2.yaml

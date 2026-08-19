@@ -1,14 +1,17 @@
-"""Build reference crystal structures in memory (no npz), for the E2 symmetry-breaking sweep.
+"""Build reference crystal structures in memory (no npz), for the symmetry-breaking sweep
+symmetry-breaking sweep.
 
 Two families, and the difference between them is the whole point.
 
-**Perovskites (BaTiO3, PbTiO3).** The cubic aristotype is Pm-3m (221); displacing the B-site cation
-along [001] against the oxygen cage breaks inversion and gives the polar tetragonal phase P4mm (99).
+**Perovskites (BaTiO3, PbTiO3).** The cubic aristotype is Pm-3m (221); displacing the B-site
+cation along [001] against the oxygen cage breaks inversion and gives the polar tetragonal phase
+P4mm (99).
 
     Caveat, found when the sweep was first run: Pm-3m's *proper-rotation* subgroup is **432**, and
     no rank-3 tensor is invariant under 432. At delta = 0 an exactly SO(3)-equivariant model is
     therefore forced to predict zero as well -- by rotation alone, with no parity label involved
-    (E7). On a perovskite the O(3) and SO(3) curves both start at machine zero, so the sweep cannot
+    (rotation-subgroup analysis). On a perovskite the O(3) and SO(3) curves both start at
+    machine zero, so the sweep cannot
     exhibit the parity effect it was designed to exhibit. Keep it as the textbook reference; do not
     draw the parity conclusion from it.
 
@@ -45,14 +48,14 @@ RUTILE = {"a": 4.5937, "c": 2.9587, "u": 0.3053, "Ti": 22, "O": 8}
 # units of c. The two Ti move opposite to the four O, which breaks the inversion centre.
 RUTILE_DISPLACEMENT_Z = 0.040
 
-# T4-3: additional rutile-type cell (same P4_2/mnm Wyckoff set as TiO2, its own cell parameters).
+# Additional rutile-type cell (same P4_2/mnm Wyckoff set as TiO2, its own cell parameters).
 # Cassiterite SnO2: a = 4.7374, c = 3.1864 A, u = 0.3056.
 RUTILE_TYPE: dict[str, dict[str, float | int]] = {
     "TiO2": RUTILE,
     "SnO2": {"a": 4.7374, "c": 3.1864, "u": 0.3056, "cation": 50, "O": 8},
 }
 
-# T4-3: anatase TiO2, I4_1/amd (141), conventional 12-atom cell. Point group 4/mmm, so the
+# Anatase TiO2, I4_1/amd (141), conventional 12-atom cell. Point group 4/mmm, so the
 # proper-rotation subgroup is 422, which admits a rank-3 invariant: like rutile, only parity
 # forbids a response at delta = 0 (the 432 lesson from the perovskites). a = 3.7842,
 # c = 9.5146 A; O internal parameter u = 0.2081 (origin choice 1, Ti at the origin).
@@ -108,7 +111,7 @@ def anatase() -> AtomicStructure:
 
     Built from the origin-choice-1 Wyckoff positions (Ti 4a at (0,0,0), O 8e at (0,0,u)) with
     the body-centring and 4_1-screw images written out explicitly; the assembled cell is
-    verified against spglib in the T4-3 sweep before any prediction is made.
+    verified against spglib in the frozen-backbone study sweep before any prediction is made.
     """
     a, c, u = float(ANATASE["a"]), float(ANATASE["c"]), float(ANATASE["u"])
     ti = np.array(

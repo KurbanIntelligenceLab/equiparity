@@ -1,9 +1,11 @@
 """Train a NequIP model to predict a scalar target (QM9 U0) in one parity mode.
 
-This is the Task 2.1 control path: the SO(3) and O(3) arms should reach the same U0 MAE
-(a parity-even scalar has no parity gap). The model's scalar energy readout is the U0 head.
-Targets are z-score normalized over the train split for stability; metrics are reported in the
-original units. Full runs target the A100 cluster; this path also supports small smoke runs.
+This is the control path: the SO(3) and O(3) arms should reach the same U0 MAE, because a
+parity-even scalar has no parity gap. A gap here would mean the matched pair differs in something
+other than parity labelling, and invalidates the comparison on every other target. The model's
+scalar energy readout is the U0 head. Targets are z-score normalized over the train split for
+stability; metrics are reported in the original units. Full runs target a GPU; this path also runs
+at reduced size for a quick check.
 """
 
 from __future__ import annotations
