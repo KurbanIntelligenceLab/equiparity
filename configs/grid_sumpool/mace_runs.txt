@@ -1,0 +1,12 @@
+configs/grid_sumpool/mace_elastic_o3_seed0_sum.yaml
+configs/grid_sumpool/mace_elastic_o3_seed1_sum.yaml
+configs/grid_sumpool/mace_elastic_o3_seed2_sum.yaml
+configs/grid_sumpool/mace_piezoelectric_o3_seed0_sum.yaml
+configs/grid_sumpool/mace_piezoelectric_o3_seed1_sum.yaml
+configs/grid_sumpool/mace_piezoelectric_o3_seed2_sum.yaml
+configs/grid_sumpool/mace_elastic_so3_seed0_sum.yaml
+configs/grid_sumpool/mace_elastic_so3_seed1_sum.yaml
+configs/grid_sumpool/mace_elastic_so3_seed2_sum.yaml
+configs/grid_sumpool/mace_piezoelectric_so3_seed0_sum.yaml
+configs/grid_sumpool/mace_piezoelectric_so3_seed1_sum.yaml
+configs/grid_sumpool/mace_piezoelectric_so3_seed2_sum.yaml

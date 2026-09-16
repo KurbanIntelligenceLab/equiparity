@@ -1,0 +1,12 @@
+point_group,proper_subgroup,crystal_system,gap_rank1_polarization,gap_rank3_piezoelectric
+-1,1,triclinic,3,18
+2/m,2,monoclinic,1,8
+mmm,222,orthorhombic,0,3
+4/m,4,tetragonal,1,4
+4/mmm,422,tetragonal,0,1
+-3,3,trigonal,1,6
+-3m,32,trigonal,0,2
+6/m,6,hexagonal,1,4
+6/mmm,622,hexagonal,0,1
+m-3,23,cubic,0,1
+m-3m,432,cubic,0,0

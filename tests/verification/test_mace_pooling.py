@@ -2,7 +2,7 @@
 
 Same three guarantees as ``tests/verification/test_nequip_pooling.py``, for the MACE core:
 
-1. ``pooling: sum`` (default) is bit-identical to the pre-existing ``index_add_`` readout.
+1. ``pooling: sum`` (default) is bit-identical to a direct ``index_add_`` readout.
 2. ``pooling: mean`` still passes the rotation/reflection equivariance gate, float64.
 3. ``pooling: mean`` still gives an exact structural zero for the O(3) arm on a centrosymmetric
    crystal.
@@ -155,7 +155,7 @@ def test_o3_arm_predicts_exact_zero_on_centrosymmetric_crystal_under_mean_poolin
     with torch.no_grad():
         out = model(batch)[0]
     # MACE's float32-internal symmetric contractions floor its residual around 1e-7 to 1e-6
-    # (module docstring; Supplementary Table stab:distribution reports a trained-model O(3)
-    # floor of 2.7e-6 median for MACE, vs 1e-7 for NequIP/Allegro at the same table). This is
+    # (module docstring; results/distribution_percentiles.json records a trained-model O(3)
+    # floor of 2.7e-6 median for MACE, vs 1e-7 for NequIP/Allegro). This is
     # untrained and tiny, but keep the MACE-specific bound rather than the float64 one.
     assert float(out.norm()) < 1e-6

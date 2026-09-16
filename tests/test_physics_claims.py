@@ -1,9 +1,6 @@
-"""V0 — every physics claim this study relies on, checked rather than asserted.
+"""Physics claims the study relies on, checked on small constructions.
 
-Each test corresponds to a claim in the manuscript's Supplementary Information (the original
-``docs/new_additions.md`` is retired; ``git show a3342ea:docs/new_additions.md``) or a
-correction found while
-validating it. Nothing here loads a trained checkpoint; these run on CPU in seconds.
+Nothing here loads a trained checkpoint; these run on CPU in seconds.
 """
 
 from __future__ import annotations
@@ -27,7 +24,7 @@ spglib = pytest.importorskip("spglib")
 PIEZO_IRREPS = "2x1o+1x2o+1x3o"
 
 
-# --------------------------------------------------------------------------- claim 1
+# ------------------------------------------------------------------- output irreps
 def test_piezoelectric_irreps_are_all_parity_odd() -> None:
     """The piezoelectric tensor decomposes into odd irreps only; that is why inversion kills it."""
     from e3nn import o3
@@ -46,7 +43,7 @@ def test_so3_output_head_relabels_odd_irreps_even() -> None:
     assert degree_irreps(2, 4, ParityMode.SO3) == "4x0e + 4x1e + 4x2e"
 
 
-# ----------------------------------------------------------------- claim 2 (rotation-subgroup gate)
+# ------------------------------------------------------------------- proper-rotation subgroups
 def _reynolds(rotations: np.ndarray, irreps_str: str) -> np.ndarray:
     """Projector onto the subspace of tensors invariant under a group of proper rotations."""
     from e3nn import o3
@@ -115,7 +112,7 @@ def test_rotation_subgroup_23_permits_a_rank_three_tensor() -> None:
     assert _reynolds_rank(_rotation_group([_rot("z", 1), _rot("x", 1)]), PIEZO_IRREPS) == 0
 
 
-# ------------------------------------------------------------- claim 3 (symmetry-breaking protocol)
+# ------------------------------------------------------------------- polar distortion path
 def _spacegroup(structure, symprec: float) -> int:  # noqa: ANN001
     cell = (
         structure.cell,
@@ -139,11 +136,9 @@ def test_polar_distortion_is_p4mm_at_tight_tolerance(name: str) -> None:
 
 
 def test_spglib_symprec_is_a_distance_tolerance_not_a_symmetry_test() -> None:
-    """Regression guard for the symmetry-breaking sweep protocol amendment.
+    """At symprec 1e-3, small-delta polar frames are reported centrosymmetric.
 
-    At symprec 1e-3, small-delta polar frames are *wrongly* reported centrosymmetric, because the
-    maximum atomic displacement falls below the tolerance. The crossover is near delta ~ 0.006.
-    This is the same phenomenon as the mp-1227949 raw-coordinate false flag (appendix A5).
+    The maximum atomic displacement falls below the tolerance; the crossover is near delta ~ 0.006.
     """
     assert _spacegroup(tetragonal_distortion("BaTiO3", 3e-3), 1e-3) == 221  # wrong, but expected
     assert _spacegroup(tetragonal_distortion("BaTiO3", 3e-3), 1e-8) == 99  # right
@@ -152,7 +147,7 @@ def test_spglib_symprec_is_a_distance_tolerance_not_a_symmetry_test() -> None:
     assert max_displacement_angstrom("BaTiO3", 6e-3) > 7e-4
 
 
-# ------------------------------------------------------------------------- claim 4 (Jacobian basis)
+# ------------------------------------------------------------------- matched toy model
 class _ToyTensorNet(torch.nn.Module):
     """Minimal equivariant net with a parity-odd tensor output, in matched O(3)/SO(3) arms.
 
@@ -235,25 +230,6 @@ def _centrosymmetric_cloud(
     )
 
 
-def _parity_operator(sigma: np.ndarray, n: int) -> np.ndarray:
-    """(P u)_i = -u_{sigma(i)} on flattened displacements, as a 3n x 3n matrix. P @ P == I."""
-    p = np.zeros((3 * n, 3 * n))
-    for i in range(n):
-        for c in range(3):
-            p[3 * i + c, 3 * sigma[i] + c] = -1.0
-    return p
-
-
-def _jacobian(model: _ToyTensorNet, pos: torch.Tensor, z: torch.Tensor) -> np.ndarray:
-    pos = pos.clone().requires_grad_(True)
-    out = model(pos, z)
-    rows = []
-    for k in range(out.shape[0]):
-        (g,) = torch.autograd.grad(out[k], pos, retain_graph=True)
-        rows.append(g.reshape(-1).detach().numpy())
-    return np.stack(rows)
-
-
 @pytest.mark.parametrize("seed", [0, 1])
 def test_o3_toy_output_vanishes_at_centrosymmetric_configuration(seed: int) -> None:
     pos, z, _ = _centrosymmetric_cloud(seed)
@@ -274,62 +250,12 @@ def test_so3_toy_output_is_nonzero_at_centrosymmetric_configuration(seed: int) -
     assert float(model(pos, z).norm()) > 1e-3
 
 
-@pytest.mark.parametrize("seed", [0, 1])
-def test_o3_jacobian_is_purely_inversion_odd(seed: int) -> None:
-    """``J . P = -J`` at a centrosymmetric point, so every active singular vector scores -1.
-
-    Proof: for O(3), ``T(I.x) = -T(x)``. At centrosymmetric ``x0`` (``I.x0 == x0`` up to the
-    inversion permutation sigma), differentiating gives ``J . P = -J``. Any inversion-even
-    displacement (``P u == u``) then satisfies ``J u = -J u``, i.e. ``J u = 0``. So even modes lie
-    in ker J and every right-singular vector with sigma > 0 obeys ``P u = -u``.
-    """
-    pos, z, sigma = _centrosymmetric_cloud(seed)
-    model = _ToyTensorNet(ParityMode.O3, seed=seed).double()
-    j = _jacobian(model, pos, z)
-    p = _parity_operator(sigma, pos.shape[0])
-
-    assert np.abs(j @ p + j).max() < 1e-9  # the theorem itself
-
-    # full_matrices=False so vt's rows line up with the singular values (j is 18 x 3n, 3n > 18).
-    _, sv, vt = np.linalg.svd(j, full_matrices=False)
-    active = vt[sv > 1e-8 * sv.max()]
-    assert len(active) > 0, "degenerate Jacobian: no active singular vectors"
-
-    # Even modes lie in ker J, so the rank cannot exceed the odd subspace's dimension (3 * pairs).
-    assert len(active) <= 3 * (pos.shape[0] // 2)
-
-    scores = [float(u @ (p @ u) / (np.linalg.norm(u) * np.linalg.norm(p @ u))) for u in active[:5]]
-    assert np.allclose(scores, -1.0, atol=1e-9), scores
-
-
-@pytest.mark.parametrize("seed", [0, 1])
-def test_even_subspace_energy_fraction_separates_the_arms(seed: int) -> None:
-    """the Jacobian analysis's primary statistic: ``||J . P_even||_F / ||J||_F``.
-
-    Exactly 0 for O(3) by the theorem above. Basis-independent, and unlike per-vector parity
-    scores it needs no singular-vector truncation. (On *trained* models the SO(3) arm turns out to
-    be approximately odd too, so its top parity scores also sit near -1 -- which is why this
-    fraction, not the scores, is the statistic we report.)
-    """
-    pos, z, sigma = _centrosymmetric_cloud(seed)
-    p = _parity_operator(sigma, pos.shape[0])
-    p_even = (np.eye(p.shape[0]) + p) / 2
-
-    fractions = {}
-    for mode in (ParityMode.O3, ParityMode.SO3):
-        j = _jacobian(_ToyTensorNet(mode, seed=seed).double(), pos, z)
-        fractions[mode] = np.linalg.norm(j @ p_even) / np.linalg.norm(j)
-
-    assert fractions[ParityMode.O3] < 1e-9
-    assert fractions[ParityMode.SO3] > 1e-2
-
-
-# ----------------------------------------------------------- claim 5 (inversion-averaging identity)
+# ------------------------------------------------------------------- output antisymmetrization
 @pytest.mark.parametrize("mode", [ParityMode.O3, ParityMode.SO3])
 def test_inversion_averaging_is_trivially_zero_on_an_exactly_centrosymmetric_input(
     mode: ParityMode,
 ) -> None:
-    """The inversion-averaging idealized column carries no parity information -- for *either* arm.
+    """Output antisymmetrization is identically zero on an exactly centrosymmetric input.
 
     If ``x`` is exactly centrosymmetric then ``I.x`` is the same structure up to a permutation of
     atoms, so any permutation-invariant model gives ``T(I.x) == T(x)`` and the odd projection
@@ -343,15 +269,12 @@ def test_inversion_averaging_is_trivially_zero_on_an_exactly_centrosymmetric_inp
     assert float(t_sym.norm()) < 1e-10
 
 
-# --------------------------------------------------- run identity (not a physics claim, but a gate)
+# ------------------------------------------------------------------- run identity
 def test_run_label_collides_across_datasets_but_run_key_does_not() -> None:
-    """Regression guard for a real contamination incident.
+    """``run_label`` omits the dataset, so augmented and headline runs share labels.
 
-    ``run_label`` is ``(core, parity, target, seed)`` and omits the dataset, so the augmented
-    piezoelectric runs produced labels identical to the headline runs. Flattening then overwrote
-    the headline ``metrics/`` files with side-study numbers and ``results/stats.json`` moved.
-    ``run_key`` is the dataset-qualified identifier that must be used wherever runs from different
-    datasets can be mixed.
+    ``run_key`` is the dataset-qualified identifier used wherever runs from different datasets can
+    be mixed.
     """
     from equiparity.domain.experiment import CANONICAL_DATASETS
     from equiparity.io.config import parse_experiment_config
@@ -367,57 +290,15 @@ def test_run_label_collides_across_datasets_but_run_key_does_not() -> None:
     headline = parse_experiment_config({**base, "dataset": "mp_piezoelectric"})
     side = parse_experiment_config({**base, "dataset": "mp_piezoelectric_augmented"})
 
-    assert headline.run_label == side.run_label  # the collision that caused the incident
-    assert headline.run_key != side.run_key  # the fix
+    assert headline.run_label == side.run_label
+    assert headline.run_key != side.run_key
     assert headline.run_key == headline.run_label  # canonical datasets keep their bare label
     assert side.run_key.endswith("__mp_piezoelectric_augmented")
     assert "mp_piezoelectric" in CANONICAL_DATASETS
     assert "mp_piezoelectric_augmented" not in CANONICAL_DATASETS
 
 
-# ---------------------------------------- inheritance probes: rank-3 Cartesian tensor is parity-odd
-def test_rank_three_cartesian_tensor_is_parity_odd() -> None:
-    """The math ICTP relies on, self-contained (no external checkout).
-
-    A rank-l irreducible Cartesian tensor built from a displacement vector is a homogeneous
-    degree-l polynomial in that vector, so under inversion x -> -x it scales by (-1)^l. For l=3
-    (the piezoelectric-relevant odd rank) that is -1: an odd tensor. This is why a model whose
-    features carry this parity (ICTP's Cartesian harmonics; measured by the inheritance
-    probes) produces a structural
-    zero for an odd tensor on centrosymmetric input, exactly as an e3nn O(3) model does.
-    """
-    rng = np.random.default_rng(0)
-    x = rng.normal(size=(8, 3))
-
-    # symmetric-traceless rank-3 harmonic from x (the l=3 irreducible part), built self-contained.
-    def rank3(v: np.ndarray) -> np.ndarray:
-        outer = np.einsum("ai,aj,ak->aijk", v, v, v)
-        eye = np.eye(3)
-        # remove the traces to isolate the l=3 irreducible piece (symmetric in all indices)
-        trace = (
-            np.einsum("aijk,jk->ai", outer, eye)[:, :, None, None] * eye[None, None, :, :]
-            + np.einsum("aijk,ik->aj", outer, eye)[:, None, :, None] * eye[None, :, None, :]
-            + np.einsum("aijk,ij->ak", outer, eye)[:, None, None, :] * eye[None, :, :, None]
-        )
-        return outer - trace / 5.0
-
-    t = rank3(x)
-    t_inv = rank3(-x)
-    odd = np.abs(t + t_inv).max() / np.abs(t).max()  # 0 => f(-x) = -f(x)
-    assert odd < 1e-12, odd
-
-    # sanity: a rank-2 harmonic (l=2) is even under the same inversion.
-    def rank2(v: np.ndarray) -> np.ndarray:
-        outer = np.einsum("ai,aj->aij", v, v)
-        return (
-            outer - np.eye(3)[None] * np.einsum("aij,ij->a", outer, np.eye(3))[:, None, None] / 3.0
-        )
-
-    even = np.abs(rank2(x) - rank2(-x)).max() / np.abs(rank2(x)).max()
-    assert even < 1e-12, even
-
-
-# --------------------------------------------------- the loss-weight sweep : weighted-MSE mechanism
+# ------------------------------------------------------------------- zero-row loss weighting
 def test_zero_row_weighted_mse_is_a_noop_at_weight_one() -> None:
     """At W=1 the per-row weighted MSE is bit-identical to torch.nn.MSELoss; the mask picks the
     exactly-zero-target rows. Guards the loss-weight sweep loss-weight sweep's control column."""

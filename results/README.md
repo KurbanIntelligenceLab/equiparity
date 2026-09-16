@@ -1,68 +1,65 @@
 # Result records
 
-Every quantity the study reports is derived from a file in this directory, and each record below
-names the script that produced it.
+Every number, figure panel and table in the manuscript is backed by a file in this directory.
+[`index.json`](index.json) is the machine-readable catalogue: for each record it lists its contents,
+the manuscript items it backs, and the command that rebuilds or checks it where one exists. Do not
+edit records by hand.
 
 ```bash
-uv run python verification/verify_claims.py
+uv run equiparity records list                    # catalogue
+uv run equiparity records list --item "Figure 2"   # records behind one display item
+uv run equiparity verify                          # reconcile reported values with these records
 ```
 
-## Matched-pair grid
+## Manuscript display items
 
-Aggregated over seeds unless the record says otherwise.
+| Item | Records |
+|---|---|
+| Table 1 | `parity_gap_table.csv` |
+| Figure 1c | `distribution_percentiles.json`, `stats.json` |
+| Figure 2a | `stats.json`, `rotation_subgroup.json` |
+| Figure 2b | `symmetry_breaking.csv`, `symmetry_breaking.json` |
+| Figure 3a | `stats.json` |
+| Figure 3b | `zero_injection_curve.json`, `zero_injection_sets.json` |
+| Figure 3c | `loss_weight_sweep.json` |
+| Supplementary Figure 1 (threshold curves) | `threshold_curves.csv` |
+| Supplementary Table 1 (regression controls) | `stats.json`, `tables.md` |
+| Supplementary Table 2 (pooling) | `pooling_arms.json` |
+| Supplementary Table 3 (augmentation) | `augmentation.json`, `augmentation_eval_split.json` |
+| Supplementary Table 4 (output antisymmetrization) | `inversion_averaging.json` |
 
-| Record | Produced by | Contents |
-|---|---|---|
-| `stats.json` | `scripts/analysis/aggregate_grid.py` | test error of both arms per core and target with seed spread and paired test; false-flag fraction and violation median per core, arm and coordinate variant |
-| `appendix_stats.json` | `scripts/analysis/aggregate_grid.py` | parameter counts and SO(3)/O(3) capacity ratios, target calibration, O(3) floor, size dependence, compute |
-| `threshold_curves.csv` | `scripts/analysis/aggregate_grid.py` | false-flag fraction at 25 log-spaced thresholds, per arm and coordinate variant |
-| `tables.md`, `tables_extra.md` | `scripts/analysis/aggregate_grid.py` | rendered tables of the above |
-| `augmentation.json` | `scripts/experiments/augmentation.py` | per-seed seen and unseen false-flag fractions for the augmentation arms |
-| `augmentation_eval_split.json` | `scripts/data/prepare_augmented_piezoelectric.py` | the seen/unseen index partition of the evaluation population and its space groups |
-| `loss_weight_sweep.json` | `scripts/experiments/loss_weight_sweep.py` | false-flag fraction against zero-target loss weight |
-| `pooling_arms.json` | `scripts/grids/generate_grid_meanpool.py` | per-seed summed and mean-pooled readout arms |
-| `zero_injection_sets.json` | `scripts/data/prepare_zero_injection_sets.py` | augmentation set definitions for the learning curve |
-| `zero_injection_curve.json` | `scripts/experiments/zero_injection_curve.py` | false-flag fraction against training-set size |
-| `epoch_curve.json` | `scripts/experiments/epoch_curve.py` | false-flag fraction against epoch |
-| `best_vs_final.json` | `scripts/experiments/best_vs_final.py` | best-checkpoint against final-epoch comparison |
-| `fnorm_ewt.json` | `scripts/analysis/fnorm_ewt.py` | Frobenius-norm and element-wise error metrics |
-| `dipole_bias.json` | `scripts/analysis/dipole_bias.py` | dipole-target bias measurement |
+## Execution manifest
 
-## Evaluation population
+[`run_manifest.json`](run_manifest.json) lists all 195 training runs: the 84-run matched-pair grid and the
+pooling, augmentation, loss-weight and zero-injection studies. Each entry names its config file with
+SHA-256, the dataset and split manifests it read, and its install profile. The manifest also records
+the locked package versions, the GPU used per core, and compute totals. Rebuild it with
+`uv run equiparity manifest`; a test fails if the committed copy is stale.
 
-| Record | Produced by | Contents |
-|---|---|---|
-| `ood_spacegroups.json` | `scripts/data/ood_spacegroups.py` | space group, international symbol, crystal family and atom count for each of the 2,000 evaluation crystals |
-| `ood_symmetry.json` | `scripts/analysis/ood_symmetry.py` | centrosymmetry counts and selection tolerance |
-| `rotation_subgroup.json` | `scripts/experiments/rotation_subgroup.py` | false-flag fraction resolved by point-group family |
-| `qm9_pointgroups.json` | `scripts/data/qm9_pointgroups.py` | point-group assignment across QM9 |
-| `split_contamination.json` | `scripts/experiments/split_contamination.py` | train/evaluation overlap check |
-| `prevalence_audit.json` | `scripts/experiments/prevalence_audit.py` | the released-architecture audit: parity class per model, with the evidence for each |
+## All records
 
-## Measurements on released models
-
-Per-structure vectors over the full 2,000-crystal evaluation population, so a reported fraction
-can be recomputed without retraining.
-
-| Record | Produced by | Contents |
-|---|---|---|
-| `tensor_predictors.json`, `tensor_predictors/` | `scripts/experiments/tensor_predictors.py` | the two dedicated crystal-tensor predictors in each of four mask and coordinate conditions: predicted rank-3 tensor (`*_tensors.npy`, 2000x3x6 Voigt) and its Frobenius norm (`*.npy`, 2000) |
-| `random_init.json`, `random_init/` | `scripts/experiments/random_init_probe.py` | three rotation-only potentials at random initialization: violation magnitude (2000) each |
-| `frozen_backbone.json`, `frozen_backbone/` | `scripts/experiments/frozen_backbone.py` | two frozen backbones with a fitted head, three seeds each: violation magnitude (2000) per seed |
-| `frozen_backbone_distortion.json`, `frozen_backbone_distortion.csv` | `scripts/experiments/frozen_backbone_distortion.py` | tensor norm against distortion amplitude for the frozen-backbone heads |
-
-## Mechanism and controls
-
-| Record | Produced by | Contents |
-|---|---|---|
-| `symmetry_breaking.json`, `symmetry_breaking.csv` | `scripts/experiments/symmetry_breaking.py` | tensor norm against distortion amplitude, per material, core, arm and seed |
-| `jacobian.json` | `scripts/experiments/jacobian.py` | even-subspace fraction of the input-output Jacobian |
-| `inversion_averaging.json` | `scripts/experiments/inversion_averaging.py` | effect of averaging a prediction with its inverted image |
-| `output_parity.json` | `scripts/experiments/output_parity.py` | parity type of each core's output irreps |
-| `named_materials.json`, `named_structures.json` | `scripts/experiments/named_materials.py` | predicted tensor norm for ten named centrosymmetric compounds |
-| `per_atom_readout.json` | `scripts/experiments/per_atom_readout.py` | per-atom against pooled readout |
-| `size_consistency.json` | `scripts/experiments/size_consistency.py` | supercell scaling of the summed readout |
-| `non_e3nn_control.json` | `scripts/experiments/non_e3nn_control.py` | the non-e3nn O(3) control (HotPP): mirror law and structural zero on periodic crystals |
-| `equiformer_v2_upstream.json` | `scripts/experiments/equiformer_v2_upstream_repro.py` | vendored-against-upstream reconstruction of the EquiformerV2 source |
-| `inheritance_probes.json` | `scripts/experiments/inheritance_probes.py` | probe models for the inheritance argument |
-| `theory_bounds.json` | `scripts/experiments/theory_bounds.py` | numerical bounds accompanying the theorems |
+| Record | Contents | Manuscript items | Rebuilt by |
+|---|---|---|---|
+| `parity_gap_table.csv` | Parity gap per centrosymmetric class at rank 1 and rank 3 (strain-symmetric piezoelectric space) | Table 1 | `equiparity verify --theory` |
+| `distribution_percentiles.json` | Percentiles, maxima and false-flag fraction of predicted piezoelectric norms on idealized inputs, per arm | Figure 1c |  |
+| `stats.json` | Test error of both arms per core and target with seed spread and paired test; false-flag fraction, violation median, structure-level Wilcoxon and bootstrap CIs per arm and coordinate variant | Figure 1c; Figure 2a; Figure 3a; Supplementary Table 1 (regression controls); Supplementary Note: Population, thresholds, and readout robustness | `equiparity aggregate` |
+| `rotation_subgroup.json` | False-flag fraction resolved by point-group family | Figure 2a; Supplementary Note: Population, thresholds, and readout robustness (point-group validation) |  |
+| `symmetry_breaking.csv` | Predicted tensor norm against polar distortion amplitude, per material, core, arm and seed | Figure 2b |  |
+| `symmetry_breaking.json` | Distortion-path measurements with symmetry verification of each path point | Figure 2b |  |
+| `zero_injection_curve.json` | False-flag fraction against the number of injected zero-labelled crystals | Figure 3b; Supplementary Note: Training interventions and output enforcement |  |
+| `zero_injection_sets.json` | Zero-labelled set definitions for the injection curve | Figure 3b |  |
+| `loss_weight_sweep.json` | False-flag fraction against zero-row loss weight on trained, seen and unseen crystals | Figure 3c; Supplementary Note: Training interventions and output enforcement |  |
+| `threshold_curves.csv` | False-flag fraction at 25 log-spaced thresholds per arm and coordinate variant | Supplementary Figure 1 (threshold curves) | `equiparity aggregate` |
+| `pooling_arms.json` | Per-seed summed and mean-pooled readout arms | Supplementary Table 2 (pooling) |  |
+| `augmentation.json` | Per-seed seen and unseen false-flag fractions for the augmentation arms, with the trained-zero control | Supplementary Table 3 (augmentation) |  |
+| `augmentation_eval_split.json` | Seen/unseen index partition of the evaluation population and its space groups | Supplementary Table 3 (augmentation) |  |
+| `inversion_averaging.json` | False-flag fraction and violation before and after output inversion antisymmetrization, with a non-centrosymmetric control | Supplementary Table 4 (output antisymmetrization) |  |
+| `appendix_stats.json` | Parameter counts and capacity ratios, target calibration, O(3) floor, size dependence, compute | Supplementary Note: Model construction, regression controls, and output audit (compute and environment); Methods (reproducibility) | `equiparity aggregate` |
+| `run_manifest.json` | Execution manifest: every training run with config and SHA-256, data manifests, install profile, locked package versions, hardware and compute | Methods (reproducibility) | `equiparity manifest` |
+| `tables.md` | Rendered accuracy, violation and timing tables | Supplementary Table 1 (regression controls) | `equiparity aggregate` |
+| `tables_extra.md` | Rendered capacity and full accuracy tables | Supplementary Note: Model construction, regression controls, and output audit | `equiparity aggregate` |
+| `ood_spacegroups.json` | Space group, symbol, crystal family and atom count of each of the 2,000 evaluation crystals | Methods (data and splits) |  |
+| `ood_symmetry.json` | Centrosymmetry counts and selection tolerance of the evaluation population | Methods (data and splits); Supplementary Note: Population, thresholds, and readout robustness (coordinate tolerance) |  |
+| `split_contamination.json` | Train/evaluation overlap check | Methods (data and splits) |  |
+| `size_consistency.json` | Supercell scaling of the summed readout | Supplementary Note: Population, thresholds, and readout robustness (readout scaling) |  |
+| `equiformer_v2_upstream.json` | Vendored-against-upstream reconstruction of the EquiformerV2 source | Supplementary Note: Model construction, regression controls, and output audit (EquiformerV2 provenance) |  |

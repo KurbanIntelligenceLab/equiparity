@@ -1944,7 +1944,7 @@
   "precision": "float64",
   "r_max": 5.0,
   "random_init": true,
-  "reason": "data/raw/mp/mp_ood_centrosymmetric_processed.npz is not present in this checkout (requires a live Materials Project API fetch via scripts/data/prepare_mp.py); built idealized centrosymmetric crystals directly with ase.spacegroup.crystal instead, matching the 'idealized' convention scripts/data/idealize_ood.py applies to the MP-derived OOD set",
+  "reason": "data/raw/mp/mp_ood_centrosymmetric_processed.npz is not present in this checkout (requires a live Materials Project API fetch via `equiparity data prepare mp`); built idealized centrosymmetric crystals directly with ase.spacegroup.crystal instead, matching the 'idealized' convention `equiparity data prepare idealize` applies to the MP-derived OOD set",
   "route": "idealized_ase_spacegroup_crystal",
   "seed": 42,
   "spacegroups": {

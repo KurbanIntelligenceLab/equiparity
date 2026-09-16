@@ -1,6 +1,6 @@
 """Load processed Materials Project crystal datasets (elastic, piezoelectric, OOD).
 
-Reads the concatenated archives written by ``scripts/data/prepare_mp.py`` and reconstructs
+Reads the concatenated archives written by ``equiparity data prepare mp`` and reconstructs
 periodic :class:`LabeledStructure` records. Handles an optional tensor target (absent for the OOD
 set, whose target is exactly zero by symmetry).
 """

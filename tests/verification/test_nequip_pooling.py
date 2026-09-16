@@ -2,7 +2,7 @@
 
 Locks in three properties of ``model.pooling`` for the two nequip-framework cores:
 
-1. ``pooling: sum`` (the default) is bit-identical to the pre-existing ``index_add_`` readout
+1. ``pooling: sum`` (the default) is bit-identical to a direct ``index_add_`` readout
    -- reproduces every committed result and checkpoint exactly.
 2. ``pooling: mean`` still passes the rotation/reflection equivariance gate, float64.
 3. ``pooling: mean`` still returns an exact structural zero for the O(3) arm on a
@@ -118,7 +118,7 @@ def test_pooling_defaults_to_sum(core: str) -> None:
 
 
 def test_sum_pooling_is_bit_identical_to_index_add(core: str) -> None:
-    """Regression guard: pooling="sum" (default) must reproduce the pre-patch readout exactly."""
+    """pooling="sum" (default) must reproduce a direct summed readout exactly."""
     model = _build_model(core, ParityMode.O3, pooling="sum")
     data, _ = _batch_data(POSITIONS, 4.0)
     from nequip.data import AtomicDataDict

@@ -1,0 +1,99 @@
+{
+  "description": "Predicted piezoelectric norm ||T||_F (C m^-2) on the 2,000 idealized centrosymmetric evaluation crystals. Percentiles are means of per-seed percentiles; max is the mean of per-seed maxima; false_flag_fraction is the seed-mean fraction above the 1e-2 threshold.",
+  "variant": "idealized",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "units": "C m^-2",
+  "precision_note": "values recorded at three significant figures, as tabulated for the study",
+  "columns": [
+    "p5",
+    "p25",
+    "median",
+    "p75",
+    "p95",
+    "max",
+    "false_flag_fraction"
+  ],
+  "arms": {
+    "NequIP O(3)": {
+      "core": "nequip",
+      "parity": "o3",
+      "p5": 2.17e-08,
+      "p25": 1.6e-07,
+      "median": 3.19e-07,
+      "p75": 5.24e-07,
+      "p95": 1.05e-06,
+      "max": 0.000456,
+      "false_flag_fraction": 0.0
+    },
+    "NequIP SO(3)": {
+      "core": "nequip",
+      "parity": "so3",
+      "p5": 2.56e-07,
+      "p25": 0.201,
+      "median": 0.666,
+      "p75": 1.33,
+      "p95": 2.97,
+      "max": 9.59,
+      "false_flag_fraction": 0.8953
+    },
+    "Allegro O(3)": {
+      "core": "allegro",
+      "parity": "o3",
+      "p5": 3.65e-08,
+      "p25": 1.93e-07,
+      "median": 3.84e-07,
+      "p75": 6.71e-07,
+      "p95": 1.41e-06,
+      "max": 0.000972,
+      "false_flag_fraction": 0.0
+    },
+    "Allegro SO(3)": {
+      "core": "allegro",
+      "parity": "so3",
+      "p5": 2.76e-07,
+      "p25": 0.317,
+      "median": 0.96,
+      "p75": 1.87,
+      "p95": 4.22,
+      "max": 18.9,
+      "false_flag_fraction": 0.9095
+    },
+    "MACE O(3)": {
+      "core": "mace",
+      "parity": "o3",
+      "p5": 2.11e-07,
+      "p25": 1.4e-06,
+      "median": 2.76e-06,
+      "p75": 4.74e-06,
+      "p95": 1.04e-05,
+      "max": 0.00114,
+      "false_flag_fraction": 0.0
+    },
+    "MACE SO(3)": {
+      "core": "mace",
+      "parity": "so3",
+      "p5": 1.54e-06,
+      "p25": 0.327,
+      "median": 0.925,
+      "p75": 1.68,
+      "p95": 3.4,
+      "max": 15.8,
+      "false_flag_fraction": 0.9077
+    },
+    "EqV2 SO(3)": {
+      "core": "equiformer_v2",
+      "parity": "so3",
+      "p5": 0.0138,
+      "p25": 0.178,
+      "median": 0.445,
+      "p75": 0.906,
+      "p95": 2.41,
+      "max": 17.0,
+      "false_flag_fraction": 0.957
+    }
+  }
+}
