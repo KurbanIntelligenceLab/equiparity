@@ -11,7 +11,7 @@
   "software": {
     "python": "==3.12.*",
     "lockfile": "uv.lock",
-    "lockfile_sha256": "sha256:18326f0cf2c0a810c243bf59cdbeb838a3f0003d4af7108cfd4d710fb0bfef6f",
+    "lockfile_sha256": "sha256:efbec9b2624336ae97d891fce86cd82035c13cfad1b1f40e0b2a871c32be9796",
     "packages": {
       "common": {
         "numpy": "2.5.1",

@@ -2,8 +2,7 @@
   "title": "equiparity: code and measurement records for \"The parity gap in crystal tensor prediction\"",
   "upload_type": "software",
   "description": "Code, configurations and frozen measurement records for \"The parity gap in crystal tensor prediction\". Provides matched O(3)/SO(3) model builders for NequIP, Allegro and MACE with a parity verification gate, the equiparity command-line interface for training, data preparation, aggregation and release checks, the result records behind every figure and table with an execution manifest of all training runs, and a Lean 4 formalization of the parity-gap guarantees.",
-  "version": "TODO: set to the release tag",
-  "publication_date": "TODO: YYYY-MM-DD of the release",
+  "version": "v1.5.0",
   "creators": [
     {
       "name": "Polat, Can",
@@ -48,13 +47,6 @@
       "relation": "isSupplementTo",
       "resource_type": "software",
       "scheme": "url"
-    },
-    {
-      "identifier": "TODO: article DOI once published",
-      "relation": "isSupplementTo",
-      "resource_type": "publication-article",
-      "scheme": "doi"
     }
-  ],
-  "notes": "TODO: remove before release. Template metadata; finalize version, date and the article DOI."
+  ]
 }
