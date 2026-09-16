@@ -2,8 +2,7 @@
 
 Code, configurations and measurement records for:
 
-**A single design choice determines whether machine learning models of materials make physically
-impossible predictions**
+**The parity gap in crystal tensor prediction**
 
 Can Polat<sup>1</sup> ([0000-0002-1458-302X](https://orcid.org/0000-0002-1458-302X)),
 Mustafa Kurban<sup>2,3</sup> ([0000-0002-7263-0234](https://orcid.org/0000-0002-7263-0234)),
@@ -20,55 +19,67 @@ Hasan Kurban ([hkurban@hbku.edu.qa](mailto:hkurban@hbku.edu.qa))
 
 ## Abstract
 
-Machine-learned models are replacing first-principles calculations across materials discovery, and
-physical symmetry is the central guarantee built into them. The debate over how much symmetry to
-hard-wire rather than learn has run on rotations, where a symmetry error is an approximation
-error. Some constraints are exact: symmetry forces certain property tensors to exactly zero, so a
-nonzero prediction is physically impossible rather than inaccurate. Here we show that whether a
-model can make such predictions is decided before training by one rarely reported design bit,
-whether its features carry parity labels, and derive a criterion, the parity gap, that computes
-from group theory alone which properties and crystals are exposed. Across matched architecture
-pairs differing only in that bit, evaluated on two thousand centrosymmetric crystals whose
-piezoelectric tensor must vanish, parity-labelled arms sit at the floating-point floor while
-rotation-only arms predict forbidden responses on 90–96% of crystals, six orders of magnitude
-apart, at no accuracy cost. Training on explicit zeros does not recover exactness, and a head on a
-frozen universal potential inherits its backbone's symmetry group. One reflection at random
-initialization verifies the label in seconds.
+Crystal symmetry can determine whether a tensor response must vanish, providing a direct test for
+learned predictions from symmetry alone. We derive the parity gap, which measures the
+piezoelectric tensor freedom permitted by a crystal's proper rotations and removed by inversion.
+Across matched models, forbidden responses follow the gap assigned to each centrosymmetric
+crystal class. A polar distortion path links the predicted response to the loss of inversion
+symmetry. Regression controls reveal no consistent accuracy cost from parity enforcement in the
+tested configurations. Explicit zero labels reduce violations but leave residual forbidden
+responses, whereas model construction and output antisymmetrization enforce the zero under the
+required invariances.
+
 ## Installation
 
 Requires Python 3.12 and [uv](https://docs.astral.sh/uv/). Dependencies are declared in
-`pyproject.toml` and pinned exactly in `uv.lock`; there is no `requirements.txt` and no
-`pip install` path.
-
-Checking the claims needs no GPU and no deep-learning stack:
+`pyproject.toml` and pinned exactly in `uv.lock`.
 
 ```bash
-uv sync --extra verify
+uv sync --extra verify   # CLI, release checks and records; no GPU needed
+uv run equiparity --help
 ```
 
-Retraining or preparing data needs one of the model profiles. MACE pins `e3nn==0.4.4` while
-NequIP and Allegro require `e3nn>=0.6`, so the two cannot co-install; CI runs them as a matrix.
+Training, data preparation and aggregation each need an extra. MACE pins `e3nn==0.4.4` while
+NequIP and Allegro require `e3nn>=0.6`, so the two model profiles cannot co-install; CI tests them
+as a matrix.
 
-```bash
-uv sync --extra nequip  # + NequIP and Allegro
-uv sync --extra mace    # + MACE (conflicts with nequip; install one at a time)
-uv sync --extra data    # + pymatgen, mp-api, spglib for dataset preparation
-uv run <command>        # run anything inside the locked environment
-```
+| Extra | Adds | Needed for |
+|---|---|---|
+| `verify` | sympy | `equiparity verify` |
+| `nequip` | NequIP, Allegro, torch-geometric | `equiparity run` with NequIP, Allegro or EquiformerV2 |
+| `mace` | MACE (conflicts with `nequip`) | `equiparity run` with MACE |
+| `data` | pymatgen, mp-api, spglib | `equiparity data prepare` |
+| `analysis` | scipy, matplotlib | `equiparity aggregate` |
+
+## Command-line interface
+
+Every workflow in the study is a subcommand. Commands that print data accept `--json`, and every
+command exits non-zero on failure, so the CLI can be scripted or driven by an agent.
+
+| Command | What it does |
+|---|---|
+| `equiparity verify [--theory] [--claims] [--proofs]` | Reconcile the manuscript's claims with the released records |
+| `equiparity records list [--item "Figure 2"]` | Catalogue of result records and the manuscript items they back |
+| `equiparity records show NAME` | One record's contents, manuscript items, producer and path |
+| `equiparity grid generate {main,meanpool,sumpool,augmentation,loss-weight,zero-injection,all}` | Write an experiment matrix to `configs/` |
+| `equiparity run CONFIG` | Train and evaluate one run, writing provenance to `outputs/` |
+| `equiparity data prepare {qm9,mp,idealize}` | Build processed archives, dataset manifests and splits |
+| `equiparity aggregate --runs PATH` | Rebuild the summary records from a training-run tree |
+| `equiparity manifest` | Rebuild `results/run_manifest.json` from the committed configs |
 
 ## Verifying the claims
 
-Two scripts check every reported quantity against the released records. Neither needs a GPU, a
-trained model, or any data beyond this repository.
+The release checks need no GPU, trained model, or data beyond this repository.
 
 ```bash
-uv run python verification/verify_theory.py    # the theorems and corollaries, numerically
-uv run python verification/verify_claims.py    # every reported quantity, against results/
+uv run equiparity verify            # theory + claims
+uv run equiparity verify --proofs   # Lean formalization; needs elan (see proofs/README.md)
 ```
 
-`verify_claims.py` reports `PASSED 184  FAILED 0` against this tree, and `verify_theory.py`
-reports no failures. See [`verification/README.md`](verification/README.md) for what each covers
-and how to reproduce the underlying measurements.
+`--theory` checks the parity-gap identities numerically and recomputes the parity-gap table
+(Table 1). `--claims` checks every reported quantity against the committed records and confirms
+that `results/index.json` catalogues every record. `--proofs` builds the Lean 4 formalization in
+[`proofs/`](proofs/README.md) and audits it for unfinished proofs and nonstandard axioms.
 
 ## Using the parity toggle
 
@@ -97,13 +108,18 @@ the profile pass it.
 uv run --extra nequip pytest tests/verification -q
 ```
 
-## Experiments
+## Reproducing the experiments
 
-[`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) is the index: one row per experiment, naming the
-question it answers, the script that runs it, the configs it uses and the record it writes.
-Measurements on externally released models additionally need checkpoints this repository does not
-redistribute — [`docs/EXTERNAL_MODELS.md`](docs/EXTERNAL_MODELS.md) says how to obtain each.
-[`docs/COMPUTE.md`](docs/COMPUTE.md) reports the hardware, precision policy and cost.
+```bash
+uv run equiparity grid generate main                                   # 84 configs + run lists
+uv run --extra nequip equiparity run configs/grid/nequip_piezoelectric_o3_seed0.yaml
+uv run --extra analysis equiparity aggregate --runs /path/to/runs      # summary records
+```
+
+Run lists (`configs/<grid>/nequip_runs.txt`, `mace_runs.txt`) group runs by install profile. Each
+run writes a provenance manifest, config snapshot and metrics to `outputs/<experiment_id>/`.
+`equiparity aggregate` expects the run tree layout used for the study (`metrics/*.json` and
+`raw/box*/<run>/`); the raw training-run tree itself is not part of this release.
 
 ## Data
 
@@ -111,69 +127,61 @@ Every dataset is public. Manifests (`data/manifests/`, each carrying SHA-256 dig
 processed archives) and split definitions (`data/splits/`) are versioned. The processed Materials
 Project archives (`data/raw/mp/*.npz`, 6.7 MB across six files) are tracked: they are the exact
 arrays the evaluation reads, they carry the `mp-*` identifiers of the 2,000-crystal centrosymmetric
-population in both coordinate variants, and no public endpoint returns them. QM9 is not tracked —
-its source tarball is pinned by content hash in `data/manifests/qm9.yaml` and
-`scripts/data/prepare_qm9.py` rebuilds the 133,885 `.xyz` files.
+population in both coordinate variants, and no public endpoint returns them. QM9 is not tracked; its
+source archive is pinned by content hash in `data/manifests/qm9.yaml`.
 
 ```bash
-uv run --extra data python scripts/data/prepare_qm9.py
-uv run --extra data python scripts/data/prepare_mp.py
+uv run --extra data equiparity data prepare qm9   # from the extracted dsgdb9nsd .xyz files
+uv run --extra data equiparity data prepare mp    # needs MP_TOKEN in the environment or .env
 ```
-
-`data/figure_series/` holds the machine-readable series behind the published figures, one file per
-panel, documented in [`data/figure_series/README.txt`](data/figure_series/README.txt).
 
 ## Results
 
-`results/` holds the frozen measurement records the study cites, at two levels of granularity.
-Per-run summary records cover the matched-pair grid: test error with its seed spread and paired
-test per core and target, false-flag fractions and violation medians per arm and coordinate
-variant, per-seed values for the augmentation, loss-reweighting and readout-pooling experiments,
-the threshold sweep, and the symmetry metadata of all 2,000 evaluation crystals. Every record names
-the script that produced it in [`results/README.md`](results/README.md), so a claim traces to a
-record and a record traces to code.
-
-For the measurements on released models the per-structure vectors are given in full:
-`results/tensor_predictors/` carries the predicted rank-3 tensor and its Frobenius norm for both
-dedicated tensor predictors in each of four mask and coordinate conditions; `results/random_init/`
-the violation magnitude for three rotation-only potentials at random initialization;
-`results/frozen_backbone/` the same for every seed of two frozen-backbone heads. Each is a
-2,000-element vector over the evaluation population.
+[`results/`](results/README.md) holds the frozen measurement records behind every number, figure
+panel and table in the manuscript, together with `run_manifest.json`, the execution manifest of all
+195 training runs. [`results/index.json`](results/index.json) maps each record to the manuscript
+items it backs and to what produced it.
 
 ## Layout
 
 ```text
-src/equiparity/     package code: domain, io, data, features, models, training,
-                    evaluation, verification, workflows, reproducibility, cli
-tests/              mirrors src/equiparity/, plus the parity verification gate
-verification/       claim and theorem checkers that read only results/
-configs/            experiment configs (YAML), including the 84-run grid
-scripts/            drivers, grouped as data/, grids/, experiments/, analysis/
-results/            frozen measurement records, with README.md naming each producer
-data/               manifests, splits, processed archives, figure series
-docs/               experiment index, external-model sources, compute
-vendor/hotpp/       vendored HotPP (MIT, arXiv:2402.15286), no PyPI release
-outputs/            per-run results and provenance manifests (not committed)
+src/equiparity/   package: domain, io, data, features, models, training, evaluation,
+                  verification, workflows, cli
+tests/            mirrors src/equiparity/, plus the parity verification gate and release checks
+configs/          per-run experiment configs, one directory per grid
+results/          frozen measurement records, their index, and the execution manifest
+data/             manifests, splits, and processed public-data archives
+proofs/           Lean 4 formalization and its audit script
 ```
-
-Re-running a driver end to end reads the raw training-run tree, which is not part of this release.
-It defaults to `runs/` at the repository root; set `$PARITY_RUNS` to point elsewhere. The analysis
-scripts under `scripts/analysis/` and the experiment drivers that aggregate over seeds are the ones
-that need it; nothing in `verification/` does.
 
 ## Citing this work
 
-The archived release is deposited at Zenodo under DOI
-[10.5281/zenodo.22003285](https://doi.org/10.5281/zenodo.22003285). Machine-readable metadata is in
-[CITATION.cff](CITATION.cff).
+If you use this code or the released records, please cite the article and the software archive:
+
+```bibtex
+@article{polat2026paritygap,
+  title   = {The parity gap in crystal tensor prediction},
+  author  = {Polat, Can and Kurban, Mustafa and Serpedin, Erchin and Kurban, Hasan},
+  year    = {2026},
+  note    = {Manuscript under review}
+}
+
+@software{polat2026equiparity,
+  title     = {equiparity: code and measurement records for "The parity gap in crystal tensor prediction"},
+  author    = {Polat, Can and Kurban, Mustafa and Serpedin, Erchin and Kurban, Hasan},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.22003285},
+  url       = {https://github.com/KurbanIntelligenceLab/equiparity}
+}
+```
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT; see [LICENSE](LICENSE).
 
 ## Known limitations
 
 Exact numerical reproducibility is not guaranteed across torch, CUDA or cuDNN releases, or across
 devices. Two GPU classes were used and are not interchangeable, so per-core wall-clock is not a
-like-for-like architecture comparison; see [`docs/COMPUTE.md`](docs/COMPUTE.md). The CliffordSTF
-core is present but was withdrawn from the study for numerical conditioning.
+like-for-like architecture comparison; `results/run_manifest.json` records which GPU ran each core.

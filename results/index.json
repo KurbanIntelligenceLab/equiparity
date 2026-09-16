@@ -1,0 +1,182 @@
+{
+  "description": "Index of released result records: what each holds, which manuscript items it backs, and what produced it.",
+  "records": [
+    {
+      "file": "parity_gap_table.csv",
+      "contents": "Parity gap per centrosymmetric class at rank 1 and rank 3 (strain-symmetric piezoelectric space)",
+      "manuscript_items": [
+        "Table 1"
+      ],
+      "producer": "equiparity verify --theory"
+    },
+    {
+      "file": "distribution_percentiles.json",
+      "contents": "Percentiles, maxima and false-flag fraction of predicted piezoelectric norms on idealized inputs, per arm",
+      "manuscript_items": [
+        "Figure 1c"
+      ]
+    },
+    {
+      "file": "stats.json",
+      "contents": "Test error of both arms per core and target with seed spread and paired test; false-flag fraction, violation median, structure-level Wilcoxon and bootstrap CIs per arm and coordinate variant",
+      "manuscript_items": [
+        "Figure 1c",
+        "Figure 2a",
+        "Figure 3a",
+        "Supplementary Table 1 (regression controls)",
+        "Supplementary Note: Population, thresholds, and readout robustness"
+      ],
+      "producer": "equiparity aggregate"
+    },
+    {
+      "file": "rotation_subgroup.json",
+      "contents": "False-flag fraction resolved by point-group family",
+      "manuscript_items": [
+        "Figure 2a",
+        "Supplementary Note: Population, thresholds, and readout robustness (point-group validation)"
+      ]
+    },
+    {
+      "file": "symmetry_breaking.csv",
+      "contents": "Predicted tensor norm against polar distortion amplitude, per material, core, arm and seed",
+      "manuscript_items": [
+        "Figure 2b"
+      ]
+    },
+    {
+      "file": "symmetry_breaking.json",
+      "contents": "Distortion-path measurements with symmetry verification of each path point",
+      "manuscript_items": [
+        "Figure 2b"
+      ]
+    },
+    {
+      "file": "zero_injection_curve.json",
+      "contents": "False-flag fraction against the number of injected zero-labelled crystals",
+      "manuscript_items": [
+        "Figure 3b",
+        "Supplementary Note: Training interventions and output enforcement"
+      ]
+    },
+    {
+      "file": "zero_injection_sets.json",
+      "contents": "Zero-labelled set definitions for the injection curve",
+      "manuscript_items": [
+        "Figure 3b"
+      ]
+    },
+    {
+      "file": "loss_weight_sweep.json",
+      "contents": "False-flag fraction against zero-row loss weight on trained, seen and unseen crystals",
+      "manuscript_items": [
+        "Figure 3c",
+        "Supplementary Note: Training interventions and output enforcement"
+      ]
+    },
+    {
+      "file": "threshold_curves.csv",
+      "contents": "False-flag fraction at 25 log-spaced thresholds per arm and coordinate variant",
+      "manuscript_items": [
+        "Supplementary Figure 1 (threshold curves)"
+      ],
+      "producer": "equiparity aggregate"
+    },
+    {
+      "file": "pooling_arms.json",
+      "contents": "Per-seed summed and mean-pooled readout arms",
+      "manuscript_items": [
+        "Supplementary Table 2 (pooling)"
+      ]
+    },
+    {
+      "file": "augmentation.json",
+      "contents": "Per-seed seen and unseen false-flag fractions for the augmentation arms, with the trained-zero control",
+      "manuscript_items": [
+        "Supplementary Table 3 (augmentation)"
+      ]
+    },
+    {
+      "file": "augmentation_eval_split.json",
+      "contents": "Seen/unseen index partition of the evaluation population and its space groups",
+      "manuscript_items": [
+        "Supplementary Table 3 (augmentation)"
+      ]
+    },
+    {
+      "file": "inversion_averaging.json",
+      "contents": "False-flag fraction and violation before and after output inversion antisymmetrization, with a non-centrosymmetric control",
+      "manuscript_items": [
+        "Supplementary Table 4 (output antisymmetrization)"
+      ]
+    },
+    {
+      "file": "appendix_stats.json",
+      "contents": "Parameter counts and capacity ratios, target calibration, O(3) floor, size dependence, compute",
+      "manuscript_items": [
+        "Supplementary Note: Model construction, regression controls, and output audit (compute and environment)",
+        "Methods (reproducibility)"
+      ],
+      "producer": "equiparity aggregate"
+    },
+    {
+      "file": "run_manifest.json",
+      "contents": "Execution manifest: every training run with config and SHA-256, data manifests, install profile, locked package versions, hardware and compute",
+      "manuscript_items": [
+        "Methods (reproducibility)"
+      ],
+      "producer": "equiparity manifest"
+    },
+    {
+      "file": "tables.md",
+      "contents": "Rendered accuracy, violation and timing tables",
+      "manuscript_items": [
+        "Supplementary Table 1 (regression controls)"
+      ],
+      "producer": "equiparity aggregate"
+    },
+    {
+      "file": "tables_extra.md",
+      "contents": "Rendered capacity and full accuracy tables",
+      "manuscript_items": [
+        "Supplementary Note: Model construction, regression controls, and output audit"
+      ],
+      "producer": "equiparity aggregate"
+    },
+    {
+      "file": "ood_spacegroups.json",
+      "contents": "Space group, symbol, crystal family and atom count of each of the 2,000 evaluation crystals",
+      "manuscript_items": [
+        "Methods (data and splits)"
+      ]
+    },
+    {
+      "file": "ood_symmetry.json",
+      "contents": "Centrosymmetry counts and selection tolerance of the evaluation population",
+      "manuscript_items": [
+        "Methods (data and splits)",
+        "Supplementary Note: Population, thresholds, and readout robustness (coordinate tolerance)"
+      ]
+    },
+    {
+      "file": "split_contamination.json",
+      "contents": "Train/evaluation overlap check",
+      "manuscript_items": [
+        "Methods (data and splits)"
+      ]
+    },
+    {
+      "file": "size_consistency.json",
+      "contents": "Supercell scaling of the summed readout",
+      "manuscript_items": [
+        "Supplementary Note: Population, thresholds, and readout robustness (readout scaling)"
+      ]
+    },
+    {
+      "file": "equiformer_v2_upstream.json",
+      "contents": "Vendored-against-upstream reconstruction of the EquiformerV2 source",
+      "manuscript_items": [
+        "Supplementary Note: Model construction, regression controls, and output audit (EquiformerV2 provenance)"
+      ]
+    }
+  ]
+}

@@ -23,7 +23,7 @@ def test_validate_pooling_rejects_unknown_mode() -> None:
 
 
 def test_sum_pooling_matches_original_index_add() -> None:
-    """Regression guard: "sum" must be bit-identical to the pre-existing index_add_ readout."""
+    """The "sum" pooling must be bit-identical to a direct index_add_ readout."""
     torch.manual_seed(0)
     per_unit = torch.randn(7, 4, dtype=torch.float64)
     unit_to_graph = torch.tensor([0, 0, 0, 1, 1, 2, 2], dtype=torch.long)
@@ -57,7 +57,7 @@ def test_mean_pooling_recovers_sum_when_every_structure_has_one_unit() -> None:
 def test_mean_pooling_is_size_invariant_under_replication() -> None:
     """K identical units all mapped to the same structure: mean of K copies == the unit value,
     matching the supercell size-consistency property that
-    scripts/experiments/size_consistency.py measures end-to-end (this is the same
+    results/size_consistency.json records end-to-end (this is the same
     algebraic fact restated as a pure-tensor unit test)."""
     unit_value = torch.tensor([2.0, -1.0, 5.0], dtype=torch.float64)
     for k in (1, 2, 3, 8):

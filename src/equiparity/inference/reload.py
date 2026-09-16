@@ -31,7 +31,7 @@ import yaml
 # the `slice` global by default. This must run before anything imports e3nn, hence module scope.
 torch.serialization.add_safe_globals([slice])
 
-from equiparity.domain.experiment import ExperimentConfig  # noqa: E402
+from equiparity.domain.experiment import CORES, ExperimentConfig  # noqa: E402
 from equiparity.domain.structure import AtomicStructure  # noqa: E402
 from equiparity.domain.target import TARGETS  # noqa: E402
 from equiparity.io.config import parse_experiment_config  # noqa: E402
@@ -96,7 +96,7 @@ def find_piezo_runs(mirror: Path, *, dataset: str = "mp_piezoelectric") -> dict[
         except json.JSONDecodeError:
             continue
         label = metrics.get("run_label", "")
-        if not label or label.startswith("clifford") or "piezoelectric" not in label:
+        if not label.startswith(CORES) or "piezoelectric" not in label:
             continue
         if _dataset_of(run_dir, metrics) != dataset:
             continue
@@ -107,7 +107,7 @@ def find_piezo_runs(mirror: Path, *, dataset: str = "mp_piezoelectric") -> dict[
 
 
 def _dataset_of(run_dir: Path, metrics: dict) -> str | None:
-    """`dataset` was added to metrics.json late; config_snapshot.yaml has always carried it."""
+    """Dataset of a run, from metrics.json or else config_snapshot.yaml."""
     if "dataset" in metrics:
         return metrics["dataset"]
     snapshot = run_dir / "config_snapshot.yaml"

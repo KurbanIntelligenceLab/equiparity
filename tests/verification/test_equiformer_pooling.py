@@ -8,7 +8,7 @@ no valid odd-parity paths from an all-even source, making its output identically
 everywhere, not specifically on centrosymmetric crystals -- a degenerate check, not the
 Theorem-1 property). This file therefore checks the two properties that DO apply here:
 
-1. ``pooling: sum`` (default) is bit-identical to the pre-existing ``index_add_`` readout.
+1. ``pooling: sum`` (default) is bit-identical to a direct ``index_add_`` readout.
 2. ``pooling: mean`` still passes the rotation-equivariance gate (the property EquiformerV2 is
    verified to hold; float32, since its Wigner buffers are float32 -- module docstring).
 
@@ -92,7 +92,7 @@ def test_pooling_defaults_to_sum() -> None:
 
 
 def test_sum_pooling_is_bit_identical_to_index_add() -> None:
-    """Regression guard, within a SINGLE forward call.
+    """Within a SINGLE forward call.
 
     EquiformerV2 draws a fresh random per-edge frame on every forward pass (module docstring
     in ``equiparity.inference.reload``), so two separate ``model(batch)`` calls on identical

@@ -205,6 +205,6 @@
       "RTX PRO 6000 Blackwell WS": 40.64355775251907
     },
     "cost_upper_bound_usd": 72.43865696591126,
-    "cost_note": "price actually paid was not recorded; launch_grid.sh selects the cheapest offer with dph < $1.00/hr, so this is an upper bound, not an estimate"
+    "cost_note": "price actually paid was not recorded; runs used the cheapest GPU offer under $1.00/hr, so this is an upper bound, not an estimate"
   }
 }

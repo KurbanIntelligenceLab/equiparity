@@ -1,8 +1,9 @@
 {
-  "title": "equiparity: code and measurement records for \"A single design choice determines whether machine learning models of materials make physically impossible predictions\"",
-  "description": "Matched-pair model builders and a parity verification gate for equivariant machine-learned models of materials. Each core is built twice from one typed configuration, differing only in whether its features carry parity labels, so the parity gap is measured rather than inferred. Ships the frozen measurement records and two checkers that re-derive every reported quantity from them.",
+  "title": "equiparity: code and measurement records for \"The parity gap in crystal tensor prediction\"",
   "upload_type": "software",
-  "license": "MIT",
+  "description": "Code, configurations and frozen measurement records for \"The parity gap in crystal tensor prediction\". Provides matched O(3)/SO(3) model builders for NequIP, Allegro and MACE with a parity verification gate, the equiparity command-line interface for training, data preparation, aggregation and release checks, the result records behind every figure and table with an execution manifest of all training runs, and a Lean 4 formalization of the parity-gap guarantees.",
+  "version": "TODO: set to the release tag",
+  "publication_date": "TODO: YYYY-MM-DD of the release",
   "creators": [
     {
       "name": "Polat, Can",
@@ -39,5 +40,21 @@
     "Neumann's principle",
     "machine-learned interatomic potentials"
   ],
-  "access_right": "open"
+  "license": "MIT",
+  "access_right": "open",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/KurbanIntelligenceLab/equiparity",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    },
+    {
+      "identifier": "TODO: article DOI once published",
+      "relation": "isSupplementTo",
+      "resource_type": "publication-article",
+      "scheme": "doi"
+    }
+  ],
+  "notes": "TODO: remove before release. Template metadata; finalize version, date and the article DOI."
 }

@@ -30,17 +30,12 @@ Thumbs.db
 .envrc
 .mp_cache/
 
-# Training run trees: per-run outputs and provenance manifests, not part of the release
+# Training run trees: per-run outputs and provenance manifests
 /outputs/
 /runs/
 
-# Generated per-experiment Markdown reports
+# Markdown reports and figures written by `equiparity aggregate`
 /docs/results/
-
-# Manuscript sources: drafted in this tree, not part of the code release.
-# Their LaTeX build artifacts are covered by development/.gitignore conventions.
-/docs/draft/
-/docs/draft_new/
 
 # Datasets. Raw data is external; manifests, splits and the processed MP archives ship.
 /data/raw/**
@@ -55,15 +50,3 @@ Thumbs.db
 !src/equiparity/models/equiformer_v2/Jd.pt
 *.ckpt
 *.parquet
-
-# Cached backbone features behind the frozen-backbone records
-results/frozen_backbone/*_train.npz
-results/frozen_backbone/*_val.npz
-results/frozen_backbone/*_test.npz
-results/frozen_backbone/*_ood.npz
-
-# External model checkpoints and research codebases, obtained per docs/EXTERNAL_MODELS.md
-third_party/
-
-# Development scaffolding
-/development/

@@ -1,6 +1,6 @@
 """Load the processed QM9 dataset and its split into typed samples.
 
-Reads the concatenated archive written by ``scripts/data/prepare_qm9.py`` and reconstructs
+Reads the concatenated archive written by ``equiparity data prepare qm9`` and reconstructs
 :class:`LabeledStructure` records on demand, restricted to a named split partition.
 """
 

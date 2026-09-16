@@ -2,7 +2,7 @@
 
 Every core's tensor head accumulates a per-atom (NequIP, MACE, EquiformerV2) or per-edge (Allegro)
 contribution into a per-structure total via ``index_add_``. That sum is the repo's committed
-behaviour, and it is extensive: ``scripts/experiments/size_consistency.py`` shows the prediction
+behaviour, and it is extensive: the size-consistency measurement shows the prediction
 on a K-replica supercell of a periodic crystal is exactly K times the primitive-cell prediction
 (max deviation < 7e-14 across the sweep in ``results/size_consistency.json``). Piezoelectric and
 elastic tensors are physically intensive properties, so a mean-pooled readout is offered as an

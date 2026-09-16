@@ -110,20 +110,6 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
             from equiparity.training.equiformer_tensor import train_equiformer_scalar
 
             result = train_equiformer_scalar(config)
-    elif config.core == "clifford_stf":
-        # CliffordSTF: O(3) geometric-algebra representative (requires float64) across all targets.
-        if config.target in _TENSOR_TARGETS:
-            from equiparity.training.clifford_tensor import train_clifford_tensor
-
-            result = train_clifford_tensor(config, ood_npz=ood)
-        elif config.target in _VECTOR_TARGETS:
-            from equiparity.training.clifford_tensor import train_clifford_dipole
-
-            result = train_clifford_dipole(config)
-        else:
-            from equiparity.training.clifford_tensor import train_clifford_scalar
-
-            result = train_clifford_scalar(config)
     elif config.target in _TENSOR_TARGETS:
         result = train_tensor(config, ood_npz=ood)  # nequip or allegro
     elif config.target in _VECTOR_TARGETS:
@@ -162,9 +148,8 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
         value = getattr(result, field, None)
         if value is not None:
             metrics[field] = value
-    # Run instrumentation: both-variant OOD curves/distributions, the per-epoch
-    # false-flag history, and wall-clock timing.
-    for field in ("ood_variants", "ood_false_flag_history", "timing"):
+    # Run instrumentation: both-variant OOD curves/distributions and wall-clock timing.
+    for field in ("ood_variants", "timing"):
         value = getattr(result, field, None)
         if value is not None:
             metrics[field] = value

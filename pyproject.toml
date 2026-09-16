@@ -1,19 +1,42 @@
 [project]
 name = "equiparity"
-version = "0.1.0"
-description = "A single design choice determines whether machine learning models of materials make physically impossible predictions"
+version = "1.0.0"
+description = "Code and measurement records for The parity gap in crystal tensor prediction"
 requires-python = "==3.12.*"
 readme = "README.md"
 license = { file = "LICENSE" }
-# Shared base: only what training + data-loading need (numpy, torch, ase). The e3nn version
-# is pinned by the model extras below (MACE e3nn==0.4.4 vs NequIP/Allegro e3nn>=0.6 conflict).
-# Data-prep libraries (pymatgen/mp-api/spglib) live in the `data` extra so the training/cloud
-# image stays lean — data loading at train time reads only committed npz via numpy.
+authors = [
+  { name = "Can Polat" },
+  { name = "Mustafa Kurban", email = "kurbanm@ankara.edu.tr" },
+  { name = "Erchin Serpedin" },
+  { name = "Hasan Kurban", email = "hkurban@hbku.edu.qa" },
+]
+keywords = [
+  "equivariant neural networks",
+  "parity",
+  "crystal symmetry",
+  "piezoelectric tensor",
+  "materials machine learning",
+]
+classifiers = [
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Physics",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Intended Audience :: Science/Research",
+]
+# Shared base: what training, data loading and the CLI need. The e3nn version is pinned by the
+# model extras below (MACE e3nn==0.4.4 vs NequIP/Allegro e3nn>=0.6 conflict).
 dependencies = [
   "numpy>=2.0",
   "torch>=2.11.0",
   "ase>=3.23",
+  "pyyaml>=6.0",
 ]
+
+[project.urls]
+Repository = "https://github.com/KurbanIntelligenceLab/equiparity"
+Archive = "https://doi.org/10.5281/zenodo.22003285"
 
 [project.optional-dependencies]
 # NequIP + Allegro family (e3nn 0.6.x). Install with: uv sync --extra nequip
@@ -26,22 +49,22 @@ nequip = [
 mace = [
   "mace-torch>=0.3.16",
 ]
-# Data preparation only (fetching/building datasets); not needed for training or the cloud image.
+# Data preparation only (fetching/building datasets): `equiparity data prepare`.
 data = [
   "spglib>=2.5",
   "pymatgen>=2025.1.1",
   "mp-api>=0.45",
 ]
-# Claim and theorem checkers only. Installs on any platform, needs no GPU and no torch.
+# Aggregating a training-run tree into summary records: `equiparity aggregate`.
+analysis = [
+  "scipy>=1.13",
+  "matplotlib>=3.9",
+]
+# Claim and theorem checkers: `equiparity verify`. Needs no GPU.
 verify = [
   "numpy>=2.0",
   "sympy>=1.13",
 ]
-# JARVIS-DFT fallback source for the piezoelectric dataset.
-jarvis = [
-  "jarvis-tools>=2024.10.30",
-]
-
 [project.scripts]
 equiparity = "equiparity.cli:main"
 
@@ -86,20 +109,22 @@ dev = [
 [tool.ruff]
 target-version = "py312"
 line-length = 100
-# Vendored third-party model snapshots.
+# Vendored model implementation within the package.
 extend-exclude = [
   "src/equiparity/models/equiformer_v2",
-  "src/equiparity/models/clifford_stf",
-  "src/equiparity/models/clifford",
-  "vendor/hotpp",
 ]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "UP", "B", "ANN", "RUF", "SIM", "PTH", "RET"]
 
 [tool.ruff.lint.per-file-ignores]
-"scripts/*" = ["ANN", "RUF001"]
-"verification/*" = [
+# Numerical aggregation code; loosely typed.
+"src/equiparity/evaluation/aggregate.py" = ["ANN", "RUF001", "RUF002", "E501", "C408", "PTH", "SIM", "RET", "B", "N"]
+"tests/verification/test_claims.py" = [
+  "ANN", "RUF001", "N802", "N803", "N806", "N816", "E701", "E702", "E731", "E741",
+  "PTH", "SIM115", "RET503",
+]
+"tests/verification/test_theory.py" = [
   "ANN", "RUF001", "N802", "N803", "N806", "N816", "E701", "E702", "E731", "E741",
   "PTH", "SIM115", "RET503",
 ]

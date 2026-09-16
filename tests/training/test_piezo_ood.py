@@ -17,7 +17,8 @@ pytest.importorskip("nequip")
 _OOD = Path("data/raw/mp/mp_ood_centrosymmetric_processed.npz")
 if not _OOD.exists():
     pytest.skip(
-        "MP OOD data not present; run scripts/data/prepare_mp.py ood", allow_module_level=True
+        "MP OOD data not present; run `equiparity data prepare mp --dataset ood`",
+        allow_module_level=True,
     )
 
 import torch  # noqa: E402

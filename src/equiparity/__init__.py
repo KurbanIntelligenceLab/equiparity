@@ -1,9 +1,9 @@
-"""equiparity: when parity matters in equivariant models for materials properties.
+"""equiparity: parity-aware equivariant models for crystal tensor prediction.
 
-See verification/ for the checkers that assert every reported claim against results/. This package
-holds all importable code; scripts/ orchestrate it and carry no scientific logic.
+Run ``equiparity --help`` for the command-line interface; ``equiparity verify`` reconciles the
+reported claims with the released records in results/.
 """
 
 from __future__ import annotations
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"
