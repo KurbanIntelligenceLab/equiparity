@@ -1,6 +1,6 @@
 # Lean proofs of the parity-gap guarantees
 
-This project formalizes the mathematical guarantees of **The parity gap in crystal tensor prediction**. It contains 9 theorem declarations, with Lean 4 and mathlib pinned to `v4.33.1`. The exact mathlib revision and its transitive dependencies are recorded in `lake-manifest.json`.
+This project formalizes the mathematical guarantees of **The parity gap in crystal tensor prediction**. It contains 9 theorem declarations, with Lean 4 and mathlib pinned to `v4.33.1`. The exact mathlib commit and its transitive dependencies are recorded in `lake-manifest.json`.
 
 ## Reproduce
 

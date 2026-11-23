@@ -43,9 +43,9 @@ class MACEConfig:
     avg_num_neighbors: float = 8.0
     seed: int = 42
     model_dtype: str = "float64"
-    # "sum" (default) reproduces every committed result bit-identically. "mean" divides the
-    # summed per-atom readout by the structure's atom count (see equiparity.models.pooling).
+    # Mean pooling normalizes by the number of atoms in each crystal.
     pooling: str = "sum"
+    tensor_head: str = "linear"
 
     def __post_init__(self) -> None:
         validate_pooling(self.pooling)
@@ -156,7 +156,7 @@ class MACETensorModel(torch.nn.Module):
     per-atom by an ``o3.Linear`` and
     summed over the structure's atoms. The O(3) arm uses the target's true irreps; the SO(3) arm
     (``use_so3=True``, all-even hidden) relabels them all even. For a centrosymmetric structure the
-    O(3) odd-parity output cancels to exact zero while the SO(3) output does not — the headline.
+    O(3) odd-parity output cancels to exact zero while the SO(3) output does not.
     """
 
     def __init__(self, config: MACEConfig, mode: ParityMode, o3_output_irreps: str) -> None:
@@ -173,7 +173,15 @@ class MACETensorModel(torch.nn.Module):
         # affect the O(3) zero (parity cancellation is structural at every layer).
         self._probe_name = self._deepest_tensor_probe()
         self._probe_module = self._find_probe(self._probe_name)
-        self.readout = o3.Linear(self._probe_module.irreps_out, self.output_irreps)
+        in_irreps = self._probe_module.irreps_out
+        if config.tensor_head == "complete":
+            from equiparity.models.tensor_head import CompleteTensorHead
+
+            self.readout = CompleteTensorHead(str(in_irreps), str(self.output_irreps))
+        elif config.tensor_head == "linear":
+            self.readout = o3.Linear(o3.Irreps(in_irreps), self.output_irreps)
+        else:
+            raise ValueError(f"unknown tensor head: {config.tensor_head}")
         readout_dtype = torch.float32 if config.model_dtype == "float32" else torch.float64
         self.readout = self.readout.to(readout_dtype)
 

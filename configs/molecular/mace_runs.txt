@@ -1,0 +1,12 @@
+configs/molecular/mace_U0_o3_seed0.yaml
+configs/molecular/mace_U0_o3_seed1.yaml
+configs/molecular/mace_U0_o3_seed2.yaml
+configs/molecular/mace_dipole_o3_seed0.yaml
+configs/molecular/mace_dipole_o3_seed1.yaml
+configs/molecular/mace_dipole_o3_seed2.yaml
+configs/molecular/mace_U0_so3_seed0.yaml
+configs/molecular/mace_U0_so3_seed1.yaml
+configs/molecular/mace_U0_so3_seed2.yaml
+configs/molecular/mace_dipole_so3_seed0.yaml
+configs/molecular/mace_dipole_so3_seed1.yaml
+configs/molecular/mace_dipole_so3_seed2.yaml

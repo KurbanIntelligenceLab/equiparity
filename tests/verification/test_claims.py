@@ -1,527 +1,203 @@
-"""Release checks that reconcile reported claims with the frozen result records."""
+"""Recompute the reported measurements from released arrays and scientific records."""
 
-import math
-import os
-import sys
+import csv
+import io
+import json
+import zipfile
+from collections import defaultdict
+from pathlib import Path
 
-RAW_DIR = None
-FAIL, PASS = [], []
+import numpy as np
+import pytest
+
+from equiparity.workflows.symmetry_masks import measure_masks
+from equiparity.workflows.tensor_datasets import validate_tensor_dataset
+
+ROOT = Path(__file__).resolve().parents[2]
+RESULTS = ROOT / "results"
 
 
-def chk(label, got, want, tol=5e-4, note=""):
-    ok = abs(got - want) <= tol
-    (PASS if ok else FAIL).append((label, got, want, note))
-    mark = "pass" if ok else "FAIL"
-    print(f"  [{mark}] {label:<56s} computed={got:<13.6g} stated={want:<13.6g} {note}")
-    return ok
+def record(stem):
+    return json.loads((RESULTS / f"{stem}.json").read_text())
 
 
-def section_group_theory():
-    import sympy as sp
+@pytest.fixture(scope="module")
+def predictions():
+    with zipfile.ZipFile(RESULTS / "predictions.zip") as archive:
+        yield archive
 
-    print("\n[1] CRYSTALLOGRAPHIC GROUP THEORY (exact, sympy)")
-    s3, h, I3 = sp.sqrt(3) / 2, sp.Rational(1, 2), sp.eye(3)
-    rz = lambda c, s: sp.Matrix([[c, -s, 0], [s, c, 0], [0, 0, 1]])
-    rx = lambda c, s: sp.Matrix([[1, 0, 0], [0, c, -s], [0, s, c]])
-    C2z, C2x, C4z = rz(-1, 0), rx(-1, 0), rz(0, 1)
-    C3z, C6z = rz(-h, s3), rz(h, s3)
-    C3_111 = sp.Matrix([[0, 0, 1], [1, 0, 0], [0, 1, 0]])
-    INV, Mz, Mx = -I3, sp.diag(1, 1, -1), sp.diag(-1, 1, 1)
-    S4z = INV * C4z
 
-    GEN = {
-        "1": [],
-        "-1": [INV],
-        "2": [C2z],
-        "m": [Mz],
-        "2/m": [C2z, INV],
-        "222": [C2z, C2x],
-        "mm2": [C2z, Mx],
-        "mmm": [C2z, C2x, INV],
-        "4": [C4z],
-        "-4": [S4z],
-        "4/m": [C4z, INV],
-        "422": [C4z, C2x],
-        "4mm": [C4z, Mx],
-        "-42m": [S4z, C2x],
-        "4/mmm": [C4z, C2x, INV],
-        "3": [C3z],
-        "-3": [C3z, INV],
-        "32": [C3z, C2x],
-        "3m": [C3z, Mx],
-        "-3m": [C3z, C2x, INV],
-        "6": [C6z],
-        "-6": [C3z, Mz],
-        "6/m": [C6z, INV],
-        "622": [C6z, C2x],
-        "6mm": [C6z, Mx],
-        "-6m2": [C3z, Mz, C2x],
-        "6/mmm": [C6z, C2x, INV],
-        "23": [C2z, C3_111],
-        "m-3": [C2z, C3_111, INV],
-        "432": [C4z, C3_111],
-        "-43m": [S4z, C3_111],
-        "m-3m": [C4z, C3_111, INV],
-    }
-    CENTRO = {"-1", "2/m", "mmm", "4/m", "4/mmm", "-3", "-3m", "6/m", "6/mmm", "m-3", "m-3m"}
-    PROPER = {
-        "-1": "1",
-        "2/m": "2",
-        "mmm": "222",
-        "4/m": "4",
-        "4/mmm": "422",
-        "-3": "3",
-        "-3m": "32",
-        "6/m": "6",
-        "6/mmm": "622",
-        "m-3": "23",
-        "m-3m": "432",
-    }
+def load_array(archive, name):
+    return np.load(io.BytesIO(archive.read(name)), allow_pickle=False)
 
-    ORD = {
-        "1": 1,
-        "-1": 2,
-        "2": 2,
-        "m": 2,
-        "2/m": 4,
-        "222": 4,
-        "mm2": 4,
-        "mmm": 8,
-        "4": 4,
-        "-4": 4,
-        "4/m": 8,
-        "422": 8,
-        "4mm": 8,
-        "-42m": 8,
-        "4/mmm": 16,
-        "3": 3,
-        "-3": 6,
-        "32": 6,
-        "3m": 6,
-        "-3m": 12,
-        "6": 6,
-        "-6": 6,
-        "6/m": 12,
-        "622": 12,
-        "6mm": 12,
-        "-6m2": 12,
-        "6/mmm": 24,
-        "23": 12,
-        "m-3": 24,
-        "432": 24,
-        "-43m": 24,
-        "m-3m": 48,
-    }
 
-    def close(gens):
-        G = {sp.ImmutableMatrix(I3)} | {sp.ImmutableMatrix(g) for g in gens}
-        changed = True
-        while changed:
-            changed = False
-            for a in list(G):
-                for b in list(G):
-                    p = sp.ImmutableMatrix(sp.simplify(a * b))
-                    if p not in G:
-                        G.add(p)
-                        changed = True
-            if len(G) > 200:
-                raise RuntimeError("group closure diverged")
-        return G
+def run_name(run):
+    stem = "_".join(run[k] for k in ("core", "target", "parity", "loss"))
+    control = f"_zero_w{run['weight']}" if run["augmented"] else ""
+    return f"{stem}{control}_seed{run['seed']}"
 
-    cols = []
-    for i in range(3):
-        for j in range(3):
-            for k in range(j, 3):
-                T = sp.zeros(27, 1)
-                T[i * 9 + j * 3 + k] += 1
-                T[i * 9 + k * 3 + j] += 1
-                cols.append(T)
-    B = sp.Matrix.hstack(*cols)
-    Bp = (B.T * B).inv() * B.T
 
-    def inv_dim(G):
-        P = sp.zeros(27, 27)
-        for R in G:
-            P += sp.Matrix(sp.kronecker_product(sp.Matrix(R), sp.Matrix(R), sp.Matrix(R)))
-        return sp.simplify(Bp * sp.simplify(P / len(G)) * B).rank()
+def check_summary(measurements, summary):
+    np.testing.assert_allclose(np.mean(measurements), summary["mean"])
+    np.testing.assert_allclose(np.std(measurements, ddof=1), summary["sample_sd"], atol=1e-12)
 
-    groups, dims = {}, {}
-    for name, gens in GEN.items():
-        G = close(gens)
-        chk(f"|{name}| equals the crystallographic order", len(G), ORD[name], 0)
-        groups[name], dims[name] = G, inv_dim(G)
 
-    zero = sorted(g for g in dims if dims[g] == 0)
-    expect = sorted(CENTRO | {"432"})
-    chk(
-        "V^G = {0} exactly for 11 centrosymmetric classes and 432",
-        1.0 if zero == expect else 0.0,
-        1.0,
-        0,
-        "" if zero == expect else f"got {zero}",
+def test_regression_and_percentage_reductions(predictions):
+    data = record("crystal_regression")
+    assert len(data["runs"]) == 54 and len(data["configurations"]) == 18
+    grouped = defaultdict(list)
+    keys = ("target", "core", "parity", "loss", "augmented", "weight")
+    for r in data["runs"]:
+        stem = run_name(r)
+        with load_array(predictions, f"heldout/{stem}.npz") as raw:
+            target = raw["target"].astype(float)
+            mae = np.mean(np.abs(raw["prediction"].astype(float) - target))
+            split = "piezoelectric_ieee_augmented" if r["augmented"] else r["target"]
+            with np.load(ROOT / f"data/splits/mp_{split}_split.npz") as partitions:
+                np.testing.assert_array_equal(raw["ids"], partitions["test"])
+            np.testing.assert_allclose(np.abs(target).mean(), r["zero"], atol=1e-6)
+        assert len(target) == r["test_n"]
+        np.testing.assert_allclose(r["mae"], mae, rtol=0, atol=1e-9)
+        baseline = min(r[k] for k in ("zero", "training_mean", "training_median"))
+        assert mae < baseline
+        np.testing.assert_allclose(100 * (1 - mae / baseline), r["reduction_percent"])
+        grouped[tuple(r[k] for k in keys)].append(r)
+    for group in data["configurations"]:
+        runs = grouped[tuple(group[k] for k in keys)]
+        assert {r["seed"] for r in runs} == {0, 1, 2}
+        for metric in ("mae", "reduction_percent"):
+            check_summary([r[metric] for r in runs], group[metric])
+        values = [r["reduction_percent"] for r in runs]
+        np.testing.assert_allclose(
+            [min(values), max(values)], [group["reduction_percent"][k] for k in ("min", "max")]
+        )
+
+
+def test_class_flags_norms_and_percentiles(predictions):
+    data = record("class_symmetry")
+    quantiles = record("norm_percentiles")
+    summaries = defaultdict(list)
+    for row in data["runs"]:
+        summaries[row["run"]].append(row)
+    quant = {(r["core"], r["parity"], r["seed"]): r for r in quantiles["runs"]}
+    primary = []
+    changed = 0
+    for name, rows in summaries.items():
+        with load_array(predictions, f"symmetry/{name}.npz") as raw:
+            labels = raw["point_group"]
+            assert len(labels) == 2000 and len(set(labels)) == 11
+            arrays = {
+                k: raw[k]
+                for k in ("selected_idealized", "selected_raw", "random_idealized", "random_raw")
+            }
+            for row in rows:
+                values = arrays[f"{row['state']}_{row['geometry']}"][labels == row["group"]]
+                assert len(values) == row["n"]
+                np.testing.assert_allclose(100 * np.mean(values > 0.01), row["flag_percent"])
+                np.testing.assert_allclose(np.median(values), row["median_norm"], rtol=1e-6)
+            r = rows[0]
+            if r["augmented"] or r["loss"] != "tensor_huber":
+                continue
+            values = arrays["selected_idealized"]
+            q = quant[r["core"], r["arm"], r["seed"]]
+            np.testing.assert_allclose(
+                np.percentile(values, [5, 25, 50, 75, 95]),
+                [q[k] for k in ("p05", "p25", "p50", "p75", "p95")],
+            )
+            if r["arm"] == "so3":
+                primary.extend(rows)
+                changed += np.sum((values > 0.01) != (arrays["selected_raw"] > 0.01))
+            else:
+                assert np.max(values) <= 0.01 and np.max(arrays["selected_raw"]) <= 0.01
+    assert len(summaries) == 36 and changed == 1 and len(quant) == 18
+    for field, keys in (
+        ("by_class", ("group", "geometry", "state")),
+        ("by_backbone", ("core", "group", "geometry", "state")),
+    ):
+        for g in data[field]:
+            rows = [r for r in primary if all(r[k] == g[k] for k in keys)]
+            for metric in ("flag_percent", "median_norm"):
+                check_summary([r[metric] for r in rows], g[metric])
+    for g in quantiles["by_backbone"]:
+        rs = [r for r in quant.values() if (r["core"], r["parity"]) == (g["core"], g["parity"])]
+        for k in ("p05", "p25", "p50", "p75", "p95"):
+            check_summary([r[k] for r in rs], g[k])
+
+
+def test_zero_supervision_and_external_masks(predictions):
+    data = record("zero_supervision")
+    for row in data["runs"]:
+        with load_array(predictions, f"symmetry/{row['run']}.npz") as raw:
+            assert len(raw["training_zero_ids"]) == data["n_training_zeros"] == 1016
+            assert set(raw["ids"]).isdisjoint(raw["training_zero_ids"])
+            for key, column in (
+                ("train_selected", "training_zero_selected"),
+                ("train_final", "training_zero_final"),
+                ("unseen_selected", "selected_idealized"),
+            ):
+                np.testing.assert_allclose(100 * np.mean(raw[column] > 0.01), row[key])
+        with load_array(predictions, f"heldout/{row['run']}.npz") as raw:
+            assert len(raw["ids"]) == data["n_regression_test"]
+            np.testing.assert_allclose(
+                np.abs(raw["prediction"].astype(float) - raw["target"]).mean(), row["test_mae"]
+            )
+    for g in data["configurations"]:
+        rs = [r for r in data["runs"] if (r["arm"], r["weight"]) == (g["arm"], g["weight"])]
+        for k in ("train_selected", "train_final", "unseen_selected", "test_mae"):
+            check_summary([r[k] for r in rs], g[k])
+    assert measure_masks(RESULTS / "predictions.zip") == record("symmetry_masks")
+
+
+def test_independent_cohort_and_displacement(predictions):
+    with (RESULTS / "populations.csv").open() as stream:
+        rows = list(csv.DictReader(stream))
+    cohort = sorted(
+        [r for r in rows if r["initialization_family"]],
+        key=lambda r: int(r["initialization_index"]),
     )
-    noncentro = [g for g in dims if g not in CENTRO]
-    chk("number of non-centrosymmetric classes", len(noncentro), 21, 0)
-    chk(
-        "number of piezoelectric non-centrosymmetric classes",
-        sum(1 for g in noncentro if dims[g] > 0),
-        20,
-        0,
-        "432 is the sole exception",
-    )
+    assert len(cohort) == sum(bool(r["symmetry_class"]) for r in rows) == 2000
+    assert sum(bool(r["symmetry_class"]) for r in cohort) == 94
+    families = np.asarray([r["initialization_family"] for r in cohort])
+    for model, summary in record("initialization_controls").items():
+        values = load_array(predictions, f"initialization/{model}.npy")
+        median = np.median(values[families == "non-cubic"])
+        np.testing.assert_allclose(
+            np.mean(values > 0.01 * median), summary["fraction_above_1pct_of_noncubic_median"]
+        )
+        for family in set(families):
+            v = values[families == family]
+            assert len(v) == summary[family]["n"]
+            np.testing.assert_allclose(
+                [np.max(v), np.median(v)], [summary[family]["max"], summary[family]["median"]]
+            )
+    path = record("rutile_distortion")
+    assert len(path["space_groups"]) == 33 and len(path["runs"]) == 33 * 18
+    for g in path["mean_by_displacement"]:
+        rs = [r for r in path["runs"] if all(r[k] == g[k] for k in ("core", "parity", "delta"))]
+        assert {r["seed"] for r in rs} == {0, 1, 2}
+        check_summary([r["norm_T"] for r in rs], g["norm_T"])
+    assert all(r["false_flag_symmetrized"] == 0 for r in record("inversion_averaging").values())
 
-    print("  -- proper-rotation subgroup of each centrosymmetric class --")
-    for cls, claimed in PROPER.items():
-        Gp = {R for R in groups[cls] if sp.Matrix(R).det() == 1}
-        chk(f"G+({cls}) = {claimed}", 1.0 if Gp == groups[claimed] else 0.0, 1.0, 0)
-    chk("dim V^432 (Reynolds rank over m-3m proper subgroup)", dims["432"], 0, 0)
-    chk("dim V^23  (Reynolds rank over m-3 proper subgroup)", dims["23"], 1, 0)
-    chk(
-        "dim V^422 (rutile parent 4/mmm proper subgroup)",
-        dims["422"],
-        1,
-        0,
-        "nonzero, so only parity forbids a rutile response",
-    )
 
-    print("  -- Theorem 2: parity gap gamma_r = dim V^{G+} - dim V^{G} --")
-
-    def sym_basis(r):
-        if r == 1:
-            return sp.eye(3)
-        if r == 2:
-            cols = []
-            for i in range(3):
-                for j in range(i, 3):
-                    T = sp.zeros(9, 1)
-                    T[i * 3 + j] += 1
-                    T[j * 3 + i] += 1
-                    cols.append(T)
-            return sp.Matrix.hstack(*cols)
-        if r == 3:
-            return B
-        if r == 4:
-            seen, cols = set(), []
-            for i in range(3):
-                for j in range(3):
-                    for k in range(3):
-                        for l in range(3):
-                            key = tuple(sorted([tuple(sorted((i, j))), tuple(sorted((k, l)))]))
-                            if key in seen:
-                                continue
-                            seen.add(key)
-                            T = sp.zeros(81, 1)
-                            for a, b in {(i, j), (j, i)}:
-                                for c, d in {(k, l), (l, k)}:
-                                    T[a * 27 + b * 9 + c * 3 + d] += 1
-                                    T[c * 27 + d * 9 + a * 3 + b] += 1
-                            cols.append(T)
-            return sp.Matrix.hstack(*cols)
-
-    def dimV(G, Bs, r):
-        n = 3**r
-        P = sp.zeros(n, n)
-        for R in G:
-            M = sp.Matrix(R)
-            K = M
-            for _ in range(r - 1):
-                K = sp.Matrix(sp.kronecker_product(K, M))
-            P += K
-        Bp = (Bs.T * Bs).inv() * Bs.T
-        return sp.simplify(Bp * sp.simplify(P / len(G)) * Bs).rank()
-
-    TABLE1 = {
-        "-1": (3, 0, 18, 0),
-        "2/m": (1, 0, 8, 0),
-        "mmm": (0, 0, 3, 0),
-        "4/m": (1, 0, 4, 0),
-        "4/mmm": (0, 0, 1, 0),
-        "-3": (1, 0, 6, 0),
-        "-3m": (0, 0, 2, 0),
-        "6/m": (1, 0, 4, 0),
-        "6/mmm": (0, 0, 1, 0),
-        "m-3": (0, 0, 1, 0),
-        "m-3m": (0, 0, 0, 0),
-    }
-    BS = {r: sym_basis(r) for r in (1, 2, 3, 4)}
-    for cls, stated in TABLE1.items():
-        Gp = {R for R in groups[cls] if sp.Matrix(R).det() == 1}
-        for idx, r in enumerate((1, 2, 3, 4)):
-            gap = dimV(Gp, BS[r], r) - dimV(groups[cls], BS[r], r)
-            chk(f"gamma_{r}({cls})", gap, stated[idx], 0)
-    even_ok = all(TABLE1[c][i] == 0 for c in TABLE1 for i in (1, 3))
-    chk("parity gap vanishes identically at even rank", 1.0 if even_ok else 0.0, 1.0, 0)
-    chk(
-        "gamma_3 = 0 for exactly one centrosymmetric class",
-        sum(1 for c in TABLE1 if TABLE1[c][2] == 0),
-        1,
-        0,
-        "m-3m",
-    )
-
-    print("  -- Theorem 1(ii) tightness: orbit construction well defined --")
-    import random as _rnd
-
-    _rnd.seed(0)
-    for name in ["1", "2", "222", "4", "422", "3", "32", "6", "622", "23", "432"]:
-        Gp = groups[name]
-        P27 = sp.zeros(27, 27)
-        for R in Gp:
-            M = sp.Matrix(R)
-            P27 += sp.Matrix(sp.kronecker_product(M, M, M))
-        Bp = (B.T * B).inv() * B.T
-        Pi = sp.simplify(Bp * sp.simplify(P27 / len(Gp)) * B)
-        if Pi.rank() == 0:
-            chk(f"G+={name}: dim V^G+ = 0, nothing to realise", 0, 0, 0)
+def test_training_sources_and_squared_error():
+    for target, stem in (
+        ("elastic", "elastic_ieee"),
+        ("piezoelectric", "piezoelectric_ieee"),
+        ("piezoelectric", "piezoelectric_ieee_augmented"),
+    ):
+        path = ROOT / f"data/raw/mp/mp_{stem}_processed.npz"
+        split = ROOT / f"data/splits/mp_{stem if 'augmented' in stem else target}_split.npz"
+        validate_tensor_dataset(path, split, target)
+        if stem != "piezoelectric_ieee":
             continue
-        v = sp.Matrix([sp.Rational(_rnd.randint(-5, 5)) for _ in range(18)])
-        T27 = B * sp.simplify(Pi * v)
-        worst = 0
-        for R in Gp:
-            M = sp.Matrix(R)
-            d = sp.simplify(sp.Matrix(sp.kronecker_product(M, M, M)) * T27 - T27)
-            worst = max(worst, max(abs(e) for e in d))
-        chk(
-            f"G+={name}: max |R^(x r) T - T| over G+",
-            float(worst),
-            0.0,
-            0,
-            f"dim V^G+ = {Pi.rank()}",
+        with np.load(path) as d, np.load(split) as parts:
+            lookup = {mid: i for i, mid in enumerate(d["ids"])}
+            train = (
+                d[target][[lookup[mid] for mid in parts["train"]]].astype(float).reshape(-1, 3, 6)
+            )
+        power = np.sum(train**2 * [1, 1, 1, 2, 2, 2], axis=(1, 2))
+        r = record("training_error_concentration")
+        assert len(power) == r["n_train"] == 2649
+        np.testing.assert_allclose(
+            np.sort(power)[-r["n_largest"] :].sum() / power.sum(), r["fraction_of_squared_error"]
         )
-
-
-def section_theorems(n_trials=2000, seed=0):
-    import numpy as np
-
-    print("\n[2] THEOREM STRESS TEST (numpy, synthetic centrosymmetric inputs)")
-    rng = np.random.default_rng(seed)
-
-    def centro(n=6):
-        half = rng.normal(size=(n, 3))
-        return np.vstack([half, -half, np.zeros((1, 3))])
-
-    f = lambda R: np.einsum("ni,nj,nk->ijk", R, R, R)
-
-    wl = wt = wp = wj = 0.0
-    for _ in range(n_trials):
-        x = centro()
-        T, Ti = f(x), f(-x)
-        wl = max(wl, np.abs(Ti - T).max())
-        wt = max(wt, np.abs(T).max())
-        d, e = np.linalg.norm(Ti - T), np.linalg.norm(Ti + T)
-        wp = max(wp, np.linalg.norm(T) - 0.5 * (d + e))
-
-        u = rng.normal(size=x.shape) * 1e-6
-        n2 = (len(x) - 1) // 2
-        P = np.vstack([-u[n2 : 2 * n2], -u[:n2], -u[2 * n2 :]])
-        wj = max(wj, abs(np.linalg.norm(f(x + (u + P) / 2))))
-
-    chk("Lemma 1   max |f(I.x) - f(x)|", wl, 0.0, 1e-10, "must vanish")
-    chk("Theorem 1 max |f(x)| on centrosymmetric x", wt, 0.0, 1e-10, "must vanish")
-    chk("Prop 1    max [|f| - (d+eta)/2]  (must be <= 0)", min(wp, 0.0), 0.0, 1e-12)
-    chk("Cor 3     max |f(x + P_even u)| at |u| ~ 1e-6", wj, 0.0, 1e-12)
-
-    import sympy as sp
-
-    fx, eR, gR = sp.symbols("f e_R g_R")
-    Rf = sp.solve(sp.Eq(fx + eR, sp.Symbol("Rf") + gR), sp.Symbol("Rf"))[0]
-    chk(
-        "Cor 1 displayed identity is (e_R - g_R)",
-        1.0 if sp.simplify(Rf - fx - (eR - gR)) == 0 else 0.0,
-        1.0,
-        0,
-        "the displayed identity is (e_R - g_R)",
-    )
-
-
-def section_reconcile():
-    print("\n[3] NUMERIC RECONCILIATION (result records against each other)")
-    N, M3M, M3, NC, SEEN, UNSEEN = 2000, 166, 18, 1816, 1232, 768
-    chk("m-3m + m-3 + non-cubic = 2000", M3M + M3 + NC, N, 0)
-    chk("crystals only parity protects", N - M3M, 1834, 0)
-    chk("  as a percentage", 100 * (N - M3M) / N, 91.7, 0.05)
-    chk("m-3m share of the population (%)", 100 * M3M / N, 8.3, 0.05)
-
-    print("  -- Suppl. Table 7 (per family) reproduces Suppl. Table 2 (population) --")
-    for c, (a, b, d, want) in {
-        "NequIP": (0.0000, 0.9630, 0.9765, 0.8953),
-        "Allegro": (0.0000, 0.9815, 0.9919, 0.9095),
-        "MACE": (0.0000, 0.9444, 0.9903, 0.9077),
-        "EqV2": (0.5341, 0.9630, 0.9956, 0.9570),
-    }.items():
-        chk(f"{c} SO(3) population ff", (M3M * a + M3 * b + NC * d) / N, want, 1e-3)
-
-    print("  -- Suppl. Table 5 (seen/unseen) reproduces the same population ff --")
-    for c, (s, u, want) in {
-        "NequIP": (0.9042, 0.8811, 0.8953),
-        "Allegro": (0.9075, 0.9128, 0.9095),
-        "MACE": (0.9075, 0.9080, 0.9077),
-        "EqV2": (0.9508, 0.9670, 0.9570),
-    }.items():
-        chk(f"{c} SO(3) baseline ff", (SEEN * s + UNSEEN * u) / N, want, 1e-3)
-
-    print("  -- 'of the crystals where free to violate' --")
-    for c, (ff, want) in {
-        "NequIP": (0.8953, 97.6),
-        "Allegro": (0.9095, 99.2),
-        "MACE": (0.9077, 99.0),
-    }.items():
-        chk(f"{c} share of the 1,834", 100 * ff * N / 1834, want, 0.06)
-
-    print("  -- headline separation --")
-    chk("NequIP median ratio / 1e6", 6.66e-1 / 3.19e-7 / 1e6, 2.0, 0.15)
-    chk("orders of magnitude separating the arms", math.log10(6.66e-1 / 3.19e-7), 6.0, 0.35)
-    chk("largest O(3) prediction below tau by", 1e-2 / 1.3e-3, 7.6, 0.1)
-
-    print("  -- effect sizes, Suppl. Table 4 --")
-    for lab, mo, so, ms, ss, want in [
-        ("NequIP U0", 53.65, 22.50, 51.66, 9.19, -0.12),
-        ("NequIP dipole", 0.0519, 0.0027, 0.0530, 0.0026, 0.42),
-        ("NequIP elastic", 24.33, 0.27, 24.49, 0.14, 0.74),
-        ("NequIP piezo", 0.2083, 0.0077, 0.2405, 0.0080, 4.10),
-        ("Allegro U0", 31.08, 12.89, 26.98, 4.88, -0.42),
-        ("Allegro dipole", 0.0751, 0.0023, 0.0764, 0.0021, 0.59),
-        ("Allegro elastic", 23.72, 0.25, 23.89, 0.31, 0.60),
-        ("Allegro piezo", 0.2140, 0.0058, 0.2589, 0.0176, 3.43),
-        ("MACE U0", 16.76, 6.29, 26.09, 12.49, 0.94),
-        ("MACE dipole", 0.0484, 0.0018, 0.0500, 0.0045, 0.47),
-        ("MACE elastic", 24.92, 0.54, 24.94, 0.60, 0.04),
-        ("MACE piezo", 0.2222, 0.0066, 0.2567, 0.0084, 4.57),
-    ]:
-        chk(f"Delta/sigma {lab}", (ms - mo) / math.sqrt((so**2 + ss**2) / 2), want, 0.006)
-
-    print("  -- budgets, splits, sweeps --")
-    chk("260,779 s in GPU-hours", 260779 / 3600, 72.44, 0.01)
-    chk("per-core hours sum", 7.62 + 5.06 + 40.64 + 19.12, 72.44, 0.01)
-    chk("grid = 7 arms x 4 targets x 3 seeds", 7 * 4 * 3, 84, 0)
-    chk("O(3) structure-runs", 3 * 3 * 2000, 18000, 0)
-    chk("piezo split sums", 2649 + 331 + 332, 3312, 0)
-    chk("elastic split sums", 10464 + 1308 + 1308, 13080, 0)
-    chk("QM9 split sums", 110000 + 10000 + 10831, 130831, 0)
-    chk("QM9 = 133,885 - 3,054 uncharacterised", 133885 - 3054, 130831, 0)
-    chk("QM9 forced-zero dipoles (%)", 100 * 7 / 10831, 0.065, 0.001)
-    chk("zero-injection median falls (fold)", 0.666 / 0.077, 8.6, 0.06)
-    chk("W=100 reduces trained-zero ff by", 0.8953 - 0.6762, 0.22, 0.002)
-    chk("U0 error as % of target s.d. (low)", 100 * 16.76 / 1085.57, 1.5, 0.05)
-    chk("U0 error as % of target s.d. (high)", 100 * 53.65 / 1085.57, 4.9, 0.05)
-    print("  -- pooling arms and headline runs, each against its own source --")
-    import json as _json
-    import statistics as _st
-
-    _root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "results")
-    _pooling = _json.load(open(os.path.join(_root, "pooling_arms.json")))
-    _augmentation = _json.load(open(os.path.join(_root, "augmentation.json")))
-    _ns, _nu = _augmentation["n_seen"], _augmentation["n_unseen"]
-    _stated_pool = {
-        "nequip": (0.8872, 0.0014),
-        "allegro": (0.8982, 0.0021),
-        "mace": (0.8978, 0.0006),
-        "equiformer_v2": (0.9472, 0.0172),
-    }
-    _stated_head = {"nequip": 0.8953, "allegro": 0.9095, "mace": 0.9077, "equiformer_v2": 0.9570}
-    _gaps = []
-    for _c, (_m, _s) in _stated_pool.items():
-        _arm = [p["ff_sum"] for p in _pooling["pairs"] if p["core"] == _c and p["parity"] == "so3"]
-        chk(f"pooling summed arm mean, {_c}", _st.mean(_arm), _m, 5e-5, "pooling_arms.json")
-        chk(f"pooling summed arm s.d., {_c}", _st.stdev(_arm), _s, 5e-5, "pooling_arms.json")
-        _head = [
-            (x["ff_seen"] * _ns + x["ff_unseen"] * _nu) / (_ns + _nu)
-            for x in _augmentation["arms"][_c + "_baseline_so3"]["per_seed"]
-        ]
-        chk(f"headline ff, {_c}", _st.mean(_head), _stated_head[_c], 5e-5, "augmentation.json")
-        _gaps.append(_st.mean(_head) - _st.mean(_arm))
-    chk(
-        "all four pooling-to-headline gaps positive",
-        min(_gaps) > 0,
-        True,
-        0,
-        "independent retrainings, offset in one direction",
-    )
-    chk(
-        "gap spread stays inside one percentage point",
-        max(_gaps) - min(_gaps) < 0.01,
-        True,
-        0,
-        "0.008 to 0.011",
-    )
-    chk(
-        "batch size equal within every pooling pair",
-        _pooling["summary"]["bs_mismatch"],
-        0,
-        0,
-        "pooling summary",
-    )
-
-    print("  -- seen-group saturation (Allegro and MACE at 0.9075 +/- 0.0000) --")
-    _sg = {
-        r["index"]: r
-        for r in _json.load(open(os.path.join(_root, "ood_spacegroups.json")))["records"]
-    }
-    _seen = _json.load(open(os.path.join(_root, "augmentation_eval_split.json")))["seen_indices"]
-    _nc = sum(1 for i in _seen if _sg[i]["family"] == "non-cubic")
-    chk("seen group size", len(_seen), 1232, 0, "augmentation_eval_split.json")
-    chk("seen non-cubic count", _nc, 1119, 0, "joined to ood_spacegroups")
-    chk("seen m-3m count", len(_seen) - _nc, 113, 0, "joined to ood_spacegroups")
-    _rotation = _json.load(open(os.path.join(_root, "rotation_subgroup.json")))["by_family"]
-    for _a in ("allegro_so3", "mace_so3"):
-        _counts = [
-            round(x["ff_seen"] * len(_seen))
-            for x in _augmentation["arms"][_a.replace("_so3", "_baseline_so3")]["per_seed"]
-        ]
-        chk(
-            f"{_a} flagged-count spread across seeds",
-            max(_counts) - min(_counts),
-            0,
-            0,
-            "identical in all three seeds",
-        )
-        chk(
-            f"{_a} flags 1,118 of the seen group",
-            _counts[0],
-            1118,
-            0,
-            "one short of every non-cubic crystal",
-        )
-        chk(
-            f"{_a} m-3m false-flag fraction is zero",
-            _rotation[_a]["m-3m"]["false_flag_max"],
-            0.0,
-            0,
-            "rotation_subgroup.json",
-        )
-
-
-def smoke():
-
-    print("[smoke] planting a deliberate mismatch; the checker must report FAIL")
-    before = len(FAIL)
-    chk("planted mismatch (expected to FAIL)", 1.0, 2.0, 1e-9)
-    caught = len(FAIL) == before + 1
-    FAIL.pop()
-    print(f"[smoke] checker {'works' if caught else 'IS BROKEN'}")
-    if not caught:
-        sys.exit(2)
-    section_theorems(n_trials=50)
-    print("[smoke] done")
-
-
-def test_reported_claims():
-    """Run every release-level numerical and record-reconciliation check."""
-    FAIL.clear()
-    PASS.clear()
-    smoke()
-    section_group_theory()
-    section_theorems()
-    section_reconcile()
-    print("\n" + "=" * 88)
-    print(f"PASSED {len(PASS)}    FAILED {len(FAIL)}")
-    for l, g, w, n in FAIL:
-        print(f"  FAIL  {l}: computed {g:.6g} vs stated {w:.6g}   {n}")
-    assert not FAIL, f"claim checks failed: {[label for label, *_ in FAIL]}"
-
-
-if __name__ == "__main__":
-    if "--smoke" in sys.argv:
-        smoke()
-    else:
-        test_reported_claims()

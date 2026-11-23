@@ -1,0 +1,209 @@
+{
+  "n_training_zeros": 1016,
+  "n_unseen": 2000,
+  "n_regression_test": 332,
+  "configurations": [
+    {
+      "arm": "o3",
+      "weight": 1,
+      "train_selected": {
+        "mean": 0.0,
+        "sample_sd": 0.0
+      },
+      "train_final": {
+        "mean": 0.09842519685039369,
+        "sample_sd": 0.09842519685039369
+      },
+      "unseen_selected": {
+        "mean": 0.0,
+        "sample_sd": 0.0
+      },
+      "test_mae": {
+        "mean": 0.14435514343659525,
+        "sample_sd": 0.0023937914937647384
+      }
+    },
+    {
+      "arm": "so3",
+      "weight": 1,
+      "train_selected": {
+        "mean": 64.92782152230971,
+        "sample_sd": 1.3106945115116937
+      },
+      "train_final": {
+        "mean": 73.29396325459317,
+        "sample_sd": 1.5788988734272964
+      },
+      "unseen_selected": {
+        "mean": 60.03333333333333,
+        "sample_sd": 1.2473304828045133
+      },
+      "test_mae": {
+        "mean": 0.14413152496758283,
+        "sample_sd": 0.0009294758569342316
+      }
+    },
+    {
+      "arm": "so3",
+      "weight": 10,
+      "train_selected": {
+        "mean": 60.137795275590555,
+        "sample_sd": 3.6443914530656736
+      },
+      "train_final": {
+        "mean": 72.14566929133859,
+        "sample_sd": 0.7812257808261637
+      },
+      "unseen_selected": {
+        "mean": 56.98333333333334,
+        "sample_sd": 3.613977494857061
+      },
+      "test_mae": {
+        "mean": 0.14400537498953514,
+        "sample_sd": 0.0016369050430581073
+      }
+    },
+    {
+      "arm": "so3",
+      "weight": 100,
+      "train_selected": {
+        "mean": 37.729658792650916,
+        "sample_sd": 3.040579329159494
+      },
+      "train_final": {
+        "mean": 51.34514435695538,
+        "sample_sd": 1.246287395880744
+      },
+      "unseen_selected": {
+        "mean": 42.46666666666667,
+        "sample_sd": 2.250185177565023
+      },
+      "test_mae": {
+        "mean": 0.14325434488068284,
+        "sample_sd": 0.000805938240026347
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run": "nequip_piezoelectric_so3_tensor_huber_zero_w10_seed2",
+      "arm": "so3",
+      "weight": 10,
+      "seed": 2,
+      "train_selected": 56.10236220472441,
+      "train_final": 71.55511811023622,
+      "unseen_selected": 53.2,
+      "test_mae": 0.1430916112126016
+    },
+    {
+      "run": "nequip_piezoelectric_o3_tensor_huber_zero_w1_seed1",
+      "arm": "o3",
+      "weight": 1,
+      "seed": 1,
+      "train_selected": 0.0,
+      "train_final": 0.09842519685039369,
+      "unseen_selected": 0.0,
+      "test_mae": 0.14606386926840828
+    },
+    {
+      "run": "nequip_piezoelectric_so3_tensor_huber_zero_w1_seed0",
+      "arm": "so3",
+      "weight": 1,
+      "seed": 0,
+      "train_selected": 64.27165354330708,
+      "train_final": 71.65354330708661,
+      "unseen_selected": 59.099999999999994,
+      "test_mae": 0.14351871497329668
+    },
+    {
+      "run": "nequip_piezoelectric_so3_tensor_huber_zero_w100_seed0",
+      "arm": "so3",
+      "weight": 100,
+      "seed": 0,
+      "train_selected": 40.452755905511815,
+      "train_final": 52.46062992125984,
+      "unseen_selected": 44.7,
+      "test_mae": 0.14233287870894637
+    },
+    {
+      "run": "nequip_piezoelectric_so3_tensor_huber_zero_w100_seed1",
+      "arm": "so3",
+      "weight": 100,
+      "seed": 1,
+      "train_selected": 34.44881889763779,
+      "train_final": 50.0,
+      "unseen_selected": 42.5,
+      "test_mae": 0.14360233260081134
+    },
+    {
+      "run": "nequip_piezoelectric_so3_tensor_huber_zero_w100_seed2",
+      "arm": "so3",
+      "weight": 100,
+      "seed": 2,
+      "train_selected": 38.28740157480315,
+      "train_final": 51.574803149606296,
+      "unseen_selected": 40.2,
+      "test_mae": 0.14382782333229077
+    },
+    {
+      "run": "nequip_piezoelectric_o3_tensor_huber_zero_w1_seed2",
+      "arm": "o3",
+      "weight": 1,
+      "seed": 2,
+      "train_selected": 0.0,
+      "train_final": 0.0,
+      "unseen_selected": 0.0,
+      "test_mae": 0.1416191775499769
+    },
+    {
+      "run": "nequip_piezoelectric_o3_tensor_huber_zero_w1_seed0",
+      "arm": "o3",
+      "weight": 1,
+      "seed": 0,
+      "train_selected": 0.0,
+      "train_final": 0.19685039370078738,
+      "unseen_selected": 0.0,
+      "test_mae": 0.14538238349140056
+    },
+    {
+      "run": "nequip_piezoelectric_so3_tensor_huber_zero_w10_seed1",
+      "arm": "so3",
+      "weight": 10,
+      "seed": 1,
+      "train_selected": 61.12204724409449,
+      "train_final": 71.8503937007874,
+      "unseen_selected": 57.35,
+      "test_mae": 0.1458951682290499
+    },
+    {
+      "run": "nequip_piezoelectric_so3_tensor_huber_zero_w10_seed0",
+      "arm": "so3",
+      "weight": 10,
+      "seed": 0,
+      "train_selected": 63.188976377952756,
+      "train_final": 73.03149606299213,
+      "unseen_selected": 60.4,
+      "test_mae": 0.14302934552695393
+    },
+    {
+      "run": "nequip_piezoelectric_so3_tensor_huber_zero_w1_seed1",
+      "arm": "so3",
+      "weight": 1,
+      "seed": 1,
+      "train_selected": 66.43700787401575,
+      "train_final": 73.4251968503937,
+      "unseen_selected": 61.45,
+      "test_mae": 0.14520099831146877
+    },
+    {
+      "run": "nequip_piezoelectric_so3_tensor_huber_zero_w1_seed2",
+      "arm": "so3",
+      "weight": 1,
+      "seed": 2,
+      "train_selected": 64.0748031496063,
+      "train_final": 74.80314960629921,
+      "unseen_selected": 59.550000000000004,
+      "test_mae": 0.14367486161798304
+    }
+  ]
+}

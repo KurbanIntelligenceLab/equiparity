@@ -1,0 +1,31 @@
+seed: 0
+core: nequip
+parity: o3
+target: piezoelectric
+dataset: mp_piezoelectric_ieee_augmented
+processed_npz: data/raw/mp/mp_piezoelectric_ieee_augmented_processed.npz
+split_npz: data/splits/mp_piezoelectric_ieee_augmented_split.npz
+output_dir: outputs/zero_labels
+model:
+  num_layers: 3
+  l_max: 3
+  num_features: 64
+  r_max: 5.0
+  pooling: mean
+  tensor_head: complete
+training:
+  batch_size: 16
+  epochs: 150
+  lr: 0.001
+  device: cuda
+  precision: float32
+  loss: tensor_huber
+  scheduler: plateau
+  scheduler_patience: 10
+  min_lr: 1.0e-06
+  gradient_clip: 10.0
+  evaluate_test: false
+  huber_delta: 0.5
+  target_scale: 0.7491590371727936
+  zero_row_loss_weight: 1
+protocol: validation_selected

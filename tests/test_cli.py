@@ -18,7 +18,7 @@ COMMANDS = [
     ["records", "show"],
     ["grid", "generate"],
     ["data", "prepare"],
-    ["aggregate"],
+    ["audit-crystal-symmetry"],
     ["manifest"],
 ]
 

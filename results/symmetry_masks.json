@@ -1,0 +1,122 @@
+{
+  "gmtnet_idealized_maskoff": {
+    "voigt_array_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.2345,
+      "median": 9.875586215457588e-08,
+      "max": 8.717577934265137
+    },
+    "full_cartesian_frobenius_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.244,
+      "median": 1.1359975497738964e-07,
+      "max": 12.063317804830282
+    },
+    "tensor_sha256": "519bb062faaab1c443627fd6b60e4641703e7c1921aa6b2d46128608e0720382"
+  },
+  "gmtnet_idealized_maskon": {
+    "voigt_array_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.0,
+      "median": 0.0,
+      "max": 0.0005517335375770926
+    },
+    "full_cartesian_frobenius_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.0,
+      "median": 0.0,
+      "max": 0.0006537387485503089
+    },
+    "tensor_sha256": "44f6512250e86139de951bc0848d1b6507c96dfe5c4595ad83166fdfc681279b"
+  },
+  "gmtnet_raw_maskoff": {
+    "voigt_array_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.217,
+      "median": 1.1019281487278931e-07,
+      "max": 10.637678146362305
+    },
+    "full_cartesian_frobenius_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.2245,
+      "median": 1.2891743770689403e-07,
+      "max": 13.387398798207052
+    },
+    "tensor_sha256": "ad9b5b060c40fd8f722fc9899d48b9a701d7941e0c72c173c8f3adc7b64849f1"
+  },
+  "gmtnet_raw_maskon": {
+    "voigt_array_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.0105,
+      "median": 0.0,
+      "max": 0.2651366889476776
+    },
+    "full_cartesian_frobenius_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.011,
+      "median": 0.0,
+      "max": 0.35460628111356024
+    },
+    "tensor_sha256": "8460f865708836d98e5395b24bf84d407798484945e5297de180f2e2882fbafd"
+  },
+  "ceitnet_idealized_maskoff": {
+    "voigt_array_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.1195,
+      "median": 6.187178769323509e-08,
+      "max": 0.2759162485599518
+    },
+    "full_cartesian_frobenius_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.134,
+      "median": 7.171540738255526e-08,
+      "max": 0.2787930619969679
+    },
+    "tensor_sha256": "2da369a1bd58d99c4bdfbafd39e6f03dbd6d90f85e8854e60e275e90e74aadd6"
+  },
+  "ceitnet_idealized_maskon": {
+    "voigt_array_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.0915,
+      "median": 5.448690743037332e-08,
+      "max": 0.2759162485599518
+    },
+    "full_cartesian_frobenius_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.1,
+      "median": 6.341239374833893e-08,
+      "max": 0.2787930619969679
+    },
+    "tensor_sha256": "381f8fb4f1255ced20d249e005effe9183220001139535b3c5b587a147b584f8"
+  },
+  "ceitnet_raw_maskoff": {
+    "voigt_array_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.11,
+      "median": 7.399101775718009e-08,
+      "max": 0.2759163975715637
+    },
+    "full_cartesian_frobenius_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.1245,
+      "median": 8.605809095700932e-08,
+      "max": 0.27879319903297456
+    },
+    "tensor_sha256": "499b09d5c34c7503760e44b715c771417e9cc4f74a8e030c246e18cf710fdb4d"
+  },
+  "ceitnet_raw_maskon": {
+    "voigt_array_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.0935,
+      "median": 6.680579645035323e-08,
+      "max": 0.2759163975715637
+    },
+    "full_cartesian_frobenius_norm": {
+      "n": 2000,
+      "false_flag_at_0.01": 0.104,
+      "median": 7.746925161218433e-08,
+      "max": 0.27879319903297456
+    },
+    "tensor_sha256": "dec6c996ae1917ccb426e1900ea452e2fe82b3537ca9bb52c3b9b92f95fdc304"
+  }
+}

@@ -1,32 +1,19 @@
-"""Expand the study's fixed experiment matrices into per-run YAML configs.
-
-Each grid writes ``configs/<grid>/*.yaml`` plus run lists grouped by install profile
-(``nequip_runs.txt`` for NequIP, Allegro and EquiformerV2; ``mace_runs.txt`` for MACE), since the
-two profiles pin incompatible e3nn versions and run in separate environments.
-
-CLI: ``equiparity grid generate {main,meanpool,sumpool,augmentation,loss-weight,zero-injection}``
-"""
+"""Generate training configurations for the crystal and molecular experiments."""
 
 from __future__ import annotations
 
-import json
 from collections.abc import Callable, Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
-# Matched-pair scope: 7 arms x 4 targets x 3 seeds = 84 runs. EquiformerV2 has no parity toggle.
 CORE_PARITY: dict[str, tuple[str, ...]] = {
     "nequip": ("o3", "so3"),
     "allegro": ("o3", "so3"),
     "mace": ("o3", "so3"),
-    "equiformer_v2": ("so3",),
 }
-PROFILE = {"nequip": "nequip", "allegro": "nequip", "equiformer_v2": "nequip", "mace": "mace"}
+PROFILE = {"nequip": "nequip", "allegro": "nequip", "mace": "mace"}
 SEEDS = (0, 1, 2)
 FEATURES = 64
-# Un-augmented piezoelectric target std; frozen in every augmented run so violation magnitudes
-# stay comparable to the headline grid.
-FROZEN_TARGET_SCALE = 0.749134
 
 
 @dataclass(frozen=True)
@@ -51,8 +38,8 @@ TARGETS: dict[str, TargetSpec] = {
         **_QM9, split="data/splits/qm9_split.npz", lmax=2, epochs=100, batch=32, max_train=25000
     ),
     "elastic": TargetSpec(
-        dataset="mp_elastic",
-        npz="data/raw/mp/mp_elastic_processed.npz",
+        dataset="mp_elastic_ieee",
+        npz="data/raw/mp/mp_elastic_ieee_processed.npz",
         split="data/splits/mp_elastic_split.npz",
         lmax=2,
         epochs=120,
@@ -79,8 +66,6 @@ def _config_yaml(
     seed: int,
     spec: TargetSpec,
     pooling: str | None = None,
-    target_scale: float | None = None,
-    zero_row_loss_weight: int | None = None,
 ) -> str:
     lines = [
         f"seed: {seed}",
@@ -109,10 +94,6 @@ def _config_yaml(
     ]
     if spec.max_train is not None:
         lines.append(f"  max_train_samples: {spec.max_train}")
-    if target_scale is not None:
-        lines.append(f"  target_scale: {target_scale}")
-    if zero_row_loss_weight is not None:
-        lines.append(f"  zero_row_loss_weight: {zero_row_loss_weight}")
     return "\n".join(lines) + "\n"
 
 
@@ -120,10 +101,11 @@ def _config_yaml(
 GridRows = Iterator[tuple[str, str, str]]
 
 
-def _main(_root: Path) -> GridRows:
+def _final_epoch(targets: tuple[str, ...]) -> GridRows:
     for core, parities in CORE_PARITY.items():
         for parity in parities:
-            for target, spec in TARGETS.items():
+            for target in targets:
+                spec = TARGETS[target]
                 for seed in SEEDS:
                     text = _config_yaml(
                         core=core, parity=parity, target=target, seed=seed, spec=spec
@@ -131,94 +113,91 @@ def _main(_root: Path) -> GridRows:
                     yield f"{core}_{target}_{parity}_seed{seed}.yaml", PROFILE[core], text
 
 
-def _pooling_rows(pooling: str) -> GridRows:
-    """Dedicated pooling-control pairs on the two intensive crystal targets."""
-    for core, parities in CORE_PARITY.items():
-        for parity in parities:
-            for target in ("elastic", "piezoelectric"):
+def _tensor_configs(_root: Path) -> GridRows:
+    """Model and optimizer settings shared by crystal regression runs."""
+    import yaml
+
+    for core in ("nequip", "allegro", "mace"):
+        for target in ("piezoelectric", "elastic"):
+            for parity in ("o3", "so3"):
                 for seed in SEEDS:
-                    text = _config_yaml(
-                        core=core,
-                        parity=parity,
-                        target=target,
-                        seed=seed,
-                        spec=TARGETS[target],
-                        pooling=pooling,
+                    spec = TARGETS[target]
+                    raw = yaml.safe_load(
+                        _config_yaml(
+                            core=core,
+                            parity=parity,
+                            target=target,
+                            seed=seed,
+                            spec=spec,
+                            pooling="mean",
+                        )
                     )
-                    name = f"{core}_{target}_{parity}_seed{seed}_{pooling}.yaml"
-                    yield name, PROFILE[core], text
+                    raw["protocol"] = "validation_selected"
+                    raw["dataset"] = f"mp_{target}_ieee"
+                    raw["processed_npz"] = f"data/raw/mp/mp_{target}_ieee_processed.npz"
+                    raw["output_dir"] = "outputs/crystal"
+                    raw["model"]["tensor_head"] = "complete"
+                    raw["training"].update(
+                        lr=0.001,
+                        loss="mse",
+                        scheduler="plateau",
+                        scheduler_patience=10,
+                        min_lr=1e-6,
+                        gradient_clip=10.0,
+                        evaluate_test=False,
+                    )
+                    yield (
+                        f"{core}_{target}_{parity}_seed{seed}.yaml",
+                        PROFILE[core],
+                        yaml.safe_dump(raw, sort_keys=False),
+                    )
 
 
-def _meanpool(_root: Path) -> GridRows:
-    return _pooling_rows("mean")
+def _crystal(root: Path) -> GridRows:
+    """Piezoelectric Huber and MSE comparisons and elastic MSE runs."""
+    import yaml
+
+    for name, profile, text in _tensor_configs(root):
+        original = yaml.safe_load(text)
+        losses = (
+            ("mse", "tensor_huber")
+            if original["target"] == "piezoelectric" and original["core"] == "nequip"
+            else ("tensor_huber",)
+            if original["target"] == "piezoelectric"
+            else ("mse",)
+        )
+        for loss in losses:
+            raw = yaml.safe_load(text)
+            raw["output_dir"] = "outputs/crystal"
+            if raw["target"] == "elastic":
+                raw["model"]["use_magnetic_magnitudes"] = True
+            raw["training"]["loss"] = loss
+            if loss == "tensor_huber":
+                raw["training"]["huber_delta"] = 0.5
+            yield f"{loss}_{name}", profile, yaml.safe_dump(raw, sort_keys=False)
 
 
-def _sumpool(_root: Path) -> GridRows:
-    return _pooling_rows("sum")
+def _zero_controls(root: Path) -> GridRows:
+    """Zero-label supervision and loss weights for NequIP."""
+    import yaml
 
-
-def _augmented_spec(dataset: str, stem: str = "mp_piezoelectric_augmented") -> TargetSpec:
-    base = TARGETS["piezoelectric"]
-    return TargetSpec(
-        dataset=dataset,
-        npz=f"data/raw/mp/{stem}_processed.npz",
-        split=f"data/splits/{stem}_split.npz",
-        lmax=base.lmax,
-        epochs=base.epochs,
-        batch=base.batch,
-        max_train=None,
-    )
-
-
-def _augmentation(_root: Path) -> GridRows:
-    """SO(3) arms retrained with 1,000 zero-labelled centrosymmetric crystals added."""
-    spec = _augmented_spec("mp_piezoelectric_augmented")
-    for core in CORE_PARITY:
-        for seed in SEEDS:
-            text = _config_yaml(
-                core=core,
-                parity="so3",
-                target="piezoelectric",
-                seed=seed,
-                spec=spec,
-                target_scale=FROZEN_TARGET_SCALE,
-            )
-            yield f"{core}_piezoelectric_so3_aug_seed{seed}.yaml", PROFILE[core], text
-
-
-def _loss_weight(_root: Path) -> GridRows:
-    """NequIP SO(3) with zero-row loss weights 10 and 100 (weight 1 is the augmentation run)."""
-    for weight in (10, 100):
-        spec = _augmented_spec(f"mp_piezoelectric_augmented_w{weight}")
-        for seed in SEEDS:
-            text = _config_yaml(
-                core="nequip",
-                parity="so3",
-                target="piezoelectric",
-                seed=seed,
-                spec=spec,
-                target_scale=FROZEN_TARGET_SCALE,
-                zero_row_loss_weight=weight,
-            )
-            yield f"nequip_so3_piezoelectric_aug_w{weight}_seed{seed}.yaml", "nequip", text
-
-
-def _zero_injection(root: Path) -> GridRows:
-    """NequIP SO(3) over the zero-labelled set sizes in ``results/zero_injection_sets.json``."""
-    sets = json.loads((root / "results/zero_injection_sets.json").read_text())["sets"]
-    for n in sorted(int(k[1:]) for k in sets):
-        name = f"mp_piezoelectric_augmented_n{n}"
-        spec = _augmented_spec(name, stem=name)
-        for seed in SEEDS:
-            text = _config_yaml(
-                core="nequip",
-                parity="so3",
-                target="piezoelectric",
-                seed=seed,
-                spec=spec,
-                target_scale=FROZEN_TARGET_SCALE,
-            )
-            yield f"nequip_piezoelectric_so3_n{n}_seed{seed}.yaml", "nequip", text
+    for name, profile, text in _crystal(root):
+        raw = yaml.safe_load(text)
+        if (
+            raw["core"] != "nequip"
+            or raw["target"] != "piezoelectric"
+            or raw["training"]["loss"] != "tensor_huber"
+        ):
+            continue
+        for weight in (1, 10, 100) if raw["parity"] == "so3" else (1,):
+            cfg = yaml.safe_load(text)
+            cfg["dataset"] = "mp_piezoelectric_ieee_augmented"
+            cfg["processed_npz"] = "data/raw/mp/mp_piezoelectric_ieee_augmented_processed.npz"
+            cfg["split_npz"] = "data/splits/mp_piezoelectric_ieee_augmented_split.npz"
+            cfg["output_dir"] = "outputs/zero_labels"
+            cfg["training"]["target_scale"] = 0.7491590371727936
+            cfg["training"]["zero_row_loss_weight"] = weight
+            yield f"w{weight}_{name}", profile, yaml.safe_dump(cfg, sort_keys=False)
 
 
 @dataclass(frozen=True)
@@ -227,17 +206,13 @@ class Grid:
 
     directory: str
     rows: Callable[[Path], GridRows]
-    # The loss-weight sweep has a single profile and one un-prefixed run list.
-    single_run_list: bool = False
 
 
 GRIDS: dict[str, Grid] = {
-    "main": Grid("configs/grid", _main),
-    "meanpool": Grid("configs/grid_meanpool", _meanpool),
-    "sumpool": Grid("configs/grid_sumpool", _sumpool),
-    "augmentation": Grid("configs/augmentation", _augmentation),
-    "loss-weight": Grid("configs/loss_weight", _loss_weight, single_run_list=True),
-    "zero-injection": Grid("configs/zero_injection", _zero_injection),
+    "main": Grid("configs/crystal", _crystal),
+    "zero-labels": Grid("configs/zero_labels", _zero_controls),
+    "molecular": Grid("configs/molecular", lambda _: _final_epoch(("U0", "dipole"))),
+    "sum-pooled": Grid("configs/sum_pooled", lambda _: _final_epoch(("piezoelectric",))),
 }
 
 
@@ -253,6 +228,6 @@ def generate_grid(name: str, root: Path) -> dict[str, list[str]]:
         (out / file_name).write_text(text)
         runs.setdefault(profile, []).append(f"{grid.directory}/{file_name}")
     for profile, paths in runs.items():
-        list_name = "runs.txt" if grid.single_run_list else f"{profile}_runs.txt"
+        list_name = f"{profile}_runs.txt"
         (out / list_name).write_text("\n".join(paths) + "\n")
     return runs

@@ -1,0 +1,29 @@
+seed: 1
+core: allegro
+parity: so3
+target: elastic
+dataset: mp_elastic_ieee
+processed_npz: data/raw/mp/mp_elastic_ieee_processed.npz
+split_npz: data/splits/mp_elastic_split.npz
+output_dir: outputs/crystal
+model:
+  num_layers: 3
+  l_max: 2
+  num_features: 64
+  r_max: 5.0
+  pooling: mean
+  tensor_head: complete
+  use_magnetic_magnitudes: true
+training:
+  batch_size: 16
+  epochs: 120
+  lr: 0.001
+  device: cuda
+  precision: float32
+  loss: mse
+  scheduler: plateau
+  scheduler_patience: 10
+  min_lr: 1.0e-06
+  gradient_clip: 10.0
+  evaluate_test: false
+protocol: validation_selected

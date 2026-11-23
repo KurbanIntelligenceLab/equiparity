@@ -1,3 +1,0 @@
-configs/augmentation/mace_piezoelectric_so3_aug_seed0.yaml
-configs/augmentation/mace_piezoelectric_so3_aug_seed1.yaml
-configs/augmentation/mace_piezoelectric_so3_aug_seed2.yaml

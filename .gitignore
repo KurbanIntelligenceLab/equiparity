@@ -8,7 +8,7 @@ dist/
 .venv/
 venv/
 ENV/
-
+development
 # Tooling caches
 .mypy_cache/
 .pytest_cache/
@@ -34,19 +34,17 @@ Thumbs.db
 /outputs/
 /runs/
 
-# Markdown reports and figures written by `equiparity aggregate`
-/docs/results/
-
 # Datasets. Raw data is external; manifests, splits and the processed MP archives ship.
 /data/raw/**
 !data/raw/mp/
 !data/raw/mp/*.npz
+!data/raw/mp/*.frame.json
 /data/**/*.lmdb
 /data/**/*.h5
 /data/**/*.tar.gz
 
 # Checkpoints and bulk arrays
 *.pt
-!src/equiparity/models/equiformer_v2/Jd.pt
+
 *.ckpt
 *.parquet

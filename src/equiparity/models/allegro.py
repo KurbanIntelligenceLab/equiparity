@@ -38,11 +38,9 @@ class AllegroConfig:
     seed: int = 42
     model_dtype: str = "float32"
     do_derivatives: bool = False
-    # "sum" (default) reproduces every committed result bit-identically. "mean" divides the
-    # summed per-edge readout by the structure's EDGE count, not atom count -- Allegro is
-    # edge-centric (no per-atom message passing), so an intensive readout here means the
-    # per-edge contributions average out over edges, not atoms (see equiparity.models.pooling).
+    # Mean pooling normalizes by the number of directed edges in each crystal.
     pooling: str = "sum"
+    tensor_head: str = "linear"
 
     def __post_init__(self) -> None:
         validate_pooling(self.pooling)
@@ -176,7 +174,21 @@ class AllegroTensorModel(torch.nn.Module):
                 "no allegro tensor-product layer with l>0 features for the tensor head"
             )
         _, self._probe_name, self._probe_module = max(tensor_tps, key=lambda t: t[0])
-        self.readout = o3.Linear(self._probe_module.irreps_out, self.output_irreps)
+        self._complete_head = config.tensor_head == "complete"
+        per_channel = o3.Irreps(self._probe_module.irreps_out)
+        in_irreps = (
+            o3.Irreps([term for _ in range(config.num_tensor_features) for term in per_channel])
+            if self._complete_head
+            else per_channel
+        )
+        if config.tensor_head == "complete":
+            from equiparity.models.tensor_head import CompleteTensorHead
+
+            self.readout = CompleteTensorHead(str(in_irreps), str(self.output_irreps))
+        elif config.tensor_head == "linear":
+            self.readout = o3.Linear(o3.Irreps(in_irreps), self.output_irreps)
+        else:
+            raise ValueError(f"unknown tensor head: {config.tensor_head}")
         readout_dtype = torch.float32 if config.model_dtype == "float32" else torch.float64
         self.readout = self.readout.to(readout_dtype)
 
@@ -201,7 +213,10 @@ class AllegroTensorModel(torch.nn.Module):
             handle.remove()
         # Allegro tensor features are (n_edges, num_tensor_features, per_channel_irrep_dim). Read
         # each channel out to the target irreps and sum the channels (equivariant: same irrep).
-        per_edge = self.readout(store["feat"])  # (n_edges, [n_channels,] output_dim)
+        features = store["feat"]
+        if self._complete_head:
+            features = features.flatten(start_dim=1)
+        per_edge = self.readout(features)  # (n_edges, [n_channels,] output_dim)
         if per_edge.dim() == 3:
             per_edge = per_edge.sum(dim=1)  # reduce the tensor-feature channels
         edge_index = batch[AtomicDataDict.EDGE_INDEX_KEY]  # (2, n_edges)

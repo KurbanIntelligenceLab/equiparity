@@ -44,11 +44,9 @@ class NequIPConfig:
     seed: int = 42
     model_dtype: str = "float32"
     do_derivatives: bool = False
-    # "sum" (default) reproduces every committed result bit-identically: it is exactly the
-    # original out.index_add_(...) readout, extensive in atom count. "mean" divides the summed
-    # per-atom readout by the structure's atom count -- an intensive control arm
-    # see equiparity.models.pooling).
+    # Mean pooling normalizes by the number of atoms in each crystal.
     pooling: str = "sum"
+    tensor_head: str = "linear"
 
     def __post_init__(self) -> None:
         from equiparity.models.pooling import validate_pooling
@@ -172,7 +170,7 @@ class NequIPTensorModel(torch.nn.Module):
     target's true irreps (e.g. ``2x1o+1x2o+1x3o`` for the piezoelectric tensor); the SO(3) arm
     relabels them all even, stripping parity. For a centrosymmetric structure the O(3) odd-parity
     output cancels to exact zero (Neumann's principle, by construction), while the SO(3) output
-    does not — the study's headline signal.
+    does not.
     """
 
     def __init__(self, config: NequIPConfig, mode: ParityMode, o3_output_irreps: str) -> None:
@@ -187,7 +185,14 @@ class NequIPTensorModel(torch.nn.Module):
         self._probe_name = f"model.func.layer{config.num_layers - 2}_convnet"
         self._probe_module = self._find_probe(self._probe_name)
         in_irreps = str(self._probe_module.irreps_out["node_features"])
-        self.readout = o3.Linear(o3.Irreps(in_irreps), self.output_irreps)
+        if config.tensor_head == "complete":
+            from equiparity.models.tensor_head import CompleteTensorHead
+
+            self.readout = CompleteTensorHead(str(in_irreps), str(self.output_irreps))
+        elif config.tensor_head == "linear":
+            self.readout = o3.Linear(o3.Irreps(in_irreps), self.output_irreps)
+        else:
+            raise ValueError(f"unknown tensor head: {config.tensor_head}")
         # o3.Linear is created under nequip's float64 default; match the backbone precision so the
         # readout consumes the (possibly float32) node features without a dtype clash.
         readout_dtype = torch.float32 if config.model_dtype == "float32" else torch.float64

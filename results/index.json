@@ -1,182 +1,125 @@
 {
-  "description": "Index of released result records: what each holds, which manuscript items it backs, and what produced it.",
   "records": [
     {
       "file": "parity_gap_table.csv",
-      "contents": "Parity gap per centrosymmetric class at rank 1 and rank 3 (strain-symmetric piezoelectric space)",
+      "contents": "Proper subgroups, crystal systems and invariant dimensions for the eleven centrosymmetric classes.",
       "manuscript_items": [
-        "Table 1"
-      ],
-      "producer": "equiparity verify --theory"
+        "Table 1",
+        "Figure 1a",
+        "Figure 1b"
+      ]
     },
     {
-      "file": "distribution_percentiles.json",
-      "contents": "Percentiles, maxima and false-flag fraction of predicted piezoelectric norms on idealized inputs, per arm",
+      "file": "norm_percentiles.json",
+      "contents": "Five percentiles of idealized piezoelectric norms, per run and averaged across seeds.",
       "manuscript_items": [
         "Figure 1c"
       ]
     },
     {
-      "file": "stats.json",
-      "contents": "Test error of both arms per core and target with seed spread and paired test; false-flag fraction, violation median, structure-level Wilcoxon and bootstrap CIs per arm and coordinate variant",
+      "file": "class_symmetry.json",
+      "contents": "Flag percentages and median norms by point group, backbone, geometry and weight state.",
+      "manuscript_items": [
+        "Figure 2a",
+        "Table S2"
+      ]
+    },
+    {
+      "file": "rutile_distortion.json",
+      "contents": "Rutile displacement, space group and tensor norm for each run and mean across seeds.",
+      "manuscript_items": [
+        "Figure 2b"
+      ]
+    },
+    {
+      "file": "crystal_regression.json",
+      "contents": "Per-run MAE and constants, selected epochs and checkpoint digests, mean and sample SD, and percentage reduction relative to the best constant.",
+      "manuscript_items": [
+        "Figure 3a",
+        "Figure 3b",
+        "Table S1"
+      ]
+    },
+    {
+      "file": "zero_supervision.json",
+      "contents": "Selected and final training-zero flag rates, unseen-crystal flag rates and held-out MAE by loss weight.",
+      "manuscript_items": [
+        "Table 2",
+        "Table S3"
+      ]
+    },
+    {
+      "file": "symmetry_masks.json",
+      "contents": "GMTNet and CEITNet flags, medians and maxima for both geometries, masks and norm conventions. Rates are fractions.",
+      "manuscript_items": [
+        "Table S4"
+      ],
+      "producer": "equiparity measure-masks --json"
+    },
+    {
+      "file": "model_capacity.json",
+      "contents": "Allocated parameter counts for both tensor targets and symmetry arms.",
+      "manuscript_items": [
+        "Table S5"
+      ]
+    },
+    {
+      "file": "molecular_regression.json",
+      "contents": "QM9 test MAE mean and sample SD for energy (eV) and dipole (D).",
+      "manuscript_items": [
+        "Table S6"
+      ]
+    },
+    {
+      "file": "predictions.zip",
+      "contents": "NumPy arrays of held-out coefficients, symmetry norms, external-model tensors and initialization norms.",
       "manuscript_items": [
         "Figure 1c",
         "Figure 2a",
         "Figure 3a",
-        "Supplementary Table 1 (regression controls)",
-        "Supplementary Note: Population, thresholds, and readout robustness"
-      ],
-      "producer": "equiparity aggregate"
-    },
-    {
-      "file": "rotation_subgroup.json",
-      "contents": "False-flag fraction resolved by point-group family",
-      "manuscript_items": [
-        "Figure 2a",
-        "Supplementary Note: Population, thresholds, and readout robustness (point-group validation)"
-      ]
-    },
-    {
-      "file": "symmetry_breaking.csv",
-      "contents": "Predicted tensor norm against polar distortion amplitude, per material, core, arm and seed",
-      "manuscript_items": [
-        "Figure 2b"
-      ]
-    },
-    {
-      "file": "symmetry_breaking.json",
-      "contents": "Distortion-path measurements with symmetry verification of each path point",
-      "manuscript_items": [
-        "Figure 2b"
-      ]
-    },
-    {
-      "file": "zero_injection_curve.json",
-      "contents": "False-flag fraction against the number of injected zero-labelled crystals",
-      "manuscript_items": [
         "Figure 3b",
-        "Supplementary Note: Training interventions and output enforcement"
+        "Table 2",
+        "Table S1",
+        "Table S2",
+        "Table S3",
+        "Table S4"
       ]
     },
     {
-      "file": "zero_injection_sets.json",
-      "contents": "Zero-labelled set definitions for the injection curve",
+      "file": "initialization_controls.json",
+      "contents": "EquiformerV3, eSEN and UMA initialization norms by crystal family and rates above 1% of the noncubic median.",
       "manuscript_items": [
-        "Figure 3b"
-      ]
-    },
-    {
-      "file": "loss_weight_sweep.json",
-      "contents": "False-flag fraction against zero-row loss weight on trained, seen and unseen crystals",
-      "manuscript_items": [
-        "Figure 3c",
-        "Supplementary Note: Training interventions and output enforcement"
-      ]
-    },
-    {
-      "file": "threshold_curves.csv",
-      "contents": "False-flag fraction at 25 log-spaced thresholds per arm and coordinate variant",
-      "manuscript_items": [
-        "Supplementary Figure 1 (threshold curves)"
-      ],
-      "producer": "equiparity aggregate"
-    },
-    {
-      "file": "pooling_arms.json",
-      "contents": "Per-seed summed and mean-pooled readout arms",
-      "manuscript_items": [
-        "Supplementary Table 2 (pooling)"
-      ]
-    },
-    {
-      "file": "augmentation.json",
-      "contents": "Per-seed seen and unseen false-flag fractions for the augmentation arms, with the trained-zero control",
-      "manuscript_items": [
-        "Supplementary Table 3 (augmentation)"
-      ]
-    },
-    {
-      "file": "augmentation_eval_split.json",
-      "contents": "Seen/unseen index partition of the evaluation population and its space groups",
-      "manuscript_items": [
-        "Supplementary Table 3 (augmentation)"
+        "Results: initialization controls"
       ]
     },
     {
       "file": "inversion_averaging.json",
-      "contents": "False-flag fraction and violation before and after output inversion antisymmetrization, with a non-centrosymmetric control",
+      "contents": "Idealized-crystal norms and flag fractions before and after inversion antisymmetrization.",
       "manuscript_items": [
-        "Supplementary Table 4 (output antisymmetrization)"
+        "Results: inversion averaging"
       ]
     },
     {
-      "file": "appendix_stats.json",
-      "contents": "Parameter counts and capacity ratios, target calibration, O(3) floor, size dependence, compute",
+      "file": "populations.csv",
+      "contents": "Material identifiers linking the crystal classes and independent initialization cohort. Empty entries indicate absence from that cohort.",
       "manuscript_items": [
-        "Supplementary Note: Model construction, regression controls, and output audit (compute and environment)",
-        "Methods (reproducibility)"
-      ],
-      "producer": "equiparity aggregate"
+        "Methods: crystal populations"
+      ]
+    },
+    {
+      "file": "training_error_concentration.json",
+      "contents": "Share of zero-predictor squared error in the largest piezoelectric training tensors.",
+      "manuscript_items": [
+        "Results: loss comparison"
+      ]
     },
     {
       "file": "run_manifest.json",
-      "contents": "Execution manifest: every training run with config and SHA-256, data manifests, install profile, locked package versions, hardware and compute",
+      "contents": "Training configurations, file hashes, dataset paths and numerical software versions.",
       "manuscript_items": [
-        "Methods (reproducibility)"
+        "Methods: training"
       ],
       "producer": "equiparity manifest"
-    },
-    {
-      "file": "tables.md",
-      "contents": "Rendered accuracy, violation and timing tables",
-      "manuscript_items": [
-        "Supplementary Table 1 (regression controls)"
-      ],
-      "producer": "equiparity aggregate"
-    },
-    {
-      "file": "tables_extra.md",
-      "contents": "Rendered capacity and full accuracy tables",
-      "manuscript_items": [
-        "Supplementary Note: Model construction, regression controls, and output audit"
-      ],
-      "producer": "equiparity aggregate"
-    },
-    {
-      "file": "ood_spacegroups.json",
-      "contents": "Space group, symbol, crystal family and atom count of each of the 2,000 evaluation crystals",
-      "manuscript_items": [
-        "Methods (data and splits)"
-      ]
-    },
-    {
-      "file": "ood_symmetry.json",
-      "contents": "Centrosymmetry counts and selection tolerance of the evaluation population",
-      "manuscript_items": [
-        "Methods (data and splits)",
-        "Supplementary Note: Population, thresholds, and readout robustness (coordinate tolerance)"
-      ]
-    },
-    {
-      "file": "split_contamination.json",
-      "contents": "Train/evaluation overlap check",
-      "manuscript_items": [
-        "Methods (data and splits)"
-      ]
-    },
-    {
-      "file": "size_consistency.json",
-      "contents": "Supercell scaling of the summed readout",
-      "manuscript_items": [
-        "Supplementary Note: Population, thresholds, and readout robustness (readout scaling)"
-      ]
-    },
-    {
-      "file": "equiformer_v2_upstream.json",
-      "contents": "Vendored-against-upstream reconstruction of the EquiformerV2 source",
-      "manuscript_items": [
-        "Supplementary Note: Model construction, regression controls, and output audit (EquiformerV2 provenance)"
-      ]
     }
   ]
 }

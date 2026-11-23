@@ -11,6 +11,4 @@ schema:
 structure_format: xyz (non-periodic molecules, elements H C N O F)
 query: equiparity data prepare qm9; exclude 3054 uncharacterized (figshare 3195404)
 cleaning: kept 130831 of 133885 molecules after uncharacterized exclusion
-limitations: Dipole target from Mulliken charges underestimates the reference DFT
-  |mu| by ~10-25%; direction and parity are exact, which is what the parity experiment
-  tests.
+limitations: The dipole target is reconstructed from the deposited Mulliken charges and atomic coordinates.

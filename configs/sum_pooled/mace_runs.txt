@@ -1,0 +1,6 @@
+configs/sum_pooled/mace_piezoelectric_o3_seed0.yaml
+configs/sum_pooled/mace_piezoelectric_o3_seed1.yaml
+configs/sum_pooled/mace_piezoelectric_o3_seed2.yaml
+configs/sum_pooled/mace_piezoelectric_so3_seed0.yaml
+configs/sum_pooled/mace_piezoelectric_so3_seed1.yaml
+configs/sum_pooled/mace_piezoelectric_so3_seed2.yaml

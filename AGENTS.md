@@ -7,8 +7,8 @@ Code and measurement records for "The parity gap in crystal tensor prediction". 
 
 - Python 3.12, managed with `uv`; never `pip install`. Run everything as `uv run ...`.
 - Extras: `verify` (release checks), `nequip` or `mace` (training; **mutually exclusive**, since
-  they pin different e3nn versions), `data` (dataset preparation), `analysis` (aggregation).
-- No GPU is needed for anything except `equiparity run`.
+  they pin different e3nn versions), `data` (dataset preparation).
+- Training uses a GPU. Record and theory checks run on CPU.
 
 ## Entry point
 
@@ -19,9 +19,9 @@ means failure.
 uv run equiparity --help
 uv run equiparity verify --json                 # theory + claims; must pass before any change lands
 uv run equiparity records list --json           # what each results/ file holds and backs
-uv run equiparity records show stats --json
-uv run equiparity grid generate main            # configs/grid/*.yaml
-uv run --extra nequip equiparity run configs/grid/nequip_piezoelectric_o3_seed0.yaml
+uv run equiparity records show crystal_regression --json
+uv run equiparity grid generate main            # configs/crystal/*.yaml
+uv run --extra nequip equiparity run configs/crystal/tensor_huber_nequip_piezoelectric_o3_seed0.yaml
 uv run equiparity manifest                      # rebuild results/run_manifest.json
 ```
 

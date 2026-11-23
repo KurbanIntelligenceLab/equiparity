@@ -1,24 +1,7 @@
-"""Rebuild a trained run from its output directory and predict on arbitrary structures.
-
-The single reload entry point for every post-training experiment (the symmetry-breaking sweep-the
-rotation-subgroup analysis). Nothing here trains.
-
-Two facts drive the design, both measured rather than assumed:
-
-- The reported ``metrics.json`` numbers are taken at the **final epoch**, so the state dict to load
-  is ``checkpoint_latest["model"]``. ``checkpoint_best.pt`` is a different (lower-val) epoch and
-  reproduces different numbers.
-- ``scale`` is not persisted anywhere; it is recomputed from the training split exactly as the
-  trainers do (``_irreps_targets(train_ds, ...).std()``).
-
-EquiformerV2 needs special handling: its forward draws a fresh random per-edge frame on every call
-(``models/equiformer_v2/edge_rot_mat.py``), so it is nondeterministic even in ``eval()``. Use
-:func:`seeded_predict` for it and report a spread over draws; never quote a single draw.
-"""
+"""Load validation-selected crystal weights or final-epoch sum-pooled weights for inference."""
 
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -31,7 +14,7 @@ import yaml
 # the `slice` global by default. This must run before anything imports e3nn, hence module scope.
 torch.serialization.add_safe_globals([slice])
 
-from equiparity.domain.experiment import CORES, ExperimentConfig  # noqa: E402
+from equiparity.domain.experiment import ExperimentConfig  # noqa: E402
 from equiparity.domain.structure import AtomicStructure  # noqa: E402
 from equiparity.domain.target import TARGETS  # noqa: E402
 from equiparity.io.config import parse_experiment_config  # noqa: E402
@@ -64,11 +47,6 @@ class TrainedModel:
     device: torch.device
     _extra: dict[str, Any]
 
-    @property
-    def is_stochastic(self) -> bool:
-        """EquiformerV2 redraws a random edge frame per forward; other cores are deterministic."""
-        return self.core == "equiformer_v2"
-
     def predict(self, structures: list[AtomicStructure]) -> np.ndarray:
         """Un-normalised tensor predictions in the orthonormal irreps basis, shape ``(n, dim)``."""
         return _predict_for_core(self, structures)
@@ -79,46 +57,6 @@ class TrainedModel:
         return np.sqrt((preds**2).sum(axis=1))
 
 
-def find_piezo_runs(mirror: Path, *, dataset: str = "mp_piezoelectric") -> dict[str, Path]:
-    """Map ``<core>_<parity>_piezoelectric_seed<N>`` to its latest run directory for ``dataset``.
-
-    ``run_label`` omits the dataset, so the augmented runs share labels with the headline runs.
-    Filtering on the dataset (read from config_snapshot.yaml, which every run writes) is what keeps
-    a side study from silently shadowing the headline.
-    """
-    latest: dict[str, tuple[str, Path]] = {}
-    for metrics_file in mirror.glob("raw/box*/*/metrics.json"):
-        run_dir = metrics_file.parent
-        if not (run_dir / "checkpoint_latest.pt").exists():
-            continue
-        try:
-            metrics = json.loads(metrics_file.read_text())
-        except json.JSONDecodeError:
-            continue
-        label = metrics.get("run_label", "")
-        if not label.startswith(CORES) or "piezoelectric" not in label:
-            continue
-        if _dataset_of(run_dir, metrics) != dataset:
-            continue
-        stamp = run_dir.name.split("_")[-1]
-        if label not in latest or stamp > latest[label][0]:
-            latest[label] = (stamp, run_dir)
-    return {label: run_dir for label, (_, run_dir) in latest.items()}
-
-
-def _dataset_of(run_dir: Path, metrics: dict) -> str | None:
-    """Dataset of a run, from metrics.json or else config_snapshot.yaml."""
-    if "dataset" in metrics:
-        return metrics["dataset"]
-    snapshot = run_dir / "config_snapshot.yaml"
-    if not snapshot.exists():
-        return None
-    for line in snapshot.read_text().splitlines():
-        if line.startswith("dataset:"):
-            return line.split(":", 1)[1].strip()
-    return None
-
-
 def load_trained(
     run_dir: Path,
     *,
@@ -126,17 +64,36 @@ def load_trained(
     device: torch.device | None = None,
     scale: float | None = None,
 ) -> TrainedModel:
-    """Rebuild the trained model recorded in ``run_dir`` from its final-epoch checkpoint.
+    """Rebuild a run from its selected checkpoint (final epoch for sum-pooled runs).
 
-    ``scale`` overrides the target normalisation. Needed for the augmented runs: they were
-    trained with ``training.target_scale = 0.749134`` frozen, but ``_config_snapshot`` did not
-    serialise that field at the time, so it cannot be recovered from the snapshot. That the frozen
-    value was the one actually used is verified empirically -- reloading with 0.749134 reproduces
-    the committed OOD median to rel 3.9e-08, while the recomputed 0.638289 is 15% off.
+    ``scale`` overrides the training-split normalization of sum-pooled models.
     """
     dev = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
     raw = yaml.safe_load((run_dir / "config_snapshot.yaml").read_text())
     config = parse_experiment_config(raw)
+
+    if config.protocol == "validation_selected":
+        from equiparity.training.crystal_regression import build_crystal_model
+
+        selected = torch.load(
+            run_dir / "checkpoint_selected.pt", map_location="cpu", weights_only=False
+        )
+        identity = selected["identity"]
+        if identity["config"] != raw:
+            raise ValueError("selected checkpoint configuration differs from run snapshot")
+        model, extra = build_crystal_model(config, identity["model_metadata"], dev)
+        model.load_state_dict(selected["model"])
+        model.eval()
+        return TrainedModel(
+            model=model,
+            scale=scale if scale is not None else identity["scale"],
+            config=config,
+            core=config.core,
+            parity=config.parity.value,
+            run_dir=run_dir,
+            device=dev,
+            _extra=extra,
+        )
 
     data = load_crystal_dataset(repo_root / config.processed_npz, (config.target,))
     train_ds = CrystalDataset(data, load_split(repo_root / config.split_npz, "train"))
@@ -146,7 +103,6 @@ def load_trained(
         "nequip": _build_e3nn,
         "allegro": _build_e3nn,
         "mace": _build_mace,
-        "equiformer_v2": _build_equiformer,
     }[config.core]
     model, extra = builder(config, train_ds, dev, repo_root)
 
@@ -166,21 +122,6 @@ def load_trained(
     )
 
 
-def seeded_predict(
-    trained: TrainedModel, structures: list[AtomicStructure], *, draws: int = 5, seed0: int = 9000
-) -> np.ndarray:
-    """Stack ``draws`` seeded prediction passes, shape ``(draws, n, dim)``.
-
-    For deterministic cores every slice is identical; for EquiformerV2 the spread across the first
-    axis *is* its equivariance error (an exactly SO(3)-equivariant model is frame-independent).
-    """
-    out = []
-    for k in range(draws):
-        torch.manual_seed(seed0 + k)
-        out.append(trained.predict(structures))
-    return np.stack(out)
-
-
 def _recompute_scale(train_ds: CrystalDataset, config: ExperimentConfig) -> float:
     """The scale a run used: its frozen override if set, else recomputed from the training split."""
     from equiparity.training.nequip_tensor import _irreps_targets
@@ -188,8 +129,8 @@ def _recompute_scale(train_ds: CrystalDataset, config: ExperimentConfig) -> floa
     if config.training.target_scale is not None:
         return float(config.training.target_scale)
     scale = float(_irreps_targets(train_ds, config.target, config.target).std()) or 1.0
-    headline_piezo = config.target == "piezoelectric" and config.dataset == "mp_piezoelectric"
-    if headline_piezo and abs(scale - PIEZO_SCALE) > 1e-5:
+    sum_pooled_piezo = config.target == "piezoelectric" and config.dataset == "mp_piezoelectric"
+    if sum_pooled_piezo and abs(scale - PIEZO_SCALE) > 1e-5:
         raise RuntimeError(f"piezo scale drifted: {scale!r} != {PIEZO_SCALE}")
     return scale
 
@@ -255,19 +196,6 @@ def _build_mace(
     return model, {"z_table": z_table, "dtype": dtype}
 
 
-def _build_equiformer(
-    config: ExperimentConfig, _train_ds: CrystalDataset, dev: torch.device, _repo: Path
-) -> tuple[Any, dict[str, Any]]:
-    from equiparity.domain.parity import ParityMode
-    from equiparity.models.equiformer import EquiformerV2TensorModel
-    from equiparity.training.equiformer_tensor import _config
-
-    model = EquiformerV2TensorModel(
-        _config(config), ParityMode.SO3, TARGETS[config.target].irreps
-    ).to(dev)
-    return model, {}
-
-
 def _predict_for_core(trained: TrainedModel, structures: list[AtomicStructure]) -> np.ndarray:
     core, cfg = trained.core, trained.config
     batch_size = cfg.training.batch_size
@@ -298,10 +226,7 @@ def _predict_for_core(trained: TrainedModel, structures: list[AtomicStructure]) 
         )
         return preds * trained.scale
 
-    from equiparity.training.equiformer_tensor import _predict as _eq_predict
-
-    preds = _eq_predict(trained.model, structures, cfg.model.r_max, batch_size, trained.device)
-    return preds * trained.scale
+    raise ValueError(f"unsupported core {core}")
 
 
 class _AdHocDataset:

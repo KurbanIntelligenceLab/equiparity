@@ -507,10 +507,6 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
-analysis = [
-    { name = "matplotlib" },
-    { name = "scipy" },
-]
 data = [
     { name = "mp-api" },
     { name = "pymatgen" },
@@ -543,7 +539,6 @@ dev = [
 requires-dist = [
     { name = "ase", specifier = ">=3.23" },
     { name = "mace-torch", marker = "extra == 'mace'", specifier = ">=0.3.16" },
-    { name = "matplotlib", marker = "extra == 'analysis'", specifier = ">=3.9" },
     { name = "mp-api", marker = "extra == 'data'", specifier = ">=0.45" },
     { name = "nequip", marker = "extra == 'nequip'", specifier = ">=0.18.0" },
     { name = "nequip-allegro", marker = "extra == 'nequip'", specifier = ">=0.4" },
@@ -551,14 +546,13 @@ requires-dist = [
     { name = "numpy", marker = "extra == 'verify'", specifier = ">=2.0" },
     { name = "pymatgen", marker = "extra == 'data'", specifier = ">=2025.1.1" },
     { name = "pyyaml", specifier = ">=6.0" },
-    { name = "scipy", marker = "extra == 'analysis'", specifier = ">=1.13" },
     { name = "spglib", marker = "extra == 'data'", specifier = ">=2.5" },
     { name = "sympy", marker = "extra == 'verify'", specifier = ">=1.13" },
     { name = "torch", marker = "sys_platform != 'linux' and sys_platform != 'win32'", specifier = ">=2.11.0" },
     { name = "torch", marker = "sys_platform == 'linux' or sys_platform == 'win32'", specifier = ">=2.11.0", index = "https://download.pytorch.org/whl/cu128" },
     { name = "torch-geometric", marker = "extra == 'nequip'", specifier = ">=2.5" },
 ]
-provides-extras = ["nequip", "mace", "data", "analysis", "verify"]
+provides-extras = ["nequip", "mace", "data", "verify"]
 
 [package.metadata.requires-dev]
 dev = [

@@ -1,18 +1,9 @@
-"""Build the release execution manifest: every run the study trained, with its configuration,
-data, software and hardware.
-
-The manifest is assembled only from committed inputs, so it rebuilds identically from a clean
-checkout: the per-run YAML configs under ``configs/``, the dataset and split manifests, the
-exact package versions in ``uv.lock``, and the compute record in ``results/appendix_stats.json``.
-
-CLI: ``equiparity manifest`` (writes ``results/run_manifest.json``).
-"""
+"""Index the released training configurations, data sources and software profiles."""
 
 from __future__ import annotations
 
 import hashlib
 import json
-import re
 import tomllib
 from pathlib import Path
 from typing import Any
@@ -25,12 +16,10 @@ MANIFEST_PATH = "results/run_manifest.json"
 
 # Study each grid belongs to, as reported.
 _STUDY = {
-    "main": "matched-pair grid",
-    "meanpool": "readout pooling control",
-    "sumpool": "readout pooling control",
-    "augmentation": "zero-label augmentation",
-    "loss-weight": "zero-row loss weighting",
-    "zero-injection": "zero-injection learning curve",
+    "main": "crystal regression",
+    "zero-labels": "zero-label supervision",
+    "molecular": "molecular regression",
+    "sum-pooled": "sum-pooled piezoelectric controls",
 }
 
 # Packages whose versions determine model numerics, per install profile.
@@ -86,13 +75,14 @@ def _relative(path: Path, root: Path) -> str | None:
 def _run_entry(root: Path, grid: str, config_path: str) -> dict[str, Any]:
     path = root / config_path
     cfg = yaml.safe_load(path.read_text())
-    # Loss-weight runs relabel the augmented dataset with a `_w<weight>` suffix for unique run keys.
-    dataset = re.sub(r"_w\d+$", "", cfg["dataset"])
+    dataset = cfg["dataset"]
     dataset_manifest = root / f"data/manifests/{dataset}.yaml"
-    split_manifest = root / f"data/splits/{dataset}.yaml"
+    if cfg.get("protocol") == "validation_selected":
+        dataset_manifest = (root / cfg["processed_npz"]).with_suffix(".frame.json")
+    split = root / cfg["split_npz"]
     training = cfg.get("training", {})
     return {
-        "run_label": f"{cfg['core']}_{cfg['parity']}_{cfg['target']}_seed{cfg['seed']}",
+        "run_label": f"{grid}/{path.stem}",
         "study": _STUDY[grid],
         "config": config_path,
         "config_sha256": _sha256(path),
@@ -104,7 +94,7 @@ def _run_entry(root: Path, grid: str, config_path: str) -> dict[str, Any]:
         "processed_npz": cfg["processed_npz"],
         "split_npz": cfg["split_npz"],
         "dataset_manifest": _relative(dataset_manifest, root),
-        "split_manifest": _relative(split_manifest, root),
+        "split_sha256": _sha256(split),
         "pooling": cfg.get("model", {}).get("pooling", "sum"),
         "precision": training.get("precision"),
         "epochs": training.get("epochs"),
@@ -114,7 +104,6 @@ def _run_entry(root: Path, grid: str, config_path: str) -> dict[str, Any]:
 
 def build_run_manifest(root: Path) -> dict[str, Any]:
     """Assemble the manifest from committed configs and records under ``root``."""
-    compute = json.loads((root / "results/appendix_stats.json").read_text())["compute"]
     runs: list[dict[str, Any]] = []
     for name, grid in GRIDS.items():
         directory = root / grid.directory
@@ -122,9 +111,6 @@ def build_run_manifest(root: Path) -> dict[str, Any]:
             for line in run_list.read_text().splitlines():
                 if line.strip():
                     runs.append(_run_entry(root, name, line.strip()))
-    for run in runs:
-        if run["study"] == _STUDY["main"]:
-            run["gpu"] = compute["per_core"][run["core"]]["gpu"]
     by_study: dict[str, int] = {}
     for run in runs:
         by_study[run["study"]] = by_study.get(run["study"], 0) + 1
@@ -141,19 +127,6 @@ def build_run_manifest(root: Path) -> dict[str, Any]:
             "lockfile_sha256": _sha256(root / "uv.lock"),
             "packages": _locked_versions(root),
             "cuda": "12.8 (PyTorch cu128 wheels)",
-        },
-        "hardware": {
-            "gpu_by_core": {core: v["gpu"] for core, v in compute["per_core"].items()},
-            "note": (
-                "Per-core wall-clock is not a like-for-like architecture comparison: two GPU "
-                "classes were used."
-            ),
-        },
-        "compute": {
-            "total_train_hours": compute["total_train_hours"],
-            "train_hours_by_gpu": compute["train_hours_by_gpu"],
-            "per_core": compute["per_core"],
-            "scope": "matched-pair grid only; sweep and pooling runs excluded",
         },
         "seeding": "each run seeds Python, NumPy and PyTorch from its config `seed`",
         "runs": runs,

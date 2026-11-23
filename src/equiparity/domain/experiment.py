@@ -13,7 +13,7 @@ from pathlib import Path
 from equiparity.domain.parity import ParityMode
 from equiparity.domain.target import TARGETS
 
-CORES = ("nequip", "allegro", "mace", "equiformer_v2")
+CORES = ("nequip", "allegro", "mace")
 
 
 class ConfigError(ValueError):
@@ -28,15 +28,14 @@ class ModelHyperparams:
     l_max: int = 2
     num_features: int = 32
     r_max: float = 5.0
-    # "sum" (default) reproduces every existing result and checkpoint bit-identically: it is
-    # the readout's original out.index_add_(...) with no division. "mean" is the intensive-readout
-    # control arm, which rules out extensive pooling as the source of the separation: divide the
-    # accumulated per-atom (or, for Allegro, per-edge)
-    # sum by the per-structure unit count. See equiparity.models.pooling for the shared helper
-    # and equiparity.models.allegro for the edge-vs-atom subtlety.
+    # Mean pooling divides by the number of atoms (edges for Allegro).
     pooling: str = "sum"
+    tensor_head: str = "linear"
+    use_magnetic_magnitudes: bool = False
 
     def __post_init__(self) -> None:
+        if self.tensor_head not in ("linear", "complete"):
+            raise ConfigError("model.tensor_head must be linear or complete")
         if self.pooling not in ("sum", "mean"):
             raise ConfigError(f"model.pooling must be 'sum' or 'mean', got {self.pooling!r}")
 
@@ -50,23 +49,43 @@ class TrainingParams:
     lr: float = 1e-3
     weight_decay: float = 0.0
     device: str = "cuda"
-    # Model/output precision. "float32" trains in nequip mixed precision (fp32 weights, fp64
-    # geometry) — ~6.8x faster than float64 on consumer GPUs at production size. "float64" is
-    # kept for high-precision verification runs.
+    # Precision for model weights; geometry may use higher precision.
     precision: str = "float32"
     max_train_samples: int | None = None  # cap for smoke runs; None uses the full split
     max_eval_samples: int | None = None
-    # Override the target normalization scale instead of recomputing it from the training split.
-    # Needed by the augmentation study: adding zero-labelled crystals shrinks the recomputed
-    # std (0.749 -> 0.638), and freezing it keeps augmented violations directly comparable to the
-    # main runs. None (the default) recomputes, which is what every headline run did.
+    # Zero-label runs use the scale estimated from the unaugmented training split.
     target_scale: float | None = None
-    # Up-weight the exactly-zero-target training rows in the MSE by this factor. 1.0 (default) is a
-    # numeric no-op == plain MSELoss. The loss-weight sweep raises it to probe whether a large
-    # enough weight can force an SO(3) model's centrosymmetric violation to zero.
+    # Per-row multiplier applied to exactly zero training targets.
     zero_row_loss_weight: float = 1.0
+    loss: str = "mse"
+    huber_delta: float = 1.0
+    scheduler: str = "plateau"
+    scheduler_patience: int = 10
+    min_lr: float = 1e-6
+    gradient_clip: float = 10.0
+    evaluate_test: bool = False
 
     def __post_init__(self) -> None:
+        if self.loss not in ("mse", "tensor_huber"):
+            raise ConfigError("training.loss must be mse or tensor_huber")
+        if self.scheduler not in ("none", "plateau"):
+            raise ConfigError("training.scheduler must be none or plateau")
+        if (
+            min(
+                self.epochs,
+                self.batch_size,
+                self.lr,
+                self.huber_delta,
+                self.min_lr,
+                self.gradient_clip,
+            )
+            <= 0
+        ):
+            raise ConfigError(
+                "training counts, learning rates, loss scale and clip must be positive"
+            )
+        if self.scheduler_patience < 0 or self.min_lr > self.lr:
+            raise ConfigError("invalid scheduler patience or minimum learning rate")
         if self.precision not in ("float32", "float64"):
             raise ValueError(f"precision must be float32 or float64, got {self.precision!r}")
         if self.target_scale is not None and self.target_scale <= 0:
@@ -75,11 +94,6 @@ class TrainingParams:
             raise ValueError(
                 f"zero_row_loss_weight must be positive, got {self.zero_row_loss_weight!r}"
             )
-
-
-# The datasets the headline grid uses. Anything else (e.g. the augmented piezoelectric set) is
-# a side study and must never overwrite a headline run's flattened metrics.
-CANONICAL_DATASETS = frozenset({"qm9", "mp_elastic", "mp_piezoelectric"})
 
 
 @dataclass(frozen=True, slots=True)
@@ -96,8 +110,20 @@ class ExperimentConfig:
     output_dir: Path
     model: ModelHyperparams = field(default_factory=ModelHyperparams)
     training: TrainingParams = field(default_factory=TrainingParams)
+    protocol: str = "final_epoch"
 
     def __post_init__(self) -> None:
+        if self.protocol not in ("final_epoch", "validation_selected"):
+            raise ConfigError("protocol must be final_epoch or validation_selected")
+        if self.protocol == "final_epoch" and self.model.tensor_head != "linear":
+            raise ConfigError("complete tensor heads require protocol validation_selected")
+        if self.protocol == "validation_selected":
+            if self.target not in ("piezoelectric", "elastic"):
+                raise ConfigError("validation_selected supports matched crystal tensor cores only")
+            if self.model.tensor_head != "complete" or self.model.pooling != "mean":
+                raise ConfigError(
+                    "validation_selected requires complete tensor heads and mean pooling"
+                )
         if self.core not in CORES:
             raise ConfigError(f"core must be one of {CORES}, got {self.core!r}")
         if self.target not in TARGETS:
@@ -107,14 +133,6 @@ class ExperimentConfig:
     def run_label(self) -> str:
         """Stable label for this run, e.g. ``nequip_o3_U0_seed42``.
 
-        Note this does NOT identify the dataset: two datasets sharing a target produce the same
-        label. Use :attr:`run_key` when runs from different datasets may be mixed.
+        The label identifies the backbone, target, symmetry arm and seed.
         """
         return f"{self.core}_{self.parity.value}_{self.target}_seed{self.seed}"
-
-    @property
-    def run_key(self) -> str:
-        """``run_label`` qualified by dataset when the dataset is not the target's canonical one."""
-        if self.dataset in CANONICAL_DATASETS:
-            return self.run_label
-        return f"{self.run_label}__{self.dataset}"

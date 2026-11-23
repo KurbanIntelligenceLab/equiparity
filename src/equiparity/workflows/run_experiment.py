@@ -7,13 +7,14 @@ Composes seeding, the core-specific trainer, and provenance writing. Every run p
 from __future__ import annotations
 
 import json
+from dataclasses import asdict
 from pathlib import Path
 
 import yaml
 
 from equiparity.domain.experiment import ExperimentConfig
 from equiparity.reproducibility import collect_provenance, seed_everything, write_manifest
-from equiparity.training.nequip_scalar import RunResult, train_scalar
+from equiparity.training.nequip_scalar import train_scalar
 from equiparity.training.nequip_tensor import train_tensor
 from equiparity.training.nequip_vector import train_dipole
 
@@ -22,19 +23,10 @@ _VECTOR_TARGETS = frozenset({"dipole"})
 _TENSOR_TARGETS = frozenset({"elastic", "piezoelectric"})
 _OOD_NPZ = "data/raw/mp/mp_ood_centrosymmetric_processed.npz"
 
-_MANIFEST_DIRS = {
-    "qm9": ("data/manifests/qm9.yaml", "data/splits/qm9.yaml"),
-    "mp_elastic": ("data/manifests/mp_elastic.yaml", "data/splits/mp_elastic.yaml"),
-    "mp_piezoelectric": (
-        "data/manifests/mp_piezoelectric.yaml",
-        "data/splits/mp_piezoelectric.yaml",
-    ),
-}
-
 
 def _config_snapshot(config: ExperimentConfig) -> dict[str, object]:
     """Serialize a config to a plain, YAML-ready mapping."""
-    return {
+    snapshot = {
         "seed": config.seed,
         "core": config.core,
         "parity": config.parity.value,
@@ -68,9 +60,16 @@ def _config_snapshot(config: ExperimentConfig) -> dict[str, object]:
             "max_eval_samples": config.training.max_eval_samples,
         },
     }
+    if config.protocol == "validation_selected":
+        snapshot["protocol"] = config.protocol
+        snapshot["model"] = asdict(config.model)
+        snapshot["training"] = asdict(config.training)
+    return snapshot
 
 
-def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Path:
+def run_experiment(
+    config: ExperimentConfig, *, allow_dirty: bool = False, resume: Path | None = None
+) -> Path:
     """Train per ``config``, then write manifest, config snapshot, and metrics. Returns the run dir.
 
     Args:
@@ -80,46 +79,16 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
     Returns:
         The ``outputs/<experiment_id>/`` directory path.
     """
-    seed_everything(config.seed)
-    ood = _OOD_NPZ if config.target == "piezoelectric" else None
-    if config.core == "mace":
-        # MACE has a separate data pipeline (mace.data), so its heads live in mace_* trainers.
-        if config.target in _TENSOR_TARGETS:
-            from equiparity.training.mace_tensor import train_mace_tensor
-
-            result: RunResult = train_mace_tensor(config, ood_npz=ood)
-        elif config.target in _VECTOR_TARGETS:
-            from equiparity.training.mace_tensor import train_mace_dipole
-
-            result = train_mace_dipole(config)
-        else:
-            from equiparity.training.mace_scalar import train_mace_scalar
-
-            result = train_mace_scalar(config)
-    elif config.core == "equiformer_v2":
-        # EquiformerV2 is a fixed SO(3) representative with a torch_geometric (PBC) pipeline.
-        if config.target in _TENSOR_TARGETS:
-            from equiparity.training.equiformer_tensor import train_equiformer_tensor
-
-            result = train_equiformer_tensor(config, ood_npz=ood)
-        elif config.target in _VECTOR_TARGETS:
-            from equiparity.training.equiformer_tensor import train_equiformer_dipole
-
-            result = train_equiformer_dipole(config)
-        else:
-            from equiparity.training.equiformer_tensor import train_equiformer_scalar
-
-            result = train_equiformer_scalar(config)
-    elif config.target in _TENSOR_TARGETS:
-        result = train_tensor(config, ood_npz=ood)  # nequip or allegro
-    elif config.target in _VECTOR_TARGETS:
-        result = train_dipole(config)  # nequip or allegro
-    else:
-        result = train_scalar(config)  # nequip or allegro energy readout
-
+    if resume is not None and config.protocol != "validation_selected":
+        raise ValueError("resume is supported only by validation_selected")
     snapshot = _config_snapshot(config)
     config_text = yaml.safe_dump(snapshot, sort_keys=True)
-    dataset_manifest, split_manifest = _MANIFEST_DIRS.get(config.dataset, ("", ""))
+    dataset_manifest = (
+        str(config.processed_npz.with_suffix(".frame.json"))
+        if config.protocol == "validation_selected"
+        else f"data/manifests/{config.dataset}.yaml"
+    )
+    split_manifest = str(config.split_npz)
     manifest = collect_provenance(
         config_text=config_text,
         config_path=f"<{config.run_label}>",
@@ -130,6 +99,33 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
     run_dir = config.output_dir / manifest.experiment_id
     write_manifest(manifest, run_dir, allow_dirty=allow_dirty)
     (run_dir / "config_snapshot.yaml").write_text(config_text)
+    seed_everything(config.seed)
+    ood = _OOD_NPZ if config.target == "piezoelectric" else None
+    if config.protocol == "validation_selected":
+        from equiparity.training.crystal_regression import train_crystal_regression
+
+        result = train_crystal_regression(config, run_dir, snapshot, resume)
+    elif config.core == "mace":
+        # MACE has a separate data pipeline (mace.data), so its heads live in mace_* trainers.
+        if config.target in _TENSOR_TARGETS:
+            from equiparity.training.mace_tensor import train_mace_tensor
+
+            result = train_mace_tensor(config, ood_npz=ood)
+        elif config.target in _VECTOR_TARGETS:
+            from equiparity.training.mace_tensor import train_mace_dipole
+
+            result = train_mace_dipole(config)
+        else:
+            from equiparity.training.mace_scalar import train_mace_scalar
+
+            result = train_mace_scalar(config)
+    elif config.target in _TENSOR_TARGETS:
+        result = train_tensor(config, ood_npz=ood)  # nequip or allegro
+    elif config.target in _VECTOR_TARGETS:
+        result = train_dipole(config)  # nequip or allegro
+    else:
+        result = train_scalar(config)  # nequip or allegro energy readout
+
     metrics = {
         "run_label": config.run_label,
         # `run_label` is (core, parity, target, seed) and does NOT include the dataset, so two
@@ -141,7 +137,7 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
         "n_params": result.n_params,
         "epochs_run": result.epochs_run,
         "val": result.val.to_dict(),
-        "test": result.test.to_dict(),
+        "test": result.test.to_dict() if result.test is not None else None,
     }
     # Tensor runs carry the OOD violation stats (piezoelectric headline).
     for field in ("ood_violation_median", "ood_violation_max", "ood_false_flag_fraction"):
@@ -149,7 +145,7 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
         if value is not None:
             metrics[field] = value
     # Run instrumentation: both-variant OOD curves/distributions and wall-clock timing.
-    for field in ("ood_variants", "timing"):
+    for field in ("ood_variants", "timing", "selected_epoch", "baselines", "parameter_counts"):
         value = getattr(result, field, None)
         if value is not None:
             metrics[field] = value
@@ -165,6 +161,9 @@ def run_experiment(config: ExperimentConfig, *, allow_dirty: bool = False) -> Pa
 
     if getattr(result, "checkpoint_best", None) is not None:
         torch.save(result.checkpoint_best, run_dir / "checkpoint_best.pt")
-    if getattr(result, "checkpoint_latest", None) is not None:
+    if (
+        getattr(result, "checkpoint_latest", None) is not None
+        and config.protocol != "validation_selected"
+    ):
         torch.save(result.checkpoint_latest, run_dir / "checkpoint_latest.pt")
     return run_dir

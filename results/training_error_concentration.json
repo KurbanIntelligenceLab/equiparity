@@ -1,0 +1,6 @@
+{
+  "n_train": 2649,
+  "n_largest": 27,
+  "fraction_of_squared_error": 0.6755376457273923,
+  "predictor": "zero"
+}

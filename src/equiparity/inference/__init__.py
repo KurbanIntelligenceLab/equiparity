@@ -2,17 +2,13 @@
 
 from equiparity.inference.reload import (
     TrainedModel,
-    find_piezo_runs,
     load_trained,
-    seeded_predict,
 )
-from equiparity.inference.structures import perovskite, tetragonal_distortion
+from equiparity.inference.structures import rutile, tetragonal_distortion
 
 __all__ = [
     "TrainedModel",
-    "find_piezo_runs",
     "load_trained",
-    "perovskite",
-    "seeded_predict",
+    "rutile",
     "tetragonal_distortion",
 ]

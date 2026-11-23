@@ -38,6 +38,13 @@ def to_atomic_data(structure, symbol_to_type, r_max, dtype):  # noqa: ANN001, AN
     data[AtomicDataDict.ATOM_TYPE_KEY] = torch.tensor(
         [[symbol_to_type[int(z)]] for z in structure.atomic_numbers], dtype=torch.long
     )
+    if getattr(structure, "magnetic_magnitudes", None) is not None:
+        from nequip.data import register_fields
+
+        from equiparity.models.site_scalars import MAGNITUDE_KEY
+
+        register_fields(node_fields=[MAGNITUDE_KEY])
+        data[MAGNITUDE_KEY] = torch.tensor(structure.magnetic_magnitudes[:, None], dtype=dtype)
     for key, value in data.items():
         if torch.is_tensor(value) and value.is_floating_point():
             data[key] = value.to(dtype)

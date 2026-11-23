@@ -12,8 +12,7 @@ import torch
 from equiparity.domain.parity import ParityMode
 from equiparity.domain.target import TARGETS
 from equiparity.inference.structures import (
-    max_displacement_angstrom,
-    perovskite,
+    rutile,
     tetragonal_distortion,
 )
 from equiparity.models.irreps import degree_irreps, output_irreps
@@ -122,29 +121,9 @@ def _spacegroup(structure, symprec: float) -> int:  # noqa: ANN001
     return int(spglib.get_symmetry_dataset(cell, symprec=symprec).number)
 
 
-@pytest.mark.parametrize("name", ["BaTiO3", "PbTiO3"])
-def test_cubic_perovskite_is_centrosymmetric_at_every_tolerance(name: str) -> None:
-    for symprec in (1e-3, 1e-5, 1e-8):
-        assert _spacegroup(perovskite(name), symprec) == 221
-
-
-@pytest.mark.parametrize("name", ["BaTiO3", "PbTiO3"])
-def test_polar_distortion_is_p4mm_at_tight_tolerance(name: str) -> None:
-    """Every delta > 0 must register as P4mm (99) -- but only at symprec 1e-8."""
-    for delta in (1e-3, 3e-3, 6e-3, 1e-2, 0.05, 0.2, 0.5, 1.0, 1.2):
-        assert _spacegroup(tetragonal_distortion(name, delta), 1e-8) == 99
-
-
-def test_spglib_symprec_is_a_distance_tolerance_not_a_symmetry_test() -> None:
-    """At symprec 1e-3, small-delta polar frames are reported centrosymmetric.
-
-    The maximum atomic displacement falls below the tolerance; the crossover is near delta ~ 0.006.
-    """
-    assert _spacegroup(tetragonal_distortion("BaTiO3", 3e-3), 1e-3) == 221  # wrong, but expected
-    assert _spacegroup(tetragonal_distortion("BaTiO3", 3e-3), 1e-8) == 99  # right
-    assert _spacegroup(tetragonal_distortion("BaTiO3", 6e-3), 1e-3) == 99  # past the crossover
-    assert max_displacement_angstrom("BaTiO3", 3e-3) < 1e-3
-    assert max_displacement_angstrom("BaTiO3", 6e-3) > 7e-4
+def test_rutile_path_breaks_inversion() -> None:
+    assert _spacegroup(rutile(), 1e-8) == 136
+    assert _spacegroup(tetragonal_distortion("TiO2", 0.001), 1e-8) == 102
 
 
 # ------------------------------------------------------------------- matched toy model
@@ -269,39 +248,10 @@ def test_inversion_averaging_is_trivially_zero_on_an_exactly_centrosymmetric_inp
     assert float(t_sym.norm()) < 1e-10
 
 
-# ------------------------------------------------------------------- run identity
-def test_run_label_collides_across_datasets_but_run_key_does_not() -> None:
-    """``run_label`` omits the dataset, so augmented and headline runs share labels.
-
-    ``run_key`` is the dataset-qualified identifier used wherever runs from different datasets can
-    be mixed.
-    """
-    from equiparity.domain.experiment import CANONICAL_DATASETS
-    from equiparity.io.config import parse_experiment_config
-
-    base = {
-        "seed": 1,
-        "core": "nequip",
-        "parity": "so3",
-        "target": "piezoelectric",
-        "processed_npz": "a",
-        "split_npz": "b",
-    }
-    headline = parse_experiment_config({**base, "dataset": "mp_piezoelectric"})
-    side = parse_experiment_config({**base, "dataset": "mp_piezoelectric_augmented"})
-
-    assert headline.run_label == side.run_label
-    assert headline.run_key != side.run_key
-    assert headline.run_key == headline.run_label  # canonical datasets keep their bare label
-    assert side.run_key.endswith("__mp_piezoelectric_augmented")
-    assert "mp_piezoelectric" in CANONICAL_DATASETS
-    assert "mp_piezoelectric_augmented" not in CANONICAL_DATASETS
-
-
 # ------------------------------------------------------------------- zero-row loss weighting
 def test_zero_row_weighted_mse_is_a_noop_at_weight_one() -> None:
     """At W=1 the per-row weighted MSE is bit-identical to torch.nn.MSELoss; the mask picks the
-    exactly-zero-target rows. Guards the loss-weight sweep loss-weight sweep's control column."""
+    exactly-zero-target rows. Unit weight preserves the unweighted objective."""
     torch.manual_seed(0)
     pred = torch.randn(16, 18, dtype=torch.float64)
     target = torch.randn(16, 18, dtype=torch.float64)
