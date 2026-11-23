@@ -32,6 +32,7 @@ def parse_experiment_config(raw: dict[str, Any]) -> ExperimentConfig:
     training_raw = raw.get("training", {})
     parity = ParityMode(str(_require(raw, "parity")))
     return ExperimentConfig(
+        protocol=str(raw.get("protocol", "final_epoch")),
         seed=int(_require(raw, "seed")),
         core=str(_require(raw, "core")),
         parity=parity,

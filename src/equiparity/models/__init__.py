@@ -1,3 +1,3 @@
-"""Model wrappers: the toggleable cores (NequIP, Allegro, MACE) and EquiformerV2."""
+"""Model wrappers: NequIP, Allegro and MACE."""
 
 from __future__ import annotations

@@ -55,11 +55,6 @@ data = [
   "pymatgen>=2025.1.1",
   "mp-api>=0.45",
 ]
-# Aggregating a training-run tree into summary records: `equiparity aggregate`.
-analysis = [
-  "scipy>=1.13",
-  "matplotlib>=3.9",
-]
 # Claim and theorem checkers: `equiparity verify`. Needs no GPU.
 verify = [
   "numpy>=2.0",
@@ -109,17 +104,10 @@ dev = [
 [tool.ruff]
 target-version = "py312"
 line-length = 100
-# Vendored model implementation within the package.
-extend-exclude = [
-  "src/equiparity/models/equiformer_v2",
-]
-
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "UP", "B", "ANN", "RUF", "SIM", "PTH", "RET"]
 
 [tool.ruff.lint.per-file-ignores]
-# Numerical aggregation code; loosely typed.
-"src/equiparity/evaluation/aggregate.py" = ["ANN", "RUF001", "RUF002", "E501", "C408", "PTH", "SIM", "RET", "B", "N"]
 "tests/verification/test_claims.py" = [
   "ANN", "RUF001", "N802", "N803", "N806", "N816", "E701", "E702", "E731", "E741",
   "PTH", "SIM115", "RET503",
@@ -146,7 +134,6 @@ warn_redundant_casts = true
 [[tool.mypy.overrides]]
 module = [
   "equiparity.features.*",
-  "equiparity.plotting.*",
   "equiparity.models.*",
   "equiparity.verification.*",
   "equiparity.training.*",
@@ -169,6 +156,7 @@ module = [
   "pymatgen.*",
   "spglib.*",
   "mp_api.*",
+  "emmet.*",
   "yaml",
 ]
 ignore_missing_imports = true

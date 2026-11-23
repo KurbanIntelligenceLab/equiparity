@@ -142,6 +142,7 @@ def build_tensor_model(config, type_names, avg_neigh, o3_output_irreps, device):
             seed=config.seed,
             model_dtype=config.training.precision,
             pooling=config.model.pooling,
+            tensor_head=config.model.tensor_head,
         )
         return AllegroTensorModel(cfg, config.parity, o3_output_irreps).to(device)
     cfg = NequIPConfig(
@@ -155,6 +156,7 @@ def build_tensor_model(config, type_names, avg_neigh, o3_output_irreps, device):
         seed=config.seed,
         model_dtype=config.training.precision,
         pooling=config.model.pooling,
+        tensor_head=config.model.tensor_head,
     )
     return NequIPTensorModel(cfg, config.parity, o3_output_irreps).to(device)
 

@@ -1,0 +1,74 @@
+[
+  {
+    "core": "allegro",
+    "target": "elastic",
+    "parity": "o3",
+    "allocated": 86064
+  },
+  {
+    "core": "allegro",
+    "target": "elastic",
+    "parity": "so3",
+    "allocated": 86448
+  },
+  {
+    "core": "allegro",
+    "target": "piezoelectric",
+    "parity": "o3",
+    "allocated": 87024
+  },
+  {
+    "core": "allegro",
+    "target": "piezoelectric",
+    "parity": "so3",
+    "allocated": 88480
+  },
+  {
+    "core": "mace",
+    "target": "elastic",
+    "parity": "o3",
+    "allocated": 3334592
+  },
+  {
+    "core": "mace",
+    "target": "elastic",
+    "parity": "so3",
+    "allocated": 3937984
+  },
+  {
+    "core": "mace",
+    "target": "piezoelectric",
+    "parity": "o3",
+    "allocated": 6119424
+  },
+  {
+    "core": "mace",
+    "target": "piezoelectric",
+    "parity": "so3",
+    "allocated": 8560000
+  },
+  {
+    "core": "nequip",
+    "target": "elastic",
+    "parity": "o3",
+    "allocated": 1790016
+  },
+  {
+    "core": "nequip",
+    "target": "elastic",
+    "parity": "so3",
+    "allocated": 1823040
+  },
+  {
+    "core": "nequip",
+    "target": "piezoelectric",
+    "parity": "o3",
+    "allocated": 2463104
+  },
+  {
+    "core": "nequip",
+    "target": "piezoelectric",
+    "parity": "so3",
+    "allocated": 2554368
+  }
+]

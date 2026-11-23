@@ -26,12 +26,14 @@ class AtomicStructure:
         positions: Cartesian coordinates in angstrom, shape ``(n_atoms, 3)``.
         cell: Lattice vectors in angstrom as rows, shape ``(3, 3)``, or ``None`` if aperiodic.
         pbc: Whether periodic boundary conditions apply.
+        magnetic_magnitudes: Optional time-even site moments, shape ``(n_atoms,)``.
     """
 
     atomic_numbers: npt.NDArray[np.int64]
     positions: npt.NDArray[np.float64]
     cell: npt.NDArray[np.float64] | None
     pbc: bool
+    magnetic_magnitudes: npt.NDArray[np.float64] | None = None
 
     @property
     def n_atoms(self) -> int:
@@ -62,6 +64,12 @@ def validate_structure(structure: AtomicStructure) -> AtomicStructure:
         raise StructureValidationError("atomic_numbers outside the valid range [1, 118]")
     if not np.all(np.isfinite(positions)):
         raise StructureValidationError("positions contain NaN or infinity")
+    if structure.magnetic_magnitudes is not None:
+        moments = structure.magnetic_magnitudes
+        if moments.shape != numbers.shape or not np.isfinite(moments).all() or (moments < 0).any():
+            raise StructureValidationError(
+                "magnetic magnitudes must be finite nonnegative per-site scalars"
+            )
     if structure.pbc:
         if structure.cell is None:
             raise StructureValidationError("pbc=True requires a cell")

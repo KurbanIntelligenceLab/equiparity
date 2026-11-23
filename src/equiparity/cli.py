@@ -22,11 +22,10 @@ _EPILOG = """\
 examples:
   equiparity verify                          check theory and claims against results/
   equiparity records list --json             catalogue of released records
-  equiparity records show stats              one record's metadata and path
-  equiparity grid generate main              write the 84 matched-pair configs
-  equiparity run configs/grid/nequip_piezoelectric_o3_seed0.yaml
+  equiparity records show crystal_regression              one record's metadata and path
+  equiparity grid generate main              write the 42 crystal regression configs
+  equiparity run configs/crystal/tensor_huber_nequip_piezoelectric_o3_seed0.yaml
   equiparity data prepare mp --dataset ood   fetch the centrosymmetric population
-  equiparity aggregate --runs /path/to/runs  rebuild summary records from a run tree
   equiparity manifest                        rebuild results/run_manifest.json
 """
 
@@ -49,7 +48,7 @@ def _cmd_run(args: argparse.Namespace) -> int:
     from equiparity.workflows.run_experiment import run_experiment
 
     config = load_experiment_config(args.config)
-    run_dir = run_experiment(config, allow_dirty=args.allow_dirty)
+    run_dir = run_experiment(config, allow_dirty=args.allow_dirty, resume=args.resume)
     _log.info("run complete: %s", run_dir)
     return 0
 
@@ -123,11 +122,61 @@ def _cmd_data(args: argparse.Namespace) -> int:
     return 0
 
 
-def _cmd_aggregate(args: argparse.Namespace) -> int:
-    from equiparity.evaluation.aggregate import aggregate
+def _cmd_tensor_datasets(args: argparse.Namespace) -> int:
+    from equiparity.workflows.tensor_datasets import prepare_tensor_dataset
 
-    summary = aggregate(args.runs, _root(args))
-    _emit(summary, as_json=args.json, text=f"aggregated {summary['runs']} runs")
+    result = prepare_tensor_dataset(_root(args), args.target, args.documents)
+    _emit(result, as_json=args.json, text=str(result))
+    return 0
+
+
+def _cmd_zero_supervision(args: argparse.Namespace) -> int:
+    from equiparity.workflows.zero_supervision import prepare_zero_supervision
+
+    result = prepare_zero_supervision(_root(args), args.documents)
+    _emit(result, as_json=args.json, text=str(result))
+    return 0
+
+
+def _cmd_evaluate_checkpoint(args: argparse.Namespace) -> int:
+    from equiparity.workflows.evaluate_checkpoint import evaluate_checkpoint
+
+    result = evaluate_checkpoint(
+        _root(args), args.run_dir, args.output_dir, args.device, args.partition, args.protocol_lock
+    )
+    _emit(result, as_json=args.json, text=str(result))
+    return 0
+
+
+def _cmd_evaluation_lock(args: argparse.Namespace) -> int:
+    from equiparity.workflows.evaluation_protocol import lock_evaluation_protocol
+
+    result = lock_evaluation_protocol(_root(args), args.configs, args.output)
+    _emit(result, as_json=args.json, text=str(result))
+    return 0
+
+
+def _cmd_regression_metrics(args: argparse.Namespace) -> int:
+    from equiparity.workflows.regression_metrics import summarize_regressions
+
+    result = summarize_regressions(args.protocol_lock, args.evaluations, args.output)
+    _emit(result, as_json=args.json, text=str(result))
+    return 0
+
+
+def _cmd_measure_masks(args: argparse.Namespace) -> int:
+    from equiparity.workflows.symmetry_masks import measure_masks
+
+    measurements = measure_masks(_root(args) / "results/predictions.zip")
+    _emit(measurements, as_json=args.json, text=json.dumps(measurements, indent=2))
+    return 0
+
+
+def _cmd_crystal_symmetry(args: argparse.Namespace) -> int:
+    from equiparity.workflows.crystal_symmetry import evaluate_crystal_symmetry
+
+    result = evaluate_crystal_symmetry(_root(args), args.run_dir, args.output_dir, args.device)
+    _emit(result, as_json=args.json, text=str(result))
     return 0
 
 
@@ -169,7 +218,42 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--allow-dirty", action="store_true", help="Permit a dirty git tree (debug/smoke runs)."
     )
+    run.add_argument(
+        "--resume", type=Path, help="Resume a validation_selected epoch-boundary checkpoint."
+    )
     run.set_defaults(handler=_cmd_run)
+
+    evaluate = sub.add_parser(
+        "evaluate-checkpoint",
+        parents=[common],
+        help="Reload a selected checkpoint on validation or protocol-locked test data.",
+    )
+    evaluate.add_argument("run_dir", type=Path)
+    evaluate.add_argument("--output-dir", type=Path, required=True)
+    evaluate.add_argument("--device", default="cuda")
+    evaluate.add_argument("--partition", choices=("val", "test"), default="val")
+    evaluate.add_argument("--protocol-lock", type=Path)
+    protocol = sub.add_parser("lock-evaluation", parents=[common])
+    protocol.add_argument("configs", nargs="+", type=Path)
+    protocol.add_argument("--output", type=Path, required=True)
+    protocol.set_defaults(handler=_cmd_evaluation_lock)
+    evaluate.set_defaults(handler=_cmd_evaluate_checkpoint)
+    summary = sub.add_parser("summarize-regressions", parents=[common])
+    summary.add_argument("evaluations", nargs="+", type=Path)
+    summary.add_argument("--protocol-lock", type=Path, required=True)
+    summary.add_argument("--output", type=Path, required=True)
+    summary.set_defaults(handler=_cmd_regression_metrics)
+    masks = sub.add_parser("measure-masks", parents=[common], help="Measure external tensor norms.")
+    masks.set_defaults(handler=_cmd_measure_masks)
+    parity_audit = sub.add_parser(
+        "audit-crystal-symmetry",
+        parents=[common],
+        help="Trained and random per-class parity controls.",
+    )
+    parity_audit.add_argument("run_dir", type=Path)
+    parity_audit.add_argument("--output-dir", type=Path, required=True)
+    parity_audit.add_argument("--device", default="cuda")
+    parity_audit.set_defaults(handler=_cmd_crystal_symmetry)
 
     verify = sub.add_parser(
         "verify",
@@ -198,20 +282,29 @@ def build_parser() -> argparse.ArgumentParser:
     )
     grid_gen.add_argument(
         "name",
-        choices=[
-            "all",
-            "main",
-            "meanpool",
-            "sumpool",
-            "augmentation",
-            "loss-weight",
-            "zero-injection",
-        ],
+        choices=["all", "main", "zero-labels", "sum-pooled", "molecular"],
     )
     grid_gen.set_defaults(handler=_cmd_grid)
 
     data = sub.add_parser("data", help="Dataset preparation (needs the `data` extra).")
     data_sub = data.add_subparsers(dest="data_command", metavar="ACTION", required=True)
+    tensor_datasets = data_sub.add_parser(
+        "tensor",
+        parents=[common],
+        help="Validate property-associated structures and write crystal tensor data.",
+    )
+    tensor_datasets.add_argument("target", choices=["piezoelectric", "elastic"])
+    tensor_datasets.add_argument(
+        "--documents",
+        type=Path,
+        help="Archived MP property-document JSON; otherwise fetch with MP_KEY or MP_TOKEN.",
+    )
+    tensor_datasets.set_defaults(handler=_cmd_tensor_datasets)
+    zero_labels = data_sub.add_parser(
+        "zero-labels", parents=[common], help="Prepare disjoint zero-label supervision."
+    )
+    zero_labels.add_argument("--documents", type=Path)
+    zero_labels.set_defaults(handler=_cmd_zero_supervision)
     prepare = data_sub.add_parser(
         "prepare", parents=[common], help="Build processed archives, manifests and splits."
     )
@@ -223,19 +316,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     prepare.add_argument(
         "--dataset",
-        choices=["all", "piezo", "elastic", "ood"],
+        choices=["all", "piezo", "ood"],
         default="all",
         help="Materials Project subset (mp only).",
     )
     prepare.set_defaults(handler=_cmd_data)
-
-    agg = sub.add_parser(
-        "aggregate",
-        parents=[common],
-        help="Rebuild summary records from a training-run tree (needs the `analysis` extra).",
-    )
-    agg.add_argument("--runs", type=Path, required=True, help="Root of the training-run tree.")
-    agg.set_defaults(handler=_cmd_aggregate)
 
     manifest = sub.add_parser(
         "manifest", parents=[common], help="Rebuild results/run_manifest.json from configs."

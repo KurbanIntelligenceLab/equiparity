@@ -34,7 +34,12 @@ def _to_mace_data(structure, z_table, r_max):  # noqa: ANN001, ANN202
         property_weights={},
         **cell_kwargs,
     )
-    return data.AtomicData.from_config(config, z_table=z_table, cutoff=r_max)
+    graph = data.AtomicData.from_config(config, z_table=z_table, cutoff=float(r_max))
+    if getattr(structure, "magnetic_magnitudes", None) is not None:
+        from equiparity.models.site_scalars import MAGNITUDE_KEY
+
+        graph[MAGNITUDE_KEY] = torch.tensor(structure.magnetic_magnitudes[:, None])
+    return graph
 
 
 def _batches(atomic_data_list, batch_size, dtype):  # noqa: ANN001, ANN202

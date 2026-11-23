@@ -29,6 +29,7 @@ class CrystalData:
     cells: npt.NDArray[np.float64]
     offsets: npt.NDArray[np.int64]
     targets: Mapping[str, npt.NDArray[np.float64]] = field(default_factory=dict)
+    magnetic_magnitudes: npt.NDArray[np.float64] | None = None
 
 
 def load_crystal_dataset(processed_npz: Path, target_keys: tuple[str, ...] = ()) -> CrystalData:
@@ -45,6 +46,9 @@ def load_crystal_dataset(processed_npz: Path, target_keys: tuple[str, ...] = ())
             cells=raw["cells"].astype(np.float64),
             offsets=offsets,
             targets=targets,
+            magnetic_magnitudes=raw["magnetic_magnitudes"].astype(np.float64)
+            if "magnetic_magnitudes" in raw
+            else None,
         )
 
 
@@ -87,6 +91,9 @@ class CrystalDataset:
             positions=self._data.positions[start:stop].copy(),
             cell=self._data.cells[row].copy(),
             pbc=True,
+            magnetic_magnitudes=None
+            if self._data.magnetic_magnitudes is None
+            else self._data.magnetic_magnitudes[start:stop].copy(),
         )
         targets = {key: values[row].copy() for key, values in self._data.targets.items()}
         return LabeledStructure(

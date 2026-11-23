@@ -26,18 +26,14 @@ def test_every_manuscript_display_item_has_a_record() -> None:
         "Figure 2b",
         "Figure 3a",
         "Figure 3b",
-        "Figure 3c",
-        "Supplementary Figure 1",
-        "Supplementary Table 1",
-        "Supplementary Table 2",
-        "Supplementary Table 3",
-        "Supplementary Table 4",
+        "Table 2",
+        *(f"Table S{i}" for i in range(1, 7)),
     ):
         assert any(i.startswith(item) for i in items), item
 
 
 def test_lookup_accepts_stem_and_file_name() -> None:
-    assert get_record(REPO, "stats") == get_record(REPO, "stats.json")
+    assert get_record(REPO, "crystal_regression") == get_record(REPO, "crystal_regression.json")
     with pytest.raises(KeyError):
         get_record(REPO, "no_such_record")
 

@@ -1,10 +1,4 @@
-"""Centrosymmetric space groups — the selection filter for the piezoelectric OOD set.
-
-A crystal is centrosymmetric iff its space group contains an inversion center. By Neumann's
-principle every odd-parity property (piezoelectric tensor) is then exactly zero. The OOD
-evaluation set is built only from these space groups; a single non-centrosymmetric leak
-invalidates the headline figure, so membership is verified per structure with spglib.
-"""
+"""Centrosymmetric space groups used to select the piezoelectric evaluation population."""
 
 from __future__ import annotations
 

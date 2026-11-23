@@ -17,7 +17,7 @@ def test_released_manifest_is_current() -> None:
 
 def test_manifest_covers_every_run_with_existing_inputs() -> None:
     manifest = build_run_manifest(REPO)
-    assert manifest["counts"]["matched-pair grid"] == 84
+    assert manifest["counts"]["crystal regression"] == 42
     assert manifest["counts"]["total"] == len(manifest["runs"])
     labels = {(r["config"]) for r in manifest["runs"]}
     assert len(labels) == len(manifest["runs"])

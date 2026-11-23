@@ -1,4 +1,4 @@
-"""Prepare the public datasets: QM9 and the Materials Project elastic, piezoelectric and
+"""Prepare the public datasets: QM9 and the Materials Project piezoelectric and
 centrosymmetric evaluation sets.
 
 Writes processed archives under ``data/raw/`` plus the committed dataset manifests
@@ -33,12 +33,11 @@ QM9_ARCHIVE_SHA256 = "3a63848ac80691bdb8d41834b575afad345b9300d7a2db0c38adb7f6ea
 QM9_N_TRAIN, QM9_N_VAL = 110_000, 10_000
 
 # Materials Project
-MP_DATASETS = ("piezo", "elastic", "ood")
+MP_DATASETS = ("piezo", "ood")
 OOD_MAX = 2000
 OOD_SYMPREC = 1e-3
 # Domain sanity bounds: MP holds some failed-DFT tensors with physically impossible magnitudes.
 # Exclude and report them; never silently keep them.
-MAX_ELASTIC_ABS_GPA = 2000.0  # hardest materials (diamond) reach ~1000 GPa
 MAX_PIEZO_ABS = 50.0  # strong piezoelectrics (PZT) reach ~25 C/m^2
 
 
@@ -105,8 +104,8 @@ def prepare_qm9(root: Path) -> None:
         query="equiparity data prepare qm9; exclude 3054 uncharacterized (figshare 3195404)",
         cleaning=f"kept {len(ids)} of 133885 molecules after uncharacterized exclusion",
         limitations=(
-            "Dipole target from Mulliken charges underestimates the reference DFT |mu| by "
-            "~10-25%; direction and parity are exact, which is what the parity experiment tests."
+            "The dipole target is reconstructed from the deposited Mulliken charges and "
+            "atomic coordinates."
         ),
     )
     manifest_path = root / "data/manifests/qm9.yaml"
@@ -142,15 +141,16 @@ def prepare_qm9(root: Path) -> None:
 
 
 def _mp_token(root: Path) -> str:
-    """Read ``MP_TOKEN`` from the environment, falling back to ``<root>/.env``."""
-    if token := os.environ.get("MP_TOKEN"):
-        return token
+    """Read ``MP_KEY`` or legacy ``MP_TOKEN`` without logging credentials."""
+    for name in ("MP_KEY", "MP_TOKEN"):
+        if token := os.environ.get(name):
+            return token
     env = root / ".env"
     if env.exists():
         for line in env.read_text().splitlines():
-            if m := re.match(r"\s*MP_TOKEN\s*=\s*(.+)", line):
+            if m := re.match(r"\s*(?:export\s+)?(?:MP_KEY|MP_TOKEN)\s*=\s*(.+)", line):
                 return m.group(1).strip().strip('"').strip("'")
-    raise RuntimeError("MP_TOKEN is not set (export it or add it to .env)")
+    raise RuntimeError("MP_KEY or MP_TOKEN is not set (export it or add it to .env)")
 
 
 def _filter_by_magnitude(
@@ -172,6 +172,16 @@ def _save_crystal_dataset(
         "positions": np.concatenate([s.structure.positions for s in samples]).astype(np.float64),
         "cells": np.stack([s.structure.cell for s in samples]).astype(np.float64),
     }
+    if any(s.structure.magnetic_magnitudes is not None for s in samples):
+        if any(s.structure.magnetic_magnitudes is None for s in samples):
+            raise ValueError("mixed missing and present magnetic magnitude inputs")
+        payload["magnetic_magnitudes"] = np.concatenate(
+            [
+                s.structure.magnetic_magnitudes
+                for s in samples
+                if s.structure.magnetic_magnitudes is not None
+            ]
+        ).astype(np.float64)
     if target_key is not None:
         payload[target_key] = np.stack([s.targets[target_key] for s in samples]).astype(np.float64)
     out = raw_dir / f"{name}_processed.npz"
@@ -272,34 +282,6 @@ def _prepare_piezo(root: Path, mpr: Any) -> None:  # noqa: ANN401
     _write_split(root, name, [s.identifier for s in samples])
 
 
-def _prepare_elastic(root: Path, mpr: Any) -> None:  # noqa: ANN401
-    from equiparity.io.materials_project import tensor_sample
-
-    docs = mpr.materials.elasticity.search(fields=["material_id", "elastic_tensor"])
-    tensors = {
-        str(d.material_id): np.asarray(d.elastic_tensor.ieee_format, dtype=np.float64)
-        for d in docs
-        if d.elastic_tensor is not None
-    }
-    structures = _fetch_structures(mpr, list(tensors))
-    samples = [tensor_sample(st, tensors[mid], "elastic", mid) for mid, st in structures.items()]
-    samples, dropped = _filter_by_magnitude(samples, "elastic", MAX_ELASTIC_ABS_GPA)
-    name = "mp_elastic"
-    n = _save_crystal_dataset(root, name, samples, "elastic")
-    _write_manifest(
-        root,
-        name,
-        "Materials Project materials.elasticity",
-        {
-            "elastic": "elastic tensor ieee_format 6x6 flattened to 36 (21 unique, parity-even)",
-            "positions": "angstrom",
-        },
-        n,
-        f"Excluded {dropped} with |C| > {MAX_ELASTIC_ABS_GPA} GPa (unphysical failed-DFT tensors).",
-    )
-    _write_split(root, name, [s.identifier for s in samples])
-
-
 def _prepare_ood(root: Path, mpr: Any) -> None:  # noqa: ANN401
     from equiparity.domain.spacegroup import CENTROSYMMETRIC_SPACE_GROUPS, is_centrosymmetric
     from equiparity.io.materials_project import pymatgen_to_structure, space_group_number
@@ -350,7 +332,7 @@ def prepare_mp(root: Path, which: str = "all") -> None:
         raise ValueError(f"unknown MP dataset {which!r}; choose from {(*MP_DATASETS, 'all')}")
     from mp_api.client import MPRester
 
-    steps = {"piezo": _prepare_piezo, "elastic": _prepare_elastic, "ood": _prepare_ood}
+    steps = {"piezo": _prepare_piezo, "ood": _prepare_ood}
     with MPRester(_mp_token(root)) as mpr:
         for key, step in steps.items():
             if which in (key, "all"):

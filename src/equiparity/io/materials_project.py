@@ -22,8 +22,17 @@ def pymatgen_to_structure(structure: Any) -> AtomicStructure:  # noqa: ANN401 (p
     numbers = np.asarray(structure.atomic_numbers, dtype=np.int64)
     positions = np.asarray(structure.cart_coords, dtype=np.float64)
     cell = np.asarray(structure.lattice.matrix, dtype=np.float64)
+    magnitudes = structure.site_properties.get("magnetic_magnitude")
     return validate_structure(
-        AtomicStructure(atomic_numbers=numbers, positions=positions, cell=cell, pbc=True)
+        AtomicStructure(
+            atomic_numbers=numbers,
+            positions=positions,
+            cell=cell,
+            pbc=True,
+            magnetic_magnitudes=None
+            if magnitudes is None
+            else np.asarray(magnitudes, dtype=np.float64),
+        )
     )
 
 

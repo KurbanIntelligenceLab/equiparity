@@ -1,13 +1,4 @@
-"""OOD piezoelectric-violation evaluation: both eval variants + full threshold curve.
-
-The headline quotes a single 0.01 C/m^2 threshold on the idealized (exact space group) OOD set. A
-single operating point on a single coordinate variant is not enough to stand on, so this reports
-both variants side by side -- idealized (tests the structural guarantee) and raw DFT-relaxed
-(tests robustness on real data) -- together with the full false-flag-fraction vs threshold curve
-and the violation-magnitude distribution. All of it is computed from the per-structure violation
-magnitudes ``||predicted tensor||`` (exactly zero, up to model error, for a truly centrosymmetric
-crystal).
-"""
+"""Evaluate piezoelectric tensor norms on raw and idealized crystals."""
 
 from __future__ import annotations
 
@@ -15,13 +6,9 @@ from collections.abc import Callable
 
 import numpy as np
 
-# Log-spaced thresholds 1e-4 .. 1 C/m^2 for the false-flag-fraction curve, so the reported
-# separation does not depend on the choice of operating point.
-THRESHOLDS = np.logspace(-4, 0, 25)
-
 
 def violation_stats(mags: np.ndarray) -> dict[str, object]:
-    """Distribution summary + false-flag-vs-threshold curve for one variant's magnitudes."""
+    """Summarize the norm distribution and fraction above 0.01 C/m²."""
     mags = np.asarray(mags, dtype=float)
     p5, p25, p50, p75, p95 = (float(x) for x in np.percentile(mags, [5, 25, 50, 75, 95]))
     return {
@@ -31,8 +18,6 @@ def violation_stats(mags: np.ndarray) -> dict[str, object]:
         "percentiles_5_25_50_75_95": [p5, p25, p50, p75, p95],
         "max": float(mags.max()),
         "false_flag_at_0.01": float((mags > 0.01).mean()),
-        "thresholds": THRESHOLDS.tolist(),
-        "false_flag_fraction": [float((mags > t).mean()) for t in THRESHOLDS],
     }
 
 
@@ -50,7 +35,7 @@ def evaluate_ood_variants(
 
     Returns:
         ``{variant: {"stats": <violation_stats>, "vector": <np.ndarray>}}``. The caller persists
-        ``stats`` into metrics.json and ``vector`` as an ``.npy`` for offline curves/histograms.
+        ``stats`` into metrics.json and ``vector`` as an ``.npy`` for per-crystal analysis.
     """
     out: dict[str, object] = {}
     for name, path in variants.items():
